@@ -18,7 +18,13 @@ public class Dosis {
 	}
 	@Override
 	public String toString() {
-		return "dosis [codDosis=" + codDosis + ", cantidadDosis=" + cantidadDosis + "]";
+		return "Dosis [codDosis=" + codDosis + ", cantidadDosis=" + cantidadDosis + "]";
+	}
+	public int getCodDosis() {
+		return codDosis;
+	}
+	public void setCodDosis(int codDosis) {
+		this.codDosis = codDosis;
 	}
 	
 }
