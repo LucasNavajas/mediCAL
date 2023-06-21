@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Usuario {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codUsuario;
