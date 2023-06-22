@@ -18,7 +18,7 @@ public class Consejo {
 	private boolean likeConsejo;
 	private String descConsejo;
 	private LocalDate fechaAltaConsejo;
-	private Image fotoConsejo;
+	//private Image fotoConsejo;
 	
 	public int getNroConsejo() {
 		return nroConsejo;
@@ -80,7 +80,7 @@ public class Consejo {
 	}
 
 
-	public Image getFotoConsejo() {
+	/*public Image getFotoConsejo() {
 		return fotoConsejo;
 	}
 
@@ -88,13 +88,13 @@ public class Consejo {
 	public void setFotoConsejo(Image fotoConsejo) {
 		this.fotoConsejo = fotoConsejo;
 	}
-
+*/
 
 	@Override
 	public String toString() {
 		return "Consejo [ nroConsejo=" +  nroConsejo + ", nombreConsejo=" + nombreConsejo + 
 				", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo + 
-				", fechaAltaConsejo=" + fechaAltaConsejo + ", fotoConsejo=" + fotoConsejo + ", likeConsejo=" + likeConsejo +"]";
+				", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +"]";
 	}
 	
 	
