@@ -11,7 +11,7 @@ import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
 
 @SpringBootTest(classes = {com.medical.springserver.SpringServerApplication.class})
-class SpringServerApplicationTests {
+class SpringServerApplicationTestsUsuario {
 	
 	@Autowired
 	private UsuarioDao usuarioDao;

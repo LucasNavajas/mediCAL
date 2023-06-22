@@ -11,7 +11,7 @@ import com.medical.springserver.model.recordatorio.RecordatorioDao;
 
 
 @SpringBootTest(classes = {com.medical.springserver.SpringServerApplication.class})
-public class SpringServerApplicacionTestsRecordatorio {
+public class SpringServerApplicationTestsRecordatorio {
 	@Autowired
 	private RecordatorioDao recordatorioDao;
 	
