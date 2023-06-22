@@ -11,10 +11,10 @@ import jakarta.persistence.Id;
 public class HistorialFinVigencia {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int nroHistorialFV;
 	private LocalDate fechaDesdeFV;
 	private LocalDate fechaHastaFV;
 	private String motivoFV;
+	private int nroHistorialFV;
 	public LocalDate getFechaDesdeFV() {
 		return fechaDesdeFV;
 	}
