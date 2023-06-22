@@ -1,6 +1,6 @@
 package com.medical.springserver.model.consejo;
 
-import java.awt.Image;
+//import java.awt.Image;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
