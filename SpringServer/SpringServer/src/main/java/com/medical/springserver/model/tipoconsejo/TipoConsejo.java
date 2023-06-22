@@ -1,4 +1,4 @@
-package com.medical.springserver.model.usuario;
+package com.medical.springserver.model.tipoconsejo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.medical.springserver.model.usuario;
+package com.medical.springserver.model.estadosolicitud;
 
 import java.util.ArrayList;
 import java.util.List;

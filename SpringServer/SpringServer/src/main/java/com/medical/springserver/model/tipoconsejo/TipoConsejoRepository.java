@@ -1,4 +1,4 @@
-package com.medical.springserver.model.usuario;
+package com.medical.springserver.model.tipoconsejo;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

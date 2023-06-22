@@ -1,7 +1,7 @@
 package com.medical.springserver.controller;
 
-import com.medical.springserver.model.usuario.Consejo;
-import com.medical.springserver.model.usuario.ConsejoDao;
+import com.medical.springserver.model.consejo.Consejo;
+import com.medical.springserver.model.consejo.ConsejoDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

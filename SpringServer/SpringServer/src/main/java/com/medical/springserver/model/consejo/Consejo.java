@@ -1,4 +1,4 @@
-package com.medical.springserver.model.usuario;
+package com.medical.springserver.model.consejo;
 
 import java.awt.Image;
 import java.time.LocalDate;

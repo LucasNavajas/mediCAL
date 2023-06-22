@@ -2,8 +2,8 @@ package com.medical.springserver.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.medical.springserver.model.usuario.Reporte;
-import com.medical.springserver.model.usuario.ReporteDao;
+import com.medical.springserver.model.reporte.Reporte;
+import com.medical.springserver.model.reporte.ReporteDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

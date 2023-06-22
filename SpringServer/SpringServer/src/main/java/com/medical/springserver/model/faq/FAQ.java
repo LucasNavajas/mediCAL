@@ -1,4 +1,4 @@
-package com.medical.springserver.model.usuario;
+package com.medical.springserver.model.faq;
 
 import java.time.LocalDate;
 
