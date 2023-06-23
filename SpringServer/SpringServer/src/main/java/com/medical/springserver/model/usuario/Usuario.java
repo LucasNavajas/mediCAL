@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
+import com.medical.springserver.model.reporte.Reporte;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -28,12 +29,15 @@ public class Usuario {
 	private String nombreUsuario;
 	private String telefonoUsuario;
 	private String usuarioUnico;
+	
 	//relacion historial fin vigencia
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<HistorialFinVigencia> historial;
 	//relacion calendario
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Calendario> varcalendario;
+	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Reporte> reportes;
 	
 	public int getCodUsuario() {
 		return codUsuario;
@@ -120,6 +124,12 @@ public class Usuario {
 	}
 	public void setVarcalendario(List<Calendario> varcalendario) {
 		this.varcalendario = varcalendario;
+	}
+	public List<Reporte> getReportes() {
+		return reportes;
+	}
+	public void setReportes(List<Reporte> reportes) {
+		this.reportes = reportes;
 	}
 	
 	

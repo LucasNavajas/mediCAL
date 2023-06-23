@@ -1,10 +1,16 @@
 package com.medical.springserver.model.estadosolicitud;
 
 
+import java.util.List;
+
+import com.medical.springserver.model.solicitud.Solicitud;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 //Comentario de prueba github
 @Entity
 public class EstadoSolicitud {
@@ -13,6 +19,10 @@ public class EstadoSolicitud {
 	private int codEstadoSolicitud;
 	private String nombreEstadoSolicitud;
 
+	@OneToMany (mappedBy = "estadoSolicitud", cascade = CascadeType.ALL)
+	private List<Solicitud> solicitudes;
+	
+	
 	public int getCodEstadoSolicitud() {
 		return codEstadoSolicitud;
 	}
@@ -35,6 +45,14 @@ public class EstadoSolicitud {
 	@Override
 	public String toString() {
 		return "EstadoSolicitud [codEstadoSolicitud=" + codEstadoSolicitud + ", nombreEstadoSolicitud=" + nombreEstadoSolicitud + "]";
+	}
+
+	public List<Solicitud> getSolicitudes() {
+		return solicitudes;
+	}
+
+	public void setSolicitudes(List<Solicitud> solicitudes) {
+		this.solicitudes = solicitudes;
 	}
 	
 	

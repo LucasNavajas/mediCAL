@@ -2,10 +2,15 @@ package com.medical.springserver.model.reporte;
 
 import java.time.LocalDate;
 
+import com.medical.springserver.model.tiporeporte.TipoReporte;
+import com.medical.springserver.model.usuario.Usuario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 //Comentario de prueba github
 @Entity
 public class Reporte {
@@ -15,6 +20,14 @@ public class Reporte {
 	private LocalDate fechaDesde;
 	private LocalDate fechaHasta;
 	private LocalDate fechaGenerada;
+	
+	@ManyToOne
+	@JoinColumn (name = "codTipoReporte")
+	private TipoReporte tipoReporte;
+	
+	@ManyToOne
+	@JoinColumn (name = "codUsuario")
+	private Usuario usuario;
 
 	public int getNroReporte() {
 		return nroReporte;
@@ -56,7 +69,28 @@ public class Reporte {
 
 	@Override
 	public String toString() {
-		return "Reporte [nroReporte=" + nroReporte + ", fechaDesde=" + fechaDesde + ",  fechaHasta=" + fechaHasta +  ",  fechaGenerada=" + fechaGenerada + "]";
+		return "Reporte [nroReporte=" + nroReporte + ", fechaDesde=" + fechaDesde + ", fechaHasta=" + fechaHasta
+				+ ", fechaGenerada=" + fechaGenerada + ", tipoReporte=" + tipoReporte + ", usuario=" + usuario + "]";
+	}
+
+
+	public TipoReporte getTipoReporte() {
+		return tipoReporte;
+	}
+
+
+	public void setTipoReporte(TipoReporte tipoReporte) {
+		this.tipoReporte = tipoReporte;
+	}
+
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	

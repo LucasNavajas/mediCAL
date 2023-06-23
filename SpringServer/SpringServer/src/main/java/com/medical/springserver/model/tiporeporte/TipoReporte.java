@@ -1,9 +1,14 @@
 package com.medical.springserver.model.tiporeporte;
 
+import java.util.List;
+
+import com.medical.springserver.model.reporte.Reporte;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 //Comentario de prueba github
 @Entity
 public class TipoReporte {
@@ -11,6 +16,9 @@ public class TipoReporte {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codTipoReporte;
 	private String nombreTipoReporte;
+	
+	@OneToMany (mappedBy = "tipoReporte")
+	private List<Reporte> reportes;
 
 	public int getCodTipoReporte() {
 		return codTipoReporte;
@@ -34,6 +42,14 @@ public class TipoReporte {
 	@Override
 	public String toString() {
 		return "TipoReporte [codTipoReporte=" + codTipoReporte + ", nombreTipoReporte=" + nombreTipoReporte + "]";
+	}
+
+	public List<Reporte> getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(List<Reporte> reportes) {
+		this.reportes = reportes;
 	}
 	
 	
