@@ -1,10 +1,16 @@
 package com.medical.springserver.model.administracionmed;
 import java.time.LocalDate;
+import java.util.List;
 
+import com.medical.springserver.model.medicamento.Medicamento;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class AdministracionMed {
@@ -15,6 +21,12 @@ public class AdministracionMed {
 	private LocalDate fechaAltaAdministracionMed;
 	private LocalDate fechaFinVigenciaAM;
 	private String nombreAdministracionMed;
+	//relacion con medicamento
+	//relacion historial fin vigencia
+	//relacion historial fin vigencia
+	@OneToMany (mappedBy = "administracionmed", cascade = CascadeType.ALL)
+	private List<Medicamento> varmedicamento;
+	
 	public int getCodAdministracionMed() {
 		return codAdministracionMed;
 	}
@@ -52,6 +64,16 @@ public class AdministracionMed {
 				+ descAdministracionMed + ", fechaAltaAdministracionMed=" + fechaAltaAdministracionMed
 				+ ", fechaFinVigenciaAM=" + fechaFinVigenciaAM + ", nombreAdministracionMed=" + nombreAdministracionMed
 				+ "]";
-	}	
+	}
+	public List<Medicamento> getVarmedicamento() {
+		return varmedicamento;
+	}
+	public void setVarmedicamento(List<Medicamento> varmedicamento) {
+		this.varmedicamento = varmedicamento;
+	}
+	
+	
+	
+	
 	
 }

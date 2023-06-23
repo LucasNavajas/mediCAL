@@ -1,10 +1,17 @@
 package com.medical.springserver.model.medicamento;
 import java.time.LocalDate;
 
+
+import com.medical.springserver.model.administracionmed.AdministracionMed;
+
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 
 @Entity
 public class Medicamento {
@@ -16,6 +23,12 @@ public class Medicamento {
 	private LocalDate fechaFinVigenciaMed;
 	private String marcaMedicamento;
 	private String nombreMedicamento;
+	
+	//relacion adm medica
+	@ManyToOne
+	@JoinColumn(name = "codAdministracionMed")
+	private AdministracionMed administracionmed;
+	
 	public int getCodMedicamento() {
 		return codMedicamento;
 	}
@@ -58,5 +71,13 @@ public class Medicamento {
 				+ ", fechaAltaMedicamento=" + fechaAltaMedicamento + ", fechaFinVigenciaMed=" + fechaFinVigenciaMed
 				+ ", marcaMedicamento=" + marcaMedicamento + ", nombreMedicamento=" + nombreMedicamento + "]";
 	}
+	public AdministracionMed getAdministracionmed() {
+		return administracionmed;
+	}
+	public void setAdministracionmed(AdministracionMed administracionmed) {
+		this.administracionmed = administracionmed;
+	}
+	
+	
 
 }

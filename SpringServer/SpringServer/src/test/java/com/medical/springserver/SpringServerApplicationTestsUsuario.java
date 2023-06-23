@@ -72,6 +72,7 @@ class SpringServerApplicationTestsUsuario {
 		
 		
 		System.out.println(usuario.getHistorial());
+		System.out.println(usuario.getVarcalendario());
 		usuarioDao.save(usuario);
 		
 		
