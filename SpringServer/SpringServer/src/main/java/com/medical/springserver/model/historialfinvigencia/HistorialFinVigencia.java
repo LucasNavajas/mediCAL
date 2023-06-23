@@ -22,7 +22,7 @@ public class HistorialFinVigencia {
 	private LocalDate fechaDesdeFV;
 	private LocalDate fechaHastaFV;
 	private String motivoFV;
-	
+	//relacion con usuario
 	@ManyToOne
 	@JoinColumn(name = "codUsuario")
 	private Usuario usuario;
