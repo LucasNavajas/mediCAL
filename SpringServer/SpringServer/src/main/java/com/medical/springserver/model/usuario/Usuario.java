@@ -1,11 +1,16 @@
 package com.medical.springserver.model.usuario;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 //Comentario de prueba github
 @Entity
 public class Usuario {
@@ -22,6 +27,9 @@ public class Usuario {
 	private String nombreUsuario;
 	private String telefonoUsuario;
 	private String usuarioUnico;
+	
+	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<HistorialFinVigencia> historial;
 	
 	public int getCodUsuario() {
 		return codUsuario;
@@ -96,6 +104,12 @@ public class Usuario {
 				+ fechaNacimientoUsuario + ", generoUsuario=" + generoUsuario + ", mailUsuario=" + mailUsuario
 				+ ", nombreInstitucion=" + nombreInstitucion + ", nombreUsuario=" + nombreUsuario + ", telefonoUsuario="
 				+ telefonoUsuario + ", Usuario=" + usuarioUnico + "]";
+	}
+	public List<HistorialFinVigencia> getHistorial() {
+		return historial;
+	}
+	public void setHistorial(List<HistorialFinVigencia> historial) {
+		this.historial = historial;
 	}
 	
 	

@@ -1,11 +1,18 @@
 package com.medical.springserver.model.historialfinvigencia;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.medical.springserver.model.usuario.Usuario;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class HistorialFinVigencia {
@@ -15,6 +22,12 @@ public class HistorialFinVigencia {
 	private LocalDate fechaDesdeFV;
 	private LocalDate fechaHastaFV;
 	private String motivoFV;
+	
+	@ManyToOne
+	@JoinColumn(name = "codUsuario")
+	private Usuario usuario;
+	
+	
 	public LocalDate getFechaDesdeFV() {
 		return fechaDesdeFV;
 	}
@@ -43,6 +56,12 @@ public class HistorialFinVigencia {
 	public String toString() {
 		return "HistorialFinVigencia [fechaDesdeFV=" + fechaDesdeFV + ", fechaHastaFV=" + fechaHastaFV + ", motivoFV="
 				+ motivoFV + ", nroHistorialFV=" + nroHistorialFV + "]";
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	

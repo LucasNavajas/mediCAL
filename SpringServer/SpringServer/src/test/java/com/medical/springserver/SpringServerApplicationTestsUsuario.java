@@ -1,12 +1,15 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
+import com.medical.springserver.model.historialfinvigencia.HistorialFinVigenciaDao;
 import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
 
@@ -15,11 +18,21 @@ class SpringServerApplicationTestsUsuario {
 	
 	@Autowired
 	private UsuarioDao usuarioDao;
+	private HistorialFinVigenciaDao historialfinvigenciaDao;
 	
 	@Test
 	void addUsuarioTest() {
 		
 		// Assuming you have a Connection object named 'connection'
+		HistorialFinVigencia historialfinvigencia = new HistorialFinVigencia();
+		
+		LocalDate fechaDesde = LocalDate.of(2023, 1, 1);
+		LocalDate fechaHasta = LocalDate.of(2023,9,1);
+		
+		historialfinvigencia.setFechaDesdeFV(fechaDesde);
+		historialfinvigencia.setFechaHastaFV(fechaHasta);
+		historialfinvigencia.setMotivoFV("Licencia por maternidad");
+		
 		LocalDate fechaNacimiento = LocalDate.of(2001, 4, 3);
 
 		
@@ -37,6 +50,15 @@ class SpringServerApplicationTestsUsuario {
 		usuario.setNombreInstitucion("Hospital2");
 		usuario.setNombreUsuario("Lucas");
 		usuario.setTelefonoUsuario("3756409336");
+		
+		
+		historialfinvigencia.setUsuario(usuario);
+		List<HistorialFinVigencia> historial = new ArrayList<>();
+		historial.add(historialfinvigencia);
+		usuario.setHistorial(historial);
+		
+		
+		System.out.println(usuario.getHistorial());
 		usuarioDao.save(usuario);
 		
 		
