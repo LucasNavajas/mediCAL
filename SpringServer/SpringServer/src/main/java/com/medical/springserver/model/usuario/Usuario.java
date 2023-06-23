@@ -3,6 +3,7 @@ package com.medical.springserver.model.usuario;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
 
 import jakarta.persistence.CascadeType;
@@ -30,6 +31,9 @@ public class Usuario {
 	
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<HistorialFinVigencia> historial;
+	
+	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Calendario> varcalendario;
 	
 	public int getCodUsuario() {
 		return codUsuario;
@@ -110,6 +114,12 @@ public class Usuario {
 	}
 	public void setHistorial(List<HistorialFinVigencia> historial) {
 		this.historial = historial;
+	}
+	public List<Calendario> getVarcalendario() {
+		return varcalendario;
+	}
+	public void setVarcalendario(List<Calendario> varcalendario) {
+		this.varcalendario = varcalendario;
 	}
 	
 	

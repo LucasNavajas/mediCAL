@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
-import com.medical.springserver.model.historialfinvigencia.HistorialFinVigenciaDao;
 import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
 
@@ -18,12 +18,11 @@ class SpringServerApplicationTestsUsuario {
 	
 	@Autowired
 	private UsuarioDao usuarioDao;
-	private HistorialFinVigenciaDao historialfinvigenciaDao;
 	
 	@Test
 	void addUsuarioTest() {
 		
-		// Assuming you have a Connection object named 'connection'
+		// instancia de historial
 		HistorialFinVigencia historialfinvigencia = new HistorialFinVigencia();
 		
 		LocalDate fechaDesde = LocalDate.of(2023, 1, 1);
@@ -38,6 +37,15 @@ class SpringServerApplicationTestsUsuario {
 		
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
+		
+		
+	
+		//instancia de calendario
+		Calendario calendario = new Calendario();
+		calendario.setFechaAltaCalendario(fechaHoy);
+		calendario.setFechaFinVigenciaC(null);
+		calendario.setNombreCalendario("calendario_02");
+		
 		
 		Usuario usuario = new Usuario();
 		usuario.setUsuarioUnico("usuario1");
@@ -56,6 +64,11 @@ class SpringServerApplicationTestsUsuario {
 		List<HistorialFinVigencia> historial = new ArrayList<>();
 		historial.add(historialfinvigencia);
 		usuario.setHistorial(historial);
+		
+		calendario.setUsuario(usuario);
+		List<Calendario> varcalendario = new ArrayList<>();
+		varcalendario.add(calendario);
+		usuario.setVarcalendario(varcalendario);
 		
 		
 		System.out.println(usuario.getHistorial());
