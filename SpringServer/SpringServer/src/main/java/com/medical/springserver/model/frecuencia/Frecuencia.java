@@ -1,8 +1,13 @@
 package com.medical.springserver.model.frecuencia;
+import java.util.List;
+
+import com.medical.springserver.model.recordatorio.Recordatorio;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Frecuencia {
@@ -13,6 +18,9 @@ public class Frecuencia {
 	private int diasDescansoF;
 	private int diasTomaF;
 	private String nombreFrecuencia;
+	
+	@OneToMany(mappedBy = "frecuencia")
+	private List<Recordatorio> recordatorios;
 	public int getCantidadFrecuencia() {
 		return cantidadFrecuencia;
 	}
@@ -48,6 +56,12 @@ public class Frecuencia {
 	}
 	public void setCodFrecuencia(int codFrecuencia) {
 		this.codFrecuencia = codFrecuencia;
+	}
+	public List<Recordatorio> getRecordatorios() {
+		return recordatorios;
+	}
+	public void setRecordatorios(List<Recordatorio> recordatorios) {
+		this.recordatorios = recordatorios;
 	}
 	
 }

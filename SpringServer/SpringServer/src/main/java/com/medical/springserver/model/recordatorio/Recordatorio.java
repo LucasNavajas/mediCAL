@@ -2,6 +2,7 @@ package com.medical.springserver.model.recordatorio;
 import java.time.LocalDate;
 
 import com.medical.springserver.model.dosis.Dosis;
+import com.medical.springserver.model.frecuencia.Frecuencia;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +25,10 @@ public class Recordatorio {
 	@ManyToOne
 	@JoinColumn (name = "codDosis")
 	private Dosis dosis;
+	
+	@ManyToOne
+	@JoinColumn (name = "codFrecuencia")
+	private Frecuencia frecuencia;
 	
 	public int getCodRecordatorio() {
 		return codRecordatorio;
@@ -72,12 +77,19 @@ public class Recordatorio {
 		return "Recordatorio [codRecordatorio=" + codRecordatorio + ", duracionRecordatorio=" + duracionRecordatorio
 				+ ", fechaAltaRecordatorio=" + fechaAltaRecordatorio + ", fechaFinRecordatorio=" + fechaFinRecordatorio
 				+ ", fechaFinVigenciaR=" + fechaFinVigenciaR + ", fechaInicioRecordatorio=" + fechaInicioRecordatorio
-				+ ", horarioRecordatorio=" + horarioRecordatorio + "]";
+				+ ", horarioRecordatorio=" + horarioRecordatorio + ", dosis=" + dosis + ", frecuencia=" + frecuencia
+				+ "]";
 	}
 	public Dosis getDosis() {
 		return dosis;
 	}
 	public void setDosis(Dosis dosis) {
 		this.dosis = dosis;
+	}
+	public Frecuencia getFrecuencia() {
+		return frecuencia;
+	}
+	public void setFrecuencia(Frecuencia frecuencia) {
+		this.frecuencia = frecuencia;
 	}
 }

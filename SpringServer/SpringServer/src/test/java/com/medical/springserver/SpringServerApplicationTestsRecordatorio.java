@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.medical.springserver.model.dosis.Dosis;
 import com.medical.springserver.model.dosis.DosisDao;
+import com.medical.springserver.model.frecuencia.Frecuencia;
+import com.medical.springserver.model.frecuencia.FrecuenciaDao;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 import com.medical.springserver.model.recordatorio.RecordatorioDao;
 
@@ -18,6 +20,8 @@ public class SpringServerApplicationTestsRecordatorio {
 	private RecordatorioDao recordatorioDao;
 	@Autowired
 	private DosisDao dosisDao;
+	@Autowired
+	private FrecuenciaDao frecuenciaDao;
 	
 	@Test 
 	void addRecordatorioTest() {
@@ -34,7 +38,15 @@ public class SpringServerApplicationTestsRecordatorio {
 		dosis.setCantidadDosis(4);
 		dosisDao.save(dosis);
 		
+		Frecuencia frecuencia = new Frecuencia();
+		frecuencia.setCantidadFrecuencia(7);
+		frecuencia.setDiasDescansoF(1);
+		frecuencia.setDiasTomaF(6);
+		frecuencia.setNombreFrecuencia("6 dias toma 1 descanso");
+		frecuenciaDao.save(frecuencia);
+		
 		recordatorio.setDosis(dosis);
+		recordatorio.setFrecuencia(frecuencia);
 		
 		recordatorioDao.save(recordatorio);
 	}
