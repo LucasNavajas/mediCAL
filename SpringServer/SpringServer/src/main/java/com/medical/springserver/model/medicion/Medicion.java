@@ -1,10 +1,16 @@
 package com.medical.springserver.model.medicion;
 import java.time.LocalDate;
+import java.util.List;
 
+import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
+
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Medicion {
@@ -15,6 +21,17 @@ public class Medicion {
 	private LocalDate fechaFinVigenciaM;
 	private String nombreMedicion;
 	private String unidadMedidaMedicion;
+	
+	
+	@OneToMany (mappedBy = "medicion", cascade = CascadeType.ALL)
+	private List<CalendarioMedicion> calendariomed;
+	
+	public List<CalendarioMedicion> getCalendariomed() {
+		return calendariomed;
+	}
+	public void setCalendariomed(List<CalendarioMedicion> calendariomed) {
+		this.calendariomed = calendariomed;
+	}
 	public int getCodMedicion() {
 		return codMedicion;
 	}
