@@ -3,10 +3,15 @@ package com.medical.springserver.model.consejo;
 //import java.awt.Image;
 import java.time.LocalDate;
 
+import com.medical.springserver.model.tipoconsejo.TipoConsejo;
+import com.medical.springserver.model.usuario.Usuario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 //Comentario de prueba github
 @Entity
 public class Consejo {
@@ -19,6 +24,10 @@ public class Consejo {
 	private String descConsejo;
 	private LocalDate fechaAltaConsejo;
 	//private Image fotoConsejo;
+	
+	@ManyToOne
+	@JoinColumn(name = "nroTipoConsejo")
+	private TipoConsejo tipoconsejo;
 	
 	public int getNroConsejo() {
 		return nroConsejo;
@@ -96,6 +105,19 @@ public class Consejo {
 				", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo + 
 				", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +"]";
 	}
+
+
+	public TipoConsejo getTipoconsejo() {
+		return tipoconsejo;
+	}
+
+
+	public void setTipoconsejo(TipoConsejo tipoconsejo) {
+		this.tipoconsejo = tipoconsejo;
+	}
+
+
+	
 	
 	
 }
