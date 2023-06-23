@@ -28,10 +28,10 @@ public class Usuario {
 	private String nombreUsuario;
 	private String telefonoUsuario;
 	private String usuarioUnico;
-	
+	//relacion historial fin vigencia
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<HistorialFinVigencia> historial;
-	
+	//relacion calendario
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Calendario> varcalendario;
 	
