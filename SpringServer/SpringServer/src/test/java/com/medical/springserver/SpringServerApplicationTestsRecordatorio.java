@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.medical.springserver.model.dosis.Dosis;
+import com.medical.springserver.model.dosis.DosisDao;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 import com.medical.springserver.model.recordatorio.RecordatorioDao;
 
@@ -14,6 +16,8 @@ import com.medical.springserver.model.recordatorio.RecordatorioDao;
 public class SpringServerApplicationTestsRecordatorio {
 	@Autowired
 	private RecordatorioDao recordatorioDao;
+	@Autowired
+	private DosisDao dosisDao;
 	
 	@Test 
 	void addRecordatorioTest() {
@@ -24,6 +28,13 @@ public class SpringServerApplicationTestsRecordatorio {
 		recordatorio.setFechaInicioRecordatorio(LocalDate.now());
 		recordatorio.setFechaFinVigenciaR(LocalDate.of(2023, 7, 21));
 		recordatorio.setHorarioRecordatorio(7);
+		
+		
+		Dosis dosis = new Dosis();
+		dosis.setCantidadDosis(4);
+		dosisDao.save(dosis);
+		
+		recordatorio.setDosis(dosis);
 		
 		recordatorioDao.save(recordatorio);
 	}
