@@ -1,11 +1,16 @@
 package com.medical.springserver.model.permiso;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.medical.springserver.model.perfilpermiso.PerfilPermiso;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Permiso {
@@ -17,6 +22,20 @@ public class Permiso {
 	private LocalDate fechaFinVigenciaP;
 	private String nombrePermiso;
 	
+	//relacion PerfilPermiso
+	@OneToMany (mappedBy = "permiso", cascade = CascadeType.ALL)
+	private List<PerfilPermiso> perfilPermiso;
+	
+
+	public List<PerfilPermiso> getPerfilPermiso() {
+		return perfilPermiso;
+	}
+
+
+	public void setPerfilPermiso(List<PerfilPermiso> perfilPermiso) {
+		this.perfilPermiso = perfilPermiso;
+	}
+
 
 	public int getCodPermiso() {
 		return codPermiso;

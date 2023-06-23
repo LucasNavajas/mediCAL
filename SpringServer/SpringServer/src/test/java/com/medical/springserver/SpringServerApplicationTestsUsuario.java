@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.medical.springserver.model.calendario.Calendario;
+import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
+import com.medical.springserver.model.perfil.Perfil;
+import com.medical.springserver.model.solicitud.Solicitud;
 import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
 
@@ -47,6 +50,28 @@ class SpringServerApplicationTestsUsuario {
 		calendario.setNombreCalendario("calendario_02");
 		
 		
+		// instancia de perfil
+		Perfil perfil = new Perfil();
+		perfil.setFechaAltaPerfil(fechaHoy);
+		perfil.setDescPerfil("usuario particular");
+		perfil.setFechaFinVigenciaP(null);
+		perfil.setMotivoFinVigenciaP(null);
+		perfil.setNombrePerfil("Particular");
+		
+		
+		// instancia de Solicitud Controlador
+		Solicitud solicitudControlador = new Solicitud();
+		solicitudControlador.setFechaSolicitud(fechaHoy);
+		
+		// instancia de Solicitud Controlado
+		Solicitud solicitudControlado = new Solicitud();
+		solicitudControlado.setFechaSolicitud(fechaHoy);
+		
+		// instancia de CodVerificacion
+		CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
+		codigoVerificacion.setFechaGenerado(fechaHoy);
+		
+		
 		Usuario usuario = new Usuario();
 		usuario.setUsuarioUnico("usuario1");
 		usuario.setApellidoUsuario("Navajas");
@@ -70,9 +95,33 @@ class SpringServerApplicationTestsUsuario {
 		varcalendario.add(calendario);
 		usuario.setVarcalendario(varcalendario);
 		
+		perfil.setUsuario(usuario);
+		List<Perfil> varperfil = new ArrayList<>();
+		varperfil.add(perfil);
+		usuario.setPerfil(varperfil);
+		
+		solicitudControlador.setUsuarioControlador(usuario);
+		List<Solicitud> varsolicitud = new ArrayList<>();
+		varsolicitud.add(solicitudControlador);
+		usuario.setSolicitudControlador(varsolicitud);
+		
+		solicitudControlado.setUsuarioControlado(usuario);
+		List<Solicitud> var1solicitud = new ArrayList<>();
+		var1solicitud.add(solicitudControlado);
+		
+		codigoVerificacion.setUsuario(usuario);
+		List<CodigoVerificacion> varcodigoVerificacion = new ArrayList<>();
+		varcodigoVerificacion.add(codigoVerificacion);
+		usuario.setCodigoVerificacion(codigoVerificacion);
+		
 		
 		System.out.println(usuario.getHistorial());
 		System.out.println(usuario.getVarcalendario());
+		System.out.println(usuario.getPerfil());
+		System.out.println(usuario.getSolicitudControlador());
+		System.out.println(usuario.getSolicitudControlado());
+		System.out.println(usuario.getCodigoVerificacion());
+		
 		usuarioDao.save(usuario);
 		
 		

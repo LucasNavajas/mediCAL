@@ -1,12 +1,14 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.medical.springserver.model.perfilpermiso.PerfilPermiso;
 import com.medical.springserver.model.permiso.Permiso;
 import com.medical.springserver.model.permiso.PermisoDao;
 
@@ -28,6 +30,18 @@ class SpringServerApplicationTestsPermiso {
 		permiso.setFechaAltaPermiso(fechaHoy);
 		permiso.setFechaFinVigenciaP(fechaFinVigPermiso);
 		permiso.setNombrePermiso("Aniadir Usuario");
+		
+		// instancia de PerfilPermiso
+		PerfilPermiso perfilPermiso = new PerfilPermiso();
+		perfilPermiso.setIdPerfilPermiso(0);
+		
+		perfilPermiso.setPermiso(permiso);
+		List<PerfilPermiso> varperfilPermiso = new ArrayList<>();
+		varperfilPermiso.add(perfilPermiso);
+		permiso.setPerfilPermiso(varperfilPermiso);
+		
+		System.out.println(permiso.getPerfilPermiso());
+		
 		permisoDao.save(permiso);
 		
 		

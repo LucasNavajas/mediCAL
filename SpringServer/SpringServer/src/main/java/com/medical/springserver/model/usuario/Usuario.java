@@ -4,15 +4,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.medical.springserver.model.calendario.Calendario;
+import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
+import com.medical.springserver.model.perfil.Perfil;
 import com.medical.springserver.model.reporte.Reporte;
+import com.medical.springserver.model.solicitud.Solicitud;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 //Comentario de prueba github
 @Entity
 public class Usuario {
@@ -33,12 +38,56 @@ public class Usuario {
 	//relacion historial fin vigencia
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<HistorialFinVigencia> historial;
+	
 	//relacion calendario
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Calendario> varcalendario;
+	
+	//relacion con reportes
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Reporte> reportes;
 	
+	//relacion con Perfil
+	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Perfil> perfil;
+	
+	//relacion con Solicitud Controlador
+	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	private List<Solicitud> solicitudControlador;
+	
+	// relacion con CodVerificacion
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "codVerificacion", referencedColumnName = "id")
+    private CodigoVerificacion codigoVerificacion;
+	
+	// relacion con Solicitud Controlado
+	@OneToOne(mappedBy = "usuario")
+    private Solicitud solicitudControlado;
+		
+	public List<Solicitud> getSolicitudControlador() {
+		return solicitudControlador;
+	}
+	public void setSolicitudControlador(List<Solicitud> solicitudControlador) {
+		this.solicitudControlador = solicitudControlador;
+	}
+	public Solicitud getSolicitudControlado() {
+		return solicitudControlado;
+	}
+	public void setSolicitudControlado(Solicitud solicitudControlado) {
+		this.solicitudControlado = solicitudControlado;
+	}
+	public CodigoVerificacion getCodigoVerificacion() {
+		return codigoVerificacion;
+	}
+	public void setCodigoVerificacion(CodigoVerificacion codigoVerificacion) {
+		this.codigoVerificacion = codigoVerificacion;
+	}
+	public List<Perfil> getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(List<Perfil> perfil) {
+		this.perfil = perfil;
+	}
 	public int getCodUsuario() {
 		return codUsuario;
 	}

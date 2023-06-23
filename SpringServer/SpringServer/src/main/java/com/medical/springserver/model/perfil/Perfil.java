@@ -2,10 +2,15 @@ package com.medical.springserver.model.perfil;
 
 import java.time.LocalDate;
 
+import com.medical.springserver.model.perfilpermiso.PerfilPermiso;
+import com.medical.springserver.model.usuario.Usuario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Perfil {
@@ -17,8 +22,40 @@ public class Perfil {
 	private LocalDate fechaFinVigenciaP;
 	private String motivoFinVigenciaP;
 	private String nombrePerfil;
-
 	
+	//relacion con PerfilPermiso
+	@ManyToOne
+	@JoinColumn(name = "idPerfilPermiso")
+	private PerfilPermiso perfilPermiso;
+
+	// relacion con Usuario
+	@ManyToOne
+	@JoinColumn(name = "codUsuario")
+	private Usuario usuario;
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+
+
+	public PerfilPermiso getPerfilPermiso() {
+		return perfilPermiso;
+	}
+
+
+
+	public void setPerfilPermiso(PerfilPermiso perfilPermiso) {
+		this.perfilPermiso = perfilPermiso;
+	}
+
+
 
 	public int getCodPerfil() {
 		return codPerfil;

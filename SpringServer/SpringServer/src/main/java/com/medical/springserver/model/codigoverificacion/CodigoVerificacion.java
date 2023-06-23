@@ -1,10 +1,13 @@
 package com.medical.springserver.model.codigoverificacion;
 import java.time.LocalDate;
 
+import com.medical.springserver.model.usuario.Usuario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class CodigoVerificacion {
@@ -12,6 +15,17 @@ public class CodigoVerificacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codVerificacion;
 	private LocalDate fechaGenerado;
+	
+	// relacion con Usuario
+	@OneToOne(mappedBy = "codigoverificacion")
+    private Usuario usuario;
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 	public int getCodVerificacion() {
 		return codVerificacion;
 	}

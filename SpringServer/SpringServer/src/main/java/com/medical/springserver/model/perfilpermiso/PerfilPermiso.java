@@ -1,9 +1,18 @@
 package com.medical.springserver.model.perfilpermiso;
 
+import java.util.List;
+
+import com.medical.springserver.model.perfil.Perfil;
+import com.medical.springserver.model.permiso.Permiso;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class PerfilPermiso {
@@ -11,6 +20,39 @@ public class PerfilPermiso {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idPerfilPermiso;
 	
+	// Relacion con Permiso
+	@ManyToOne
+	@JoinColumn(name = "codPermiso")
+	private Permiso permiso;
+	
+	//Relacion con Perfil
+	@OneToMany (mappedBy = "perfilpermiso", cascade = CascadeType.ALL)
+	private List<Perfil> perfil;
+	
+
+	public List<Perfil> getPerfil() {
+		return perfil;
+	}
+
+
+
+	public void setPerfil(List<Perfil> perfil) {
+		this.perfil = perfil;
+	}
+
+
+
+	public Permiso getPermiso() {
+		return permiso;
+	}
+
+
+
+	public void setPermiso(Permiso permiso) {
+		this.permiso = permiso;
+	}
+
+
 
 	public int getIdPerfilPermiso() {
 		return idPerfilPermiso;
