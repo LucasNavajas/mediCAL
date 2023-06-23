@@ -18,8 +18,8 @@ public class SpringServerApplicationTestsPresentacionMed {
 	@Test
 	void addPresentacionMed() {
 		PresentacionMed presentacionMed = new PresentacionMed();
-		presentacionMed.setDescPresentacionMed("Pastilla");
-		presentacionMed.setNombrePresentacionMed("Oral");
+		presentacionMed.setDescPresentacionMed("Administración Oral");
+		presentacionMed.setNombrePresentacionMed("Pastilla");
 		presentacionMed.setFechaAltaPresentacionMed(LocalDate.now());
 		presentacionMed.setFechaFinVigenciaPM(null);
 		presentacionMedDao.save(presentacionMed);
