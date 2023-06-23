@@ -2,6 +2,7 @@ package com.medical.springserver.model.calendariosintoma;
 import java.time.LocalDate;
 
 import com.medical.springserver.model.calendario.Calendario;
+import com.medical.springserver.model.sintoma.Sintoma;
 import com.medical.springserver.model.usuario.Usuario;
 
 import jakarta.persistence.Entity;
@@ -18,11 +19,16 @@ public class CalendarioSintoma {
 	private int codCalendarioSintoma;
 	private LocalDate fechaCalendarioSintoma;
 	private LocalDate fechaFinVigenciaCS;
-	
+	//relacion con calendario
 	@ManyToOne
 	@JoinColumn(name = "codCalendario")
 	private Calendario calendario;
-		
+	
+	//relacion sintoma
+	@ManyToOne
+	@JoinColumn(name = "codSintoma")
+	private Sintoma sintoma;
+	
 	public int getCodCalendarioSintoma() {
 		return codCalendarioSintoma;
 	}
@@ -59,6 +65,14 @@ public class CalendarioSintoma {
 
 	public void setCalendario(Calendario calendario) {
 		this.calendario = calendario;
+	}
+
+	public Sintoma getSintoma() {
+		return sintoma;
+	}
+
+	public void setSintoma(Sintoma sintoma) {
+		this.sintoma = sintoma;
 	}
 	
 	
