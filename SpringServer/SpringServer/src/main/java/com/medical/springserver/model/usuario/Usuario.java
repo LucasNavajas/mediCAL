@@ -18,7 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-//Comentario de prueba github
+
 @Entity
 public class Usuario {
 	@Id
@@ -35,23 +35,23 @@ public class Usuario {
 	private String telefonoUsuario;
 	private String usuarioUnico;
 	
-	//relacion historial fin vigencia
+	// relacion historial fin vigencia
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<HistorialFinVigencia> historial;
 	
-	//relacion calendario
+	// relacion calendario
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Calendario> varcalendario;
 	
-	//relacion con reportes
+	// relacion con reportes
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Reporte> reportes;
 	
-	//relacion con Perfil
+	// relacion con Perfil
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Perfil> perfil;
 	
-	//relacion con Solicitud Controlador
+	// relacion con Solicitud Controlador
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Solicitud> solicitudControlador;
 	
@@ -162,6 +162,9 @@ public class Usuario {
 				+ ", nombreInstitucion=" + nombreInstitucion + ", nombreUsuario=" + nombreUsuario + ", telefonoUsuario="
 				+ telefonoUsuario + ", Usuario=" + usuarioUnico + "]";
 	}
+	
+	// Relaciones
+	
 	public List<HistorialFinVigencia> getHistorial() {
 		return historial;
 	}

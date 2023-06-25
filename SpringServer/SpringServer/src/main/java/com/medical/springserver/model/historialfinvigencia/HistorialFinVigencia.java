@@ -22,7 +22,8 @@ public class HistorialFinVigencia {
 	private LocalDate fechaDesdeFV;
 	private LocalDate fechaHastaFV;
 	private String motivoFV;
-	//relacion con usuario
+	
+	// Relacion con Usuario
 	@ManyToOne
 	@JoinColumn(name = "codUsuario")
 	private Usuario usuario;
@@ -52,11 +53,15 @@ public class HistorialFinVigencia {
 	public void setNroHistorialFV(int nroHistorialFV) {
 		this.nroHistorialFV = nroHistorialFV;
 	}
+	
 	@Override
 	public String toString() {
-		return "HistorialFinVigencia [fechaDesdeFV=" + fechaDesdeFV + ", fechaHastaFV=" + fechaHastaFV + ", motivoFV="
-				+ motivoFV + ", nroHistorialFV=" + nroHistorialFV + "]";
+		return "HistorialFinVigencia [nroHistorialFV=" + nroHistorialFV + ", fechaDesdeFV=" + fechaDesdeFV
+				+ ", fechaHastaFV=" + fechaHastaFV + ", motivoFV=" + motivoFV + ", usuario=" + usuario + "]";
 	}
+	
+	// Relaciones
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}

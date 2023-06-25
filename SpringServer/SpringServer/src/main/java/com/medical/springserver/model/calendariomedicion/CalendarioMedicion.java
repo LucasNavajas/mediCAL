@@ -1,6 +1,7 @@
 package com.medical.springserver.model.calendariomedicion;
 import java.time.LocalDate;
 
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.medicion.Medicion;
 
 import jakarta.persistence.Entity;
@@ -17,7 +18,14 @@ public class CalendarioMedicion {
 	private int codCalendarioMedicion;
 	private LocalDate fechaCalendarioMedicion;
 	private LocalDate fechaFinVigenciaCM;
+	private Float valorCalendarioMedicion;
 	
+	// Relacion con Calendario
+	@ManyToOne
+	@JoinColumn (name = "codCalendario")
+	private Calendario calendario;
+	
+	// Relacion con Medicion
 	@ManyToOne
 	@JoinColumn(name = "codMedicion")
 	private Medicion medicion;
@@ -40,17 +48,33 @@ public class CalendarioMedicion {
 	public void setFechaFinVigenciaCM(LocalDate fechaFinVigenciaCM) {
 		this.fechaFinVigenciaCM = fechaFinVigenciaCM;
 	}
+	public float getValorCalendarioMedicion() {
+		return valorCalendarioMedicion;
+	}
+	public void setValorCalendarioMedicion(float valorCalendarioMedicion) {
+		this.valorCalendarioMedicion = valorCalendarioMedicion;
+	}
 	
 	@Override
 	public String toString() {
 		return "CalendarioMedicion [codCalendarioMedicion=" + codCalendarioMedicion + ", fechaCalendarioMedicion="
-				+ fechaCalendarioMedicion + ", fechaFinVigenciaCM=" + fechaFinVigenciaCM + "]";
+				+ fechaCalendarioMedicion + ", fechaFinVigenciaCM=" + fechaFinVigenciaCM + ", calendario=" + calendario
+				+ ", medicion=" + medicion + "]";
 	}
+	
+	// Relacion
+	
 	public Medicion getMedicion() {
 		return medicion;
 	}
 	public void setMedicion(Medicion medicion) {
 		this.medicion = medicion;
+	}
+	public Calendario getCalendario() {
+		return calendario;
+	}
+	public void setCalendario(Calendario calendario) {
+		this.calendario = calendario;
 	}
 
 }

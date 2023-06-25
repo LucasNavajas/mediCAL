@@ -24,26 +24,26 @@ class SpringServerApplicationTestsMedicion {
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
 		
-		CalendarioMedicion calendariomedicion = new CalendarioMedicion();
-		calendariomedicion.setFechaCalendarioMedicion(fechaHoy);
-		calendariomedicion.setFechaFinVigenciaCM(null);
-		
-		
 		Medicion medicion = new Medicion();
 		medicion.setFechaAltaMedicion(fechaHoy);
 		medicion.setFechaFinVigenciaM(null);
 		medicion.setNombreMedicion("Frecuencia cardiaca en reposo");
 		medicion.setUnidadMedidaMedicion("LPM");
 		
+		// ¿Está bien que navegue desde Medición hacia CalendarioMedicion?
+				
+		// instancia de CalendarioMedicion
+		CalendarioMedicion calendariomedicion = new CalendarioMedicion();
+		calendariomedicion.setFechaCalendarioMedicion(fechaHoy);
+		calendariomedicion.setFechaFinVigenciaCM(null);
+		
 		calendariomedicion.setMedicion(medicion);
 		List<CalendarioMedicion> calendariomed = new ArrayList<>();
 		calendariomed.add(calendariomedicion);
 		medicion.setCalendariomed(calendariomed);
 		
-		
 		System.out.println(medicion.getCalendariomed());
 		medicionDao.save(medicion);
-		
 		
 	}
 	

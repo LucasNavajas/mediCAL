@@ -23,15 +23,18 @@ class SpringServerApplicationTestsSintoma {
 		
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
-		//isntancia calendariosintoma
-		CalendarioSintoma calendariosintoma = new CalendarioSintoma();
-		calendariosintoma.setFechaCalendarioSintoma(fechaHoy);
-		calendariosintoma.setFechaFinVigenciaCS(null);
-		//instancia sintoma
+		
 		Sintoma sintoma = new Sintoma();
 		sintoma.setFechaAltaSintoma(fechaHoy);
 		sintoma.setFechaFinVigenciaS(null);
 		sintoma.setNombreSintoma("Tos");
+		
+		// ¿Está bien que navegue desde Sintoma hacia CalendarioSintoma?
+				
+		// instancia de CalendarioSintoma
+		CalendarioSintoma calendariosintoma = new CalendarioSintoma();
+		calendariosintoma.setFechaCalendarioSintoma(fechaHoy);
+		calendariosintoma.setFechaFinVigenciaCS(null);
 		
 		calendariosintoma.setSintoma(sintoma);
 		List<CalendarioSintoma> varcalendariosintoma = new ArrayList<>();

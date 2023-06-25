@@ -22,7 +22,7 @@ public class Medicion {
 	private String nombreMedicion;
 	private String unidadMedidaMedicion;
 	
-	
+	// Relacion con CalendarioMedicion
 	@OneToMany (mappedBy = "medicion", cascade = CascadeType.ALL)
 	private List<CalendarioMedicion> calendariomed;
 	

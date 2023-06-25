@@ -43,7 +43,7 @@ class SpringServerApplicationTestsUsuario {
 		
 		
 	
-		//instancia de calendario
+		// instancia de calendario
 		Calendario calendario = new Calendario();
 		calendario.setFechaAltaCalendario(fechaHoy);
 		calendario.setFechaFinVigenciaC(null);
@@ -109,6 +109,8 @@ class SpringServerApplicationTestsUsuario {
 		List<Solicitud> var1solicitud = new ArrayList<>();
 		var1solicitud.add(solicitudControlado);
 		
+		
+		// La relacion de codVerificacion es a 1, está bien que sea un set de tipo List?
 		codigoVerificacion.setUsuario(usuario);
 		List<CodigoVerificacion> varcodigoVerificacion = new ArrayList<>();
 		varcodigoVerificacion.add(codigoVerificacion);
@@ -123,7 +125,6 @@ class SpringServerApplicationTestsUsuario {
 		System.out.println(usuario.getCodigoVerificacion());
 		
 		usuarioDao.save(usuario);
-		
 		
 	}
 	

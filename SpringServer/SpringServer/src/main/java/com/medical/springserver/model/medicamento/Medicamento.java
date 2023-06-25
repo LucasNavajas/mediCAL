@@ -1,16 +1,18 @@
 package com.medical.springserver.model.medicamento;
 import java.time.LocalDate;
-
+import java.util.List;
 
 import com.medical.springserver.model.administracionmed.AdministracionMed;
+import com.medical.springserver.model.recordatorio.Recordatorio;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 
 @Entity
@@ -24,7 +26,11 @@ public class Medicamento {
 	private String marcaMedicamento;
 	private String nombreMedicamento;
 	
-	//relacion adm medica
+	// Relacion con Recordatorio
+	@OneToMany (mappedBy = "medicamento", cascade = CascadeType.ALL)
+	private List<Recordatorio> recordatorio;
+	
+	// Relacion adm medica
 	@ManyToOne
 	@JoinColumn(name = "codAdministracionMed")
 	private AdministracionMed administracionmed;
@@ -65,19 +71,28 @@ public class Medicamento {
 	public void setNombreMedicamento(String nombreMedicamento) {
 		this.nombreMedicamento = nombreMedicamento;
 	}
+	
 	@Override
 	public String toString() {
 		return "Medicamento [codMedicamento=" + codMedicamento + ", esParticular=" + esParticular
 				+ ", fechaAltaMedicamento=" + fechaAltaMedicamento + ", fechaFinVigenciaMed=" + fechaFinVigenciaMed
-				+ ", marcaMedicamento=" + marcaMedicamento + ", nombreMedicamento=" + nombreMedicamento + "]";
+				+ ", marcaMedicamento=" + marcaMedicamento + ", nombreMedicamento=" + nombreMedicamento
+				+ ", recordatorio=" + recordatorio + ", administracionmed=" + administracionmed + "]";
 	}
+	
+	// Relaciones
+	
 	public AdministracionMed getAdministracionmed() {
 		return administracionmed;
 	}
 	public void setAdministracionmed(AdministracionMed administracionmed) {
 		this.administracionmed = administracionmed;
 	}
-	
-	
+	public List<Recordatorio> getRecordatorio() {
+		return recordatorio;
+	}
+	public void setRecordatorio(List<Recordatorio> recordatorio) {
+		this.recordatorio = recordatorio;
+	}
 
 }

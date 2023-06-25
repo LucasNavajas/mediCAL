@@ -3,7 +3,6 @@ import java.time.LocalDate;
 
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.sintoma.Sintoma;
-import com.medical.springserver.model.usuario.Usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,12 +18,13 @@ public class CalendarioSintoma {
 	private int codCalendarioSintoma;
 	private LocalDate fechaCalendarioSintoma;
 	private LocalDate fechaFinVigenciaCS;
-	//relacion con calendario
+	
+	// Relacion con Calendario
 	@ManyToOne
 	@JoinColumn(name = "codCalendario")
 	private Calendario calendario;
 	
-	//relacion sintoma
+	// Relacion con Sintoma
 	@ManyToOne
 	@JoinColumn(name = "codSintoma")
 	private Sintoma sintoma;

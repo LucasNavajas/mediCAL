@@ -3,7 +3,9 @@ package com.medical.springserver.model.calendario;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
+import com.medical.springserver.model.recordatorio.Recordatorio;
 import com.medical.springserver.model.usuario.Usuario;
 
 import jakarta.persistence.CascadeType;
@@ -25,11 +27,21 @@ public class Calendario {
 	private String nombreCalendario;
 	private String nombrePaciente;
 	private String relacionCalendario;
-	//relacion usuario
+	
+	// Relacion con Usuario
 	@ManyToOne
 	@JoinColumn(name = "codUsuario")
 	private Usuario usuario;
-	//relacion calendario sintoma
+	
+	// Relacion con Recordatorio
+	@OneToMany (mappedBy = "calendario", cascade = CascadeType.ALL)
+	private List<Recordatorio> recordatorio;
+	
+	// Relacion con CalendarioMedicion
+	@OneToMany (mappedBy = "calendario", cascade = CascadeType.ALL)
+	private List<CalendarioMedicion> varcalendariomedicion;
+	
+	// Relacion con CalendarioSintoma
 	@OneToMany (mappedBy = "calendario", cascade = CascadeType.ALL)
 	private List<CalendarioSintoma> varcalendariosintoma;
 	
@@ -74,14 +86,30 @@ public class Calendario {
 	public String toString() {
 		return "Calendario [codCalendario=" + codCalendario + ", fechaAltaCalendario=" + fechaAltaCalendario
 				+ ", fechaFinVigenciaC=" + fechaFinVigenciaC + ", nombreCalendario=" + nombreCalendario
-				+ ", nombrePaciente=" + nombreCalendario + ", relacionCalendario=" + relacionCalendario
-				+ "]";
+				+ ", nombrePaciente=" + nombrePaciente + ", relacionCalendario=" + relacionCalendario + ", usuario="
+				+ usuario + ", recordatorio=" + recordatorio + ", varcalendariomedicion=" + varcalendariomedicion
+				+ ", varcalendariosintoma=" + varcalendariosintoma + "]";
 	}
+	
+	// Relacion
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}	
+	public List<Recordatorio> getRecordatorio() {
+		return recordatorio;
+	}
+	public void setRecordatorio(List<Recordatorio> recordatorio) {
+		this.recordatorio = recordatorio;
+	}
+	public List<CalendarioMedicion> getVarcalendariomedicion() {
+		return varcalendariomedicion;
+	}
+	public void setVarcalendariomedicion(List<CalendarioMedicion> varcalendariomedicion) {
+		this.varcalendariomedicion = varcalendariomedicion;
 	}
 	public List<CalendarioSintoma> getVarcalendariosintoma() {
 		return varcalendariosintoma;
