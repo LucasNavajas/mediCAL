@@ -26,7 +26,7 @@ public class PerfilPermiso {
 	private Permiso permiso;
 	
 	//Relacion con Perfil
-	@OneToMany (mappedBy = "perfilpermiso", cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "perfilPermiso", cascade = CascadeType.ALL)
 	private List<Perfil> perfil;
 	
 

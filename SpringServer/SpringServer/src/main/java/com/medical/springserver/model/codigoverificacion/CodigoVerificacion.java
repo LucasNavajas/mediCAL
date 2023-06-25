@@ -17,7 +17,7 @@ public class CodigoVerificacion {
 	private LocalDate fechaGenerado;
 	
 	// relacion con Usuario
-	@OneToOne(mappedBy = "codigoverificacion")
+	@OneToOne(mappedBy = "codigoVerificacion")
     private Usuario usuario;
 	
 	public Usuario getUsuario() {

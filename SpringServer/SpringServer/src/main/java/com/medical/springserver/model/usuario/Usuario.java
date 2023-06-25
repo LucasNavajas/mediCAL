@@ -52,16 +52,16 @@ public class Usuario {
 	private List<Perfil> perfil;
 	
 	// relacion con Solicitud Controlador
-	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "usuarioControlador", cascade = CascadeType.ALL)
 	private List<Solicitud> solicitudControlador;
 	
 	// relacion con CodVerificacion
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "codVerificacion", referencedColumnName = "id")
+    @JoinColumn(name = "codVerificacion")
     private CodigoVerificacion codigoVerificacion;
 	
 	// relacion con Solicitud Controlado
-	@OneToOne(mappedBy = "usuario")
+	@OneToOne(mappedBy = "usuarioControlado")
     private Solicitud solicitudControlado;
 		
 	public List<Solicitud> getSolicitudControlador() {

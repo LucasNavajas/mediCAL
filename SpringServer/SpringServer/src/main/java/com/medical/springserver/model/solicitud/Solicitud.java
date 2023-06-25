@@ -26,8 +26,13 @@ public class Solicitud {
 	
 	//relacion con usuario controlador
 	@ManyToOne
-	@JoinColumn(name = "codUsuario")
+	@JoinColumn(name = "codUsuarioControlador")
 	private Usuario usuarioControlador;
+	
+    //relacion con usuario controlado
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "codUsuarioControlado")
+    private Usuario usuarioControlado;
 	
 	public Usuario getUsuarioControlador() {
 		return usuarioControlador;
@@ -41,10 +46,7 @@ public class Solicitud {
 	public void setUsuarioControlado(Usuario usuarioControlado) {
 		this.usuarioControlado = usuarioControlado;
 	}
-	// relacion con usuario controlado
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario", referencedColumnName = "id")
-    private Usuario usuarioControlado;
+	
 	
 	
 	public int getCodSolicitud() {
