@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Recordatorio {
@@ -40,9 +41,8 @@ public class Recordatorio {
 	@OneToMany (mappedBy = "recordatorio", cascade = CascadeType.ALL)
 	private List<RegistroRecordatorio> registrorecordatorio;
 	
-	// INVENTARIO NO TIENE COD ... Clave foránea??
 	// Relacion con Inventario
-	@ManyToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn (name = "codInventario")
 	private Inventario inventario;
 	
