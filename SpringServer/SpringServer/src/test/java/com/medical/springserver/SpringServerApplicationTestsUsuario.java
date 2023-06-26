@@ -87,6 +87,17 @@ class SpringServerApplicationTestsUsuario {
 		usuario.setNombreUsuario("Lucas");
 		usuario.setTelefonoUsuario("3756409336");
 		
+		Usuario usuario2 = new Usuario();
+		usuario.setUsuarioUnico("usuario2");
+		usuario.setApellidoUsuario("Navajas");
+		usuario.setContraseniaUsuario("contraseñaHash?");
+		usuario.setFechaNacimientoUsuario(fechaNacimiento);
+		usuario.setFechaAltaUsuario(fechaHoy);
+		usuario.setGeneroUsuario("Hombre");
+		usuario.setMailUsuario("pedronavajas@gmail.com");
+		usuario.setNombreInstitucion("Hospital2");
+		usuario.setNombreUsuario("Pedro");
+		usuario.setTelefonoUsuario("3756409336");
 		
 		historialfinvigencia.setUsuario(usuario);
 		List<HistorialFinVigencia> historial = new ArrayList<>();
@@ -108,7 +119,7 @@ class SpringServerApplicationTestsUsuario {
 		varsolicitud.add(solicitudControlador);
 		usuario.setSolicitudControlador(varsolicitud);
 		
-		solicitudControlado.setUsuarioControlado(usuario);
+		solicitudControlado.setUsuarioControlado(usuario2);
 		List<Solicitud> var1solicitud = new ArrayList<>();
 		var1solicitud.add(solicitudControlado);
 		
