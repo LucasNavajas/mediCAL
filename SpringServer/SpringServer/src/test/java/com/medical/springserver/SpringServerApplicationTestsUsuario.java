@@ -114,10 +114,10 @@ class SpringServerApplicationTestsUsuario {
 		
 		
 		// La relacion de codVerificacion es a 1, está bien que sea un set de tipo List?
-		codigoVerificacion.setUsuario(usuario);
-		List<CodigoVerificacion> varcodigoVerificacion = new ArrayList<>();
-		varcodigoVerificacion.add(codigoVerificacion);
-		usuario.setCodigoVerificacion(codigoVerificacion);
+		//codigoVerificacion.setUsuario(usuario);
+		//List<CodigoVerificacion> varcodigoVerificacion = new ArrayList<>();
+		//varcodigoVerificacion.add(codigoVerificacion);
+		usuario.setCodigoVerificacion(new CodigoVerificacion());
 		
 		
 		System.out.println(usuario.getHistorial());
