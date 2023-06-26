@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/boton_volver"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/flecha_atras"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/imagen_formulario"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/boton_volver"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/formulario_web"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagen_formulario"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="Ingresa tus datos"
+        android:textColor="#FFF"
+        android:textSize="25sp" />
+
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="200dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_background"
+        >
+
+        <TextView
+            android:id="@+id/text_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Ingrese su nombre de usuario  (Este debe ser único)"
+            android:textColor="#000000"
+            android:textSize="22dp"
+            />
+
+        <EditText
+            android:id="@+id/textEdit_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_usuario"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
+            android:hint="Usuario"
+            android:textColorHint="#888888"
+            android:textSize="18sp"
+            android:inputType="text"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/textEdit_usuario"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_contraseña"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_usuario"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Ingrese su contraseña (Esta debe tener entre 6 y 15 caracteres)"
+            android:textColor="#000000"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/textEdit_contrasenia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_contraseña"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:textColorHint="#888888"
+            android:textSize="18sp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/textEdit_contrasenia"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="#808080" />
+
+        <ImageView
+            android:id="@+id/ojoContrasenia"
+            android:layout_width="43dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/text_contraseña"
+            android:layout_marginStart="-60dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/textEdit_contrasenia"
+            android:src="@drawable/ojocontrasenia"
+            android:focusable="false"/>
+
+
+        <TextView
+            android:id="@+id/text_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_contrasenia"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Ingrese su mail para enviarle su código y validar su usuario"
+            android:textColor="#000000"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/textEdit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_email"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
+            android:hint="Email"
+            android:textColorHint="#888888"
+            android:textSize="18sp"
+            android:inputType="textEmailAddress"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/textEdit_email"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="#808080" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@color/white"
+            android:translationZ="1dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textEdit_email">
+
+            <Button
+                android:id="@+id/button_ingresar"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_bold"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="Ingresar código de verificación"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:backgroundTint="@color/white"
+                android:focusable="false"/>
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

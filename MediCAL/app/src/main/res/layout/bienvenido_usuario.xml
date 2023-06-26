@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/text_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="X"
+        android:textColor="@color/black"
+        android:textScaleX="1.15"
+        android:textSize="35sp"
+        android:focusableInTouchMode="false"
+        android:screenReaderFocusable="false"/>
+
+
+    <TextView
+        android:id="@+id/text_bienvenido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_close"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="Bienvenido, "
+        android:textColor="@color/verdeClaro"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="426.67dp"
+        android:layout_height="328.21dp"
+        android:scaleType="fitCenter"
+        android:layout_below="@id/text_bienvenido"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/texto_completo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gifImageView"
+        android:text="Has completado tu perfil en MediCAL. Ahora podemos agregar tus medicamentos para establecer el primer recordatorio."
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:textAlignment="center"/>
+    <Button
+            android:id="@+id/button_agregarRecordatorio"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Agregar recordatorio"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:textAllCaps="false"
+            android:background="@drawable/boton_redondo_verde"
+            android:layout_marginTop="40dp"
+            android:layout_below="@id/texto_completo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="40dp"
+            android:textAppearance="@style/CustomButtonText"
+            android:paddingEnd="40dp"
+            android:focusable="false"
+            />
+
+
+
+
+</RelativeLayout>

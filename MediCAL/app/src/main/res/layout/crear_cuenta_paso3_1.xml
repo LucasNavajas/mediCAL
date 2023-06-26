@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/boton_volver"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/flecha_atras"
+        app:tint="@color/white" />
+    <ImageView
+        android:id="@+id/imagen_formulario"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/boton_volver"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/persona"
+        app:tint="@color/white" />
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Podrías especificarlo, por favor?"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFF"
+        android:layout_below="@id/imagen_formulario"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_regular"/>
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_background">
+
+        <TextView
+            android:id="@+id/text_agenero"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Agénero"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/text_agenero"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_bigenero"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/text_agenero"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Bigénero"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/text_bigenero"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_hombretrans"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/text_bigenero"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Hombre trans"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/text_hombretrans"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_mujertrans"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/text_hombretrans"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Mujer trans"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/text_mujertrans"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_queer"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/text_mujertrans"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Queer"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/text_queer"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_nodecir"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/text_queer"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Prefiero no decir"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/text_nodecir"
+            android:background="#808080" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
