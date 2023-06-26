@@ -1,5 +1,6 @@
 package com.medical.springserver;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacionDao;
+import com.medical.springserver.model.codigoverificacion.CodigoVerificacionRepository;
 
 
 @SpringBootTest(classes = {com.medical.springserver.SpringServerApplication.class})
@@ -15,12 +17,12 @@ public class SpringServerApplicationTestsCodigoVerificacion {
 	
 	@Autowired 
 	private CodigoVerificacionDao codigoverificacionDao;
+
 	
 	@Test
 	void addCodigoVerificacionTest(){
-		LocalDate fechaHoy = LocalDate.now();
 		CodigoVerificacion codigoverificacion = new CodigoVerificacion();
-		codigoverificacion.setFechaGenerado(fechaHoy);
+		codigoverificacion.setCodVerificacion("1701");
 		codigoverificacionDao.save(codigoverificacion);
 	}
 	
@@ -33,5 +35,4 @@ public class SpringServerApplicationTestsCodigoVerificacion {
 	}
 
 }
-
 

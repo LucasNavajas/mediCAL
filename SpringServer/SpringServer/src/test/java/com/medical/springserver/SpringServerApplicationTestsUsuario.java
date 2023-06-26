@@ -1,6 +1,7 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ class SpringServerApplicationTestsUsuario {
 	@Autowired
 	private UsuarioDao usuarioDao;
 	
+
+	
 	@Test
 	void addUsuarioTest() {
 		
@@ -40,6 +43,7 @@ class SpringServerApplicationTestsUsuario {
 		
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
+		LocalDateTime hoy = LocalDateTime.now();
 		
 		
 	
@@ -69,13 +73,12 @@ class SpringServerApplicationTestsUsuario {
 		
 		// instancia de CodVerificacion
 		CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
-		codigoVerificacion.setFechaGenerado(fechaHoy);
 		
 		
 		Usuario usuario = new Usuario();
 		usuario.setUsuarioUnico("usuario1");
 		usuario.setApellidoUsuario("Navajas");
-		usuario.setContraseniaUsuario("123");
+		usuario.setContraseniaUsuario("contraseñaHash?");
 		usuario.setFechaNacimientoUsuario(fechaNacimiento);
 		usuario.setFechaAltaUsuario(fechaHoy);
 		usuario.setGeneroUsuario("Hombre");
