@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
 
     <TextView
         android:id="@+id/titulo"
@@ -10,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/inter_bold"
         android:text="Código No Válido"
         android:textColor="@color/rojoError"
@@ -18,7 +21,7 @@
         />
 
     <TextView
-        android:id="@+id/text_email"
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -28,7 +31,8 @@
         android:fontFamily="@font/inter_regular"
         android:text="El código ingresado no coincide con el código enviado."
         android:textColor="#000000"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        />
 
 
 
@@ -47,10 +51,10 @@
             android:text="ACEPTAR"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="40dp"
             android:clickable="true"
             android:layout_weight="1"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:gravity="end"/>
 
     </LinearLayout>

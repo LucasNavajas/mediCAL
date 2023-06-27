@@ -1,9 +1,18 @@
 package com.example.medical;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,14 +48,58 @@ public class BienvenidoActivity extends AppCompatActivity {
         Button buttonIngresar = findViewById(R.id.button_ingresar);
 
         buttonIngresar.setOnClickListener(view -> {
-            Intent intent = new Intent(BienvenidoActivity.this, CodigoInvalidoActivity.class);
-            startActivity(intent);
+            View popupView = getLayoutInflater().inflate(R.layout.popup_codigoinvalido, null);
+
+            // Crear la instancia de PopupWindow
+            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            // Define la animación de escala
+            ScaleAnimation scaleAnimation = new ScaleAnimation(
+                    0.2f, 1.0f,  // Escala inicial y final para el ancho
+                    0.2f, 1.0f,  // Escala inicial y final para la altura
+                    Animation.RELATIVE_TO_SELF, 0.5f,  // Punto de pivote X (centro)
+                    Animation.RELATIVE_TO_SELF, 0.5f   // Punto de pivote Y (centro)
+            );
+
+            // Duración de la animación en milisegundos
+            scaleAnimation.setDuration(200);
+
+            // Inicia la animación en el layout del popup
+            popupView.startAnimation(scaleAnimation);
+
+            // Hacer que el popup sea enfocable (opcional)
+            popupWindow.setFocusable(true);
+
+            // Configurar animación para oscurecer el fondo
+            View rootView = findViewById(android.R.id.content);
+
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.VISIBLE);
+
+            // Mostrar el popup en la ubicación deseada
+            popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+            TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
+
+            textViewAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Ocultar el PopupWindow
+                    popupWindow.dismiss();
+
+                    // Ocultar el fondo oscurecido
+                    dimView.setVisibility(View.GONE);
+                }
+            });
+
         });
+
+
+
         Button buttonCrear = findViewById(R.id.button_crear);
         buttonCrear.setOnClickListener(view -> {
-                    Intent intent = new Intent(BienvenidoActivity.this, CrearCuenta1Activity.class);
-                    startActivity(intent);
-                });
+            Intent intent = new Intent(BienvenidoActivity.this, CrearCuenta1Activity.class);
+            startActivity(intent);
+        });
 /*
 
             String nombre_usuario = "usuario1";
