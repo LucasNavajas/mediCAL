@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/boton_volver"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/flecha_atras"
+        app:tint="@color/white" />
+    <ImageView
+        android:id="@+id/imagen_persona"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/boton_volver"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/persona"
+        app:tint="@color/white" />
+    <TextView
+        android:id="@+id/text_nombrecalendario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre el calendario"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFF"
+        android:layout_below="@id/imagen_persona"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_medium"/>
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_background">
+
+        <EditText
+            android:id="@+id/textEdit_nombrecalendario"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:hint="Escriba el nombre del calendario"
+            android:textColorHint="#888888"
+            android:textSize="21sp"
+            android:inputType="text"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/textEdit_nombrecalendario"
+            android:background="#808080" />
+
+        <Button
+            android:id="@+id/button_siguiente"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Siguiente"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:background="@drawable/boton_redondo_verde"
+            android:layout_marginTop="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="80dp"
+            android:paddingStart="40dp"
+            android:textAppearance="@style/CustomButtonText"
+            android:paddingEnd="40dp"
+            android:textAllCaps="false"
+            android:focusable="false"
+            />
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+
