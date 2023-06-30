@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MediCAL</string>
+        <string-array name="items_array_paraquien">
+            <item>Uso personal</item>
+            <item>Madre / Padre</item>
+            <item>Hija / Hijo</item>
+            <item>Esposo/a Pareja</item>
+            <item>Paciente</item>
+            <item>Amigo/a</item>
+            <item>Mascota</item>
+            <item>Otro</item>
+        </string-array>
 </resources>
