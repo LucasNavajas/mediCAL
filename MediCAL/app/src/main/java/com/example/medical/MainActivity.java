@@ -22,5 +22,4 @@ public class MainActivity extends AppCompatActivity {
         }, 3000); // 3000 representa 3 segundos en milisegundos
 
     }
-
 }
