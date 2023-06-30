@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
@@ -50,21 +51,9 @@ public class BienvenidoActivity extends AppCompatActivity {
         buttonIngresar.setOnClickListener(view -> {
             View popupView = getLayoutInflater().inflate(R.layout.popup_codigoinvalido, null);
 
+
             // Crear la instancia de PopupWindow
             PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            // Define la animación de escala
-            ScaleAnimation scaleAnimation = new ScaleAnimation(
-                    0.2f, 1.0f,  // Escala inicial y final para el ancho
-                    0.2f, 1.0f,  // Escala inicial y final para la altura
-                    Animation.RELATIVE_TO_SELF, 0.5f,  // Punto de pivote X (centro)
-                    Animation.RELATIVE_TO_SELF, 0.5f   // Punto de pivote Y (centro)
-            );
-
-            // Duración de la animación en milisegundos
-            scaleAnimation.setDuration(200);
-
-            // Inicia la animación en el layout del popup
-            popupView.startAnimation(scaleAnimation);
 
             // Hacer que el popup sea enfocable (opcional)
             popupWindow.setFocusable(true);
@@ -74,6 +63,9 @@ public class BienvenidoActivity extends AppCompatActivity {
 
             View dimView = findViewById(R.id.dim_view);
             dimView.setVisibility(View.VISIBLE);
+
+            Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+            popupView.startAnimation(scaleAnimation);
 
             // Mostrar el popup en la ubicación deseada
             popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);

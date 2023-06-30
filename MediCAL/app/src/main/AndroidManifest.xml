@@ -32,6 +32,7 @@
         <activity android:name=".CrearCuenta4Activity"></activity>
         <activity android:name=".BienvenidoUsuarioActivity"></activity>
         <activity android:name=".CodigoInvalidoActivity"></activity>
+
     </application>
 
 </manifest>
