@@ -38,9 +38,9 @@
                 android:layout_marginStart="20dp"
                 android:layout_centerVertical="true"
                 android:text="Editar"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
+                android:fontFamily="@font/inter_regular"
+                android:textSize="30sp"
+                android:textColor="#FFF" />
 
             <TextView
                 android:id="@+id/texto_calendario"
@@ -50,9 +50,9 @@
                 android:layout_alignStart="@id/texto_editar"
                 android:layout_marginTop="20dp"
                 android:text="Calendario"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
+                android:fontFamily="@font/inter_regular"
+                android:textSize="30sp"
+                android:textColor="#FFF" />
 
         </RelativeLayout>
 
