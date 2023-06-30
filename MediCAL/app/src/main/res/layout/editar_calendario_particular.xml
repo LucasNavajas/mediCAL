@@ -27,7 +27,7 @@
                 android:layout_width="30dp"
                 android:layout_height="60dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/cerrar_cruz"
+                android:src="@drawable/cerrar_cruz_delgada"
                 app:tint="@color/white" />
 
             <TextView
