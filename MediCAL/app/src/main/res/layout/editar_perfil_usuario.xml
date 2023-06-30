@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <TextView
+        android:id="@+id/text_cruz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="X"
+        android:textColor="#FFF"
+        android:textScaleX="1.15"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar Perfil"
+        android:textSize="30sp"
+        android:textColor="#FFF"
+        android:layout_toEndOf="@id/text_cruz"
+        android:layout_alignBottom="@id/text_cruz"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_regular"/>
+
+    <RelativeLayout
+        android:id="@+id/rectangle_white"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_background">
+
+
+        <ImageView
+            android:id="@+id/imagen_user"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="146dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/user" />
+
+        <EditText
+            android:id="@+id/textEdit_nombre_usuario"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imagen_user"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Nombre Usuario"
+            android:textColorHint="#000000"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/textEdit_apellido_usuario"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_nombre_usuario"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Apellido(s) Usuario"
+            android:textColorHint="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/text_genero"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_apellido_usuario"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:text="Género"
+            android:textColorHint="#888888"
+            android:textSize="21sp" />
+
+        <EditText
+            android:id="@+id/textEdit_Mujer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_genero"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:hint="Mujer"
+            android:textColorHint="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/text_fecha_nac"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_Mujer"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:text="Fecha de Nacimiento"
+            android:textColorHint="#888888"
+            android:textSize="21sp" />
+
+        <EditText
+            android:id="@+id/textEdit_fecha_nac"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_fecha_nac"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:hint="12 May 2005"
+            android:textColorHint="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/text_email"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_fecha_nac"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:text="Email"
+            android:textColorHint="#888888"
+            android:textSize="21sp" />
+
+        <EditText
+            android:id="@+id/textEdit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_email"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:hint="mailejemplo@dominio.com"
+            android:textColorHint="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/text_telefono"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_email"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:text="Teléfono"
+            android:textColorHint="#888888"
+            android:textSize="21sp" />
+
+        <EditText
+            android:id="@+id/textEdit_telefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_telefono"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:hint="02612467606"
+            android:textColorHint="#000000"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/button_guardar"
+            android:layout_width="252dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/textEdit_telefono"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/boton_redondo_verde"
+            android:focusable="false"
+            android:fontFamily="@font/inter_bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="Guardar"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

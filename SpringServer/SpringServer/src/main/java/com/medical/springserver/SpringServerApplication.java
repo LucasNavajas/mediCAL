@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration
 @ComponentScan("com.medical.springserver")
 @EnableScheduling
+
 public class SpringServerApplication {
 
 	public static void main(String[] args) {
