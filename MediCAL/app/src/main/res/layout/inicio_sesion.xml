@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
-    <TextView
-        android:id="@+id/text_close"
+    <RelativeLayout
+        android:id="@+id/layout_iniciar_sesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -15,22 +15,29 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:clickable="true"
-        android:focusable="true"
-        android:text="X"
-        android:textColor="#FFF"
-        android:textScaleX="1.15"
-        android:textSize="35sp" />
-    <TextView
-        android:id="@+id/text_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Iniciar sesión"
-        android:textSize="30sp"
-        android:textColor="#FFF"
-        android:layout_toEndOf="@id/text_close"
-        android:layout_alignBottom="@id/text_close"
-        android:layout_marginStart="30dp"
-        android:fontFamily="@font/inter_regular"/>
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/boton_cerrar"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/cerrar_cruz_delgada"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/texto_editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/boton_cerrar"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:text="Iniciar Sesión"
+            android:fontFamily="@font/inter_regular"
+            android:textSize="30sp"
+            android:textColor="#FFF" />
+
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rectangle_top"
         android:layout_width="match_parent"

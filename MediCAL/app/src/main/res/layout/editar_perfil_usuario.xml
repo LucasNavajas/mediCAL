@@ -6,32 +6,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
-    <TextView
-        android:id="@+id/text_cruz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="X"
-        android:textColor="#FFF"
-        android:textScaleX="1.15"
-        android:textSize="35sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
-    <TextView
-        android:id="@+id/text_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Editar Perfil"
-        android:textSize="30sp"
-        android:textColor="#FFF"
-        android:layout_toEndOf="@id/text_cruz"
-        android:layout_alignBottom="@id/text_cruz"
-        android:layout_marginStart="30dp"
-        android:fontFamily="@font/inter_regular"/>
+        <RelativeLayout
+            android:id="@+id/layout_editar_perfil_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/boton_cerrar"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/cerrar_cruz_delgada"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/texto_editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/boton_cerrar"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:text="Editar Perfil"
+                android:fontFamily="@font/inter_regular"
+                android:textSize="30sp"
+                android:textColor="#FFF" />
+
+        </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rectangle_white"
