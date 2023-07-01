@@ -32,7 +32,8 @@
         <activity android:name=".CrearCuenta4Activity"></activity>
         <activity android:name=".BienvenidoUsuarioActivity"></activity>
         <activity android:name=".CodigoInvalidoActivity"></activity>
-
+        <activity android:name=".LeerTYCActivity"></activity>
+        <activity android:name=".LeerPoliticasActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MediCAL</string>
-        <string-array name="items_array_paraquien">
+    <string name="espa_ol">Español</string>
+    <string name="english">English</string>
+    <string-array name="items_array_paraquien">
             <item>Uso personal</item>
             <item>Madre / Padre</item>
             <item>Hija / Hijo</item>
