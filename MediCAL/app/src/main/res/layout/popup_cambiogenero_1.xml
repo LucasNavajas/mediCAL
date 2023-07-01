@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Cuál es su género?"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        />
+
+    <TextView
+        android:id="@+id/text_mujer"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/inter_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/black"
+        android:background="@android:color/transparent"
+        android:textSize="21sp"
+        android:text="Mujer"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/text_mujer"
+        android:background="#808080" />
+
+    <TextView
+        android:id="@+id/text_hombre"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/inter_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/text_mujer"
+        android:background="@android:color/transparent"
+        android:textSize="21sp"
+        android:text="Hombre"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/text_hombre"
+        android:background="#808080" />
+
+    <TextView
+        android:id="@+id/text_nobinario"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/inter_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/text_hombre"
+        android:background="@android:color/transparent"
+        android:textSize="21sp"
+        android:text="No binario"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/text_nobinario"
+        android:background="#808080" />
+
+    <TextView
+        android:id="@+id/text_otro"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/inter_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/text_nobinario"
+        android:background="@android:color/transparent"
+        android:textSize="21sp"
+        android:text="Otro (especificar)"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/text_otro"
+        android:background="#808080" />
+
+    <TextView
+        android:id="@+id/text_nodecir"
+        android:layout_width="match_parent"
+        android:fontFamily="@font/inter_regular"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/text_otro"
+        android:background="@android:color/transparent"
+        android:textSize="21sp"
+        android:text="Prefiero no decirlo"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/text_nodecir"
+        android:background="#808080" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+
+        <TextView
+            android:id="@+id/regresar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="REGRESAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="40dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="20dp"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>
