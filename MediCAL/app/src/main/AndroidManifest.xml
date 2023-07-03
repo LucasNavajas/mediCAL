@@ -34,6 +34,7 @@
         <activity android:name=".CodigoInvalidoActivity"></activity>
         <activity android:name=".LeerTYCActivity"></activity>
         <activity android:name=".LeerPoliticasActivity"></activity>
+        <activity android:name=".InicioCalendarioActivity"></activity>
     </application>
 
 </manifest>
