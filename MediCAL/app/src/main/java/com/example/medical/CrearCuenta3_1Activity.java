@@ -12,7 +12,7 @@ public class CrearCuenta3_1Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.crear_cuenta_paso3_1);
+        setContentView(R.layout.n07_crear_cuenta_paso3_1);
 
         ImageView buttonVolver = findViewById(R.id.boton_volver);
 

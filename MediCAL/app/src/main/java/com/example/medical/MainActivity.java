@@ -11,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.inicio_app);
+        setContentView(R.layout.n00_inicio_app);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

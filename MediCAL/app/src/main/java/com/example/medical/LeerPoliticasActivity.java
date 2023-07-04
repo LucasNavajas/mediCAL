@@ -14,7 +14,7 @@ public class LeerPoliticasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.politicas);
+        setContentView(R.layout.n03_1_politicas);
 
         textViewPoliticas = findViewById(R.id.textViewPoliticas);
 

@@ -14,7 +14,7 @@ public class LeerTYCActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.terminos_condiciones);
+        setContentView(R.layout.n03_2_terminos_condiciones);
 
         textViewTerms = findViewById(R.id.text_terms);
 

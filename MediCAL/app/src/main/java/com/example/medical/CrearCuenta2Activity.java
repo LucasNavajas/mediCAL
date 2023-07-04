@@ -15,7 +15,7 @@ public class CrearCuenta2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.crear_cuenta_paso2);
+        setContentView(R.layout.n05_crear_cuenta_paso2);
         Intent intent1 = getIntent();
 
         Button buttonSiguiente = findViewById(R.id.button_siguiente);

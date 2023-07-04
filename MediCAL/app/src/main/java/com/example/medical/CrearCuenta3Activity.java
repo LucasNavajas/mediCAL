@@ -1,6 +1,5 @@
 package com.example.medical;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +14,7 @@ public class CrearCuenta3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent1 = getIntent();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.crear_cuenta_paso3);
+        setContentView(R.layout.n06_crear_cuenta_paso3);
 
         ImageView buttonVolver = findViewById(R.id.boton_volver);
         TextView opcion1 = findViewById(R.id.text_mujer);

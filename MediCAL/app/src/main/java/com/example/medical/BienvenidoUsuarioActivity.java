@@ -15,7 +15,7 @@ public class BienvenidoUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.bienvenido_usuario);
+        setContentView(R.layout.n09_bienvenido_usuario);
         Intent intent1 = getIntent();
         ImageView gifImageView;
         TextView bienvenido = findViewById(R.id.text_bienvenido);

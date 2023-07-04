@@ -1,44 +1,27 @@
 package com.example.medical;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BienvenidoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.bienvenido);
+        setContentView(R.layout.n01_bienvenido);
         initializeComponents();
     }
 
@@ -49,7 +32,7 @@ public class BienvenidoActivity extends AppCompatActivity {
         Button buttonIngresar = findViewById(R.id.button_ingresar);
 
         buttonIngresar.setOnClickListener(view -> {
-            View popupView = getLayoutInflater().inflate(R.layout.popup_codigoinvalido, null);
+            View popupView = getLayoutInflater().inflate(R.layout.n12_popup_codigoinvalido, null);
 
 
             // Crear la instancia de PopupWindow

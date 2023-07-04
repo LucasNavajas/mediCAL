@@ -26,7 +26,7 @@ public class CrearCuenta4Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.crear_cuenta_paso4);
+        setContentView(R.layout.n08_crear_cuenta_paso4);
 
         ImageView buttonVolver = findViewById(R.id.boton_volver);
 
