@@ -1,6 +1,7 @@
 package com.example.medical;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +17,13 @@ public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.
     public final View parentView;
     public final TextView diaMes;
     private final CalendarAdapter.OnItemListener onItemListener;
+    public ImageView circleImageView;
 
     public CalendarViewHolder(@NonNull View itemView, CalendarAdapter.OnItemListener onItemListener, ArrayList<LocalDate> dias) {
         super(itemView);
         parentView = itemView.findViewById(R.id.parentView);
         diaMes = itemView.findViewById(R.id.textoCellDia);
+        circleImageView = itemView.findViewById(R.id.circle_image_view);
         this.onItemListener = onItemListener;
         itemView.setOnClickListener(this);
         this.dias=dias;

@@ -1,4 +1,5 @@
 package com.example.medical;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,10 +11,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 public class InicioCalendarioActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
@@ -21,6 +25,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private LocalDate selectedDate;
     private TextView fechaHoyText;
     private RecyclerView calendarRecyclerView;
+    private List<TextView> textosDia = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +48,20 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private void initWidgets() {
         calendarRecyclerView = findViewById(R.id.calendar_recycler_view);
         fechaHoyText = findViewById(R.id.fecha_hoy_text);
+        textosDia.add(findViewById(R.id.lunes));
+        textosDia.add(findViewById(R.id.martes));
+        textosDia.add(findViewById(R.id.miercoles));
+        textosDia.add(findViewById(R.id.jueves));
+        textosDia.add(findViewById(R.id.viernes));
+        textosDia.add(findViewById(R.id.sabado));
+        textosDia.add(findViewById(R.id.domingo));
     }
 
     private void setView() {
         fechaHoyText.setText(mesDiaFromDate(selectedDate));
         ArrayList<LocalDate> daysInWeek = daysInWeekArray(selectedDate);
-
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInWeek, this, selectedDate);
+        Context context = InicioCalendarioActivity.this;
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInWeek, this, selectedDate, textosDia, context);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
@@ -66,10 +78,25 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         setView();
     }
 
-    private String mesDiaFromDate(LocalDate date){
+    private String mesDiaFromDate(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plusDays(1);
+        LocalDate yesterday = today.minusDays(1);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d");
-        return date.format(formatter);
+        String dayString;
+        if (date.isEqual(today)) {
+            dayString = "Hoy, ";
+        } else if (date.isEqual(yesterday)) {
+            dayString = "Ayer, ";
+        } else if (date.isEqual(tomorrow)) {
+            dayString = "Mañana, ";
+        } else {
+            dayString = "";
+        }
+
+        String month = new DateFormatSymbols(new Locale("es")).getMonths()[date.getMonthValue() - 1];
+        String formattedDate = dayString +  + date.getDayOfMonth() + " de " + month;
+        return formattedDate;
     }
 
 
@@ -101,6 +128,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     @Override
     public void onItemClick(int position, LocalDate date) {
-
+        selectedDate = date;
+        setView();
     }
 }
