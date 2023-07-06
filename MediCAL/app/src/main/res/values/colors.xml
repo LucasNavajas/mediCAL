@@ -11,5 +11,6 @@
     <color name="verdeTextos">#0081A7</color>
     <color name="gris">#CCCCCC</color>
     <color name="rojoError">#F07167</color>
+    <color name="rojoEliminar">#E70F0F</color>
     <color name="gris_medical">#808080</color>
 </resources>
