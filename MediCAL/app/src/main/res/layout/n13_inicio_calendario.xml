@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InicioCalendarioActivity"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    tools:openDrawer="start">
 
 
     <!-- Contenido principal -->
@@ -58,148 +59,148 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:layout_marginTop="120dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/calendario"
-            android:gravity="center">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="&lt;"
-                android:layout_marginStart="5dp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="20sp"
-                android:layout_marginTop="10dp"
-                android:onClick="semanaPrevia" />
-            <TextView
-                android:id="@+id/domingo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Dom"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:id="@+id/lunes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Lun"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:id="@+id/martes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Mar"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:id="@+id/miercoles"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Mié"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:id="@+id/jueves"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Jue"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:id="@+id/viernes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Vie"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:id="@+id/sabado"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Sáb"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="&gt;"
-                android:layout_marginStart="5dp"
-                android:textColor="@color/black"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="20sp"
-                android:layout_marginTop="10dp"
-                android:onClick="semanaPosterior"/>
-        </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendar_recycler_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:paddingStart="22dp"
-                android:paddingEnd="20dp"/>
-
-            <TextView
-                android:id="@+id/fecha_hoy_text"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hoy, 5 jul"
-                android:textAlignment="center"
-                android:textColor="@color/verdeTextos"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="20sp"
-                android:layout_marginBottom="10dp"
-                />
+                android:orientation="vertical"
+                android:id="@+id/calendario"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="&lt;"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="20sp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="semanaPrevia" />
+                    <TextView
+                        android:id="@+id/domingo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Dom"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/lunes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Lun"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/martes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mar"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/miercoles"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mié"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/jueves"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Jue"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/viernes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vie"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/sabado"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sáb"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="&gt;"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="20sp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="semanaPosterior"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/calendar_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="20dp"/>
+
+                <TextView
+                    android:id="@+id/fecha_hoy_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoy, 5 jul"
+                    android:textAlignment="center"
+                    android:textColor="@color/verdeTextos"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    />
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/recordatorios"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/calendario"
-            android:background="@color/gris"/>
+            <RelativeLayout
+                android:id="@+id/recordatorios"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/calendario"
+                android:background="@color/gris"/>
 
             <ImageView
                 android:id="@+id/imagen_sin_recordatorios"
@@ -354,15 +355,133 @@
 
     </RelativeLayout>
 
+
     <!-- Menú hamburguesa -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        >
 
-        <!-- Agrega aquí los elementos del menú -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/menu_button_nav"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/user"
+                android:padding="8dp"
+                android:clickable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Abrir menú" />
+
+            <TextView
+                android:id="@+id/nombre_usuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NombreUsuario"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/menu_button_nav"
+                android:layout_alignTop="@id/menu_button_nav"
+                android:layout_alignBottom="@id/menu_button_nav"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp"
+                android:background="@color/gris_medical" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/editar_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+                    <ImageView
+                        android:id="@+id/editar_perfil_imagen"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/lapiz_editar"
+                        android:layout_marginStart="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/editar_perfil_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar Perfil"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/editar_perfil_imagen"
+                        android:layout_alignTop="@id/editar_perfil_imagen"
+                        android:layout_alignBottom="@id/editar_perfil_imagen"
+                        android:fontFamily="@font/inter_regular" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/restablecer_contrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/restablecer_contrasenia_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/candado"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/restablecer_contrasenia_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Restablecer Contraseña"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_toEndOf="@id/restablecer_contrasenia_imagen"
+                           />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/restablecer_contrasenia"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                </LinearLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+
 
     </com.google.android.material.navigation.NavigationView>
 
