@@ -55,6 +55,7 @@
 
         <!-- Contenido -->
         <LinearLayout
+            android:id="@+id/contenido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -266,8 +267,37 @@
 
         </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_below="@+id/contenido">
+
+                <Button
+                    android:id="@+id/button_agregar_contacto"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/boton_redondo_verde"
+                    android:focusable="false"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:text="Añadir contacto"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/CustomButtonText"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="80dp" />
+
+            </RelativeLayout>
+
 
         </LinearLayout>
+
+
+
         </ScrollView> <!--Fin del scroll-->
 
     </RelativeLayout>
