@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:id="@+id/layout_contacto_vinculados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!--Barra arriba-->
+        <ImageView
+            android:id="@+id/boton_volver"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/flecha_atras"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/texto_editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/boton_volver"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:text="Contactos \nvinculados"
+            android:fontFamily="@font/inter_regular"
+            android:textSize="30sp"
+            android:textColor="#FFF" />
+    </RelativeLayout>
+
+    <!--Pantalla adentro-->
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="630dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_background">
+
+        <!--Scroll de todo el contenido del rectangulo blanco-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <!-- Contenido -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <!--titulo contacto supervisor-->
+        <TextView
+            android:id="@+id/texto_supervisor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contacto supervisor"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/verdeTextos"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textSize="28sp"
+            android:gravity="center" />
+        <!--contacto supervisor-->
+        <RelativeLayout
+            android:id="@+id/datos_supervisor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/texto_supervisor">
+
+            <TextView
+                android:id="@+id/usuario_supervisor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UsuarioControlador1"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/nya_supervisor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usuario_supervisor"
+                android:text="NombreApellidoControlador1"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/usuario_supervisor"
+                android:layout_toEndOf="@id/nya_supervisor"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="-27pt"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/tacho"
+                    android:contentDescription="Imagen eliminar contacto"
+                    app:tint="@android:color/black" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+        <!--divider-->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="5px"
+            android:layout_below="@id/datos_supervisor"
+            android:background="#808080"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            />
+        <!--titulo contactos supervisados-->
+        <TextView
+            android:layout_below="@+id/divider"
+            android:id="@+id/texto_supervisados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contactos supervisados"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/verdeTextos"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textSize="28sp"
+            android:gravity="center" />
+        <!--contacto supervisados-->
+        <RelativeLayout
+            android:id="@+id/datos_supervisados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/texto_supervisados">
+
+            <TextView
+                android:id="@+id/usuario_supervisado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UsuarioControlado1"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/nya_supervisado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usuario_supervisado"
+                android:text="NombreApellidoControlado1"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/usuario_supervisado"
+                android:layout_toEndOf="@id/nya_supervisado"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="-27pt"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/tacho"
+                    android:contentDescription="Imagen eliminar contacto"
+                    app:tint="@android:color/black" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/datos_supervisados1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:layout_below="@+id/datos_supervisados">
+
+            <TextView
+                android:id="@+id/usuario_supervisado1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UsuarioControlado2"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/nya_supervisado1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usuario_supervisado1"
+                android:text="NombreApellidoControlado2"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/usuario_supervisado1"
+                android:layout_toEndOf="@id/nya_supervisado1"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="-27pt"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/tacho"
+                    android:contentDescription="Imagen eliminar contacto"
+                    app:tint="@android:color/black" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        </LinearLayout>
+        </ScrollView> <!--Fin del scroll-->
+
+    </RelativeLayout>
+</RelativeLayout>
