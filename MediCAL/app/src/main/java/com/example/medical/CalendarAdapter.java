@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import android.content.Context;
-import android.graphics.Color;
+
 import androidx.core.content.ContextCompat;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
@@ -36,7 +35,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     @Override
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.calendar_cell, parent, false);
+        View view = inflater.inflate(R.layout.n13y14_calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         if (dias.size() > 15) // month view
             layoutParams.height = (int) (parent.getHeight() * 0.16666666);
