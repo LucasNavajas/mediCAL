@@ -17,7 +17,7 @@
         android:layout_margin="20dp" />
 
     <ImageView
-        android:id="@+id/imagen_usuario"
+        android:id="@+id/imagen_us"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_below="@id/boton_cerrar"
@@ -28,7 +28,7 @@
         android:id="@+id/texto_popup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imagen_usuario"
+        android:layout_below="@id/imagen_us"
         android:gravity="center"
         android:text="NombreUsuario ya no es más tu contacto."
         android:textColor="@color/white"
