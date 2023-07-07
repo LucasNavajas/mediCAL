@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/boton_volver"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/flecha_atras"
+        app:tint="@color/white" />
+    <TextView
+        android:id="@+id/text_faq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preguntas y respuestas"
+        android:textSize="25sp"
+        android:textColor="#FFF"
+        android:layout_toEndOf="@id/boton_volver"
+        android:layout_alignBottom="@id/boton_volver"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_medium" />
+
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/norounded_background"
+        >
+
+        <!--Scroll de todo el contenido del rectangulo blanco-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <!-- Contenido -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <!--Pregunta 1-->
+        <RelativeLayout
+            android:id="@+id/faq1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pregunta1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pregunta 1"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/respuesta1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pregunta1"
+                android:text="Respuesta 1"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="1dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/gris_medical"
+                android:inputType="textMultiLine" />
+            <!--divider-->
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="5px"
+                android:layout_below="@id/respuesta1"
+                android:background="#808080"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                />
+        </RelativeLayout>
+
+        <!--Pregunta 2-->
+        <RelativeLayout
+            android:id="@+id/faq2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pregunta2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pregunta 2"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/respuesta2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pregunta2"
+                android:text="Respuesta 2"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="1dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/gris_medical"
+                android:inputType="textMultiLine" />
+            <!--divider-->
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="5px"
+                android:layout_below="@id/respuesta2"
+                android:background="#808080"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                />
+        </RelativeLayout>
+
+        <!--Pregunta 3-->
+        <RelativeLayout
+            android:id="@+id/faq3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pregunta3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pregunta 3"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/respuesta3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pregunta3"
+                android:text="Respuesta 3"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="1dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="80dp"
+                android:textSize="25sp"
+                android:textColor="@color/gris_medical"
+                android:inputType="textMultiLine" />
+            <!--divider-->
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="5px"
+                android:layout_below="@id/respuesta3"
+                android:background="#808080"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                />
+        </RelativeLayout>
+
+
+        </LinearLayout>
+        </ScrollView> <!--Fin del scroll-->
+        </RelativeLayout>
+</RelativeLayout>
