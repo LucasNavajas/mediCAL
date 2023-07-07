@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, InicioCalendarioActivity.class); //cambiar BienvenidoActivity por CalendarioParaquien
+                Intent intent = new Intent(MainActivity.this, BienvenidoActivity.class); //cambiar BienvenidoActivity por CalendarioParaquien
                 startActivity(intent);
                 finish();
             }

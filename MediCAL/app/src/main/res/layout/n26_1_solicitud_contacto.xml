@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_rounded_blanco"
+    android:gravity="center_horizontal"
+    >
+
+    <ImageView
+        android:id="@+id/imagen_solicitud"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/imagen_contacto"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="NombreUsuario quiere ser tu contacto"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        />
+
+
+    <Button
+        android:id="@+id/button_aceptar"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/boton_redondo_verde"
+        android:layout_marginTop="20dp"
+        android:focusable="false"
+        android:fontFamily="@font/inter_bold"
+
+        android:text="Aceptar"
+        android:textAllCaps="false"
+        android:textAppearance="@style/CustomButtonText"
+        android:textColor="@color/white"
+        android:textSize="18sp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:translationZ="1dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="10dp"
+        android:background="@color/white"
+        android:layout_marginBottom="40dp">
+
+        <Button
+            android:id="@+id/button_ingresar"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:fontFamily="@font/inter_bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="Rechazar"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/rojoError"
+            android:textSize="18sp"
+            app:backgroundTint="@color/white" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
