@@ -28,7 +28,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n14_0_menu_desplegable);
+        setContentView(R.layout.n13y14_calendario_y_menu);
         selectedDate = LocalDate.now();
         initWidgets();
         setView();
