@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+        <RelativeLayout
+            android:id="@+id/layout_editar_perfil_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/boton_cerrar"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/cerrar_cruz_delgada"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/texto_editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/boton_cerrar"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:text="Añadir contacto"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="30sp"
+                android:textColor="#FFF" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rectangle_white"
+            android:layout_width="match_parent"
+            android:layout_height="650dp"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_background">
+
+
+            <ImageView
+                android:id="@+id/imagen_user"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="146dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/user" />
+
+            <TextView
+                android:id="@+id/descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imagen_user"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/inter_regular"
+                android:textSize="20sp"
+                android:textColor="@color/verdeTextos"
+                android:text="Ingrese el nombre de usuario, correo electrónico o teléfono del usuario a conectar"/>
+
+            <EditText
+                android:id="@+id/textEdit_contacto"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/inter_regular"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descripcion"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Usuario, correo o teléfono"
+                android:textColorHint="@color/gris_medical"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/tick"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/tick"
+                android:layout_below="@+id/textEdit_contacto"
+                android:layout_alignRight="@id/textEdit_contacto"/>
+
+            <Button
+                android:id="@+id/button_enviar_solicitud"
+                android:layout_width="252dp"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/boton_redondo_verde"
+                android:focusable="false"
+                android:fontFamily="@font/inter_bold"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="Enviar solicitud"
+                android:textAllCaps="false"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
