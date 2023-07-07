@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +28,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n13_inicio_calendario);
+        setContentView(R.layout.n14_0_menu_desplegable);
         selectedDate = LocalDate.now();
         initWidgets();
         setView();

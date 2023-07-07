@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InicioCalendarioActivity"
+    android:background="@drawable/background"
+    tools:openDrawer="start">
+
+
+    <!-- Contenido principal -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/user_blanco"
+            android:padding="8dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="Abrir menú"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nombre_calendario"
+            android:text="NombreCalendario"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFF"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/menu_button"
+            android:layout_alignTop="@id/menu_button"
+            android:layout_alignBottom="@id/menu_button"
+            android:fontFamily="@font/inter_medium"
+            android:layout_marginEnd="10dp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/lapiz_editar"
+            android:layout_toRightOf="@+id/nombre_calendario"
+            android:layout_alignTop="@id/menu_button"
+            android:layout_alignBottom="@id/menu_button"
+            app:tint="@color/white" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="120dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/calendario"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="&lt;"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="20sp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="semanaPrevia" />
+                    <TextView
+                        android:id="@+id/domingo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Dom"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/lunes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Lun"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/martes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mar"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/miercoles"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mié"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/jueves"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Jue"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/viernes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vie"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/sabado"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sáb"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="&gt;"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="20sp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="semanaPosterior"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/calendar_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="20dp"/>
+
+                <TextView
+                    android:id="@+id/fecha_hoy_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoy, 5 jul"
+                    android:textAlignment="center"
+                    android:textColor="@color/verdeTextos"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/recordatorios"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/calendario"
+                android:background="@color/gris"/>
+
+            <ImageView
+                android:id="@+id/imagen_sin_recordatorios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/sin_recordatorios"
+                android:layout_below="@+id/calendario"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:id="@+id/texto_sin_recordatorios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Supervise el horario del calendario"
+                android:layout_below="@id/imagen_sin_recordatorios"
+                android:textColor="@color/black"
+                android:fontFamily="@font/inter_medium"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_above="@+id/botones"
+            android:text="Agregar recordatorio"
+            android:background="@drawable/boton_redondo_verde"
+            android:focusable="false"
+            android:fontFamily="@font/inter_bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            />
+        <LinearLayout
+            android:id="@+id/botones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/casa_inicio"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inicio"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/consejos"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consejos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/pastilla"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicamentos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/mas"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Más"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <!-- Menú hamburguesa -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/menu_button_nav"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/user"
+                android:padding="8dp"
+                android:clickable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Abrir menú" />
+
+            <TextView
+                android:id="@+id/nombre_usuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NombreUsuario"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/menu_button_nav"
+                android:layout_alignTop="@id/menu_button_nav"
+                android:layout_alignBottom="@id/menu_button_nav"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp"
+                android:background="@color/gris_medical" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/editar_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+                    <ImageView
+                        android:id="@+id/editar_perfil_imagen"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/lapiz_editar"
+                        android:layout_marginStart="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/editar_perfil_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar Perfil"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@id/editar_perfil_imagen"
+                        android:layout_alignTop="@id/editar_perfil_imagen"
+                        android:layout_alignBottom="@id/editar_perfil_imagen"
+                        android:fontFamily="@font/inter_regular" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/restablecer_contrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/restablecer_contrasenia_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/candado"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/restablecer_contrasenia_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Restablecer Contraseña"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:layout_toEndOf="@id/restablecer_contrasenia_imagen"
+                           />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <TextView
+                        android:id="@+id/titulo_mis_calendarios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mis calendarios"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/gris_medical"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"/>
+
+                    <RelativeLayout
+                        android:id="@+id/calendario1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/calendario_imagen1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/calendario_contic"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/calendario_texto1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre de Calendario"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="10dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/calendario_imagen1"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/calendario_nuevo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/calendario_nuevo_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/agregar_perfil"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/calendario_nuevo_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Añadir calendario"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/calendario_nuevo_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <TextView
+                        android:id="@+id/titulo_contactos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contactos Vinculados"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/gris_medical"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                       />
+
+                    <RelativeLayout
+                        android:id="@+id/calendario_contacto1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/calendario_contacto_imagen1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/calendario_contic"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/calendario_contacto_texto1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre de Contacto"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="10dp"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/inter_regular"
+                            android:layout_toEndOf="@id/calendario_contacto_imagen1"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/contacto_nuevo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/contacto_nuevo_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/agregar_perfil"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/contacto_nuevo_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Añadir contacto"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/contacto_nuevo_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <RelativeLayout
+                        android:id="@+id/cerrar_sesion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/cerrar_sesion_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/cerrar_sesion"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/cerrar_sesion_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cerrar sesión"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/cerrar_sesion_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/soporte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/soporte_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/soporte"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/soporte_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ayuda y soporte"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/soporte_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/eliminar_cuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/eliminar_cuenta_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/eliminar"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/eliminar_cuenta_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Eliminar Cuenta"
+                            android:textSize="20sp"
+                            android:textColor="@color/rojoEliminar"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/eliminar_cuenta_imagen"
+                            android:fontFamily="@font/inter_semibold"
+                            />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>
