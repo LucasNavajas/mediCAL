@@ -1,0 +1,40 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:background="@drawable/background_rounded_verde">
+
+    <!-- Contenido -->
+
+    <ImageView
+        android:id="@+id/boton_cerrar"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/cerrar_cruz_delgada"
+        android:tint="@android:color/white"
+        android:layout_margin="20dp" />
+
+    <ImageView
+        android:id="@+id/imagen_usuario"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/boton_cerrar"
+        android:layout_centerInParent="true"
+        android:src="@drawable/user_tachado" />
+
+    <TextView
+        android:id="@+id/texto_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagen_usuario"
+        android:gravity="center"
+        android:text="NombreUsuario ya no es más tu contacto."
+        android:textColor="@color/white"
+        android:fontFamily="@font/inter_medium"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"/>
+
+</RelativeLayout>
+
