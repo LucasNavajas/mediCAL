@@ -6,45 +6,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
-    <ImageView
-        android:id="@+id/boton_volver"
-        android:layout_width="25dp"
-        android:layout_height="32dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_anadir_medicina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/flecha_atras"
-        app:tint="@color/white" />
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/boton_volver"
+            android:layout_width="25dp"
+            android:layout_height="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/flecha_atras"
+            app:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/texto_anadir_medicina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="Añadir Medicina"
+            android:textColor="#FFF"
+            android:textSize="21sp"
+            app:layout_constraintStart_toEndOf="@id/boton_volver"
+            app:layout_constraintTop_toTopOf="@id/boton_volver"
+            app:layout_constraintBottom_toBottomOf="@id/boton_volver"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="-4dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <ImageView
         android:id="@+id/imagen_medicina"
         android:layout_width="60dp"
         android:layout_height="51dp"
-        android:layout_below="@id/boton_volver"
+        android:layout_below="@id/layout_anadir_medicina"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="19dp"
         android:src="@drawable/medicina"
         app:tint="@color/white" />
+
     <TextView
         android:id="@+id/text_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="¿Desea Agregar un Nuevo Medicamento?"
-        android:textSize="25sp"
-        android:layout_marginTop="10dp"
-        android:textColor="#FFF"
         android:layout_below="@id/imagen_medicina"
         android:layout_marginStart="30dp"
-        android:fontFamily="@font/inter_regular"/>
+        android:layout_marginTop="9dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="¿Desea Agregar un Nuevo Medicamento?"
+        android:textColor="#FFF"
+        android:textSize="25sp" />
 
     <RelativeLayout
         android:id="@+id/rectangle_top"
         android:layout_width="match_parent"
-        android:layout_height="536dp"
+        android:layout_height="548dp"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="220dp"
         android:layout_weight="1"
@@ -54,84 +79,84 @@
             android:id="@+id/nombreMedicamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
             android:hint="Nombre de Medicamento"
+            android:inputType="phone"
             android:textColorHint="#888888"
-            android:textSize="18sp"
-            android:inputType="phone" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_nombreMedicamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
             android:layout_below="@id/nombreMedicamento"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
-            android:textSize="21sp"
-            android:text="NombreMedicamento" />
+            android:text="Escriba el nombre del Medicamento"
+            android:textColor="@color/black"
+            android:textSize="21sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@id/text_nombreMedicamento"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_nombreMedicamento"
             android:background="#808080" />
 
         <EditText
             android:id="@+id/marcaMedicamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/text_nombreMedicamento"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
             android:hint="Marca de Medicamento"
-            android:textColorHint="#888888"
-            android:textSize="18sp"
             android:inputType="phone"
-            android:layout_below="@id/text_nombreMedicamento" />
+            android:textColorHint="#888888"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_marcaMedicamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
             android:layout_below="@id/marcaMedicamento"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
-            android:textSize="21sp"
-            android:text="MarcaMedicamento" />
+            android:text="Escriba la marca del Medicamento"
+            android:textColor="@color/black"
+            android:textSize="21sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@id/text_marcaMedicamento"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_marcaMedicamento"
             android:background="#808080" />
 
         <EditText
             android:id="@+id/fotoMedicamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/text_marcaMedicamento"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
             android:hint="Foto de Medicamento"
-            android:textColorHint="#888888"
-            android:textSize="18sp"
             android:inputType="phone"
-            android:layout_below="@id/text_marcaMedicamento" />
+            android:textColorHint="#888888"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/button_siguiente"
@@ -164,8 +189,8 @@
             android:layout_marginBottom="8dp"
             android:layout_toEndOf="@id/button_siguiente"
             android:layout_toRightOf="@id/button_siguiente"
-            android:src="@drawable/flecha_siguiente"
             android:elevation="2dp"
+            android:src="@drawable/flecha_siguiente"
             app:tint="@android:color/white" />
 
 

@@ -1,6 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_forma_administracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/boton_volver"
+            android:layout_width="25dp"
+            android:layout_height="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/flecha_atras"
+            app:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/texto_anadir_medicina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="NombreMedicamento"
+            android:textColor="#FFF"
+            android:textSize="21sp"
+            app:layout_constraintStart_toEndOf="@id/boton_volver"
+            app:layout_constraintTop_toTopOf="@id/boton_volver"
+            app:layout_constraintBottom_toBottomOf="@id/boton_volver"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="-4dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/imagen_inyectable_con_pastillas"
+        android:layout_width="60dp"
+        android:layout_height="51dp"
+        android:layout_below="@id/layout_forma_administracion"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="19dp"
+        android:src="@drawable/inyectable_con_pastillas"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagen_inyectable_con_pastillas"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="Establecer intervalo"
+        android:textColor="#FFF"
+        android:textSize="25sp" />
+
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_background"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-10dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/text_cada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_regular"
+                android:text="Cada"
+                android:textColor="@color/verdeClaro"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <FrameLayout
+                    android:id="@+id/rectangulo_buscador"
+                    android:layout_width="54dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/rectangulo_buscador">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="X"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="18sp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/rectangulo_buscador"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="  días"
+                    android:textColor="@color/verdeClaro"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_siguiente"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="450dp"
+            android:background="@drawable/boton_redondo_verde"
+            android:focusable="false"
+            android:fontFamily="@font/inter_bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="Siguiente"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/flecha_siguiente"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignTop="@id/button_siguiente"
+            android:layout_marginStart="-38dp"
+            android:layout_marginLeft="-38dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/button_siguiente"
+            android:layout_toRightOf="@id/button_siguiente"
+            android:elevation="2dp"
+            android:src="@drawable/flecha_siguiente"
+            app:tint="@android:color/white" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
+
+
+
