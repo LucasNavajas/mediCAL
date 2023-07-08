@@ -39,115 +39,132 @@
         android:layout_below="@id/imagen_formulario"
         android:layout_marginStart="30dp"
         android:fontFamily="@font/inter_regular"/>
+
     <RelativeLayout
         android:id="@+id/rectangle_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="383dp"
+        android:layout_height="550dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="220dp"
         android:layout_weight="1"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/rounded_background">
 
         <EditText
             android:id="@+id/textEdit_nombre"
             android:layout_width="match_parent"
-            android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
             android:hint="Nombre*"
+            android:inputType="text"
             android:textColorHint="#888888"
-            android:textSize="18sp"
-            android:inputType="text"/>
+            android:textSize="18sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@id/textEdit_nombre"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/textEdit_nombre"
             android:background="#808080" />
 
         <EditText
             android:id="@+id/textEdit_apellido"
             android:layout_width="match_parent"
-            android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_below="@id/textEdit_nombre"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
             android:hint="Apellido*"
+            android:inputType="text"
             android:textColorHint="#888888"
-            android:textSize="18sp"
-            android:inputType="text"/>
+            android:textSize="18sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@id/textEdit_apellido"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/textEdit_apellido"
             android:background="#808080" />
 
         <TextView
             android:id="@+id/text_email"
-            android:layout_below="@id/textEdit_apellido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textEdit_apellido"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
             android:text="Ingrese su número de teléfono"
             android:textColor="#000000"
-            android:textSize="22sp"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="30dp"
-            />
+            android:textSize="22sp" />
 
         <EditText
             android:id="@+id/textEdit_telefono"
             android:layout_width="match_parent"
-            android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_email"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
             android:hint="Teléfono"
+            android:inputType="phone"
             android:textColorHint="#888888"
-            android:textSize="18sp"
-            android:inputType="phone"/>
+            android:textSize="18sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@id/textEdit_telefono"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/textEdit_telefono"
             android:background="#808080" />
 
         <Button
             android:id="@+id/button_siguiente"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Siguiente"
-            android:fontFamily="@font/inter_bold"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:background="@drawable/boton_redondo_verde"
-            android:layout_marginTop="40dp"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="80dp"
-            android:paddingStart="40dp"
-            android:textAppearance="@style/CustomButtonText"
-            android:paddingEnd="40dp"
-            android:textAllCaps="false"
+            android:layout_marginTop="450dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/boton_redondo_verde"
             android:focusable="false"
-            />
+            android:fontFamily="@font/inter_bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="Siguiente"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
+
+        <ImageView
+            android:id="@+id/flecha_siguiente"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignTop="@id/button_siguiente"
+            android:layout_marginStart="-38dp"
+            android:layout_marginLeft="-38dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/button_siguiente"
+            android:layout_toRightOf="@id/button_siguiente"
+            android:elevation="2dp"
+            android:src="@drawable/flecha_siguiente"
+            app:tint="@android:color/white" />
 
 
     </RelativeLayout>
