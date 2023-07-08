@@ -1,0 +1,104 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_rounded_blanco"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:id="@+id/imagen_medicina_tachada"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/medicina_tachada"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="La medicina no se ha guardado."
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/text_seguroSalir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="¿Estás seguro de que quieres salir?"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button_seguir_editando"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boton_redondo_verde"
+            android:fontFamily="@font/inter_bold"
+            android:text="Seguir Editando"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/flecha_siguiente"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignTop="@id/button_seguir_editando"
+            android:layout_alignEnd="@id/button_seguir_editando"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="14dp"
+            android:elevation="2dp"
+            android:src="@drawable/flecha_siguiente"
+            app:tint="@android:color/white" />
+
+    </RelativeLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:translationZ="1dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="10dp"
+        android:background="@color/white"
+        android:layout_marginBottom="40dp">
+
+    <Button
+        android:id="@+id/button_salir"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:focusable="false"
+        android:fontFamily="@font/inter_bold"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="Salir"
+        android:textAllCaps="false"
+        android:textAppearance="@style/CustomButtonText"
+        android:textColor="@color/rojoError"
+        android:textSize="18sp"
+        app:backgroundTint="@color/white" />}
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

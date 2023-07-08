@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/boton_cerrar"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/cerrar_cruz_delgada"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/imagen_medicina"
+        android:layout_width="60dp"
+        android:layout_height="51dp"
+        android:layout_below="@id/boton_cerrar"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/medicina"
+        app:tint="@color/white" />
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Qué medicamento quiere agregar?"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFF"
+        android:layout_below="@id/imagen_medicina"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_regular"/>
+
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="536dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="220dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rectangulo_buscador">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:text="Buscar"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp" />
+
+
+            <ImageView
+                android:id="@+id/lupa"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/icone_loupe_gris"
+                app:tint="@android:color/darker_gray" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_buscar_medicamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
+            android:text="Busque o escriba el nombre del medicamento."
+            android:textColor="@color/verdeClaro"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/text_agregar_medicamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="87dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
+            android:text="Agregar Nuevo Medicamento"
+            android:textColor="@color/verdeClaro"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
