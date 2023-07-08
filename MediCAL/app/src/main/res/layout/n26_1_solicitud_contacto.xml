@@ -58,7 +58,7 @@
         android:layout_marginBottom="40dp">
 
         <Button
-            android:id="@+id/button_ingresar"
+            android:id="@+id/button_rechazar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
