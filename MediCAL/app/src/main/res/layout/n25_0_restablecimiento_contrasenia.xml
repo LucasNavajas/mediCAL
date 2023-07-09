@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+        <RelativeLayout
+            android:id="@+id/layout_restablecimiento_contrasenia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/boton_atras"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/flecha_atras"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/texto_editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/boton_atras"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:text="Nombreusuario"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="30sp"
+                android:textColor="#FFF" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rectangle_white"
+            android:layout_width="match_parent"
+            android:layout_height="650dp"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_background">
+
+
+            <TextView
+                android:id="@+id/text_contrasenia_actual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Escriba su contraseña actual"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/textEdit_contrasenia_actual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_contrasenia_actual"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="7dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_regular"
+                android:hint="Contraseña Actual"
+                android:inputType="text"
+                android:textColorHint="#888888"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/textEdit_contrasenia_actual"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+
+            <ImageView
+                android:id="@+id/tick"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignRight="@id/textEdit_contrasenia_actual"
+                android:layout_alignBottom="@id/textEdit_contrasenia_actual"
+                android:layout_marginRight="0dp"
+                android:src="@drawable/tick" />
+
+            <TextView
+                android:id="@+id/text_OlvidoContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textEdit_contrasenia_actual"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_regular"
+                android:text="¿Olvidaste tu contraseña?"
+                android:textColor="@color/verdeClaro"
+                android:textSize="18sp" />
+            <View
+                android:layout_width="218dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_below="@id/text_OlvidoContraseña"
+                android:background="@color/verdeClaro" />
+
+
+            <TextView
+                android:id="@+id/text_nueva_contrasenia_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_OlvidoContraseña"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Genere su nueva contraseña"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/text_nueva_contrasenia_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_nueva_contrasenia_1"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="(ésta debe tener entre 6 y 15 caracteres)"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/textEdit_nueva_contrasenia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_nueva_contrasenia_2"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="7dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_regular"
+                android:hint="Contraseña Nueva"
+                android:inputType="text"
+                android:textColorHint="#888888"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/textEdit_nueva_contrasenia"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+
+
+            <Button
+                android:id="@+id/button_guardar"
+                android:layout_width="252dp"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/boton_redondo_verde"
+                android:focusable="false"
+                android:fontFamily="@font/inter_bold"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="Guardar"
+                android:textAllCaps="false"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
