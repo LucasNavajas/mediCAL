@@ -100,6 +100,17 @@
                             android:textSize="25dp"
                             android:textStyle="bold" />
 
+                        <ImageView
+                            android:id="@+id/cerrar_cruz"
+                            android:layout_width="20dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="-35dp"
+                            android:layout_toRightOf="@id/texto_titulo_consejo1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:src="@drawable/cerrar_cruz_delgada" />
+
                         <TextView
                             android:id="@+id/texto_consejo1"
                             android:layout_width="match_parent"
@@ -182,6 +193,17 @@
                             android:text="7 Cuidados básicos para personas con hipertensión"
                             android:textSize="25dp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/cerrar_cruz2"
+                            android:layout_width="20dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="-35dp"
+                            android:layout_toRightOf="@id/texto_titulo_consejo2"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:src="@drawable/cerrar_cruz_delgada" />
 
                         <!-- Ajustar altura (height) según resolución del video -->
                         <ImageView
