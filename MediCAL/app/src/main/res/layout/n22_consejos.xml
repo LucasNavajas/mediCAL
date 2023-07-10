@@ -5,8 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:openDrawer="start">
+    android:background="@drawable/background">
 
 
     <RelativeLayout
@@ -48,21 +47,27 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:layout_marginTop="120dp">
+            android:background="@color/gris"
+            android:layout_marginTop="120dp"
+            android:layout_above="@+id/botones">
 
 
             <RelativeLayout
                 android:id="@+id/consejos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="90dp"
                 android:background="@color/gris"
                 android:layout_centerHorizontal="true" />
 
-                <ScrollView
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/contenido"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -182,7 +187,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/rectangle_consejo1"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/background_blanco_recto">
+                        android:background="@drawable/background_blanco_recto"
+                        android:layout_marginBottom="15dp">
 
                         <TextView
                             android:id="@+id/texto_titulo_consejo2"
@@ -255,18 +261,18 @@
 
                     </RelativeLayout>
 
+
                 </RelativeLayout>
-
+                </LinearLayout>
             </ScrollView>
-
         </RelativeLayout>
+
 
 
         <LinearLayout
             android:id="@+id/botones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:background="@color/white"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
