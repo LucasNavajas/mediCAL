@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/boton_volver"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/flecha_atras"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/imagen_remedio"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/boton_volver"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/remedio"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagen_remedio"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/inter_medium"
+        android:inputType="textMultiLine"
+        android:text="Nombremedicamento"
+        android:textColor="#FFF"
+        android:textSize="25sp" />
+
+    <RelativeLayout
+        android:layout_below="@id/text_login"
+        android:id="@+id/rectangle_top_aclaracion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_background_gray"
+        >
+
+        <TextView
+            android:id="@+id/text_aclaracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Casi terminado. Debe:"
+            android:textColor="#000000"
+            android:textSize="21sp"
+            />
+
+        <!--Rectangulo blanco-->
+        <RelativeLayout
+            android:layout_below="@+id/text_aclaracion"
+            android:id="@+id/rectangle_top_blanco"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="@drawable/norounded_background"
+            >
+
+            <!--Scroll del contenido del rectangulo blanco por si el nombre medicamento es muy largo-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <!-- Contenido -->
+            <LinearLayout
+                android:id="@+id/contenido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <!-- Opcion duracion -->
+            <RelativeLayout
+                android:id="@+id/opcion_duracion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/imagen_duracion"
+                    android:src="@drawable/opduracion"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/text_duracion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/imagen_duracion"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"
+                    android:text="Establecer la duración del tratamiento"
+                    android:inputType="textMultiLine"
+                    android:background="@android:color/transparent"
+                    android:layout_centerVertical="true"  />
+            </RelativeLayout>
+            <!--divider-->
+            <View
+                android:id="@+id/divider_duracion"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_below="@id/opcion_duracion"
+                android:background="#808080" />
+
+            <!-- Opcion instruccion -->
+            <RelativeLayout
+                android:id="@+id/opcion_instruccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_below="@+id/divider_duracion">
+
+                <ImageView
+                    android:id="@+id/imagen_instrucciones"
+                    android:src="@drawable/opinstrucciones"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/text_instrucciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/imagen_instrucciones"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"
+                    android:text="Agregar instrucciones"
+                    android:inputType="textMultiLine"
+                    android:background="@android:color/transparent"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <!--divider-->
+            <View
+                android:id="@+id/divider_instruccion"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+
+            <!--Titulo opcionales-->
+            <TextView
+                android:id="@+id/text_opcional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="OPCIONAL **"
+                android:layout_gravity="start"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/verdeTextos"
+                android:textSize="21sp"
+                android:layout_below="@+id/divider_instruccion"/>
+
+            <!-- Opcion imagen -->
+            <RelativeLayout
+                android:layout_below="@+id/text_opcional"
+                android:id="@+id/opcion_imagen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/imagen_agregafoto"
+                    android:src="@drawable/opimagen"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/text_imagen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/imagen_agregafoto"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"
+                    android:text="Agregar imágenes"
+                    android:inputType="textMultiLine"
+                    android:background="@android:color/transparent"
+                    android:layout_centerVertical="true"  />
+            </RelativeLayout>
+            <!--divider-->
+            <View
+                android:id="@+id/divider_imagen"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_below="@id/opcion_imagen"
+                android:background="#808080" />
+
+            <!-- Opcion recarga -->
+            <RelativeLayout
+                android:id="@+id/opcion_recarga"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_below="@+id/divider_imagen">
+
+                <ImageView
+                    android:id="@+id/imagen_recarga"
+                    android:src="@drawable/oprecarga"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/text_recarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/imagen_recarga"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"
+                    android:text="Establecer recordatorio de recarga"
+                    android:inputType="textMultiLine"
+                    android:background="@android:color/transparent"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <!--divider-->
+            <View
+                android:id="@+id/divider_recarga"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_below="@id/opcion_recarga"
+                android:background="#808080" />
+
+            <!--Boton-->
+
+            <Button
+                android:id="@+id/button_establecer"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/divider_recarga"
+                android:background="@drawable/boton_redondo_verde"
+                android:focusable="false"
+                android:fontFamily="@font/inter_bold"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:layout_marginTop="30dp"
+                android:text="Establecer"
+                android:textAllCaps="false"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+
+
+            </ScrollView> <!--Fin del scroll-->
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
