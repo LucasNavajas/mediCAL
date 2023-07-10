@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:openDrawer="start">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/user_blanco"
+            android:padding="8dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="Abrir menú"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nombre_usuario"
+            android:text="NombreUsuario"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFF"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/menu_button"
+            android:layout_alignTop="@id/menu_button"
+            android:layout_alignBottom="@id/menu_button"
+            android:fontFamily="@font/inter_medium"
+            android:layout_marginEnd="10dp"/>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="120dp">
+
+
+            <RelativeLayout
+                android:id="@+id/consejos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="90dp"
+                android:background="@color/gris"
+                android:layout_centerHorizontal="true" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="0dp">
+
+                    <!-- Consejo 1 -->
+                    <RelativeLayout
+                        android:id="@+id/rectangle_consejo1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/background_blanco_recto">
+
+                        <ImageView
+                            android:id="@+id/imagen_consejo1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/foco_consejo" />
+
+                        <TextView
+                            android:id="@+id/texto_titulo_consejo1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_toRightOf="@id/imagen_consejo1"
+                            android:text="Su consejo diario de MediCAL"
+                            android:textSize="25dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/texto_consejo1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_titulo_consejo1"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:text="¡Es fácil añadir un medicamento!
+                            Pulse en “Leer” para obtener más información."
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:id="@+id/text_Leer_mas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/texto_consejo1"
+                            android:layout_marginLeft="-230dp"
+                            android:layout_alignBottom="@id/texto_consejo1"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Leer más"
+                            android:textColor="@color/verdeClaro"
+                            android:textSize="22sp" />
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_below="@id/text_Leer_mas"
+                            android:layout_height="1dp"
+                            android:layout_alignParentStart="@id/text_Leer_mas"
+                            android:layout_toRightOf="@id/texto_consejo1"
+                            android:layout_marginLeft="-230dp"
+                            android:background="@color/verdeClaro" />
+
+                        <ImageView
+                            android:id="@+id/imagen_consejo_like"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/text_Leer_mas"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/consejo_like" />
+
+                        <TextView
+                            android:id="@+id/texto_MediCAL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/text_Leer_mas"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_alignParentStart="@id/imagen_consejo_like"
+                            android:text="MediCAL"
+                            android:textSize="20dp"
+                            android:gravity="end"
+                            />
+
+                    </RelativeLayout>
+
+                    <!-- Consejo 2 -->
+                    <RelativeLayout
+                        android:id="@+id/rectangle_consejo2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/rectangle_consejo1"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/background_blanco_recto">
+
+                        <TextView
+                            android:id="@+id/texto_titulo_consejo2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="7 Cuidados básicos para personas con hipertensión"
+                            android:textSize="25dp"
+                            android:textStyle="bold" />
+
+                        <!-- Ajustar altura (height) según resolución del video -->
+                        <ImageView
+                            android:id="@+id/videoImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:scaleType="fitCenter"
+                            android:layout_below="@id/texto_titulo_consejo2"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginBottom="15dp"/>
+
+                        <ImageView
+                            android:id="@+id/imagen_consejo_compartir_2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/videoImageView"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/consejo_compartir" />
+
+                        <ImageView
+                            android:id="@+id/imagen_consejo_like_2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/videoImageView"
+                            android:layout_toRightOf="@id/imagen_consejo_compartir_2"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/consejo_like" />
+
+                        <TextView
+                            android:id="@+id/texto_auspiciante"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/videoImageView"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_alignParentStart="@id/imagen_consejo_like_2"
+                            android:text="Auspicia: Bagó"
+                            android:textSize="20dp"
+                            android:gravity="end"
+                            />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/botones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/casa_inicio"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inicio"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/consejos"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consejos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/pastilla"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicamentos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/mas"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Más"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
