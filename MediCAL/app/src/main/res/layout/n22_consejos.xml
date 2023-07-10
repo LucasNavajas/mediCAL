@@ -82,8 +82,11 @@
                             android:id="@+id/imagen_consejo1"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
                             android:src="@drawable/foco_consejo" />
 
                         <TextView

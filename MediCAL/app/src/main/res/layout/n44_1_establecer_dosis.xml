@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_rounded_blanco" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_establecer_dosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/inter_regular"
+            android:text="Establecer Dosis"
+            android:textColor="@color/verdeClaro"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/cerrar_cruz"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="110dp"
+            android:layout_toRightOf="@id/text_establecer_dosis"
+            android:src="@drawable/cerrar_cruz_delgada"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_background"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-10dp"
+            android:gravity="center_horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true">
+
+                <FrameLayout
+                    android:id="@+id/rectangulo_buscador"
+                    android:layout_width="54dp"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="55dp"
+                    android:background="@drawable/rectangulo_buscador">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="X"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="20sp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/rectangulo_buscador"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="40dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="presentacion
+                    med"
+                    android:textSize="21sp"
+                    android:gravity="center_horizontal" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/button_establecer"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/boton_redondo_verde"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:focusable="false"
+            android:fontFamily="@font/inter_bold"
+            android:text="Establecer"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
