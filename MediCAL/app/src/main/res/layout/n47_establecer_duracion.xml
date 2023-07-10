@@ -56,15 +56,16 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/text_nombrecalendario"
+        android:id="@+id/text_duracion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Establecer fecha de inicio"
+        android:text="¿Cuánto tiempo dura el tratamiento?"
         android:textSize="25sp"
         android:layout_marginTop="13dp"
         android:textColor="#FFF"
         android:layout_below="@id/imagen_opduracion"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="@font/inter_medium"/>
     <!--Pantalla adentro-->
     <RelativeLayout
@@ -73,7 +74,7 @@
         android:layout_height="548dp"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="35dp"
-        android:layout_below="@+id/text_nombrecalendario"
+        android:layout_below="@+id/text_duracion"
         android:layout_weight="1"
         android:background="@drawable/rounded_background">
 
