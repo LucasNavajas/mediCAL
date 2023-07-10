@@ -35,6 +35,7 @@
         <activity android:name=".LeerTYCActivity"></activity>
         <activity android:name=".LeerPoliticasActivity"></activity>
         <activity android:name=".InicioCalendarioActivity"></activity>
+        <activity android:name=".EjemploActivity"></activity>
     </application>
 
 </manifest>
