@@ -59,7 +59,7 @@
         android:id="@+id/text_recarga"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="¿Cuántos le quedan?"
+        android:text="¿Cuántas medicinas quieres que queden antes de recibir un recordatorio?"
         android:textSize="25sp"
         android:layout_marginTop="13dp"
         android:textColor="#FFF"
@@ -68,16 +68,41 @@
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/inter_medium"/>
 
+    <!--pantalla de adentro-->
+    <RelativeLayout
+        android:layout_below="@id/text_recarga"
+        android:id="@+id/rectangle_top_aclaracion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="35dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_background_gray"
+        >
+
+        <TextView
+            android:id="@+id/text_aclaracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Recordarme cuando tenga"
+            android:textColor="#000000"
+            android:textSize="21sp"
+            />
         <!--Rectangulo blanco-->
         <RelativeLayout
-            android:layout_below="@+id/text_recarga"
+            android:layout_below="@+id/text_aclaracion"
             android:id="@+id/rectangle_top_blanco"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_weight="1"
-            android:background="@drawable/rounded_background"
-            android:layout_marginTop="35dp"
+            android:background="@drawable/norounded_background"
             >
 
             <!--Adentro de la pantalla-->
@@ -88,7 +113,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/inter_regular"
-                android:text="Quedan"
+                android:text="Queden"
                 android:textColor="@color/verdeTextos"
                 android:layout_centerHorizontal="true"
                 android:textSize="18sp" />
@@ -162,3 +187,4 @@
 
 </RelativeLayout>
 
+</RelativeLayout>
