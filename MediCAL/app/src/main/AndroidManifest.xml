@@ -36,6 +36,7 @@
         <activity android:name=".LeerPoliticasActivity"></activity>
         <activity android:name=".InicioCalendarioActivity"></activity>
         <activity android:name=".EjemploActivity"></activity>
+        <activity android:name=".EditarDosisFuturasActivity"></activity>
     </application>
 
 </manifest>
