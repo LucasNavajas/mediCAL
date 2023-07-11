@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+    <!--flecha y nombre med-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_anadir_instrucciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/boton_volver"
+            android:layout_width="25dp"
+            android:layout_height="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/flecha_atras"
+            app:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/texto_nombremed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="NombreMedicina"
+            android:textColor="#FFF"
+            android:textSize="21sp"
+            app:layout_constraintStart_toEndOf="@id/boton_volver"
+            app:layout_constraintTop_toTopOf="@id/boton_volver"
+            app:layout_constraintBottom_toBottomOf="@id/boton_volver"
+            android:layout_marginStart="20dp"
+            android:singleLine="true"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/imagen_opinstrucciones"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layout_anadir_instrucciones"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/opinstrucciones"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/text_instrucciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Debe tomarse con alimentos?"
+        android:textSize="25sp"
+        android:layout_marginTop="13dp"
+        android:textColor="#FFF"
+        android:layout_below="@id/imagen_opinstrucciones"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/inter_medium"/>
+    <!--Pantalla adentro-->
+    <RelativeLayout
+        android:id="@+id/rectangle_top"
+        android:layout_width="match_parent"
+        android:layout_height="548dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/text_instrucciones"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_background">
+
+        <!--Scroll de todo el contenido del rectangulo blanco-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <!-- Contenido -->
+        <LinearLayout
+            android:id="@+id/contenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Opcion Antes de comer-->
+            <TextView
+                android:id="@+id/text_antes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/transparent"
+                android:text="Antes de comer"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/text_antes"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+            <!--Opcion Durante la comida-->
+            <TextView
+                android:id="@+id/text_durante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_antes"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/transparent"
+                android:text="Con la comida"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/text_durante"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+            <!--Opcion Despues de la comida-->
+            <TextView
+                android:id="@+id/text_despues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_durante"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/transparent"
+                android:text="Después de comer"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/text_despues"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+            <!--Opcion no importa-->
+            <TextView
+                android:id="@+id/text_noimporta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_despues"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/transparent"
+                android:text="No importa"
+                android:textColor="@color/black"
+                android:textSize="21sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/text_noimporta"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#808080" />
+
+            
+
+        </LinearLayout>
+
+        </ScrollView> <!--Fin del scroll-->
+
+    </RelativeLayout>
+</RelativeLayout>
