@@ -25,7 +25,9 @@
         android:text="Ha agregado con éxito Nombredemedicamento"
         android:textColor="@color/black"
         android:textSize="24sp"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:inputType="textMultiLine"
+        />
 
         <Button
             android:id="@+id/button_anadir_mas"
