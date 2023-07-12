@@ -49,8 +49,8 @@
         android:layout_height="51dp"
         android:layout_below="@id/layout_frecuencia"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/calendario_blanco"
         app:tint="@color/white" />
 
@@ -60,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imagen_calendario_blanco"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="13dp"
         android:fontFamily="@font/inter_regular"
         android:text="¿Con qué frecuencia se lo administra?"

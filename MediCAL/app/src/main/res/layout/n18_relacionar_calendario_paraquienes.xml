@@ -35,7 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imagen_cuidado_manitos"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="13dp"
         android:fontFamily="@font/inter_medium"
         android:text="¿Para quién es el calendario?"
         android:textColor="#FFF"
@@ -44,20 +45,31 @@
     <RelativeLayout
         android:id="@+id/rectangle_top_aclaracion"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="10dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="200dp"
+        android:layout_below="@+id/text_login"
+        android:layout_marginTop="35dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_background_gray"
         >
+        <!--Scroll de todo el contenido del rectangulo blanco-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        <!-- Contenido -->
+        <LinearLayout
+            android:id="@+id/contenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <TextView
             android:id="@+id/text_acalaracion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
             android:text="Elige una opción, más tarde podrás añadir más."
@@ -67,13 +79,15 @@
 
         <RelativeLayout
             android:id="@+id/rectangle_top_blanco"
+            android:layout_below="@+id/rectangle_top_aclaracion"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="85dp"
             android:layout_weight="1"
             android:background="@drawable/norounded_background"
             >
+
             <TextView
                 android:id="@+id/text_usopersonal"
                 android:layout_width="match_parent"
@@ -240,6 +254,8 @@
                 android:background="#808080" />
 
         </RelativeLayout>
+        </LinearLayout>
+        </ScrollView>
 
     </RelativeLayout>
 
