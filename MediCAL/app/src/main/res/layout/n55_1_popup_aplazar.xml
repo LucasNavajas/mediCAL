@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     >
+    <!--titulo-->
     <TextView
         android:id="@+id/titulo"
         android:layout_width="wrap_content"
@@ -16,13 +17,13 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/inter_semibold"
-        android:text="¿Cuál es su género?"
+        android:text="Aplazar:"
         android:textColor="@color/black"
         android:textSize="22sp"
         />
-
+    <!--op 5min y divider-->
     <TextView
-        android:id="@+id/text_mujer"
+        android:id="@+id/text_cinco_min"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"
@@ -32,17 +33,17 @@
         android:textColor="@color/black"
         android:background="@android:color/transparent"
         android:textSize="21sp"
-        android:text="Mujer"/>
+        android:text="5 min"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_below="@id/text_mujer"
+        android:layout_below="@+id/text_cinco_min"
         android:background="#808080" />
-
+    <!--op 10min y divider-->
     <TextView
-        android:id="@+id/text_hombre"
+        android:id="@+id/text_diez_min"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"
@@ -50,20 +51,20 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/black"
-        android:layout_below="@id/text_mujer"
+        android:layout_below="@+id/text_cinco_min"
         android:background="@android:color/transparent"
         android:textSize="21sp"
-        android:text="Hombre"/>
+        android:text="10 min"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_below="@id/text_hombre"
+        android:layout_below="@+id/text_diez_min"
         android:background="#808080" />
-
+    <!--op 15min y divider-->
     <TextView
-        android:id="@+id/text_nobinario"
+        android:id="@+id/text_quince_min"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"
@@ -71,20 +72,20 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/black"
-        android:layout_below="@id/text_hombre"
+        android:layout_below="@+id/text_diez_min"
         android:background="@android:color/transparent"
         android:textSize="21sp"
-        android:text="No binario"/>
+        android:text="15 min"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_below="@id/text_nobinario"
+        android:layout_below="@+id/text_quince_min"
         android:background="#808080" />
-
+    <!--op 30min y divider-->
     <TextView
-        android:id="@+id/text_otro"
+        android:id="@+id/text_treinta_min"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"
@@ -92,20 +93,20 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/black"
-        android:layout_below="@id/text_nobinario"
+        android:layout_below="@+id/text_quince_min"
         android:background="@android:color/transparent"
         android:textSize="21sp"
-        android:text="Otro (especificar)"/>
+        android:text="30 min"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_below="@id/text_otro"
+        android:layout_below="@+id/text_treinta_min"
         android:background="#808080" />
-
+    <!--op 60min y divider-->
     <TextView
-        android:id="@+id/text_nodecir"
+        android:id="@+id/text_sesenta_min"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"
@@ -113,39 +114,54 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textColor="@color/black"
-        android:layout_below="@id/text_otro"
+        android:layout_below="@+id/text_treinta_min"
         android:background="@android:color/transparent"
         android:textSize="21sp"
-        android:text="Prefiero no decirlo"/>
+        android:text="60 min"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_below="@id/text_nodecir"
+        android:layout_below="@+id/text_sesenta_min"
         android:background="#808080" />
+
+    <!--botones aceptar y cancelar-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="35dp"
+        android:layout_below="@+id/text_sesenta_min"
+        >
 
-
-        <TextView
-            android:id="@+id/regresar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_regular"
-            android:text="REGRESAR"
-            android:textColor="@color/verdeTextos"
-            android:textSize="22sp"
-            android:layout_marginEnd="40dp"
-            android:clickable="true"
-            android:layout_weight="1"
-            android:layout_marginBottom="20dp"
-            android:gravity="end"/>
-
-    </LinearLayout>
-
+            <!--boton cancelar-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CANCELAR"
+                    android:gravity="center"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/verdeTextos"
+                    android:textSize="22sp"
+                    android:layout_marginEnd="65dp"
+                    />
+            <!--boton aceptar-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ACEPTAR"
+                    android:gravity="center"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/verdeTextos"
+                    android:textSize="22sp"
+                    android:layout_marginStart="65dp"
+                    />
+            </LinearLayout>
 </LinearLayout>
+
+

@@ -19,94 +19,94 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <!--hora-->
-                <TextView
-                    android:id="@+id/text_hora"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="08:00"
-                    android:textColor="@color/verdeTextos"
-                    android:textSize="30sp"
-                    android:gravity="center_horizontal" />
+            <!--hora-->
+            <TextView
+                android:id="@+id/text_hora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="08:00"
+                android:textColor="@color/verdeTextos"
+                android:textSize="30sp"
+                android:gravity="center_horizontal" />
 
-                <!--Nombre medicamento-->
-                <TextView
-                    android:layout_below="@+id/text_hora"
-                    android:id="@+id/text_nombremedicamento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="35dp"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="Aspirineta"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:inputType="textMultiLine"
-                    android:gravity="left" />
+            <!--Nombre medicamento-->
+            <TextView
+                android:layout_below="@+id/text_hora"
+                android:id="@+id/text_nombremedicamento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Aspirineta"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:inputType="textMultiLine"
+                android:gravity="left" />
 
-                <!--Cantidad + Presentacion + concentracion-->
-                <TextView
-                    android:layout_below="@+id/text_nombremedicamento"
-                    android:id="@+id/text_CPC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="1 Pastilla(s) 0,400 g"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"
-                    android:inputType="textMultiLine"
-                    android:gravity="left" />
+            <!--Cantidad + Presentacion + concentracion-->
+            <TextView
+                android:layout_below="@+id/text_nombremedicamento"
+                android:id="@+id/text_CPC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="1 Pastilla(s) 0,400 g"
+                android:textColor="@color/gris_medical"
+                android:textSize="21sp"
+                android:inputType="textMultiLine"
+                android:gravity="left" />
 
-                <!--instrucciones-->
-                <TextView
-                    android:layout_below="@+id/text_CPC"
-                    android:id="@+id/text_instrucciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Antes de comer"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"
-                    android:inputType="textMultiLine"
-                    android:gravity="left" />
+            <!--instrucciones-->
+            <TextView
+                android:layout_below="@+id/text_CPC"
+                android:id="@+id/text_instrucciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Antes de comer"
+                android:textColor="@color/gris_medical"
+                android:textSize="21sp"
+                android:inputType="textMultiLine"
+                android:gravity="left" />
 
-                <!--otras instrucciones-->
-                <TextView
-                    android:layout_below="@+id/text_instrucciones"
-                    android:id="@+id/text_otras_instrucciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="Otras instrucciones"
-                    android:maxLength="300"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"
-                    android:inputType="textMultiLine"
-                    android:gravity="left" />
+            <!--otras instrucciones-->
+            <TextView
+                android:layout_below="@+id/text_instrucciones"
+                android:id="@+id/text_otras_instrucciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Otras instrucciones"
+                android:maxLength="300"
+                android:textColor="@color/gris_medical"
+                android:textSize="21sp"
+                android:inputType="textMultiLine"
+                android:gravity="left" />
 
-                <!--botones-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/text_otras_instrucciones"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginBottom="35dp"
-                    >
+            <!--botones-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_otras_instrucciones"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="35dp"
+                >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -117,90 +117,90 @@
                     android:layout_marginEnd="30dp"
                     android:layout_centerHorizontal="true">
 
-                        <!--icono omitir y texto-->
-                        <LinearLayout
+                    <!--icono omitir y texto-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="62dp"
+                            android:layout_height="62dp"
+                            android:src="@drawable/cancelar"
+                            />
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginEnd="20dp"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="62dp"
-                                android:layout_height="62dp"
-                                android:src="@drawable/cancelar"
-                                />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="OMITIR"
-                                android:gravity="center"
-                                android:fontFamily="@font/inter_regular"
-                                android:textColor="@color/verdeTextos"
-                                android:textSize="21sp"
-                                />
-                        </LinearLayout>
-
-                        <!--icono tomar y texto-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
+                            android:text="OMITIR"
                             android:gravity="center"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            >
-
-                            <ImageView
-                                android:layout_width="62dp"
-                                android:layout_height="62dp"
-                                android:src="@drawable/tick"
-                                />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="TOMAR"
-                                android:gravity="center"
-                                android:fontFamily="@font/inter_regular"
-                                android:textColor="@color/verdeTextos"
-                                android:textSize="21sp"
-                                />
-                        </LinearLayout>
-
-                        <!--icono tomar y texto-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:layout_marginStart="20dp">
-
-                            <ImageView
-                                android:layout_width="62dp"
-                                android:layout_height="62dp"
-                                android:src="@drawable/aplazar"
-                                />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="APLAZAR"
-                                android:gravity="center"
-                                android:fontFamily="@font/inter_regular"
-                                android:textColor="@color/verdeTextos"
-                                android:textSize="21sp"
-                                />
-                        </LinearLayout>
-
+                            android:fontFamily="@font/inter_regular"
+                            android:textColor="@color/verdeTextos"
+                            android:textSize="21sp"
+                            />
                     </LinearLayout>
-                </RelativeLayout>
+
+                    <!--icono tomar y texto-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        >
+
+                        <ImageView
+                            android:layout_width="62dp"
+                            android:layout_height="62dp"
+                            android:src="@drawable/tick"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TOMAR"
+                            android:gravity="center"
+                            android:fontFamily="@font/inter_regular"
+                            android:textColor="@color/verdeTextos"
+                            android:textSize="21sp"
+                            />
+                    </LinearLayout>
+
+                    <!--icono tomar y texto-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginStart="20dp">
+
+                        <ImageView
+                            android:layout_width="62dp"
+                            android:layout_height="62dp"
+                            android:src="@drawable/aplazar"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="APLAZAR"
+                            android:gravity="center"
+                            android:fontFamily="@font/inter_regular"
+                            android:textColor="@color/verdeTextos"
+                            android:textSize="21sp"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
-    </LinearLayout>
+</LinearLayout>
 
 
