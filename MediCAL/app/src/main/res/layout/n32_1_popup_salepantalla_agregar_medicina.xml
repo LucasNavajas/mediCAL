@@ -18,13 +18,13 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="35dp"
         android:fontFamily="@font/inter_medium"
         android:text="La medicina no se ha guardado."
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textAlignment="center" />
 
     <TextView
@@ -45,9 +45,10 @@
 
         <Button
             android:id="@+id/button_seguir_editando"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/boton_redondo_verde"
             android:fontFamily="@font/inter_bold"
             android:text="Seguir Editando"
@@ -73,16 +74,15 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:translationZ="1dp"
         app:cardCornerRadius="25dp"
         app:cardElevation="10dp"
         android:background="@color/white"
-        android:layout_marginBottom="40dp">
+        android:layout_marginBottom="30dp">
 
     <Button
         android:id="@+id/button_salir"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
