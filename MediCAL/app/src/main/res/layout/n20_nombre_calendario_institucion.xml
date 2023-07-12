@@ -32,64 +32,81 @@
         android:id="@+id/text_nombrecalendario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre el calendario"
+        android:text="Nombre el Calendario y el Paciente"
         android:textSize="25sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="13dp"
         android:textColor="#FFF"
         android:layout_below="@id/imagen_persona"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="@font/inter_medium"/>
     <RelativeLayout
         android:id="@+id/rectangle_top"
+        android:layout_below="@+id/text_nombrecalendario"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="35dp"
         android:layout_weight="1"
         android:layout_alignParentBottom="true"
         android:background="@drawable/rounded_background">
 
-        <EditText
-            android:id="@+id/textEdit_nombrecalendario"
+        <!--Cuadro de texto calendario-->
+        <!--se puede pegar en distintos formatos
+        (solo cambia regular, medium, etc no la fuente ni elcolor)
+        trabajar en java-->
+        <RelativeLayout
+            android:id="@+id/cuadro_texto_calendario"
             android:layout_width="match_parent"
-            android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@android:color/transparent"
-            android:hint="Escriba el nombre del calendario"
-            android:textColorHint="#888888"
-            android:textSize="21sp"
-            android:inputType="text"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_below="@id/textEdit_nombrecalendario"
-            android:background="#808080" />
+            android:layout_marginEnd="20dp">
 
-        <EditText
-            android:id="@+id/textEdit_nombrepaciente"
+            <!-- Texto de adentro hasta 30 caracteres-->
+            <EditText
+                android:id="@+id/editTextCalendario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLength="30"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:hint="Escriba el nombre del calendario"
+                android:textColor="@color/black"
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"
+                android:textColorHint="@color/gris_medical" />
+        </RelativeLayout>
+
+
+        <!--Cuadro de texto paciente-->
+        <!--se puede pegar en distintos formatos
+        (solo cambia regular, medium, etc no la fuente ni elcolor)
+        trabajar en java-->
+        <RelativeLayout
+            android:id="@+id/cuadro_texto_paciente"
             android:layout_width="match_parent"
-            android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/textEdit_nombrecalendario"
-            android:background="@android:color/transparent"
-            android:hint="Escriba el nombre del paciente"
-            android:textColorHint="#888888"
-            android:textSize="21sp"
-            android:inputType="text"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_below="@id/textEdit_nombrepaciente"
-            android:background="#808080" />
+            android:layout_below="@+id/cuadro_texto_calendario">
+
+            <!-- Texto de adentro hasta 30 caracteres-->
+            <EditText
+                android:id="@+id/editTextPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLength="30"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:hint="Escriba el nombre del paciente"
+                android:textColor="@color/black"
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"
+                android:textColorHint="@color/gris_medical" />
+        </RelativeLayout>
 
 
         <Button
@@ -130,5 +147,4 @@
 
     </RelativeLayout>
 
-    </RelativeLayout>
-
+</RelativeLayout>
