@@ -11,24 +11,26 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/inter_bold"
-        android:text="REINICIAR CONTRASEÑA"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Recordatorio de recarga"
+        android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="25sp"
         android:textAppearance="@style/CustomButtonText"/>
 
     <TextView
-        android:id="@+id/text_email"
+        android:id="@+id/descripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/inter_regular"
-        android:text="Email"
-        android:textColor="#000000"
-        android:textSize="25sp" />
+        android:text="¿Cuántas medicinas quieres que queden antes de recibir un recordatorio de recarga?"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/textEdit_email"
@@ -38,10 +40,12 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="50dp"
-        android:hint="Ingrese su cuenta"
+        android:hint="x"
         android:textColorHint="@color/gris_medical"
         android:fontFamily="@font/inter_regular"
-        android:textSize="18sp" />
+        android:textSize="19sp"
+        android:inputType="numberDecimal"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,7 +62,7 @@
             android:text="CANCELAR"
             android:layout_marginStart="20dp"
             android:textColor="@color/verdeTextos"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:clickable="true" />
 
         <TextView
@@ -68,7 +72,7 @@
             android:fontFamily="@font/inter_regular"
             android:text="ACEPTAR"
             android:textColor="@color/verdeTextos"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:layout_marginEnd="50dp"
             android:clickable="true"
             android:layout_weight="1"

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Establecer el número de días"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        android:textAppearance="@style/CustomButtonText"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+
+
+            <ImageView
+                android:id="@+id/imagen_boton_menos"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/boton_menos" />
+
+
+            <!-- Al ser ingreso de datos, está bien tenerlo como EditText? -->
+            <!-- Hay ingreso de número float/double? -->
+            <!-- Sino luego hacer la conversión String a double -->
+            <EditText
+                android:id="@+id/textEdit_Concentracion"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imagen_boton_menos"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/inter_regular"
+                android:hint="x"
+                android:textColorHint="#000000"
+                android:textSize="28sp"
+                android:gravity="center_horizontal"
+                android:inputType="number"/>
+
+            <ImageView
+                android:id="@+id/imagen_boton_mas"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/textEdit_Concentracion"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/boton_mas" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:layout_weight="1"
+            android:text="CANCELAR"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/aceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="ACEPTAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="50dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>

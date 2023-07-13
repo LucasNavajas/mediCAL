@@ -17,4 +17,8 @@
     <style name="ButtonOverrideStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/boton_redondo_blanco</item>
     </style>
+
+    <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/verdeTextos</item>
+    </style>
 </resources>

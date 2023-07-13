@@ -13,4 +13,7 @@
     <color name="rojoError">#F07167</color>
     <color name="rojoEliminar">#E70F0F</color>
     <color name="gris_medical">#808080</color>
+    <color name="gris_checkbox">#D9D9D9</color>
+
+
 </resources>

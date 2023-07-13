@@ -37,6 +37,7 @@
         <activity android:name=".InicioCalendarioActivity"></activity>
         <activity android:name=".EjemploActivity"></activity>
         <activity android:name=".EditarDosisFuturasActivity"></activity>
+        <activity android:name=".PoliticasPrivacidadActivity"></activity>
     </application>
 
 </manifest>

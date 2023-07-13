@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/cabecera">
+
+    <ImageView
+        android:id="@+id/menu_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/user_blanco"
+        android:padding="8dp"
+        android:clickable="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Abrir menú"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nombre_calendario"
+            android:text="NombreCalendario"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFF"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/menu_button"
+            android:layout_alignTop="@id/menu_button"
+            android:layout_alignBottom="@id/menu_button"
+            android:fontFamily="@font/inter_medium"
+            android:layout_marginEnd="10dp"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cabecera"
+        android:background="@color/white"
+        android:layout_above="@id/botones">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medicamentos activos"
+                android:fontFamily="@font/inter_medium"
+                android:textColor="@color/verdeTextos"
+                android:textSize="26sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"/>
+
+            <RelativeLayout
+                android:id="@+id/medicamento1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/nombre_medicamento1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NombreMedicamento"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"/>
+                <TextView
+                    android:id="@+id/concentracion_medicamento1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="concentr."
+                    android:layout_toEndOf="@+id/nombre_medicamento1"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+                <TextView
+                    android:id="@+id/proximo_recordatorio_medicamento1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Próximo recordatorio:"
+                    android:layout_below="@+id/nombre_medicamento1"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+
+                <TextView
+                    android:id="@+id/inventario_medicamento1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quedan xx presentación"
+                    android:layout_below="@+id/proximo_recordatorio_medicamento1"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/inventario_medicamento1"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gris" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/medicamento2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/nombre_medicamento2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NombreMedicamento"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"/>
+                <TextView
+                    android:id="@+id/concentracion_medicamento2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="concentr."
+                    android:layout_toEndOf="@+id/nombre_medicamento2"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+                <TextView
+                    android:id="@+id/proximo_recordatorio_medicamento2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Próximo recordatorio:"
+                    android:layout_below="@+id/nombre_medicamento2"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+
+                <TextView
+                    android:id="@+id/inventario_medicamento2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quedan xx presentación"
+                    android:layout_below="@+id/proximo_recordatorio_medicamento2"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/inventario_medicamento2"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gris" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/medicamento3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/nombre_medicamento3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NombreMedicamento"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"/>
+                <TextView
+                    android:id="@+id/concentracion_medicamento3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="concentr."
+                    android:layout_toEndOf="@+id/nombre_medicamento3"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+                <TextView
+                    android:id="@+id/proximo_recordatorio_medicamento3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Próximo recordatorio:"
+                    android:layout_below="@+id/nombre_medicamento3"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+
+                <TextView
+                    android:id="@+id/inventario_medicamento3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quedan xx presentación"
+                    android:layout_below="@+id/proximo_recordatorio_medicamento3"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/gris_medical"
+                    android:textSize="21sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/inventario_medicamento3"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gris" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/botones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/casa_inicio"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicio"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="50dp"
+                android:src="@drawable/consejos"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consejos"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:src="@drawable/pastilla"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medicamentos"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:src="@drawable/mas"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Más"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/inter_regular"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

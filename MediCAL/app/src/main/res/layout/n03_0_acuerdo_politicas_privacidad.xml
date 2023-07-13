@@ -15,38 +15,136 @@
         android:fontFamily="@font/inter_bold"
         android:text="La privacidad es lo primero"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/titulo">
+        android:layout_below="@+id/titulo"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="20dp">
 
-        <CheckBox
-            android:id="@+id/checkBox1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/custom_checkbox"
-            android:text="politica_privacidad_1" />
+            android:orientation="horizontal"
+            android:gravity="top">
 
-        <CheckBox
-            android:id="@+id/checkBox2"
+            <CheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"/>
+
+            <TextView
+                android:id="@+id/texto1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Acepto la Política de privacidad y Términos y Condiciones de uso."
+                android:gravity="top"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/black"
+                android:textColorLink="@color/verdeTextos"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/custom_checkbox"
-            android:text="Política de privacidad 2" />
+            android:orientation="horizontal"
+            android:gravity="top"
+            android:layout_marginTop="10dp">
 
-        <CheckBox
-            android:id="@+id/checkBox3"
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"/>
+
+            <TextView
+                android:id="@+id/texto2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Acepto el procesamiento de mis datos personales de salud con el fin de facilitar las funciones de la aplicación MediCAL. Ver más en la Política de privacidad."
+                android:gravity="top"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/black"
+                android:textColorLink="@color/verdeTextos"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/custom_checkbox"
-            android:text="Política de privacidad 3" />
+            android:orientation="horizontal"
+            android:gravity="top"
+            android:layout_marginTop="10dp">
 
-        <!-- Agrega más CheckBoxes según tus necesidades -->
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"/>
+
+            <TextView
+                android:id="@+id/texto3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Autorizo a MediCAL a monitorear la actividad en la aplicación, obtener informaci´pon sobre su grupo de edad, estado de suscripción y uso de la aplicación. Esto ayuda para promocionar la aplicación y analizar su efectividad. Ver más en la Política de privacidad. *Opcional*"
+                android:gravity="top"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/black"
+                android:textColorLink="@color/verdeTextos"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="Aceptar todo"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
+    <Button
+        android:id="@+id/button_siguiente"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/boton_redondo_verde"
+        android:focusable="false"
+        android:fontFamily="@font/inter_bold"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="Siguiente"
+        android:textAllCaps="false"
+        android:textAppearance="@style/CustomButtonText"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/flecha_siguiente"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@id/button_siguiente"
+        android:layout_marginStart="-38dp"
+        android:layout_marginLeft="-38dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@id/button_siguiente"
+        android:layout_toRightOf="@id/button_siguiente"
+        android:elevation="2dp"
+        android:src="@drawable/flecha_siguiente"
+        app:tint="@android:color/white" />
 </RelativeLayout>
 
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/white"
     >
 
     <TextView
@@ -11,67 +13,61 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/inter_bold"
-        android:text="REINICIAR CONTRASEÑA"
-        android:textColor="#000000"
-        android:textSize="25sp"
-        android:textAppearance="@style/CustomButtonText"/>
+        android:text="¿Está Seguro?"
+        android:textColor="@color/rojoError"
+        android:textSize="24sp"
+        />
+
 
     <TextView
-        android:id="@+id/text_email"
+        android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/inter_regular"
-        android:text="Email"
+        android:text="No ha guardado todos los cambios. ¿Desea salir sin guardarlos?"
         android:textColor="#000000"
-        android:textSize="25sp" />
+        android:textSize="22sp"
+        />
 
-    <EditText
-        android:id="@+id/textEdit_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_email"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="50dp"
-        android:hint="Ingrese su cuenta"
-        android:textColorHint="@color/gris_medical"
-        android:fontFamily="@font/inter_regular"
-        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
         <TextView
             android:id="@+id/cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_regular"
-            android:layout_weight="1"
             android:text="CANCELAR"
-            android:layout_marginStart="20dp"
             android:textColor="@color/verdeTextos"
-            android:textSize="16sp"
-            android:clickable="true" />
+            android:textSize="22sp"
+            android:layout_marginStart="20dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="start"/>
 
         <TextView
             android:id="@+id/aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_regular"
-            android:text="ACEPTAR"
+            android:text="SALIR"
             android:textColor="@color/verdeTextos"
-            android:textSize="16sp"
-            android:layout_marginEnd="50dp"
+            android:textSize="22sp"
+            android:layout_marginEnd="30dp"
             android:clickable="true"
             android:layout_weight="1"
+            android:layout_marginBottom="15dp"
             android:gravity="end"/>
 
     </LinearLayout>
