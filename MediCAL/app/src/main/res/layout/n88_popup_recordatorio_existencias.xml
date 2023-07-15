@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_rounded_blanco"
+    android:gravity="center_horizontal"
+    >
+
+    <ImageView
+        android:id="@+id/imagen_solicitud"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/medicina_tachada"
+        android:layout_marginTop="30dp"/>
+
+
+    <!-- nombremedicamento debería ser reemplazado por el nombre
+    del medicamento en la base de datos seleccionado -->
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Pocas existencias de nombremedicamento"
+        android:inputType="textMultiLine"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        />
+
+
+    <!-- formapresentacion debería ser reemplazado por el nombre
+    de la forma de presentación del medicamento seleccionado -->
+    <!-- x debería ser reemplazado por la cantidad real de inventario
+    restante del medicamento seleccionado -->
+    <TextView
+        android:layout_below="@+id/text_CPC"
+        android:id="@+id/text_instrucciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="x formapresentacion restantes"
+        android:textColor="@color/gris_medical"
+        android:textSize="21sp"
+        android:inputType="textMultiLine"
+        android:gravity="left" />
+
+
+    <Button
+        android:id="@+id/button_recargar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/boton_redondo_verde"
+        android:layout_marginTop="15dp"
+        android:focusable="false"
+        android:fontFamily="@font/inter_bold"
+        android:text="Recargar"
+        android:textAllCaps="false"
+        android:textAppearance="@style/CustomButtonText"
+        android:textColor="@color/white"
+        android:textSize="18sp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:translationZ="1dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="10dp"
+        android:background="@color/white"
+        android:layout_marginBottom="30dp">
+
+        <Button
+            android:id="@+id/button_omitir"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:fontFamily="@font/inter_bold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="Omitir"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/rojoError"
+            android:textSize="18sp"
+            app:backgroundTint="@color/white" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

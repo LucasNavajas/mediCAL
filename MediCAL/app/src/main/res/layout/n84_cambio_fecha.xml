@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Seleccione la Fecha"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_below="@id/rectangulo_gris"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:scaleX="1.3"
+        android:scaleY="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp">
+
+
+        <TextView
+            android:id="@+id/cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="CANCELAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="95dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+        <TextView
+            android:id="@+id/aceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="ACEPTAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>

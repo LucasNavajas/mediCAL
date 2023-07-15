@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Mostrar Medicamentos"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_medicamento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Todos los medicamentos"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/imagen_desplegable"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="25dp"
+            android:src="@drawable/boton_desplegable"
+            app:layout_constraintStart_toEndOf="@id/text_medicamento"
+            app:layout_constraintTop_toTopOf="@id/text_medicamento"
+            app:layout_constraintBottom_toBottomOf="@id/text_medicamento" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp">
+
+        <TextView
+            android:id="@+id/cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="CANCELAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="95dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+        <TextView
+            android:id="@+id/aplicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="APLICAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>
