@@ -1,6 +1,436 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/cabecera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/boton_volver"
+            android:layout_width="25dp"
+            android:layout_height="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/flecha_atras"
+            app:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/texto_editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/boton_volver"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:text="Medición"
+            android:fontFamily="@font/inter_medium"
+            android:textSize="26sp"
+            android:textColor="#FFF" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@id/cabecera"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:background="@color/gris"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Buscar"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="29dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/icone_loupe_gris"
+                    app:tint="@android:color/black" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/texto_uno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:gravity="top">
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calambres"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/texto_dos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_uno"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+            <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cansancio"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_tres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_dos"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dolor de Espalda"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_cuatro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_tres"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dolores de Cabeza"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_quinto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_cuatro"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Palpitaciones"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_seis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_quinto"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reflujo Ácido"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_siete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_seis"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Abrumado"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_ocho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_siete"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Acné"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_nueve"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_ocho"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Agitación"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_dies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_nueve"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alergias"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/texto_once"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/texto_dies"
+                android:gravity="top"
+                android:layout_marginTop="-10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBox11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"/>
+
+                <TextView
+                    android:id="@+id/texto11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ansiedad"
+                    android:gravity="top"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/verdeTextos"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/button_siguiente"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="529dp"
+                android:layout_marginBottom="60dp"
+                android:background="@drawable/boton_redondo_verde"
+                android:focusable="false"
+                android:fontFamily="@font/inter_bold"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:layout_marginStart="35dp"
+                android:text="Guardar"
+                android:textAllCaps="false"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+
+        </RelativeLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
