@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Cambiar fecha y hora"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        />
+
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="221dp"
+        android:layout_height="199dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:format24Hour="true"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:timePickerMode="spinner" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageMenor"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/menor"
+            android:layout_marginStart="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/imageMayor"
+            android:layout_width="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="70dp"
+            android:src="@drawable/mayor" />
+
+        <TextView
+            android:id="@+id/textFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginEnd="-30dp"
+            android:layout_toStartOf="@id/imageMayor"
+            android:layout_toEndOf="@id/imageMenor"
+            android:fontFamily="@font/inter_regular"
+            android:text="Ayer, 10 may"
+            android:textColor="#000000"
+            android:textSize="22sp" />
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+
+        <TextView
+            android:id="@+id/cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="CANCELAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="95dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+        <TextView
+            android:id="@+id/aceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="ACEPTAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+        <RelativeLayout
+            android:id="@+id/layout_editar_calendario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/boton_cerrar"
+                android:layout_width="30dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/cerrar_cruz_delgada"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/texto_editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/boton_cerrar"
+                android:fontFamily="@font/inter_regular"
+                android:text="Editar"
+                android:textColor="#FFF"
+                android:textSize="30sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rectangle_top"
+            android:layout_width="match_parent"
+            android:layout_height="657dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="60dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_background">
+
+            <TextView
+                android:id="@+id/texto_medicinaSal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Salbutamol"
+                android:textColor="@android:color/black"
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/texto_fechaEs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_medicinaSal"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Fecha Esperada: fechaTomaEsperada"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/texto_fechaReal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_fechaEs"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Fecha Real: fechaTomaReal"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:id="@+id/texto_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_fechaReal"
+                android:orientation="vertical">
+
+
+                <TimePicker
+                    android:id="@+id/timePicker"
+                    android:layout_width="221dp"
+                    android:layout_height="199dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="80dp"
+                    android:format24Hour="true"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
+                    android:timePickerMode="spinner" />
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageMenor"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/menor"
+                        android:layout_marginStart="50dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true" />
+
+                    <TextView
+                        android:id="@+id/textFecha"
+                        android:layout_width="200dp"
+                        android:layout_height="33dp"
+                        android:layout_marginStart="56dp"
+                        android:layout_marginEnd="-30dp"
+                        android:layout_toEndOf="@id/imageMenor"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Hoy, 11 may"
+                        android:textColor="#000000"
+                        android:textSize="22sp" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/button_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_fecha"
+                android:layout_marginTop="130dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/button_guardar"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/boton_redondo_verde"
+                    android:focusable="false"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:text="Guardar"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/CustomButtonText"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

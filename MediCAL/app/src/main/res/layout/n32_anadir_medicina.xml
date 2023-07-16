@@ -160,6 +160,16 @@
             android:textColorHint="#888888"
             android:textSize="21sp" />
 
+        <ImageView
+            android:id="@+id/imagen"
+            android:layout_width="264dp"
+            android:layout_height="181dp"
+            android:layout_below="@id/fotoMedicamento"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/foto_remedio" />
+
         <Button
             android:id="@+id/button_siguiente"
             android:layout_width="300dp"

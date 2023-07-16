@@ -1,6 +1,557 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".InicioCalendarioActivity"
+    android:background="@drawable/background"
+    tools:openDrawer="start">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Contenido principal -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/user_blanco"
+            android:padding="8dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="Abrir menú"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nombre_calendario"
+            android:text="NombreCalendario"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFF"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/menu_button"
+            android:layout_alignTop="@id/menu_button"
+            android:layout_alignBottom="@id/menu_button"
+            android:fontFamily="@font/inter_medium"
+            android:layout_marginEnd="10dp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/lapiz_editar"
+            android:layout_toRightOf="@+id/nombre_calendario"
+            android:layout_alignTop="@id/menu_button"
+            android:layout_alignBottom="@id/menu_button"
+            app:tint="@color/white" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="120dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/calendario"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="&lt;"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="20sp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="semanaPrevia" />
+                    <TextView
+                        android:id="@+id/domingo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Dom"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/lunes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Lun"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/martes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mar"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/miercoles"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mié"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/jueves"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Jue"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/viernes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vie"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:id="@+id/sabado"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sáb"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="&gt;"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="20sp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="semanaPosterior"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/calendar_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="20dp"/>
+
+                <TextView
+                    android:id="@+id/fecha_hoy_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoy, 5 jul"
+                    android:textAlignment="center"
+                    android:textColor="@color/verdeTextos"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/recordatorios"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="150dp"
+                    android:layout_below="@id/calendario"
+                    android:background="@color/gris">
+
+                    <LinearLayout
+                        android:id="@+id/hora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/texto_sin_recordatorios"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="08:00"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:id="@+id/marcar_todas_las_dosis"
+                            android:layout_width="350dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="20dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Marcar todas las dosis"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rectangulo_blanco"
+                        android:layout_width="match_parent"
+                        android:layout_height="270dp"
+                        android:layout_below="@id/hora"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="3dp"
+                        android:elevation="10dp">
+
+                        <ImageView
+                            android:layout_width="360dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="15dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/background_rounded_blanco" />
+
+                        <LinearLayout
+                            android:id="@+id/imagenomitida"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="25dp">
+
+                            <TextView
+                                android:id="@+id/texto_medicina"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_semibold"
+                                android:text="Aspirineta"
+                                android:textColor="@android:color/black"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="180dp"
+                                android:src="@drawable/tic_verde"
+                                android:contentDescription="tomado" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/texto_cantpastillas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imagenomitida"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="1 Pastilla(s) 0,400 g"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_cuando"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cantpastillas"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Antes de comer"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_masinst"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cuando"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="(Otras instrucciones escritas)"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <LinearLayout
+                            android:id="@+id/imagenderecha"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_masinst"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/texto_medicinaSal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_semibold"
+                                android:text="Salbutamol"
+                                android:textColor="@android:color/black"
+                                android:textSize="25sp" />
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="170dp"
+                                android:src="@drawable/tic_verde"
+                                android:contentDescription="tomado" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/texto_cant"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/imagenderecha"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="3 Inhalación(es)"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_como"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cant"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Agitar bien antes de inhalar ..."
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/text_otrahora"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:layout_below="@id/rectangulo_blanco"
+                        android:text="13:00"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/rectangulo_blanco2"
+                        android:layout_width="match_parent"
+                        android:layout_height="270dp"
+                        android:layout_below="@id/text_otrahora"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="3dp"
+                        android:elevation="10dp">
+
+                        <ImageView
+                            android:layout_width="373dp"
+                            android:layout_height="127dp"
+                            android:layout_marginStart="15dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/background_rounded_blanco" />
+
+                        <TextView
+                            android:id="@+id/texto_medicinaSalbu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Salbutemol"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@+id/texto_cant2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_medicinaSalbu"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="3 Inhalación(es)"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_como2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cant2"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Agitar bien antes de inhalar ..."
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/botones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/casa_inicio"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inicio"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/consejos"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consejos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/pastilla"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicamentos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/mas"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Más"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

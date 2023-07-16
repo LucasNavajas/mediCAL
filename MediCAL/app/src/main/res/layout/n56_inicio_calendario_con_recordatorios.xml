@@ -195,10 +195,15 @@
 
             </LinearLayout>
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <RelativeLayout
                 android:id="@+id/recordatorios"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="150dp"
                 android:layout_below="@id/calendario"
                 android:background="@color/gris">
 
@@ -283,7 +288,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter_semibold"
-                        android:text="Salbutemol"
+                        android:text="Salbutamol"
                         android:textColor="@android:color/black"
                         android:textSize="25sp" />
 
@@ -336,8 +341,8 @@
                     android:elevation="10dp">
 
                     <ImageView
-                        android:layout_width="360dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="373dp"
+                        android:layout_height="127dp"
                         android:layout_marginStart="15dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/background_rounded_blanco" />
@@ -349,7 +354,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/inter_semibold"
-                        android:text="Salbutemol"
+                        android:text="Salbutamol"
                         android:textColor="@android:color/black"
                         android:textSize="25sp" />
 
@@ -380,6 +385,7 @@
                 </RelativeLayout>
 
             </RelativeLayout>
+            </ScrollView>
 
         </RelativeLayout>
 
