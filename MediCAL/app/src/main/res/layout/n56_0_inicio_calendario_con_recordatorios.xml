@@ -197,194 +197,197 @@
 
             <ScrollView
                 android:layout_width="match_parent"
+                android:layout_marginTop="150dp"
                 android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:id="@+id/recordatorios"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="150dp"
-                android:layout_below="@id/calendario"
-                android:background="@color/gris">
-
-                <TextView
-                    android:id="@+id/texto_sin_recordatorios"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="08:00"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="30sp" />
-
                 <RelativeLayout
-                    android:id="@+id/rectangulo_blanco"
+                    android:id="@+id/recordatorios"
                     android:layout_width="match_parent"
-                    android:layout_height="270dp"
-                    android:layout_below="@id/texto_sin_recordatorios"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="3dp"
-                    android:elevation="10dp">
-
-                    <ImageView
-                        android:layout_width="360dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="15dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/background_rounded_blanco" />
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/calendario"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/gris"
+                    android:fillViewport="true">
 
                     <TextView
-                        android:id="@+id/texto_medicina"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/inter_semibold"
-                        android:text="Aspirineta"
-                        android:textColor="@android:color/black"
-                        android:textSize="25sp" />
+                        android:id="@+id/texto_sin_recordatorios"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="08:00"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/rectangulo_blanco"
+                        android:layout_width="match_parent"
+                        android:layout_height="270dp"
+                        android:layout_below="@id/texto_sin_recordatorios"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="3dp"
+                        android:elevation="10dp">
+
+                        <ImageView
+                            android:layout_width="360dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="15dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/background_rounded_blanco" />
+
+                        <TextView
+                            android:id="@+id/texto_medicina"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Aspirineta"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@+id/texto_cantpastillas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_medicina"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="1 Pastilla(s) 0,400 g"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_cuando"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cantpastillas"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Antes de comer"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_masinst"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cuando"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="(Otras instrucciones escritas)"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_medicinaSal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_masinst"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Salbutamol"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@+id/texto_cant"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_medicinaSal"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="3 Inhalación(es)"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/texto_como"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cant"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Agitar bien antes de inhalar ..."
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/texto_cantpastillas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_medicina"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="1 Pastilla(s) 0,400 g"
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp" />
+                        android:id="@+id/text_otrahora"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@id/rectangulo_blanco"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="13:00"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
 
-                    <TextView
-                        android:id="@+id/texto_cuando"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_cantpastillas"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="Antes de comer"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
+                    <RelativeLayout
+                        android:id="@+id/rectangulo_blanco2"
+                        android:layout_width="match_parent"
+                        android:layout_height="270dp"
+                        android:layout_below="@id/text_otrahora"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="3dp"
+                        android:elevation="10dp">
 
-                    <TextView
-                        android:id="@+id/texto_masinst"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_cuando"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="(Otras instrucciones escritas)"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
-                    <TextView
-                        android:id="@+id/texto_medicinaSal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_masinst"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/inter_semibold"
-                        android:text="Salbutamol"
-                        android:textColor="@android:color/black"
-                        android:textSize="25sp" />
+                        <ImageView
+                            android:layout_width="373dp"
+                            android:layout_height="127dp"
+                            android:layout_marginStart="15dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/background_rounded_blanco" />
 
-                    <TextView
-                        android:id="@+id/texto_cant"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_medicinaSal"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="3 Inhalación(es)"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
+                        <TextView
+                            android:id="@+id/texto_medicinaSalbu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Salbutamol"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp" />
 
-                    <TextView
-                        android:id="@+id/texto_como"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_cant"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="Agitar bien antes de inhalar ..."
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
+                        <TextView
+                            android:id="@+id/texto_cant2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_medicinaSalbu"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="3 Inhalación(es)"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
 
+                        <TextView
+                            android:id="@+id/texto_como2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/texto_cant2"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Agitar bien antes de inhalar ..."
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="20sp" />
+
+                    </RelativeLayout>
 
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/text_otrahora"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/inter_medium"
-                    android:layout_below="@id/rectangulo_blanco"
-                    android:text="13:00"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="30sp" />
-
-                <RelativeLayout
-                    android:id="@+id/rectangulo_blanco2"
-                    android:layout_width="match_parent"
-                    android:layout_height="270dp"
-                    android:layout_below="@id/text_otrahora"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="3dp"
-                    android:elevation="10dp">
-
-                    <ImageView
-                        android:layout_width="373dp"
-                        android:layout_height="127dp"
-                        android:layout_marginStart="15dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/background_rounded_blanco" />
-
-                    <TextView
-                        android:id="@+id/texto_medicinaSalbu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/inter_semibold"
-                        android:text="Salbutamol"
-                        android:textColor="@android:color/black"
-                        android:textSize="25sp" />
-
-                    <TextView
-                        android:id="@+id/texto_cant2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_medicinaSalbu"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="3 Inhalación(es)"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/texto_como2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/texto_cant2"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="Agitar bien antes de inhalar ..."
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
             </ScrollView>
 
         </RelativeLayout>

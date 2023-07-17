@@ -197,15 +197,17 @@
 
             <ScrollView
                 android:layout_width="match_parent"
+                android:layout_marginTop="150dp"
                 android:layout_height="match_parent">
 
                 <RelativeLayout
                     android:id="@+id/recordatorios"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="150dp"
                     android:layout_below="@id/calendario"
-                    android:background="@color/gris">
+                    android:layout_marginTop="1dp"
+                    android:background="@color/gris"
+                    android:fillViewport="true">
 
                     <LinearLayout
                         android:id="@+id/hora"
