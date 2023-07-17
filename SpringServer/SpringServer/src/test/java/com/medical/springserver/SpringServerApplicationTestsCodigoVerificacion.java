@@ -22,7 +22,6 @@ public class SpringServerApplicationTestsCodigoVerificacion {
 	@Test
 	void addCodigoVerificacionTest(){
 		CodigoVerificacion codigoverificacion = new CodigoVerificacion();
-		codigoverificacion.setCodVerificacion("1701");
 		codigoverificacionDao.save(codigoverificacion);
 	}
 	
