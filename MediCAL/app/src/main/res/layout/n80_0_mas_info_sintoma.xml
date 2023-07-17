@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_seguimiento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp">
+
+            <ImageView
+                android:id="@+id/boton_volver"
+                android:layout_width="25dp"
+                android:layout_height="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/flecha_atras"
+                app:tint="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!-- NombreSeguimientoElegido luego se reemplaza con el nombre
+             del seguimiento seleccionado-->
+            <TextView
+                android:id="@+id/texto_seguimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="NombreSeguimiento"
+                android:textColor="#FFF"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@id/boton_volver"
+                app:layout_constraintTop_toTopOf="@id/boton_volver"
+                app:layout_constraintBottom_toBottomOf="@id/boton_volver"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="-4dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gris"
+            android:layout_marginTop="100dp"            >
+
+            <RelativeLayout
+                android:id="@+id/seguimientos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gris"
+                android:layout_centerHorizontal="true" >
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/contenido"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:id="@+id/calendario"
+                                android:gravity="center">
+
+                            <LinearLayout
+                                android:id="@+id/dia_sem_mes_anio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:background="@drawable/background_rounded_blanco"
+                                android:layout_marginTop="15dp"
+                                >
+
+                                <!-- Según si elige Dia/Semana/Mes/Año debe
+                                mostrarse la fecha o rango seleccionado.
+                                Falta crear calendar_cell como en n13y14-->
+
+                                <TextView
+                                    android:id="@+id/dia"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Día"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textAlignment="center"
+                                    />
+                                <TextView
+                                    android:id="@+id/semana"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Semana"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textAlignment="center"
+                                    />
+                                <TextView
+                                    android:id="@+id/mes"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Mes"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textAlignment="center"
+                                    />
+                                <TextView
+                                    android:id="@+id/anio"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Año"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textAlignment="center"
+                                    />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/fecha_hoy_seleccionada"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_below="@+id/dia_sem_mes_anio"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginTop="10dp"
+                                >
+
+                                <TextView
+                                    android:id="@+id/previo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.3"
+                                    android:text="&lt;"
+                                    android:layout_marginStart="5dp"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:textSize="20sp"
+                                    android:onClick="Previo" />
+
+
+                                <!-- En este caso pone "MAY" pero dependería de
+                                lo seleccionado arriba-->
+                                <TextView
+                                    android:id="@+id/fecha_hoy"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="May"
+                                    android:textAlignment="center"
+                                    android:layout_toRightOf="@id/previo"
+                                    android:textColor="@color/verdeTextos"
+                                    android:fontFamily="@font/inter_medium"
+                                    android:textSize="24sp"
+                                    android:layout_marginBottom="10dp"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/posterior"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.3"
+                                    android:text="&gt;"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_toRightOf="@id/fecha_hoy"
+                                    android:textColor="@color/black"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:textSize="20sp"
+                                    android:onClick="Posterior"
+                                    android:gravity="end"/>
+
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/texto_titulo_grafico"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="30dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="10dp"
+                                android:text="NombreSeguimiento"
+                                android:textSize="24dp"
+                                android:layout_below="@+id/fecha_hoy_seleccionada"
+                                android:textColor="@android:color/black"
+                                />
+
+                            <!-- Imagen Gráfico -->
+                            <RelativeLayout
+                                android:id="@+id/rectangle_grafico"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_below="@+id/texto_titulo_grafico"
+                                android:background="@drawable/background_rounded_blanco">
+
+                                <!-- Ajustar altura (height) según el gráfico -->
+                                <ImageView
+                                    android:id="@+id/videoImageView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="160dp"
+                                    android:scaleType="fitCenter"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"/>
+
+                            </RelativeLayout>
+
+                            <!-- Ej Medicion 1 -->
+                            <RelativeLayout
+                                android:id="@+id/rectangle_medicion1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_below="@id/rectangle_grafico"
+                                android:background="@drawable/background_rounded_blanco">
+
+                                <TextView
+                                    android:id="@+id/texto_titulo_medicion1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="25dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="Fecha y Hora 1"
+                                    android:textSize="24dp"
+                                    android:textAlignment="center"
+                                    android:textStyle="bold"
+                                    app:layout_constraintVertical_bias="0.5" />
+
+
+                                <ImageView
+                                    android:id="@+id/imagen_medicion1_2"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginEnd="20dp"
+                                    android:layout_marginBottom="20dp"
+                                    android:src="@drawable/eliminar_tacho_basura"
+                                    android:layout_alignParentEnd="true"  />
+
+                            </RelativeLayout>
+
+                            <!-- Ej Medicion 2 -->
+                            <RelativeLayout
+                                android:id="@+id/rectangle_medicion2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_below="@id/rectangle_medicion1"
+                                android:background="@drawable/background_rounded_blanco">
+
+                                <TextView
+                                    android:id="@+id/texto_titulo_medicion2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="25dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="Fecha y Hora 2"
+                                    android:textSize="24dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/imagen_medicion2_2"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginEnd="20dp"
+                                    android:layout_marginBottom="20dp"
+                                    android:src="@drawable/eliminar_tacho_basura"
+                                    android:layout_alignParentEnd="true"  />
+
+                            </RelativeLayout>
+
+                            <!-- Ej Medicion 3 -->
+                            <RelativeLayout
+                                android:id="@+id/rectangle_medicion3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_below="@id/rectangle_medicion2"
+                                android:background="@drawable/background_rounded_blanco">
+
+                                <TextView
+                                    android:id="@+id/texto_titulo_medicion3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="25dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="Fecha y Hora 3"
+                                    android:textSize="24dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/imagen_medicion3_2"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginEnd="20dp"
+                                    android:layout_marginBottom="20dp"
+                                    android:src="@drawable/eliminar_tacho_basura"
+                                    android:layout_alignParentEnd="true"  />
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
