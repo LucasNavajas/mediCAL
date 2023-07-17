@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>MediCAL | Inicio de sesión</title>
+  <meta charset="UTF-8">
+  
+  <!--Iconito de la pestaña-->
+  <link rel="icon" href="img/Icono_MediCAL_Web.png">
+
+  <!--referencio el archivo de estilos-->
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .custom-card {
+      margin-bottom: 20px;
+    }
+
+    .custom-card:first-child {
+      border: 1px solid var(--fourth-color);
+    }
+
+    .custom-image1 {
+      width: 250px;
+      height: auto;
+      margin-bottom: 10pt;
+    }
+
+    .custom-image2 {
+      width: 400px;
+      height: auto;
+    }
+
+    .card-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .custom-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 32px;
+      color: var(--second-color);
+      margin-bottom: 40px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .form-group label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      color: var(--second-color);
+      margin-bottom: 4pt;
+    }
+
+    .form-group input {
+      border: none;
+      width: 350px;
+      border-bottom: 1px solid var(--second-color);
+      padding: 1px 0 8px 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      color: var(--second-color);
+      background-color: transparent;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 0;
+      bottom: 10px;
+      cursor: pointer;
+    }
+
+    .form-row label {
+      margin-right: 50px;
+      margin-top: 7px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("img/fondo.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    .container {
+      position: relative;
+      margin: 20px auto;
+      max-width: auto;
+      padding: 20px;
+    }
+
+    .background-white {
+      position: relative;
+      background-color: var(--fourth-color);
+      margin: -20px;
+      padding: 1px;
+    }
+
+    .content {
+      padding: auto;
+    }
+
+    .content h1 {
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 12pt;
+      text-align: center;
+      margin-top: -40px;
+    }
+    /*para que sea responsive*/
+    @media (min-width: 768px) and (max-width: 990px) {
+      .custom-card {
+        flex-direction: column;
+      }
+
+      .card-title.custom-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+
+      .form-group input {
+        width: 100%;
+      }
+
+      .toggle-password {
+        bottom: 5px;
+      }
+
+      .form-row label {
+        margin-right: 20px;
+        margin-top: 5px;
+      }
+
+      button.click-animation {
+        width: 100%;
+        padding: 8px 16px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="background-white">
+      <div class="content">
+        <h1 style="margin-top:24px;">Sistema de seguimiento de consumo de medicamentos MediCAL</h1>
+        <div class="container">
+          <!--cards-->
+          <div class="row">
+            <!--card 1 imagenes de logo-->
+            <div class="col-md-6">
+              <div class="card custom-card">
+                <div class="card-body">
+                  <img src="img/Icono_MediCAL_Web.png" class="img-fluid custom-image1" alt="Imagen icono">
+                  <img src="img/nombre_eslogan.png" class="img-fluid custom-image2" alt="Imagen nombre_eslogan">
+                </div>
+              </div>
+            </div>
+            <!--card 2 inicio sesion-->
+            <div class="col-md-6">
+              <div class="card custom-card" style="background-color: var( --bg-second-alpha-color);">
+                <div class="card-body">
+                  <h5 class="card-title custom-title">BIENVENIDO</h5>
+                  <!-- Campo de mail -->
+                  <div class="form-group">
+                    <label for="email">Email / Nombre de usuario</label>
+                    <input type="text" class="form-control" id="email" placeholder="Ingrese su email o nombre de usuario" style="color: (--fifth-color);">
+                  </div>
+                  <!-- Campo contraseña -->
+                  <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <!-- Para ocultar/mostrar la contraseña + icono -->
+                    <div class="password-input">
+                      <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" style="color: (--fifth-color);">
+                      <i class="toggle-password fas fa-eye"></i>
+                    </div>
+                  </div>
+                  <!--Checkbox recordarme y olvide mi contraseña-->
+                  <div class="form-row">
+                    <input type="checkbox" id="remember" name="remember" style="margin-right: 10pt;">
+                    <label for="remember" style="font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif;">Recordarme</label>
+                    <a href="#" style="margin-top: 7px; font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif; color: var(--first-color);">¿Olvidaste tu contraseña?</a>
+                  </div>
+
+                  <!--boton de ingresar-->
+                  <form action="tu_ruta_de_destino.html" method="POST">
+                    <div class="form-group" style="margin-top: 10pt;">
+                      <button type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--second-color); color:var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 300px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">INGRESAR</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!--codigo para ocultar/mostrar contraseña-->
+  <script>
+    $(document).ready(function() {
+      $('.toggle-password').click(function() {
+        $(this).toggleClass('fa-eye fa-eye-slash');
+        var input = $(this).parent().find('input');
+        if (input.attr('type') === 'password') {
+          input.attr('type', 'text');
+        } else {
+          input.attr('type', 'password');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

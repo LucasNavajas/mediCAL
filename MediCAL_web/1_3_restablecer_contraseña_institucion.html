@@ -1,0 +1,218 @@
+<!--Restablecer contraseña adm institucion (si lo toca en PW N°18 y PW N°3)-->
+<!--Esta pantalla web se corresponde a la pantalla PM N°25-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MediCAL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
+    <!--Iconos que uso de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <!--Tipografia Fuente:Inter sacada de google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <!--referencio el archivo de estilos-->
+    <link rel="stylesheet" href="css/style.css"/>
+    <!--Iconito de la pestaña-->
+    <link rel="icon" href="img/Icono_MediCAL_Web.png">
+    <style>
+        /* ventana popup*/
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+        /*boton*/
+        .popup-content .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .popup-content .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Estilos para el botón de flecha */
+        .btn-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .btn-back i {
+            vertical-align: middle;
+        }
+        
+        /*etiquetas e inputs*/
+        /*campos editables*/
+        label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            margin-right: 5px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-top: 50px;
+        }
+
+        .input-group {
+            position: relative;
+            text-align: left;
+        }
+
+        input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 15px;
+            padding-right: 30px; /* Ajusta el espacio para el ícono */
+            text-align: left;
+        }
+
+        input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 35%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .toggle-password i {
+            font-size: 20px;
+        }
+        .forgot-password-container {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .forgot-password-link {
+            font-weight: normal;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            color: var(--first-color);
+            display: block;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <button onclick="openDialog()">Abrir pop-up</button>
+
+    <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog" class="popup-content">
+        <a href="#" class="btn-back" onclick="closeDialog()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!--Campos editables-->
+        <label for="campo_contraseña_actual">Escriba su contraseña actual</label>
+        <div class="input-group">
+            <input type="password" id="campo_contraseña_actual" placeholder="Contraseña actual">
+            <span class="toggle-password" onclick="togglePassword('campo_contraseña_actual', 'eye-icon-actual')">
+                <i class="bi bi-eye-slash-fill" id="eye-icon-actual"></i>
+            </span>
+        </div>
+        
+        <div class="forgot-password-container">
+            <a href="#" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
+        </div>
+        
+        <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
+        <div class="input-group">
+            <input type="password" id="campo_contraseña_nueva" placeholder="Contraseña nueva">
+            <span class="toggle-password" onclick="togglePassword('campo_contraseña_nueva', 'eye-icon-nueva')">
+                <i class="bi bi-eye-slash-fill" id="eye-icon-nueva"></i>
+            </span>
+        </div>
+        
+         <!--boton de ingresar-->
+         <form action="tu_ruta_de_destino.html" method="POST">
+            <div class="form-group" style="margin-top: 10pt;">
+              <button type="submit" class="click-animation" style="margin-bottom: 25px;margin-top:10px;border: none; border-radius: 100px; background-color: var(--second-color); color:var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 300px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+            </div>
+          </form>
+
+    <script>
+        function openDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+        }
+
+        function closeDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "none";
+            overlay.style.opacity = "0";
+            dialog.style.display = "none";
+        }
+
+        function togglePassword(inputId, eyeIconId) {
+            var input = document.getElementById(inputId);
+            var eyeIcon = document.getElementById(eyeIconId);
+            if (input.type === "password") {
+                input.type = "text";
+                eyeIcon.classList.remove("bi-eye-slash-fill");
+                eyeIcon.classList.add("bi-eye-fill");
+            } else {
+                input.type = "password";
+                eyeIcon.classList.remove("bi-eye-fill");
+                eyeIcon.classList.add("bi-eye-slash-fill");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+/* *********** Custom properties *********** */
+/* GENERICAS INDEX*/
+:root {
+    /* Colores y una opacidad del 0.75 */
+    /* Azul */
+    --first-color: rgb(0, 129, 167);
+    --first-alpha-color: rgba(0, 129, 167, 0.15);
+    /* Verde */
+    --second-color: rgb(0, 175, 185);
+    --second-alpha-color: rgba(0, 175, 185, 0.15);
+    /* Rojo */
+    --third-color: rgb(240, 113, 103);
+    --third-alpha-color: rgba(240, 113, 103, 0.15);
+    /* Blanco */
+    --fourth-color: rgb(255, 255, 255);
+    --fourth-alpha-color: rgba(255, 255, 255, 0.15);
+    /* Negro */
+    --fifth-color: rgb(0, 0, 0);
+    --fifth-alpha-color: rgba(0, 0, 0, 0.15);
+    /* Gris claro */
+    --sixth-color: rgb(217, 217, 217);
+    --sixth-alpha-color: rgba(217, 217, 217, 0.15);
+    /* Gris oscuro */
+    --seventh-color: rgb(128, 128, 128);
+    --seventh-alpha-color: rgba(128, 128, 128, 0.15);
+  
+    /* Para links */
+    --link-color: rgb(0, 129, 167);
+    --link-alpha-color: rgba(0, 129, 167, 0.15);
+  
+    /* Para fondos */
+    --bg-first-color: rgba(255, 255, 255,0.15);
+    --bg-second-color: rgb(0, 175, 185);
+    --bg-second-alpha-color: rgba(0, 175, 185, 0.15);
+    --bg-third-color: rgb(0, 129, 167);
+    --bg-third-alpha-color: rgba(0, 129, 167, 0.15); 
+  }
+
+ /* fuente*/ 
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+    
+/*navbar personalizo el tamaño de la barra (alto)*/ 
+  .navbar-custom {
+    height: 41px;
+    padding-top: 0.5px;
+    padding-bottom: 0.5px;
+  }
+  
+  .navbar-custom .navbar-brand {
+    margin-right: 0;
+    font-size: 10pt;
+  }
+  
+  .navbar-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-date-time {
+    margin-right: 10px;
+  }
+
+  /* tamaño de small text*/
+  .small-text {
+    font-size: 11px; /* Ajusta el tamaño de la letra según tus preferencias */
+  }
+  
+  /* color de pie de pagina*/
+  .footer-bg {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: var(--fifth-color);
+    padding: 10px 0;
+    text-align: center;
+    margin-top: -50px; /* Ajusta este valor según tus necesidades */
+  }
+  
+/* USADAS PARA INICIO DE SESION */
+
+  /* card 1 de inicio sesion imagenes centradas y al medio*/
+
+  .card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /*checkbox recordarme*/
+  .form-check-input {
+    font-size: 20px;
+    color: black;
+}
+
+.form-check-label {
+    font-size: 20px;
+    color: black;
+    margin-left: 10px; /* Ajusta el margen izquierdo según tus preferencias */
+}
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @media (max-width: 767px) {
+    .btn-custom {
+      width: 50%;
+      margin-bottom: 10px;
+    }
+  }
+
+
+/*animacion boton ingresar (inicio de sesion)*/
+@keyframes click-effect {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .click-animation {
+    animation: click-effect 0.2s;
+  }
+  
+  /*margenes botones (pantalla principal)*/
+  .button-margin {
+    margin: 5px;
+  }
+
+  /* BOTON ATRÁS*/
+  .btn-back {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-back i {
+    font-size: 28px;
+    color: #000000;
+  }
+  
+
+
+
+
+
+
+ 
+  
+  /* *********** Media queries *********** */
+  /* // X-Small devices (portrait phones, less than 576px)
+      // No media query for `xs` since this is the default in Bootstrap */
+  /* // Small devices (landscape phones, 576px and up) */
+  @media (min-width: 576px) {
+  
+  }
+  
+  /* // Medium devices (tablets, 768px and up) */
+  @media (min-width: 768px) {
+  
+  }
+  
+  /* // Large devices (desktops, 992px and up) */
+  @media (min-width: 992px) {
+  
+  }
+  
+  /* // X-Large devices (large desktops, 1200px and up) */
+  @media (min-width: 1200px) {
+  
+  }
+  
+  /* // XX-Large devices (larger desktops, 1400px and up) */
+  @media (min-width: 1400px) {
+  
+  }
+
+
+
+
+

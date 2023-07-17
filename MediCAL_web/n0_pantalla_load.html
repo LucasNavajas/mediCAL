@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MediCAL</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
+  <!--Iconos que uso de bootstrap-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootsrap-icons@1.10.2/font/bootstrap-icons.css"/>
+  <!--Tipografia Fuente:Inter sacada de google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <!--referencio el archivo de estilos-->
+  <link rel="stylesheet" href="css/style.css"/>
+  <!--Iconito de la pestaña-->
+  <link rel="icon" href="img/Icono_MediCAL_Web.png">
+<style>
+    body {
+      background-color: var(--bg-second-color);
+    }
+
+    .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Ajusta la altura según tus necesidades */
+    margin-top: 150px; /* Ajusta el margen superior según tus necesidades */
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+    }
+
+    .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    }
+
+    /*para el svg*/
+    .svg-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Ajusta el margen superior según tus necesidades */
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+    }
+
+    .svg-container svg {
+    max-width: 100%;
+    max-height: 100%;
+    }
+
+    circle:nth-of-type(1) { fill: #ffffff; }
+    circle:nth-of-type(2) { fill: #d9d9d9; }
+    circle:nth-of-type(3) { fill: #0081A7; }
+    circle:nth-of-type(4) { fill: #000000; }
+    
+</style>
+</head>
+<body>
+    <!--logo-->
+  <div class="image-container">
+    <img src="img/nombre_eslogan_verde.png" alt="Logo y eslogan verde">
+  </div>
+    <!--loader-->
+    <div class="svg-container">
+    <!-- Agrega aquí tu SVG -->
+    <svg width="300" height="120" id="loader">
+        <!-- Left arc path -->
+        <svg>
+          <path id="arc-left-up" fill="none" d="M 90 90 A 90 90 0 0 1 0 0"/>
+        </svg>
+        <!-- Right arc path -->
+        <svg>
+          <path id="arc-right-up" fill="none" d="M 100 90 A 90 90 0 0 0 190 0"/>
+        </svg>
+        
+
+        <circle cx="15" cy="15" r="15">
+          <!-- I used a python script to calculate the keyPoints and keyTimes based on a quadratic function. -->
+          <animateMotion dur="1.5s" repeatCount="indefinite"
+            calcMode="linear"
+            keyPoints="0.0;0.19;0.36;0.51;0.64;0.75;0.84;0.91;0.96;0.99;1.0;0.99;0.96;0.91;0.84;0.75;0.64;0.51;0.36;0.19;0.0;0.0;0.05;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+            keyTimes="0.0;0.025;0.05;0.075;0.1;0.125;0.15;0.175;0.2;0.225;0.25;0.275;0.3;0.325;0.35;0.375;0.4;0.425;0.45;0.475;0.5;0.525;0.55;0.575;0.6;0.625;0.65;0.675;0.7;0.725;0.75;0.775;0.8;0.825;0.85;0.875;0.9;0.925;0.95;0.975;1.0">
+            <mpath xlink:href="#arc-left-up"/>
+          </animateMotion>
+        </circle>
+        <circle cx="135" cy="105" r="15" />
+        <circle cx="165" cy="105" r="15" />
+        <circle cx="95" cy="15" r="15">
+          <animateMotion dur="1.5s" repeatCount="indefinite"
+            calcMode="linear"
+            keyPoints="0.0;0.0;0.05;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0.19;0.36;0.51;0.64;0.75;0.84;0.91;0.96;0.99;1.0;0.99;0.96;0.91;0.84;0.75;0.64;0.51;0.36;0.19;0.0"
+            keyTimes="0.0;0.025;0.05;0.075;0.1;0.125;0.15;0.175;0.2;0.225;0.25;0.275;0.3;0.325;0.35;0.375;0.4;0.425;0.45;0.475;0.5;0.525;0.55;0.575;0.6;0.625;0.65;0.675;0.7;0.725;0.75;0.775;0.8;0.825;0.85;0.875;0.9;0.925;0.95;0.975;1.0">
+            <mpath xlink:href="#arc-right-up"/>
+          </animateMotion>
+        </circle>
+      </svg>
+
+  </div>
+</body>
