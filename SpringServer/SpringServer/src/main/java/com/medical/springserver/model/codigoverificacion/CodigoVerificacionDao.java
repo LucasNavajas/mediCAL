@@ -15,13 +15,13 @@ public class CodigoVerificacionDao {
 	@Autowired
 	private CodigoVerificacionRepository repository;
 	
-	public CodigoVerificacion save(CodigoVerificacion CodigoVerificacion){
-		if(repository.existsByCodVerificacion(CodigoVerificacion.getCodVerificacion())) {
+	public CodigoVerificacion save(CodigoVerificacion codigoVerificacion){
+		if(repository.existsByCodVerificacion(codigoVerificacion.getCodVerificacion())) {
 		do {
-            CodigoVerificacion = new CodigoVerificacion();
-        } while (repository.existsByCodVerificacion(CodigoVerificacion.getCodVerificacion()));
+            codigoVerificacion = new CodigoVerificacion();
+        } while (repository.existsByCodVerificacion(codigoVerificacion.getCodVerificacion()));
 		}
-		return repository.save(CodigoVerificacion);
+		return repository.save(codigoVerificacion);
 	}
 	
 	public List<CodigoVerificacion> getAllCodigosVerificacion(){
