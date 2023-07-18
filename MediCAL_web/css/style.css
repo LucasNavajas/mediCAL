@@ -95,12 +95,12 @@
   /*checkbox recordarme*/
   .form-check-input {
     font-size: 20px;
-    color: black;
+    color: var(--fifth-color);
 }
 
 .form-check-label {
     font-size: 20px;
-    color: black;
+    color: var(--fifth-color);
     margin-left: 10px; /* Ajusta el margen izquierdo según tus preferencias */
 }
 
@@ -158,18 +158,133 @@
   
   .btn-back i {
     font-size: 28px;
-    color: #000000;
+    color: var(--fifth-color);
+  }
+
+  /*****TABLAS******/
+  /*Estilo para tablas*/
+
+  table {
+    border-collapse: collapse;
+    width: 90%;
+    font-size: 16px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
-
-
-
-
-
-
- 
+  th {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--fourth-color);
+    background-color: var(--bg-second-color);
+    text-align: center;
+    border: 1px solid var(--fifth-color);
+    padding: 8px;
+    word-break: break-all;
+    cursor: pointer;
+  }
   
-  /* *********** Media queries *********** */
+  td {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--fifth-color);
+    background-color: var(--fourth-color);
+    border: 1px solid var(--fifth-color);
+    padding: 8px;
+    text-align: left;
+    word-break: break-all;
+    user-select: text;
+    cursor: pointer;
+  }
+  /*Cuando seleccione una celda marque la fila*/
+  tr.clicked td {
+    background-color: var(--sixth-color);
+  }
+  
+  td:focus {
+    outline: none;
+  }
+  
+  tr:focus-within td {
+    background-color: var(--sixth-color);
+    font-weight: 600;
+  }
+ 
+  td:last-of-type {
+    border-bottom: none;
+    border-right: none;
+    border-top: none;
+  }
+ 
+  /*para el buscador de adentro*/
+  .search-input {
+    display: none;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    align-items: center;
+  justify-content: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: black;
+  }
+
+  .search-container {
+    position: relative;
+  }
+
+  .search-container.active .search-input {
+    display: block;
+  }
+
+  /*para los iconos de cada fila*/
+  .edit-delete-icons {
+    display: flex;
+    align-items: center;
+  }
+
+  .edit-delete-icons i:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  .edit-revert-icons {
+    display: none;
+    align-items: center;
+  }
+
+  .edit-revert-icons i:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  .deleted-row {
+    background-color: red;
+  }
+
+  .deleted-row .edit-delete-icons {
+    display: none;
+  }
+
+  .deleted-row .edit-revert-icons {
+    display: flex;
+  }
+
+  .deleted-row td {
+    color: red;
+  }
+/***** FIN TABLAS******/
+
+/* *********** Media queries *********** */
   /* // X-Small devices (portrait phones, less than 576px)
       // No media query for `xs` since this is the default in Bootstrap */
   /* // Small devices (landscape phones, 576px and up) */
