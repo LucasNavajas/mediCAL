@@ -3,6 +3,7 @@ package com.example.medical;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,16 @@ public class LeerTYCActivity extends AppCompatActivity {
 
         Button buttonFlagArg = findViewById(R.id.buttonFlagArg);
         mostrarTextoEspaniol();
+
+        ImageView backButton = findViewById(R.id.boton_cerrar);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción de volver hacia atrás
+                onBackPressed();
+            }
+        });
         buttonFlagArg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
