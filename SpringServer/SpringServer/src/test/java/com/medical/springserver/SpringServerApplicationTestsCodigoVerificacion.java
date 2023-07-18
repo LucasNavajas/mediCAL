@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacionDao;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacionRepository;
+import com.medical.springserver.model.usuario.Usuario;
 
 
 @SpringBootTest(classes = {com.medical.springserver.SpringServerApplication.class})
@@ -22,6 +23,23 @@ public class SpringServerApplicationTestsCodigoVerificacion {
 	@Test
 	void addCodigoVerificacionTest(){
 		CodigoVerificacion codigoverificacion = new CodigoVerificacion();
+		
+		LocalDate fechaNacimiento = LocalDate.of(2001, 4, 3);
+		// Obtener la fecha de hoy
+		LocalDate fechaHoy = LocalDate.now();
+		
+		Usuario usuario = new Usuario();
+		usuario.setUsuarioUnico("usuario1");
+		usuario.setApellidoUsuario("Navajas");
+		usuario.setContraseniaUsuario("contraseñaHash?");
+		usuario.setFechaNacimientoUsuario(fechaNacimiento);
+		usuario.setFechaAltaUsuario(fechaHoy);
+		usuario.setGeneroUsuario("Hombre");
+		usuario.setMailUsuario("lucasnavajas@gmail.com");
+		usuario.setNombreInstitucion("Hospital2");
+		usuario.setNombreUsuario("Lucas");
+		usuario.setTelefonoUsuario("3756409336");
+		codigoverificacion.setUsuario(usuario);
 		codigoverificacionDao.save(codigoverificacion);
 	}
 	

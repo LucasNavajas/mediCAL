@@ -7,6 +7,7 @@ import retrofit2.http.GET;
 import java.util.*;
 import retrofit2.Call;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 
 public interface UsuarioApi {
@@ -16,5 +17,8 @@ public interface UsuarioApi {
 
     @POST("/usuario/save")
     Call<Usuario> save(@Body Usuario usuario);
+
+    @PUT("ruta_del_endpoint/modificarUsuario")
+    Call<Usuario> modificarUsuario(@Body Usuario usuario);
 
 }

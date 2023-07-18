@@ -39,6 +39,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
         RetrofitService retrofitService = new RetrofitService();
         CodigoVerificacionApi codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
+        UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
 
         Button buttonIngresar = findViewById(R.id.button_ingresar);
         ImageView buttonVolver = findViewById(R.id.boton_volver);
@@ -59,31 +60,36 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                 String emailAddress = textoMail;
                 CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
 
-                codigoVerificacionApi.save(codigoVerificacion).enqueue(new Callback<CodigoVerificacion>() {
-                    @Override
-                    public void onResponse(Call<CodigoVerificacion> call, Response<CodigoVerificacion> response) {
-                        if (response.isSuccessful()) {
-                            CodigoVerificacion codigoVerificacionRespuesta = response.body();
-                            String verificationCode = codigoVerificacionRespuesta.getCodVerificacion(); // Utiliza el código de verificación recibido del servidor
 
-                            SendEmailTask sendEmailTask = new SendEmailTask(emailAddress, verificationCode);
-                            sendEmailTask.execute();
-                            Intent intent = new Intent(CrearCuenta1Activity.this, CrearCuenta2Activity.class);
-                            intent.putExtra("usuario", textoUsuario);
-                            intent.putExtra("contrasenia", textoContrasenia);
-                            intent.putExtra("mail", textoMail);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(CrearCuenta1Activity.this, "Error al crear el código", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(CrearCuenta1Activity.class.getName()).log(Level.SEVERE, "Error ocurred");
-                        }
-                    }
+                Usuario usuario1 = new Usuario();
+                usuario1.setUsuarioUnico(textoUsuario);
+                usuario1.setContraseniaUsuario(textoContrasenia);
+                usuario1.setMailUsuario(textoMail);
+                usuario1.setCodigoVerificacion(codigoVerificacion);
 
-                    @Override
-                    public void onFailure(Call<CodigoVerificacion> call, Throwable t) {
-                        Toast.makeText(CrearCuenta1Activity.this, "Error al crear el codigo", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                usuarioApi.save(usuario1)
+                        .enqueue(new Callback<Usuario>() {
+                            @Override
+                            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                                Intent intent = new Intent(CrearCuenta1Activity.this, CodigoVerificacionActivity.class);
+                                Usuario usuarioInsertado = response.body();
+                                // Aquí tienes el ID generado automáticamente por la base de datos
+                                int idUsuarioGenerado = usuarioInsertado.getCodUsuario();
+                                SendEmailTask sendEmailTask = new SendEmailTask(emailAddress, codigoVerificacion.getCodVerificacion());
+                                sendEmailTask.execute();
+                                intent.putExtra("usuario", textoUsuario);
+                                intent.putExtra("contrasenia", textoContrasenia);
+                                intent.putExtra("mail", textoMail);
+                                intent.putExtra("codusuario", idUsuarioGenerado);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Usuario> call, Throwable t) {
+                                Toast.makeText(CrearCuenta1Activity.this, "Error al crear el usuario", Toast.LENGTH_SHORT).show();
+                                Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error ocurred");
+                            }
+                        });
             }
             else{
                 Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,8 @@
 package com.medical.springserver.model.usuario;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
@@ -32,5 +34,36 @@ public class UsuarioDao {
 	public void delete(Usuario usuario) {
 		repository.delete(usuario);
 	}
+	
+	public Usuario modificarUsuario(int codUsuario, String nuevoNombre, String nuevoApellido,
+            String nuevaContrasenia, LocalDate nuevaFechaAlta, 
+            LocalDate nuevaFechaNacimiento, String nuevoGenero,
+            String nuevoMail, String nuevoNombreInstitucion,
+            String nuevoTelefono, String nuevoUsuarioUnico) {
+			// Paso 1 (opcional): Buscar el usuario por su ID
+			Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
+			Usuario usuario;
+			if (optionalUsuario.isPresent()) {
+			usuario = optionalUsuario.get();
+			} else {
+			// Si no se encontró el usuario, puedes crear uno nuevo (opcional)
+			usuario = new Usuario();
+			}
+			
+			// Paso 2: Realizar los cambios necesarios
+			usuario.setNombreUsuario(nuevoNombre);
+			usuario.setApellidoUsuario(nuevoApellido);
+			usuario.setContraseniaUsuario(nuevaContrasenia);
+			usuario.setFechaAltaUsuario(nuevaFechaAlta);
+			usuario.setFechaNacimientoUsuario(nuevaFechaNacimiento);
+			usuario.setGeneroUsuario(nuevoGenero);
+			usuario.setMailUsuario(nuevoMail);
+			usuario.setNombreInstitucion(nuevoNombreInstitucion);
+			usuario.setTelefonoUsuario(nuevoTelefono);
+			usuario.setUsuarioUnico(nuevoUsuarioUnico);
+			
+			// Paso 3: Guardar los cambios en la base de datos
+			return repository.save(usuario);
+			}
 	
 }
