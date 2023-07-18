@@ -1,9 +1,3 @@
-<!--CU N°3-->
-<!--olvide contraseña institucion (si lo toca en PW N°11 o en pantalla 1_3_restablecer_contraseña_institucion.html)-->
-<!--Esta pantalla web se corresponde a la pantalla PM N°10-->
-<!--despues de esta pantalla va a 1_1_restablecer_contraseña_institucion.html-->
-<!--despues de 1_1_restablecer_contraseña_institucion.html va a 1_2_restablecer_contraseña_institucion.html-->
-<!--despues de 1_2_restablecer_contraseña_institucion.html va a 1_2_olvide mi contrasenia-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,18 +47,18 @@
 
         .popup-content h3 {
             margin-top: 0;
-            color: var( --fifth-color);
+            color: var(--fifth-color);
             font-size: 22px;
             font-weight: 600px;
             font-family: 'Inter', sans-serif;
             margin-bottom: 10px;
             text-align: left;
         }
- /*etiquetas e inputs*/
-        /*campos editables*/
+
+        /* Etiquetas e inputs */
         label {
             color: var(--fifth-color);
-            font-weight:400px;
+            font-weight: 400px;
             font-size: 18px;
             margin-right: 5px;
             display: block;
@@ -77,10 +71,11 @@
             border: none;
             border-bottom: 1px solid var(--seventh-color);
             outline: none;
-            font-weight:400px;
+            font-weight: 400px;
             font-size: 18px;
             width: 100%;
-            margin-bottom: 15px;
+            max-width: 100%;
+            margin-bottom: 5px;
             text-align: left;
         }
 
@@ -124,6 +119,18 @@
         .popup-content .popup-buttons .accept-button {
             order: 2;
         }
+
+        /* Estilos para la alerta de correo inválido */
+        .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
+
+        .popup-content .alert {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -136,12 +143,11 @@
         
         <!--Campos editables-->
         <label for="campo_email">Email</label>
-        <input type="text" id="campo_email" placeholder="Ingrese la dirección de correo de su cuenta" style="width: 500px" >
-
+        <input type="text" id="campo_email" placeholder="Ingrese la dirección de correo de su cuenta" style="width: 500px">
 
         <div class="popup-buttons">
             <button class="cancel-button" onclick="cancelDialog()">CANCELAR</button>
-            <button class="accept-button" onclick="closeDialog()">ACEPTAR</button>
+            <button class="accept-button" onclick="validateEmail()">ACEPTAR</button>
         </div>
     </div>
 
@@ -169,6 +175,29 @@
             overlay.style.display = "none";
             overlay.style.opacity = "0";
             dialog.style.display = "none";
+        }
+        /*funcion para el alerta*/
+        function validateEmail() {
+            var emailInput = document.getElementById("campo_email");
+            var emailAlert = document.createElement("div");
+            emailAlert.classList.add("alert");
+            emailAlert.innerText = "Ingrese un correo electrónico válido.";
+            var parentElement = document.getElementById("popup-dialog");
+            parentElement.insertBefore(emailAlert, emailInput.nextSibling);
+
+            var email = emailInput.value;
+
+            // Expresión regular para validar el formato de correo electrónico
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (emailRegex.test(email)) {
+                // El correo es válido, se cierra el diálogo
+                closeDialog();
+            } else {
+                // El correo no es válido, se muestra la alerta
+                emailAlert.style.display = "block";
+                emailInput.focus();
+            }
         }
     </script>
 </body>

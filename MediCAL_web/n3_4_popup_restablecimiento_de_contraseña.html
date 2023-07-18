@@ -1,5 +1,3 @@
-<!--Restablecer contraseña adm institucion (si lo toca en PW N°18 y PW N°3)-->
-<!--Esta pantalla web se corresponde a la pantalla PM N°25-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,8 +43,6 @@
             transform: translate(-50%, -50%);
             z-index: 9999;
             display: none;
-            max-height: 80%;
-            overflow-y: auto;
         }
         /*boton*/
         .popup-content .popup-buttons {
@@ -110,7 +106,7 @@
             font-size: 18px;
             width: 100%;
             margin-bottom: 15px;
-            padding-right: 30px; /* Ajusta el espacio para el ícono */
+            padding-right: 60px; /* Ajusta el espacio para el ícono */
             text-align: left;
         }
 
@@ -143,6 +139,30 @@
             margin: 0;
         }
 
+        /* Estilos para la alerta */
+        .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
+
+        /* Estilos para los iconos de verificación y error */
+        .icon-check {
+            color: green;
+            position: absolute;
+            top: 35%;
+            right: 35px;
+            transform: translateY(-50%);
+        }
+
+        .icon-error {
+            color: red;
+            position: absolute;
+            top: 35%;
+            right: 35px;
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 <body>
@@ -158,10 +178,12 @@
         <!--Campos editables-->
         <label for="campo_contraseña_actual">Escriba su contraseña actual</label>
         <div class="input-group">
-            <input type="password" id="campo_contraseña_actual" placeholder="Contraseña actual">
+            <input type="password" id="campo_contraseña_actual" placeholder="Contraseña actual" oninput="checkPasswordMatch()">
             <span class="toggle-password" onclick="togglePassword('campo_contraseña_actual', 'eye-icon-actual')">
                 <i class="bi bi-eye-slash-fill" id="eye-icon-actual"></i>
             </span>
+            <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
+            <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon" style="display: none;"></i>
         </div>
         
         <div class="forgot-password-container">
@@ -170,11 +192,13 @@
         
         <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
         <div class="input-group">
-            <input type="password" id="campo_contraseña_nueva" placeholder="Contraseña nueva">
+            <input type="password" id="campo_contraseña_nueva" placeholder="Contraseña nueva" oninput="checkNewPassword()">
             <span class="toggle-password" onclick="togglePassword('campo_contraseña_nueva', 'eye-icon-nueva')">
                 <i class="bi bi-eye-slash-fill" id="eye-icon-nueva"></i>
             </span>
+            <i class="bi bi-check-circle-fill icon-check" id="new-password-match-icon" style="display: none;"></i>
         </div>
+        <div id="alert-container" class="alert"></div>
         
          <!--boton de ingresar-->
          <form action="tu_ruta_de_destino.html" method="POST">
@@ -211,6 +235,38 @@
                 input.type = "password";
                 eyeIcon.classList.remove("bi-eye-fill");
                 eyeIcon.classList.add("bi-eye-slash-fill");
+            }
+        }
+
+        function checkPasswordMatch() {
+            var currentPasswordInput = document.getElementById("campo_contraseña_actual");
+            var currentPassword = currentPasswordInput.value;
+            var passwordMatchIcon = document.getElementById("password-match-icon");
+            var passwordMismatchIcon = document.getElementById("password-mismatch-icon");
+
+            if (currentPassword === "qwerty") {
+                passwordMatchIcon.style.display = "inline";
+                passwordMismatchIcon.style.display = "none";
+            } else {
+                passwordMatchIcon.style.display = "none";
+                passwordMismatchIcon.style.display = "inline";
+            }
+        }
+
+        function checkNewPassword() {
+            var currentPasswordInput = document.getElementById("campo_contraseña_actual");
+            var currentPassword = currentPasswordInput.value;
+            var newPasswordInput = document.getElementById("campo_contraseña_nueva");
+            var newPassword = newPasswordInput.value;
+            var newPasswordMatchIcon = document.getElementById("new-password-match-icon");
+            var alertContainer = document.getElementById("alert-container");
+
+            if (newPassword === currentPassword) {
+                alertContainer.innerText = "Escriba una contraseña nueva, no puede ser igual a la anterior.";
+                newPasswordMatchIcon.style.display = "none";
+            } else {
+                alertContainer.innerText = "";
+                newPasswordMatchIcon.style.display = "inline";
             }
         }
     </script>

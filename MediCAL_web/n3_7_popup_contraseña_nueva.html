@@ -1,7 +1,3 @@
-<!--olvide contraseña institucion (si lo toca en PW N°11 o en pantalla 1_3_restablecer_contraseña_institucion.html)-->
-<!--despues de 1_2_restablecer_contraseña_institucion.html va a 1_2_olvide mi contrasenia-->
-<!--Esta pantalla web se corresponde a la pantalla PM N°25.2-->
-<!--despues de esta pantalla va a 1_5_restablecer_contraseña_institucion.html o 1_4_restablecer_contraseña_institucion.html-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,8 +43,6 @@
             transform: translate(-50%, -50%);
             z-index: 9999;
             display: none;
-            max-height: 80%;
-            overflow-y: auto;
         }
         /*boton*/
         .popup-content .popup-buttons {
@@ -111,7 +105,7 @@
             font-weight: 400px;
             font-size: 18px;
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
             padding-right: 30px; /* Ajusta el espacio para el ícono */
             text-align: left;
         }
@@ -166,6 +160,14 @@
             outline: none;
             border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
         }
+
+        /* Estilos para la alerta */
+        .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
     </style>
 </head>
 <body>
@@ -187,9 +189,11 @@
             </span>
         </div>
         
-         <!--boton de aceptar-->
-         <div class="popup-buttons">
-            <button onclick="closeDialog()" style="cursor: pointer;">ACEPTAR</button>
+        <div id="alert-container"></div> <!-- Contenedor para la alerta -->
+
+        <!--boton de aceptar-->
+        <div class="popup-buttons">
+            <button onclick="validatePassword()" style="cursor: pointer;">ACEPTAR</button>
         </div>
 
     <script>
@@ -220,6 +224,25 @@
                 input.type = "password";
                 eyeIcon.classList.remove("bi-eye-fill");
                 eyeIcon.classList.add("bi-eye-slash-fill");
+            }
+        }
+        /*verificar cantidad de caracteres de la contraseña*/
+        function validatePassword() {
+            var passwordInput = document.getElementById("campo_contraseña_nueva");
+            var password = passwordInput.value;
+            var errorMessage = document.createElement("div");
+            errorMessage.classList.add("alert");
+            errorMessage.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
+            var alertContainer = document.getElementById("alert-container");
+
+            if (password.length >= 6 && password.length <= 15) {
+                // Contraseña válida, se cierra el diálogo
+                closeDialog();
+            } else {
+                // Contraseña no válida, se muestra el mensaje de error
+                alertContainer.innerHTML = ""; // Limpiar mensajes anteriores
+                alertContainer.appendChild(errorMessage);
+                passwordInput.focus();
             }
         }
     </script>
