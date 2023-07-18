@@ -93,7 +93,7 @@
                 android:id="@+id/texto3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Autorizo a MediCAL a monitorear la actividad en la aplicación, obtener informaci´pon sobre su grupo de edad, estado de suscripción y uso de la aplicación. Esto ayuda para promocionar la aplicación y analizar su efectividad. Ver más en la Política de privacidad. *Opcional*"
+                android:text="Autorizo a MediCAL a monitorear la actividad en la aplicación, obtener información sobre su grupo de edad, estado de suscripción y uso de la aplicación. Esto ayuda para promocionar la aplicación y analizar su efectividad. Ver más en la Política de privacidad. *Opcional*"
                 android:gravity="top"
                 android:fontFamily="@font/inter_regular"
                 android:textColor="@color/black"
@@ -102,6 +102,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/aceptar_todo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"

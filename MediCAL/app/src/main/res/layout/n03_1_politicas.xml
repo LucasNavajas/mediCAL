@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
-    // ver actividad LeerPoliticasActivity
     <ImageView
         android:id="@+id/boton_cerrar"
         android:layout_width="25dp"
@@ -40,6 +39,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/botones_idiomas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -76,23 +76,40 @@
 
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/botones_idiomas"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tituloPoliticas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_regular"
+                    android:padding="16dp"
+                    android:text="POLÍTICA DE PRIVACIDAD - PROYECTO MediCAL"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/textViewPoliticas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="21sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_regular"
+                    android:padding="16dp" />
+            </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rectangle_top"
-        android:layout_marginTop="16dp">
 
-        <TextView
-            android:id="@+id/textViewPoliticas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="21sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/inter_regular"
-            android:padding="16dp" />
-
-    </ScrollView>
 </RelativeLayout>
 

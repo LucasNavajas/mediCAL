@@ -8,7 +8,10 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -20,6 +23,12 @@ public class PoliticasPrivacidadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n03_0_acuerdo_politicas_privacidad);
 
+        Button buttonSiguiente = findViewById(R.id.button_siguiente);
+        TextView aceptarTodo = findViewById(R.id.aceptar_todo);
+
+        CheckBox check1 = findViewById(R.id.checkBox1);
+        CheckBox check2 = findViewById(R.id.checkBox2);
+        CheckBox check3 = findViewById(R.id.checkBox3);
         TextView texto1 = findViewById(R.id.texto1);
         TextView texto2 = findViewById(R.id.texto2);
         TextView texto3 = findViewById(R.id.texto3);
@@ -30,6 +39,21 @@ public class PoliticasPrivacidadActivity extends AppCompatActivity {
         resaltarPalabras(texto1, "Términos y Condiciones de uso", LeerTYCActivity.class);
 
 
+        buttonSiguiente.setOnClickListener(view -> {
+            if(check1.isChecked() && check2.isChecked()) {
+                Intent intent = new Intent(PoliticasPrivacidadActivity.this, CrearCuenta1Activity.class);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Debe aceptar las políticas de privacidad y los términos y condiciones para crear una cuenta", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        aceptarTodo.setOnClickListener(view -> {
+            check1.setChecked(true);
+            check2.setChecked(true);
+            check3.setChecked(true);
+        });
 
     }
 

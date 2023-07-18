@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
-    /* ver actividad LeerTYCActivity
     <ImageView
         android:id="@+id/boton_cerrar"
         android:layout_width="25dp"
@@ -44,7 +43,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:id="@+id/botones_idiomas">
 
             <Button
                 android:id="@+id/buttonFlagArg"
@@ -75,24 +75,41 @@
                 android:layout_marginRight="16dp" />
 
         </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/botones_idiomas"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tituloTYC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_regular"
+                    android:padding="16dp"
+                    android:text="SERVICIO MEDICAL PARA USUARIOS - Términos y Condiciones (“Términos y Condiciones de uso”) actualizados Mayo, 2023"
+                    android:textAlignment="center"/>
+                <TextView
+                    android:id="@+id/textViewTerms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="21sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_regular"
+                    android:padding="16dp" />
+            </LinearLayout>
+
+        </ScrollView>
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rectangle_top"
-        android:layout_marginTop="16dp">
 
-        <TextView
-            android:id="@+id/textViewTerms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="21sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/inter_regular"
-            android:padding="16dp" />
-
-    </ScrollView>
 </RelativeLayout>
 

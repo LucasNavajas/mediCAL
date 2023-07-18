@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LeerPoliticasActivity extends AppCompatActivity {
 
     private TextView textViewPoliticas;
+    private TextView tituloPoliticas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +18,10 @@ public class LeerPoliticasActivity extends AppCompatActivity {
         setContentView(R.layout.n03_1_politicas);
 
         textViewPoliticas = findViewById(R.id.textViewPoliticas);
+        tituloPoliticas = findViewById(R.id.tituloPoliticas);
 
         Button buttonFlagArg = findViewById(R.id.buttonFlagArg);
+        mostrarTextoEspaniol();
         buttonFlagArg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +120,9 @@ public class LeerPoliticasActivity extends AppCompatActivity {
                         "info@MediCAL.com\n" +
                         "ATTN: MediCAL;\n";
         textViewPoliticas.setText(textoEspaniol);
+        tituloPoliticas.setText("POLÍTICA DE PRIVACIDAD - PROYECTO MediCAL");
+
+
     }
 
     private void mostrarTextoIngles() {
@@ -202,6 +208,7 @@ public class LeerPoliticasActivity extends AppCompatActivity {
                 "info@MediCAL.com\n" +
                 "ATTN: MediCAL\n";
         textViewPoliticas.setText(textoIngles);
+        tituloPoliticas.setText("PRIVACY POLICY - MediCAL PROJECT");
     }
 }
 

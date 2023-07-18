@@ -10,15 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LeerTYCActivity extends AppCompatActivity {
 
     private TextView textViewTerms;
+    private TextView tituloTYC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n03_2_terminos_condiciones);
 
-        textViewTerms = findViewById(R.id.text_terms);
+        textViewTerms = findViewById(R.id.textViewTerms);
+        tituloTYC = findViewById(R.id.tituloTYC);
 
         Button buttonFlagArg = findViewById(R.id.buttonFlagArg);
+        mostrarTextoEspaniol();
         buttonFlagArg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +95,7 @@ public class LeerTYCActivity extends AppCompatActivity {
                 "Todos los avisos que se le envíen en relación con este Acuerdo se publicarán en el Servicio o se le enviarán al correo electrónico o a la dirección física, si corresponde, que nos haya proporcionado. La notificación se considerará entregada cuando se publique en el Servicio o cuando se envíe el correo electrónico, a menos que se notifique a la parte que envía que la dirección de correo electrónico no es válida.\n" +
                 "Última actualización: Mayo, 2023.\n";
         textViewTerms.setText(textoEspaniol);
+        tituloTYC.setText("SERVICIO MEDICAL PARA USUARIOS - Términos y Condiciones (“Términos y Condiciones de uso”) actualizados Mayo, 2023");
     }
 
     private void mostrarTextoIngles() {
@@ -151,5 +155,6 @@ public class LeerTYCActivity extends AppCompatActivity {
                 "Last updated: May, 2023.\n";
 
         textViewTerms.setText(textoIngles);
+        tituloTYC.setText("MEDICAL SERVICE FOR USERS - Terms and Conditions (“Terms and Conditions of service”) updated May, 2023");
     }
 }
