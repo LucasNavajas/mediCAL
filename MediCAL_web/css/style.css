@@ -175,7 +175,7 @@
   
   th {
     font-family: 'Inter', sans-serif;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--fourth-color);
     background-color: var(--bg-second-color);
@@ -188,7 +188,7 @@
   
   td {
     font-family: 'Inter', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: var(--fifth-color);
     background-color: var(--fourth-color);
