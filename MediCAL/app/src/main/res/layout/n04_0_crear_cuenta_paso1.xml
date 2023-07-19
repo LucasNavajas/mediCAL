@@ -83,12 +83,35 @@
             android:inputType="text"/>
 
         <View
+            android:id="@+id/linea_inferior_usuario"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/textEdit_usuario"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="#808080" />
+            android:background="@color/gris" />
+
+        <TextView
+            android:id="@+id/error_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Este usuario ya existe, ingrese uno nuevo"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/rojoError"
+            android:layout_below="@id/linea_inferior_usuario"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/error_longitud_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Debe ingresar un nombre de usuario menor a 30 caracteres"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/rojoError"
+            android:layout_below="@id/linea_inferior_usuario"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/text_contraseña"

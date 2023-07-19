@@ -66,4 +66,12 @@ public class UsuarioDao {
 			return repository.save(usuario);
 			}
 	
+	public List<Usuario> obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
+        return repository.findByUsuarioUnico(usuarioUnico);
+    }
+	
+	public List<String> obtenerUsuariosUnicos() {
+        return repository.findAllDistinctUsuarioUnico();
+    }
+	
 }

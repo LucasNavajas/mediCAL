@@ -21,6 +21,11 @@ public class UsuarioController {
 		return usuarioDao.getAllUsuarios();
 	}
 	
+	@GetMapping("/usuario/get-all-usuarios-unicos")
+	public List<String> obtenerUsuariosUnicos(){
+		return usuarioDao.obtenerUsuariosUnicos();
+	}
+	
 	@PostMapping("/usuario/save")
 	public Usuario save(@RequestBody Usuario usuario){
 		return usuarioDao.save(usuario);

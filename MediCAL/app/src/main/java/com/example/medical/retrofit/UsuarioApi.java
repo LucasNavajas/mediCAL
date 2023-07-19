@@ -21,4 +21,7 @@ public interface UsuarioApi {
     @PUT("ruta_del_endpoint/modificarUsuario")
     Call<Usuario> modificarUsuario(@Body Usuario usuario);
 
+    @GET("/usuario/get-all-usuarios-unicos")
+    Call<List<String>> obtenerUsuariosUnicos();
+
 }

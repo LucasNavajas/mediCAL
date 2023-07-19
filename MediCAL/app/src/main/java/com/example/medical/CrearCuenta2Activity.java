@@ -11,18 +11,26 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.retrofit.CodigoVerificacionApi;
+import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
+
 public class CrearCuenta2Activity extends AppCompatActivity {
+    private Intent intent1;
+    private RetrofitService retrofitService;
+    private CodigoVerificacionApi codigoVerificacionApi;
+    private UsuarioApi usuarioApi;
+    private Button buttonSiguiente;
+    private ImageView buttonVolver;
+    private EditText nombre;
+    private EditText apellido;
+    private EditText telefono;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n05_crear_cuenta_paso2);
-        Intent intent1 = getIntent();
-
-        Button buttonSiguiente = findViewById(R.id.button_siguiente);
-        ImageView buttonVolver = findViewById(R.id.boton_volver);
-        EditText nombre = findViewById(R.id.textEdit_nombre);
-        EditText apellido = findViewById(R.id.textEdit_apellido);
-        EditText telefono = findViewById(R.id.textEdit_telefono);
+        inicializarVariables();
 
         buttonSiguiente.setOnClickListener(view -> {
 
@@ -52,6 +60,18 @@ public class CrearCuenta2Activity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private void inicializarVariables() {
+        intent1 = getIntent();
+        retrofitService = new RetrofitService();
+        codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
+        usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+        buttonSiguiente = findViewById(R.id.button_siguiente);
+        buttonVolver = findViewById(R.id.boton_volver);
+        nombre = findViewById(R.id.textEdit_nombre);
+        apellido = findViewById(R.id.textEdit_apellido);
+        telefono = findViewById(R.id.textEdit_telefono);
     }
 
     private boolean camposLlenos(String nombre, String apellido, String telefono){
