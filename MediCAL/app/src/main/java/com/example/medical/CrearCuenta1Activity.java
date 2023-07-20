@@ -35,8 +35,8 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
     private boolean mostrarContrasenia = false;
     private List<String> usuariosUnicos;
-    RetrofitService retrofitService = new RetrofitService();
-    CodigoVerificacionApi codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
+    private RetrofitService retrofitService = new RetrofitService();
+    private CodigoVerificacionApi codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
             if (camposLlenos(textoUsuario, textoContrasenia, textoMail)) {
                 if (usuariosUnicos == null) {
                     // Handle the case where the usuariosUnicos list is still null (request in progress)
-                    Toast.makeText(getApplicationContext(), "Please wait, fetching user data...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error, intente nuevamente", Toast.LENGTH_SHORT).show();
                 } else if (usuariosUnicos.contains(textoUsuario)) {
                     errorUsuario.setVisibility(View.VISIBLE);
                     lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
@@ -94,7 +94,8 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                                     intent.putExtra("usuario", textoUsuario);
                                     intent.putExtra("contrasenia", textoContrasenia);
                                     intent.putExtra("mail", textoMail);
-                                    intent.putExtra("codusuario", idUsuarioGenerado);
+                                    Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, ""+idUsuarioGenerado);
+                                    intent.putExtra("codusuario", String.valueOf(idUsuarioGenerado));
                                     startActivity(intent);
                                 }
 
