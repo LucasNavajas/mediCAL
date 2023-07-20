@@ -142,8 +142,9 @@
         <h3>REINICIAR</h3>
         
         <!--Campos editables-->
-        <label for="campo_email">Email</label>
-        <input type="text" id="campo_email" placeholder="Ingrese la dirección de correo de su cuenta" style="width: 500px">
+        <label for="campo_mail">Email</label>
+        <input type="text" id="campo_mail" placeholder="Ingrese la dirección de correo de su cuenta" style="width: 500px" oninput="checkEmail()">
+        <div id="email-alert" class="alert"></div>
 
         <div class="popup-buttons">
             <button class="cancel-button" onclick="cancelDialog()">CANCELAR</button>
@@ -177,28 +178,19 @@
             dialog.style.display = "none";
         }
         /*funcion para el alerta*/
-        function validateEmail() {
-            var emailInput = document.getElementById("campo_email");
-            var emailAlert = document.createElement("div");
-            emailAlert.classList.add("alert");
-            emailAlert.innerText = "Ingrese un correo electrónico válido.";
-            var parentElement = document.getElementById("popup-dialog");
-            parentElement.insertBefore(emailAlert, emailInput.nextSibling);
+        function checkEmail() {
+      var emailInput = document.getElementById("campo_mail");
+      var email = emailInput.value;
+      var emailAlert = document.getElementById("email-alert");
 
-            var email = emailInput.value;
+      var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
 
-            // Expresión regular para validar el formato de correo electrónico
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (emailRegex.test(email)) {
-                // El correo es válido, se cierra el diálogo
-                closeDialog();
-            } else {
-                // El correo no es válido, se muestra la alerta
-                emailAlert.style.display = "block";
-                emailInput.focus();
-            }
-        }
+      if (!emailPattern.test(email)) {
+        emailAlert.innerText = "Correo electrónico no válido";
+      } else {
+        emailAlert.innerText = "";
+      }
+    }
     </script>
 </body>
 </html>
