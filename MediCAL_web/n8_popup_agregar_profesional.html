@@ -219,7 +219,7 @@
     <div id="popup-dialog" class="popup-content">
         <!-- Icono de cerrar -->
 <i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
-        <h3>Modificar Profesional</h3>
+        <h3>Agregar Profesional</h3>
         
         <table class="camp-table">
             <tr>
@@ -228,7 +228,7 @@
                 </td>
                 <td class="column-two">
                     <div class="input-group">
-                        <input type="text" id="campo_usuario" placeholder="user123" style="width: 100%;" oninput="checkUsername()">
+                        <input type="text" id="campo_usuario" placeholder="Usuarioejemplo123" style="width: 100%;" oninput="checkUsername()">
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
@@ -244,7 +244,7 @@
                     <label for="campo_dni">Documento de identidad</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_dni" placeholder="43117905" style="width: 100%;" oninput="checkDni()">
+                    <input type="text" id="campo_dni" placeholder="00000000" style="width: 100%;" oninput="checkDni()">
                     <div id="dni-alert" class="alert"></div>
                 </td>
             </tr>
@@ -253,7 +253,7 @@
                     <label for="campo_nombre">Nombre</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_nombre" placeholder="Maria" style="width: 100%;" oninput="checkName()">
+                    <input type="text" id="campo_nombre" placeholder="Nombre usuario" style="width: 100%;" oninput="checkName()">
                     <div id="name-alert" class="alert"></div>
                 </td>
             </tr>
@@ -262,7 +262,7 @@
                     <label for="campo_apellido">Apellido</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_apellido" placeholder="Perez" style="width: 100%; text-align: left;" oninput="checkLastName()">
+                    <input type="text" id="campo_apellido" placeholder="Apellido usuario" style="width: 100%; text-align: left;" oninput="checkLastName()">
                     <div id="lastname-alert" class="alert"></div>
                 </td>
             </tr>
@@ -273,6 +273,7 @@
                 <td class="column-two">
                     <div style="display: flex; justify-content: flex-start; width: 100%;">
                         <select id="campo_genero">
+                            <option value="" disabled selected>Seleccionar género</option>
                             <option value="Mujer">Mujer</option>
                             <option value="Hombre">Hombre</option>
                             <option value="No binario">No binario</option>
@@ -300,7 +301,7 @@
                     <label for="campo_telefono">Teléfono</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_telefono" placeholder="2612467606" style="width: 100%;" oninput="checkPhone()">
+                    <input type="text" id="campo_telefono" placeholder="0000000000" style="width: 100%;" oninput="checkPhone()">
                     <div id="phone-alert" class="alert"></div>
                 </td>
             </tr>
@@ -310,7 +311,7 @@
                 </td>
                 <td class="column-two">
                     <div style="display: flex; justify-content: flex-start; width: 100%;">
-                        <input type="text" id="campo_fnacimiento" placeholder="03 July 2005" style="width: 100%;">
+                        <input type="text" id="campo_fnacimiento" placeholder="Seleccione la fecha de nacimiento" style="width: 100%;">
                     </div>
                 </td>
             </tr>
@@ -319,7 +320,7 @@
                     <label for="campo_matricula">Matrícula</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_matricula" placeholder="46247" style="width: 100%;" oninput="checkMatricula()">
+                    <input type="text" id="campo_matricula" placeholder="00000" style="width: 100%;" oninput="checkMatricula()">
                     <div id="matricula-alert" class="alert"></div>
                 </td>
             </tr>
@@ -329,9 +330,8 @@
                 </td>
                 <td class="column-two">
                     <div class="input-group">
-                        <input type="text" id="campo_contraseña" placeholder="qwerty" style="width: 100%;" oninput="checkContraseña()">
+                        <input type="text" id="campo_contraseña" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña()">
                         <div class="input-group-append">
-                            <!-- Este bloque de código contiene los iconos de check y error -->
                             <span class="input-group-text">
                                 <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
                                 <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon" style="display: none;"></i>
@@ -340,7 +340,6 @@
                     </div>
                     <div id="contraseña-alert" class="alert"></div>
                 </td>
-                
             </tr>
         </table>
 <!--boton guardar-->
@@ -404,12 +403,10 @@
     <script>
     
 // Variables internas para almacenar el nombre de usuario y la contraseña actual
-    var existingUsername = "usuario123";
-    var currentPassword = "qwerty";
-    var guardarButton = document.getElementById("guardar-button");
+var existingUsername = "usuario123";
+var guardarButton = document.getElementById("guardar-button");
 
-
-    function checkUsername() {
+function checkUsername() {
     var usernameInput = document.getElementById("campo_usuario");
     var username = usernameInput.value;
     var usernameMatchIcon = document.getElementById("username-match-icon");
@@ -437,19 +434,15 @@
     }
 }
 
-function checkContraseña() {
+
+    function checkContraseña() {
     var contrasenaInput = document.getElementById("campo_contraseña");
     var contrasena = contrasenaInput.value;
     var contrasenaAlert = document.getElementById("contraseña-alert");
     var passwordMatchIcon = document.getElementById("password-match-icon");
     var passwordMismatchIcon = document.getElementById("password-mismatch-icon");
 
-    if (contrasena === currentPassword) {
-        contrasenaAlert.innerText = "Debe generarse otra nueva contraseña, no puede ser la anterior.";
-        guardarButton.disabled = true;
-        passwordMatchIcon.style.display = "none";
-        passwordMismatchIcon.style.display = "inline-block";
-    } else if (contrasena.length > 16) {
+    if (contrasena.length > 16) {
         contrasenaAlert.innerText = "La contraseña puede tener como máximo 16 caracteres";
         contrasenaInput.value = contrasena.substring(0, 16); // Corta el texto hasta los primeros 16 caracteres
         guardarButton.disabled = true;
@@ -465,10 +458,9 @@ function checkContraseña() {
         guardarButton.disabled = false;
         passwordMatchIcon.style.display = "inline-block";
         passwordMismatchIcon.style.display = "none";
+
     }
 }
-
-
 
 
         function checkName() {
