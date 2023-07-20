@@ -216,6 +216,7 @@ textarea {
     .icon-error {
       color: red;
     }
+
 /*boton guardar*/
 .button-container {
     display: flex;
@@ -236,7 +237,7 @@ textarea {
     <div id="popup-dialog" class="popup-content">
         <!-- Icono de cerrar -->
 <i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
-        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Perfil</h3>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Perfil</h3>
         
         <table class="camp-table">
             <tr>
@@ -275,39 +276,30 @@ textarea {
                 </td>
             </tr>
 
-
-            <tr>
-                <td class="column-one">
-                    <label for="campo_codigo">Código</label>
-                </td>
-                <td class="column-two">
-                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
-                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
-                </td>
-            </tr>
-
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
             <tr>
                 <td class="column-one">
                     <label for="campo_fechaFV">Fecha Fin Vigencia </label>
                 </td>
                 <td class="column-two">
                     <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
-                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" oninput="habilitarMotivo()">
                 </td>
             </tr>
             
+            <!-- Permite ingresar un motivo en caso de querer planear su baja, pero puede ser null -->
             <tr>
                 <td class="column-one">
                     <label for="campo_motivo">Motivo</label>
                 </td>
                 <td class="column-two">
-                    <textarea id="motivo" placeholder="Escriba el motivo de eliminación del usuario" oninput="limitarCaracteres(event)" rows="4" wrap="soft"></textarea>
+                    <textarea id="motivo" placeholder="Escriba el motivo de eliminación del usuario" oninput="limitarCaracteres(event)" rows="4" wrap="soft" ></textarea>
                     <span id="contadorCaracteres" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
                 </td>
-                
             </tr>
           
         </table>
+
 <!--boton guardar-->
 <div class="button-container">
     <form action="tu_ruta_de_destino.html" method="POST">
@@ -383,70 +375,16 @@ textarea {
             showAnim: "fold"
         });
     });
+
     </script>
+
 
     <!--script para alertar campos editables-->
     <script>
     
-// Variables internas para almacenar el nombre de usuario y la contraseña actual
+
 var existingUsername = "usuario123";
 var guardarButton = document.getElementById("guardar-button");
-
-function checkUsername() {
-    var usernameInput = document.getElementById("campo_usuario");
-    var username = usernameInput.value;
-    var usernameMatchIcon = document.getElementById("username-match-icon");
-    var usernameMismatchIcon = document.getElementById("username-mismatch-icon");
-    var usernameAlert = document.getElementById("username-alert");
-    var guardarButton = document.getElementById("guardar-button");
-
-    if (username.length > 30) {
-        // Si el usuario supera los 30 caracteres, truncamos el valor del campo a 30 caracteres
-        usernameInput.value = username.substring(0, 30);
-        usernameMatchIcon.style.display = "none";
-        usernameMismatchIcon.style.display = "inline-block";
-        usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
-        guardarButton.disabled = true;
-    } else if (username === existingUsername) {
-        usernameMatchIcon.style.display = "none";
-        usernameMismatchIcon.style.display = "inline-block";
-        usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
-        guardarButton.disabled = true;
-    } else {
-        usernameMatchIcon.style.display = "inline-block";
-        usernameMismatchIcon.style.display = "none";
-        usernameAlert.innerText = "";
-        guardarButton.disabled = false;
-    }
-}
-
-
-    function checkContraseña() {
-    var contrasenaInput = document.getElementById("campo_contraseña");
-    var contrasena = contrasenaInput.value;
-    var contrasenaAlert = document.getElementById("contraseña-alert");
-    var passwordMatchIcon = document.getElementById("password-match-icon");
-    var passwordMismatchIcon = document.getElementById("password-mismatch-icon");
-
-    if (contrasena.length > 16) {
-        contrasenaAlert.innerText = "La contraseña puede tener como máximo 16 caracteres.";
-        contrasenaInput.value = contrasena.substring(0, 16); // Corta el texto hasta los primeros 16 caracteres
-        guardarButton.disabled = true;
-        passwordMatchIcon.style.display = "none";
-        passwordMismatchIcon.style.display = "inline-block";
-    } else if (contrasena.length < 6 || contrasena.length > 15) {
-        contrasenaAlert.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
-        guardarButton.disabled = true;
-        passwordMatchIcon.style.display = "none";
-        passwordMismatchIcon.style.display = "inline-block";
-    } else {
-        contrasenaAlert.innerText = "";
-        guardarButton.disabled = false;
-        passwordMatchIcon.style.display = "inline-block";
-        passwordMismatchIcon.style.display = "none";
-
-    }
-}
 
 
         function checkName() {
@@ -461,75 +399,25 @@ function checkUsername() {
                 nameAlert.innerText = "";
             }
         }
-    
-        function checkLastName() {
-            var lastNameInput = document.getElementById("campo_apellido");
-            var lastName = lastNameInput.value;
-            var lastNameAlert = document.getElementById("lastname-alert");
-    
-            if (lastName.length > 30) {
-                lastNameAlert.innerText = "Ingresar apellido del profesional en 30 caracteres.";
-                lastNameInput.value = lastName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
-            } else {
-                lastNameAlert.innerText = "";
+
+       /*
+       // No Funciona
+       // Función para habilitar el motivo únicamente cuando ha elegido una fecha de fin vigencia
+        function habilitarMotivo() {
+                var fechaFV = document.getElementById("campo_fechaFV").valueAsDate;
+                var motivoTextArea = document.getElementById("motivo");
+
+                // Verificar si se ha seleccionado una fecha válida en el campo "Fecha Fin Vigencia"
+                if (fechaFV !== null) {
+                    // Habilitar el campo "Motivo" si se ha seleccionado una fecha válida
+                    motivoTextArea.disabled = false;
+                } else {
+                    // Deshabilitar el campo "Motivo" si no se ha seleccionado una fecha válida
+                    motivoTextArea.disabled = true;
+                }
             }
-        }
-    
-        function checkDni() {
-            var dniInput = document.getElementById("campo_dni");
-            var dni = dniInput.value;
-            var dniAlert = document.getElementById("dni-alert");
-    
-            var dniPattern = /^[0-9]{7,8}$/; // Patrón para validar el dni 7 u 8 dígitos
-    
-            if (!dniPattern.test(dni)) {
-                dniAlert.innerText = "Documento Nacional de Identidad inválido.\nIngrese los dígitos sin espacios ni puntos.";
-            } else {
-                dniAlert.innerText = "";
-            }
-        }
-    
-        function checkPhone() {
-            var phoneInput = document.getElementById("campo_telefono");
-            var phone = phoneInput.value;
-            var phoneAlert = document.getElementById("phone-alert");
-    
-            var phonePattern = /^\d{10,16}$/; // Patrón para validar el formato de números de teléfono (10 a 16 dígitos)
-    
-            if (!phonePattern.test(phone)) {
-                phoneAlert.innerText = "Número de teléfono no válido.";
-            } else {
-                phoneAlert.innerText = "";
-            }
-        }
-    
-        function checkMatricula() {
-            var matriculaInput = document.getElementById("campo_matricula");
-            var matricula = matriculaInput.value;
-            var matriculaAlert = document.getElementById("matricula-alert");
-    
-            var matriculaPattern = /^\d{4,6}$/; // Patrón para validar el formato de números de matriculas (4 a 6 dígitos)
-    
-            if (!matriculaPattern.test(matricula)) {
-                matriculaAlert.innerText = "Número de matrícula inválido.\nIngrese los dígitos sin espacios ni puntos.";
-            } else {
-                matriculaAlert.innerText = "";
-            }
-        }   
-    
-        function checkEmail() {
-            var emailInput = document.getElementById("campo_email");
-            var email = emailInput.value;
-            var emailAlert = document.getElementById("email-alert");
-    
-            var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
-    
-            if (!emailPattern.test(email)) {
-                emailAlert.innerText = "Correo electrónico no válido.";
-            } else {
-                emailAlert.innerText = "";
-            }
-        }
+       */
+        
     </script>
 </body>
 </html>
