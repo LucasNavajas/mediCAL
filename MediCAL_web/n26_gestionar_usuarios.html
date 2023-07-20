@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediCAL | Gestionar profesionales</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+    crossorigin="anonymous"
+  />
+
+  <!--Iconos que uso de bootstrap-->
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+  />
+
+  <!--Tipografia Fuente:Inter sacada de google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!--referencio el archivo de estilos-->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!--Iconito de la pestaña-->
+  <link rel="icon" href="img/Icono_MediCAL_Web.png" />
+
+  <style>
+    /*boton agregar instancia*/
+    .button-container {
+      position: static;
+      width: 100%; /*mover a la derecha*/
+      text-align: right;
+      box-sizing: border-box;
+
+    }
+
+    .button-container button {
+      margin-right: 125px; /* Ajusta el valor según tus necesidades */
+    }
+    
+    /*cuando se achique la pantalla el boton guardar*/
+
+    @media (max-width: 1200px) {
+    .button-container {
+      position: static;
+      margin-top: 30px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button-container form {
+      margin-top: auto;
+    }
+
+    .button-container button {
+      margin-right: unset;
+    }
+    }
+  </style>
+</head>
+
+<body>
+  <!--Barra de arriba, ícono de configuración y el menú desplegable -->
+  <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+        MediCAL | Administrador de Sistemas
+      </a>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-gear-fill"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          <!--opciones del dropdown-->
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-pencil-square"></i>
+              Editar perfil
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-question-circle"></i>
+              Ayuda y soporte
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-box-arrow-left"></i>
+              Cerrar sesión
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--Pantalla-->
+  <main class="pt-5">
+
+    <!--flecha atras-->
+    <a href="#" class="btn-back">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <!--Titulo-->
+    <div style="margin-top: -34px; margin-left: 80px;">
+      <h1
+        style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
+        Gestión de usuarios del sistema</h1>
+    </div>
+    <!--boton agregar instancia-->
+    <div class="button-container">
+      <form action="tu_ruta_de_destino.html" method="POST">
+        <div class="form-group" >
+          <button type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Agregar Instancia</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Agregar el texto "Usuario" y la lista desplegable debajo del botón -->
+    <div style="text-align: center;">
+        <label style="font-size: 18px; font-weight: bold; margin-right: 10px;" for="lista_usuarios">Usuario</label>
+        <select id="lista_usuarios">
+            <option value="opcion1">Enfermero</option>
+            <option value="opcion2">Particular</option>
+     
+        </select>
+    </div>
+
+    <!--tabla, el formato es generico (esta en style para hacerlas todas iguales)-->
+    <table>
+      <!--cabeceras-->
+      <tr>
+
+        <th onclick="toggleSearch(0)">
+        Usuario
+            <div id="searchContainer0" class="search-container">
+              <input type="search" id="search0" class="search-input" placeholder="Buscar por usuario" />
+            </div>
+          </th>
+
+        <th onclick="toggleSearch(1)">
+        Código
+            <div id="searchContainer1" class="search-container">
+                <input type="search" id="search1" class="search-input" placeholder="Buscar por código" />
+            </div>
+        </th>
+       
+        <th onclick="toggleSearch(2)">
+            Contraseña
+            <div id="searchContainer2" class="search-container">
+                <input type="password" id="search2" class="search-input" placeholder="Buscar por contraseña" />
+            </div>
+        </th>
+        
+
+        <th onclick="toggleSearch(3)">
+          Nombre
+          <div id="searchContainer3" class="search-container">
+            <input type="search" id="search3" class="search-input" placeholder="Buscar por nombre" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(4)">
+          Apellido
+          <div id="searchContainer4" class="search-container">
+            <input type="search" id="search4" class="search-input" placeholder="Buscar por apellido" />
+          </div>
+        </th>
+       
+        <th onclick="toggleSearch(5)">
+          Género
+          <div id="searchContainer5" class="search-container">
+            <input type="search" id="search5" class="search-input" placeholder="Buscar por género" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(6)">
+          Correo electrónico
+          <div id="searchContainer6" class="search-container">
+            <input type="search" id="search6" class="search-input" placeholder="Buscar por correo electrónico" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(7)">
+          Télefono
+          <div id="searchContainer7" class="search-container">
+            <input type="search" id="search7" class="search-input" placeholder="Buscar por teléfono" />
+          </div>
+        </th>
+
+        <th onclick="toggleSearch(8)">
+          Fecha Nacimiento
+          <div id="searchContainer8" class="search-container">
+            <input type="search" id="search8" class="search-input" placeholder="Buscar por fecha de Nacimiento" />
+          </div>
+        </th>
+
+        <th onclick="toggleSearch(9)">
+            Fecha Alta Usuario
+            <div id="searchContainer9" class="search-container">
+              <input type="search" id="search9" class="search-input" placeholder="Buscar por fecha de Alta" />
+            </div>
+        </th>
+
+        <th onclick="toggleSearch(10)">
+            Fecha Desde (Vigencia)
+            <div id="searchContainer10" class="search-container">
+              <input type="search" id="search10" class="search-input" placeholder="Buscar por fecha Desde (Vigencia)" />
+            </div>
+        </th>
+
+        <th onclick="toggleSearch(11)">
+            Motivo Fin Vigencia
+            <div id="searchContainer11" class="search-container">
+              <input type="search" id="search11" class="search-input" placeholder="Buscar por Motivo Fin Vigencia" />
+            </div>
+        </th>
+
+
+      </tr>
+      <!--fila 1-->
+      <tr>
+        <td>JuanP</td>
+        <td>98256</td>
+        <td>qwerty</td>
+        <td>Juan</td>
+        <td>Perez</td>
+        <td>Hombre</td>
+        <td>juanperez@gmail.com</td>
+        <td>261894333</td>
+        <td>01/04/96</td>
+        <td>20/07/23</td>
+        <td></td>
+        <td></td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
+          </div>
+          <div class="edit-revert-icons hide">
+            <i class="bi bi-pencil edit2-icon"></i>
+            <i class="bi bi-arrow-return-left revert-icon" onclick="toggleProfileRow(0, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 2-->
+      <tr>
+        <td>MariaG</td>
+        <td>35892</td>
+        <td>abc123</td>
+        <td>Maria</td>
+        <td>Gomez</td>
+        <td>Mujer</td>
+        <td>mariagomez@gmail.com</td>
+        <td>2619023569</td>
+        <td>29/04/98</td>
+        <td>05/03/22</td>
+        <td>20/07/23</td>
+        <td>Baja por Vacaciones</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
+          </div>
+          <div class="edit-revert-icons hide">
+            <i class="bi bi-pencil edit2-icon"></i>
+            <i class="bi bi-arrow-return-left revert-icon" onclick="toggleProfileRow(1, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 3-->
+      <tr>
+        <td>mariagonz</td>
+        <td>12345</td>
+        <td>argentina12</td>
+        <td>Melisa</td>
+        <td>Gomez</td>
+        <td>Mujer</td>
+        <td>melisag@example.com</td>
+        <td>2617953475</td>
+        <td>25/03/94</td>
+        <td>22/09/21</td>
+        <td></td>
+        <td></td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(2, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(2, this)"></i>
+          </div>
+          <div class="edit-revert-icons hide">
+            <i class="bi bi-pencil edit2-icon"></i>
+            <i class="bi bi-arrow-return-left revert-icon" onclick="toggleProfileRow(2, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 4-->
+      <tr>
+        <td>joserodri</td>
+        <td>67890</td>
+        <td>casa789</td>
+        <td>José</td>
+        <td>Rodríguez</td>
+        <td>Hombre</td>
+        <td>jose.rodriguez@example.com</td>
+        <td>2614278234</td>
+        <td>01/02/97</td>
+        <td>19/03/22</td>
+        <td></td>
+        <td></td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(3, this)"></i>
+          </div>
+          <div class="edit-revert-icons hide">
+            <i class="bi bi-pencil edit2-icon"></i>
+            <i class="bi bi-arrow-return-left revert-icon" onclick="toggleProfileRow(3, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 5-->
+      <tr>
+        <td>sofial</td>
+        <td>54321</td>
+        <td>pass1234</td>
+        <td>Sofía</td>
+        <td>López</td>
+        <td>Mujer</td>
+        <td>sofia.lopez@example.com</td>
+        <td>4253943</td>
+        <td>15/04/95</td>
+        <td>20/07/23</td>
+        <td></td>
+        <td></td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(4, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(4, this)"></i>
+          </div>
+          <div class="edit-revert-icons hide">
+            <i class="bi bi-pencil edit2-icon"></i>
+            <i class="bi bi-arrow-return-left revert-icon" onclick="toggleProfileRow(4, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 6-->
+      <tr>
+        <td>pablof</td>
+        <td>98765</td>
+        <td>htal123</td>
+        <td>Pablo</td>
+        <td>Fernández</td>
+        <td>Hombre</td>
+        <td>pablo.fernandez@example.com</td>
+        <td>4200048</td>
+        <td>01/05/01</td>
+        <td>08/06/23</td>
+        <td></td>
+        <td></td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(5, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(5, this)"></i>
+          </div>
+          <div class="edit-revert-icons hide">
+            <i class="bi bi-pencil edit2-icon"></i>
+            <i class="bi bi-arrow-return-left revert-icon" onclick="toggleProfileRow(5, this)"></i>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous">
+  </script>
+
+  <script>
+    function toggleSearch(index) {
+      var container = document.getElementById('searchContainer' + index);
+      container.classList.toggle('active');
+      var input = container.querySelector('.search-input');
+      if (container.classList.contains('active')) {
+        input.focus();
+      } else {
+        input.value = '';
+        filterTable();
+      }
+    }
+
+    function toggleDeleteRow(row, icon) {
+      var deleteIcon = icon;
+      var editIcon = deleteIcon.previousElementSibling;
+      var editRevertIcons = deleteIcon.parentElement.nextElementSibling;
+
+      deleteIcon.classList.toggle('hide');
+      editIcon.classList.toggle('hide');
+      editRevertIcons.classList.toggle('hide');
+
+      var tableRow = deleteIcon.closest('tr');
+      tableRow.classList.toggle('deleted-row');
+    }
+
+    function toggleProfileRow(row, icon) {
+      var revertIcon = icon;
+      var edit2Icon = revertIcon.previousElementSibling;
+      var editDeleteIcons = revertIcon.parentElement.previousElementSibling;
+
+      revertIcon.classList.toggle('hide');
+      edit2Icon.classList.toggle('hide');
+      editDeleteIcons.classList.toggle('hide');
+
+      var tableRow = revertIcon.closest('tr');
+      tableRow.classList.remove('deleted-row');
+    }
+
+    function filterTable() {
+      var table = document.getElementsByTagName('table')[0];
+      var rows = table.getElementsByTagName('tr');
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        row.style.display = '';
+
+        var cells = row.getElementsByTagName('td');
+        for (var j = 0; j < cells.length - 1; j++) {
+          var cell = cells[j];
+          var searchText = document.getElementById('search' + j).value.toUpperCase();
+          var cellText = cell.textContent || cell.innerText;
+          if (cellText.toUpperCase().indexOf(searchText) > -1) {
+            continue;
+          } else {
+            row.style.display = 'none';
+            break;
+          }
+        }
+      }
+    }
+
+    window.onload = function () {
+      var cells = document.getElementsByTagName('td');
+      for (var i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('click', function () {
+          this.setAttribute('tabindex', '0');
+          this.focus();
+        });
+        cells[i].addEventListener('blur', function () {
+          this.removeAttribute('tabindex');
+        });
+      }
+
+      var inputs = document.getElementsByClassName('search-input');
+      for (var j = 0; j < inputs.length; j++) {
+        inputs[j].addEventListener('input', function () {
+          filterTable();
+        });
+      }
+    };
+  </script>
+
+</body>
+
+</html>
