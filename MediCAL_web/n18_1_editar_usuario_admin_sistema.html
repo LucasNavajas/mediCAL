@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MediCAL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
+    <!--Iconos que uso de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <!--Tipografia Fuente:Inter sacada de google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <!--referencio el archivo de estilos-->
+    <link rel="stylesheet" href="css/style.css"/>
+    <!-- Referencia a jQuery para calendario fnacimiento -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <!--Iconito de la pestaña-->
+    <link rel="icon" href="img/Icono_MediCAL_Web.png">
+    <style>
+        /* Estilos CSS aquí */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        .popup-content h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    .camp-table td, .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    tr.clicked td {
+    background-color: transparent;
+    }
+
+    tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+.input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+.input-group input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+/* Estilos para el span que contiene los iconos */
+.input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    .icon-check,
+    .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    .icon-error {
+      color: red;
+    }
+/*boton guardar*/
+.button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+    </style>
+</head>
+<body>
+    <button onclick="openDialog()">Abrir pop-up</button>
+
+    <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Editar Usuario</h3>
+        
+        <table class="camp-table">
+            <tr>
+                <td class="column-one">
+                    <label for="campo_usuario">Usuario</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_usuario" placeholder="Usuarioejemplo123" style="width: 100%;" oninput="checkUsername()">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre del Usuario</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre" placeholder="Nombre usuario" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_apellido">Apellido del Usuario</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_apellido" placeholder="Apellido usuario" style="width: 100%; text-align: left;" oninput="checkLastName()">
+                    <div id="lastname-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_genero">Género</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_genero">
+                            <option value="" disabled selected>Seleccionar género</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="No binario">No binario</option>
+                            <option value="Agenero">Agénero</option>
+                            <option value="Bigenero">Bigénero</option>
+                            <option value="Hombre Trans">Hombre Trans</option>
+                            <option value="Mujer Trans">Mujer Trans</option>
+                            <option value="Queer">Queer</option>
+                            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_email">Dirección de correo electrónico</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_email" placeholder="correoejemplo@dominio.com" style="width: 100%;" oninput="checkEmail()">
+                    <div id="email-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_telefono">Teléfono</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_telefono" placeholder="0000000000" style="width: 100%;" oninput="checkPhone()">
+                    <div id="phone-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fnacimiento">Fecha de nacimiento</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fnacimiento" placeholder="Seleccione la fecha de nacimiento" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_contraseña">Contraseña</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_contraseña" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña()">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="contraseña-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+
+                </td>
+                <td class="column-two">
+                    <div class="row form-group">
+                        <a onclick="openPopup()" href="1_1_restablecer_contraseña_institucion.html" style="text-align:left; margin:15px 5px;font-weight: normal;font-size: 18px;font-family: 'Inter', sans-serif; color: var(--first-color);">Restablecer contraseña</a>
+                      </div>
+                </td>
+            </tr>
+
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="tu_ruta_de_destino.html" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <script>
+        // JavaScript aquí
+        function openDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+        }
+
+        function closeDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "none";
+            overlay.style.opacity = "0";
+            dialog.style.display = "none";
+        }
+
+        function cancelDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "none";
+            overlay.style.opacity = "0";
+            dialog.style.display = "none";
+        }
+        
+    </script>
+    <!--script para selector fecha nacimiento-->
+    <script> 
+        $(document).ready(function() {
+        // Calcula la fecha máxima permitida hace 18 años desde la fecha actual
+        var maxDate = new Date();
+        maxDate.setFullYear(maxDate.getFullYear() - 18);
+        maxDate.setDate(maxDate.getDate());
+
+        $("#campo_fnacimiento").datepicker({
+            dateFormat: "dd MM yy", // Formato de la fecha: "dd nombre_mes aaaa"
+            changeMonth: true, // Permite cambiar el mes
+            changeYear: true, // Permite cambiar el año
+            yearRange: "-100:+0", // Rango de años permitidos
+            maxDate: maxDate, // Fecha máxima permitida (18 años atrás desde la fecha actual, incluyendo la fecha actual)
+            // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
+            showAnim: "fold"
+        });
+    });
+
+    </script>
+    <!--script para alertar campos editables-->
+    <script>
+    
+// Variables internas para almacenar el nombre de usuario y la contraseña actual
+var existingUsername = "usuario123";
+var guardarButton = document.getElementById("guardar-button");
+
+function checkUsername() {
+    var usernameInput = document.getElementById("campo_usuario");
+    var username = usernameInput.value;
+    var usernameMatchIcon = document.getElementById("username-match-icon");
+    var usernameMismatchIcon = document.getElementById("username-mismatch-icon");
+    var usernameAlert = document.getElementById("username-alert");
+    var guardarButton = document.getElementById("guardar-button");
+
+    if (username.length > 30) {
+        // Si el usuario supera los 30 caracteres, truncamos el valor del campo a 30 caracteres
+        usernameInput.value = username.substring(0, 30);
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
+        guardarButton.disabled = true;
+    } else if (username === existingUsername) {
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
+        guardarButton.disabled = true;
+    } else {
+        usernameMatchIcon.style.display = "inline-block";
+        usernameMismatchIcon.style.display = "none";
+        usernameAlert.innerText = "";
+        guardarButton.disabled = false;
+    }
+}
+
+
+    function checkContraseña() {
+    var contrasenaInput = document.getElementById("campo_contraseña");
+    var contrasena = contrasenaInput.value;
+    var contrasenaAlert = document.getElementById("contraseña-alert");
+    var passwordMatchIcon = document.getElementById("password-match-icon");
+    var passwordMismatchIcon = document.getElementById("password-mismatch-icon");
+
+    if (contrasena.length > 16) {
+        contrasenaAlert.innerText = "La contraseña puede tener como máximo 16 caracteres.";
+        contrasenaInput.value = contrasena.substring(0, 16); // Corta el texto hasta los primeros 16 caracteres
+        guardarButton.disabled = true;
+        passwordMatchIcon.style.display = "none";
+        passwordMismatchIcon.style.display = "inline-block";
+    } else if (contrasena.length < 6 || contrasena.length > 15) {
+        contrasenaAlert.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
+        guardarButton.disabled = true;
+        passwordMatchIcon.style.display = "none";
+        passwordMismatchIcon.style.display = "inline-block";
+    } else {
+        contrasenaAlert.innerText = "";
+        guardarButton.disabled = false;
+        passwordMatchIcon.style.display = "inline-block";
+        passwordMismatchIcon.style.display = "none";
+
+    }
+}
+
+
+        function checkName() {
+            var nameInput = document.getElementById("campo_nombre");
+            var name = nameInput.value;
+            var nameAlert = document.getElementById("name-alert");
+    
+            if (name.length > 30) {
+                nameAlert.innerText = "Ingresar nombre del profesional en 30 caracteres.";
+                nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                nameAlert.innerText = "";
+            }
+        }
+    
+        function checkLastName() {
+            var lastNameInput = document.getElementById("campo_apellido");
+            var lastName = lastNameInput.value;
+            var lastNameAlert = document.getElementById("lastname-alert");
+    
+            if (lastName.length > 30) {
+                lastNameAlert.innerText = "Ingresar apellido del profesional en 30 caracteres.";
+                lastNameInput.value = lastName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                lastNameAlert.innerText = "";
+            }
+        }
+    
+    
+        function checkPhone() {
+            var phoneInput = document.getElementById("campo_telefono");
+            var phone = phoneInput.value;
+            var phoneAlert = document.getElementById("phone-alert");
+    
+            var phonePattern = /^\d{10,16}$/; // Patrón para validar el formato de números de teléfono (10 a 16 dígitos)
+    
+            if (!phonePattern.test(phone)) {
+                phoneAlert.innerText = "Número de teléfono no válido.";
+            } else {
+                phoneAlert.innerText = "";
+            }
+        }
+    
+    
+        function checkEmail() {
+            var emailInput = document.getElementById("campo_email");
+            var email = emailInput.value;
+            var emailAlert = document.getElementById("email-alert");
+    
+            var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
+    
+            if (!emailPattern.test(email)) {
+                emailAlert.innerText = "Correo electrónico no válido.";
+            } else {
+                emailAlert.innerText = "";
+            }
+        }
+    </script>
+</body>
+</html>
