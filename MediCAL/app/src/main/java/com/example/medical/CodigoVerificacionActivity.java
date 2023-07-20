@@ -11,11 +11,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.javamail.SendEmailTask;
 import com.example.medical.model.CodigoVerificacion;
 import com.example.medical.model.Usuario;
+import com.example.medical.retrofit.CodigoVerificacionApi;
+import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CodigoVerificacionActivity extends AppCompatActivity {
 
@@ -28,15 +37,15 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
     private int codUsuario;
     private Usuario usuario;
     private CodigoVerificacion codverificacion;
+    private RetrofitService retrofitService = new RetrofitService();
+    private CodigoVerificacionApi codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
+    private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n11_verificacion_password);
         inicializarVariables();
-        // Asigna los demás EditText según sea necesario
-
-        // Configura el TextWatcher para el primer EditText
         editText1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -115,10 +124,8 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
             }
         });
 
-        botonValidar.setOnClickListener(view -> {
 
 
-        });
     }
 
     private void inicializarVariables() {
@@ -128,8 +135,47 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         editText4 = findViewById(R.id.editText4);
         botonValidar = findViewById(R.id.button_ingresar);
         intent1 = getIntent();
-        codUsuario= parseInt(intent1.getStringExtra("codusuario"));
+        codUsuario = parseInt(intent1.getStringExtra("codusuario"));
+
+        Call<Usuario> call = usuarioApi.getByCodUsuario(codUsuario);
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    usuario = response.body();
+                    codverificacion = usuario.getCodigoVerificacion();
+                    Toast.makeText(getApplicationContext(), "Usuario"+usuario.getUsuarioUnico(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Cod"+usuario.getCodigoVerificacion().getCodVerificacion(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Manejar el caso cuando el objeto Usuario o CodigoVerificacion es null
+                        Toast.makeText(getApplicationContext(), "Error al obtener el código de verificación, intente nuevamente", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                // Manejar el caso de fallo en la llamada a la API
+                Toast.makeText(getApplicationContext(), "Error en la llamada a la API, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        botonValidar.setOnClickListener(view -> {
+            String codigoVerificacionIngresado = editText1.getText().toString() + editText2.getText().toString() + editText3.getText().toString() + editText4.getText().toString();
+
+            if (codverificacion.getCodVerificacion().equals(codigoVerificacionIngresado)) {
+                Intent intent = new Intent(CodigoVerificacionActivity.this, CrearCuenta2Activity.class);
+                intent.putExtra("usuario", intent1.getStringExtra("usuario"));
+                intent.putExtra("contrasenia", intent1.getStringExtra("contrasenia"));
+                intent.putExtra("mail", intent1.getStringExtra("mail"));
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), "El código ingresado es incorrecto, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
 
 
     private void hideKeyboard() {

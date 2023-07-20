@@ -8,6 +8,7 @@ import java.util.*;
 import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 
 public interface UsuarioApi {
@@ -23,5 +24,8 @@ public interface UsuarioApi {
 
     @GET("/usuario/get-all-usuarios-unicos")
     Call<List<String>> obtenerUsuariosUnicos();
+
+    @GET("/usuario/get-by-cod/{codUsuario}")
+    Call<Usuario> getByCodUsuario(@Path("codUsuario") int codUsuario);
 
 }

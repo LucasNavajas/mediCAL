@@ -73,5 +73,9 @@ public class UsuarioDao {
 	public List<String> obtenerUsuariosUnicos() {
         return repository.findAllDistinctUsuarioUnico();
     }
+
+	public Optional<Usuario> getByCodUsuario(int codUsuario) {
+		return repository.findByCodUsuario(codUsuario);
+	}
 	
 }
