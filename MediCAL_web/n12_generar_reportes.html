@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>MediCAL | Pantalla principal</title>
+  <title>MediCAL | Generar reportes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
   <!--Iconos que uso de bootstrap-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
@@ -16,28 +16,17 @@
   <!--Iconito de la pestaña-->
   <link rel="icon" href="img/Icono_MediCAL_Web.png">
   <style>
-.centered-image {
-  display: block;
-  margin: 0 auto; /* Centra horizontalmente */
-  text-align: center;
-  max-width: 125px; /* Ajusta el ancho máximo según tus necesidades */
-  height: auto;
-}
-
-.centered-text {
-  text-align: center;
-  font-size: 25px;
-  font-weight: 600;
-  color: #000000; /* Color de texto negro */
-  margin-top: 5pt;
-  line-height: 1.15; /* Interlineado de 0.5 */
-}
+.btn-custom:hover {
+    background-color: var( --second-beta-color); /* Cambia el color de fondo en el hover */
+    cursor: pointer; /* Cambia el cursor a una mano cuando se coloca sobre el botón */
+    color: var(--fifth-color);
+  }
 
 .rectangle {
   width: auto; /* Ajuste automático del ancho */
   margin: 0 auto; /* Centra horizontalmente */
   background-color: var(--bg-second-alpha-color);
-  margin-top: 20px;
+  margin-top: 100px;
   margin-bottom: 20px;
   padding: 40px;
 }
@@ -82,11 +71,6 @@
   align-items: center;
 }
 
-.btn-custom:hover {
-    background-color: var( --second-beta-color); /* Cambia el color de fondo en el hover */
-    cursor: pointer; /* Cambia el cursor a una mano cuando se coloca sobre el botón */
-    color: var(--fifth-color);
-  }
 @media (max-width: 767px) {
   .btn-container {
     grid-template-columns: 1fr; /* Cambia a una sola columna */
@@ -111,76 +95,85 @@
 </head>
 <body>
 <!--Barra de arriba, ícono de configuración y el menú desplegable -->
-  <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
-        MediCAL | Administrador Institución
-      </a>
-      <div class="dropdown">
-        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-gear-fill"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-          <!--opciones del dropdown-->
-          <li>
-            <a class="dropdown-item" href="#">
-              <i class="bi bi-pencil-square"></i>
-              Editar perfil
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">
-              <i class="bi bi-question-circle"></i>
-              Ayuda y soporte
-            </a>
-          </li>
-          <li class="dropdown-divider"></li>
-          <li>
-            <a class="dropdown-item" href="#">
-              <i class="bi bi-box-arrow-left"></i>
-              Cerrar sesión
-            </a>
-          </li>
-        </ul>
-      </div>
+<nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+      MediCAL | Administrador Institución
+    </a>
+    <div class="dropdown">
+      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-gear-fill"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+        <!--opciones del dropdown-->
+        <li>
+          <a class="dropdown-item" href="#">
+            <i class="bi bi-pencil-square"></i>
+            Editar perfil
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#">
+            <i class="bi bi-question-circle"></i>
+            Ayuda y soporte
+          </a>
+        </li>
+        <li class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item" href="#">
+            <i class="bi bi-box-arrow-left"></i>
+            Cerrar sesión
+          </a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
  <!--Pantalla-->
 <main class="pt-5">
-  <img src="img/usuario.png" alt="Imagen de inicio" class="centered-image">
-  <p class="centered-text">Nombreusuario<br/>Correoelectronico</p>
+
+<!--flecha atras-->
+<a href="#" class="btn-back">
+    <i class="bi bi-arrow-left"></i>
+  </a>
+  <!--Titulo-->
+  <div style="margin-top: -34px; margin-left: 80px;">
+    <h1
+      style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
+      Generar reportes</h1>
+  </div>
+
   <div class="rectangle container">
     <!--Botones-->
     <div class="grid-container"> <!-- Cambio de clase: rectangle-container a grid-container -->
       <button class="btn btn-custom">
-        <img src="img/profesionales.png" alt="Imagen profesionales" class="button-image">
-        Gestionar profesionales
+        <img src="img/profesional_salud.png" alt="Imagen profesionales" class="button-image">
+        Profesionales de la salud
       </button>
       <button class="btn btn-custom">
-        <img src="img/calendario.png" alt="Imagen calendario" class="button-image">
-        Gestionar calendarios
+        <img src="img/pacientes.png" alt="Imagen calendario" class="button-image">
+        Pacientes
       </button>
       <button class="btn btn-custom">
-        <img src="img/reportes.png" alt="Imagen reportes" class="button-image">
-        Generar reportes
+        <img src="img/medicamentos_consumidos.png" alt="Imagen reportes" class="button-image">
+        Medicamentos consumidos
       </button>
       <button class="btn btn-custom">
-        <img src="img/permisos.png" alt="Imagen permisos" class="button-image">
-        Gestionar permisos
+        <img src="img/sintomas.png" alt="Imagen permisos" class="button-image">
+        Síntomas registrados
       </button>
     </div>
   </div>
 </main>
 
-  <!--Pie de pagina-->
-  <footer class="footer-bg">
-    <div class="container text-center">
-      <small class="small-text">&copy; 2023 MediCAL.</small>
-    </div>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-  
+<script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+        crossorigin="anonymous">
+</script>
+
+ 
   <!--llamo el archivo de javascript-->
   <script src="js/main.js"></script>
 </body>

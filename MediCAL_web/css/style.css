@@ -8,6 +8,7 @@
     /* Verde */
     --second-color: rgb(0, 175, 185);
     --second-alpha-color: rgba(0, 175, 185, 0.15);
+    --second-beta-color: rgba(0, 175, 185, 0.70);
     /* Rojo */
     --third-color: rgb(240, 113, 103);
     --third-alpha-color: rgba(240, 113, 103, 0.15);
@@ -70,14 +71,14 @@
   
   /* color de pie de pagina*/
   .footer-bg {
-    position: fixed;
+    position: static;
     left: 0;
     bottom: 0;
     width: 100%;
     color: var(--fifth-color);
-    padding: 10px 0;
+    padding: 0px;
     text-align: center;
-    margin-top: -50px; /* Ajusta este valor según tus necesidades */
+    margin-top: 0px /* Ajusta este valor según tus necesidades */
   }
   
 /* USADAS PARA INICIO DE SESION */
