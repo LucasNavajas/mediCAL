@@ -419,7 +419,7 @@ function checkUsername() {
         usernameInput.value = username.substring(0, 30);
         usernameMatchIcon.style.display = "none";
         usernameMismatchIcon.style.display = "inline-block";
-        usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres";
+        usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
         guardarButton.disabled = true;
     } else if (username === existingUsername) {
         usernameMatchIcon.style.display = "none";
@@ -443,7 +443,7 @@ function checkUsername() {
     var passwordMismatchIcon = document.getElementById("password-mismatch-icon");
 
     if (contrasena.length > 16) {
-        contrasenaAlert.innerText = "La contraseña puede tener como máximo 16 caracteres";
+        contrasenaAlert.innerText = "La contraseña puede tener como máximo 16 caracteres.";
         contrasenaInput.value = contrasena.substring(0, 16); // Corta el texto hasta los primeros 16 caracteres
         guardarButton.disabled = true;
         passwordMatchIcon.style.display = "none";
@@ -469,7 +469,7 @@ function checkUsername() {
             var nameAlert = document.getElementById("name-alert");
     
             if (name.length > 30) {
-                nameAlert.innerText = "Ingresar nombre del profesional en 30 caracteres";
+                nameAlert.innerText = "Ingresar nombre del profesional en 30 caracteres.";
                 nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
             } else {
                 nameAlert.innerText = "";
@@ -482,7 +482,7 @@ function checkUsername() {
             var lastNameAlert = document.getElementById("lastname-alert");
     
             if (lastName.length > 30) {
-                lastNameAlert.innerText = "Ingresar apellido del profesional en 30 caracteres";
+                lastNameAlert.innerText = "Ingresar apellido del profesional en 30 caracteres.";
                 lastNameInput.value = lastName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
             } else {
                 lastNameAlert.innerText = "";
@@ -497,7 +497,7 @@ function checkUsername() {
             var dniPattern = /^[0-9]{7,8}$/; // Patrón para validar el dni 7 u 8 dígitos
     
             if (!dniPattern.test(dni)) {
-                dniAlert.innerText = "Documento Nacional de Identidad inválido.\nIngrese los dígitos sin espacios ni puntos";
+                dniAlert.innerText = "Documento Nacional de Identidad inválido.\nIngrese los dígitos sin espacios ni puntos.";
             } else {
                 dniAlert.innerText = "";
             }
@@ -511,7 +511,7 @@ function checkUsername() {
             var phonePattern = /^\d{10,16}$/; // Patrón para validar el formato de números de teléfono (10 a 16 dígitos)
     
             if (!phonePattern.test(phone)) {
-                phoneAlert.innerText = "Número de teléfono no válido";
+                phoneAlert.innerText = "Número de teléfono no válido.";
             } else {
                 phoneAlert.innerText = "";
             }
@@ -525,7 +525,7 @@ function checkUsername() {
             var matriculaPattern = /^\d{4,6}$/; // Patrón para validar el formato de números de matriculas (4 a 6 dígitos)
     
             if (!matriculaPattern.test(matricula)) {
-                matriculaAlert.innerText = "Número de matrícula inválido.\nIngrese los dígitos sin espacios ni puntos";
+                matriculaAlert.innerText = "Número de matrícula inválido.\nIngrese los dígitos sin espacios ni puntos.";
             } else {
                 matriculaAlert.innerText = "";
             }
@@ -539,7 +539,7 @@ function checkUsername() {
             var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
     
             if (!emailPattern.test(email)) {
-                emailAlert.innerText = "Correo electrónico no válido";
+                emailAlert.innerText = "Correo electrónico no válido.";
             } else {
                 emailAlert.innerText = "";
             }
