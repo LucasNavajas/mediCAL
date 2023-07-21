@@ -228,7 +228,7 @@
     border-radius: 4px;
     font-size: 14px;
     align-items: center;
-  justify-content: center;
+    justify-content: center;
   }
 
   .search-icon {
@@ -269,7 +269,7 @@
   }
 
   .deleted-row {
-    background-color: red;
+    background-color: transparent;
   }
 
   .deleted-row .edit-delete-icons {
@@ -282,6 +282,7 @@
 
   .deleted-row td {
     color: red;
+    background-color:transparent;
   }
 /***** FIN TABLAS******/
 

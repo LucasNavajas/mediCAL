@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediCAL | Gestionar calendarios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+
+  <!--Iconos que uso de bootstrap-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
+
+  <!--Tipografia Fuente:Inter sacada de google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+
+  <!--referencio el archivo de estilos-->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!--Iconito de la pestaña-->
+  <link rel="icon" href="img/Icono_MediCAL_Web.png" />
+
+  <!-- Referencia a jQuery para calendario fnacimiento -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+  <style>
+    .button-container {
+    margin-left: 720px;
+    margin-right: 0px;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: 68px;
+    margin-right: 142px;
+  }
+
+  #eliminarCalendariosBtn {
+    margin-left: 0px;
+    margin-right: 725px;
+    border: none;
+    border-radius: 100px;
+    background-color: var(--third-color);
+    color: var(--fourth-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .btn-agregar {
+    border: none;
+    border-radius: 100px;
+    background-color: var(--first-color);
+    color: var(--fourth-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+  .hide {
+  display: none;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <!--Barra de arriba, ícono de configuración y el menú desplegable -->
+  <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+        MediCAL | Administrador Institución
+      </a>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="bi bi-gear-fill"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          <!--opciones del dropdown-->
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-pencil-square"></i>
+              Editar perfil
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-question-circle"></i>
+              Ayuda y soporte
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-box-arrow-left"></i>
+              Cerrar sesión
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--Pantalla-->
+  <main class="pt-5">
+
+    <!--flecha atras-->
+    <a href="#" class="btn-back">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <!--Titulo-->
+    <div style="margin-top: -34px; margin-left: 80px;">
+      <h1
+        style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
+        Gestión de calendarios</h1>
+    </div>
+      <!-- Contenedor para centrar el button-container -->
+<div style="display: flex; justify-content: flex-end; margin-top: 30px;">
+    <!-- Contenedor de botones con espacio entre ellos -->
+    <div class="button-container">
+      <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+        Eliminar calendarios
+      </button>
+  
+      <button type="submit" class="click-animation btn-agregar">
+        Agregar calendario
+      </button>
+    </div>
+  </div>
+
+    <!--tabla, el formato es generico (esta en style para hacerlas todas iguales)-->
+    <table>
+      <!--cabeceras-->
+      <tr>
+        <th style="text-align: left;">
+          <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" />
+        </th>
+        <th onclick="toggleSearch(0)">
+          Nombre paciente
+          <div id="searchContainer0" class="search-container">
+            <input type="search" id="search0" class="search-input" placeholder="Buscar por nombre paciente" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(1)">
+          Nombre calendario
+          <div id="searchContainer1" class="search-container">
+            <input type="search" id="search1" class="search-input" placeholder="Buscar por nombre calendario" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(2)">
+          Usuario supervisor
+          <div id="searchContainer2" class="search-container">
+            <input type="search" id="search2" class="search-input" placeholder="Buscar por usuario supervisor" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(3)">
+          Fecha alta
+          <div id="searchContainer3" class="search-container">
+            <input type="text" id="search3" class="search-input datepicker" placeholder="Buscar por fecha alta" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(4)">
+          N° Recordatorios
+          <div id="searchContainer4" class="search-container">
+            <input type="search" id="search4" class="search-input" placeholder="Buscar por número de recordatorios" />
+          </div>
+        </th>
+      </tr>
+      <!--fila 1-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>Juan Martinez</td>
+        <td>Calendario 01</td>
+        <td>René Favaloro</td>
+        <td>17/06/2022</td>
+        <td>9</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 2-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>Maria Gutierrez</td>
+        <td>Calendario 02</td>
+        <td>Ramón Carrillo</td>
+        <td>05/08/2021</td>
+        <td>3</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 3-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>Paulina Diaz</td>
+        <td>Calendario 03</td>
+        <td>René Favaloro</td>
+        <td>10/06/2023</td>
+        <td>2</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(2, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(2, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 4-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>Lola Gonzalez</td>
+        <td>Calendario 04</td>
+        <td>Bernardo Houssay</td>
+        <td>02/06/2020</td>
+        <td>4</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(3, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 5-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>Sofia Lopez</td>
+        <td>Calendario 05</td>
+        <td>Alicia Moreu</td>
+        <td>17/06/2022</td>
+        <td>1</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(4, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(4, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 6-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>Agustin Fernandez</td>
+        <td>Calendario 01</td>
+        <td>René Favaloro</td>
+        <td>07/12/2019</td>
+        <td>15</td>
+        <td>
+          <div class="edit-delete-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(5, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(5, this)"></i>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+
+  <script>
+    function toggleSearch(index) {
+      var container = document.getElementById('searchContainer' + index);
+      container.classList.toggle('active');
+      var input = container.querySelector('.search-input');
+      if (container.classList.contains('active')) {
+        input.focus();
+      } else {
+        input.value = '';
+        filterTable();
+      }
+    }
+function toggleDeleteButtonVisibility() {
+    var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+    var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
+    eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+  }
+
+  function toggleDeleteRow(row, icon) {
+    var deleteIcon = icon;
+    var editIcon = deleteIcon.previousElementSibling;
+
+    deleteIcon.classList.toggle('hide');
+    editIcon.classList.toggle('hide');
+
+    var tableRow = deleteIcon.closest('tr');
+    tableRow.classList.toggle('deleted-row');
+
+    var checkbox = tableRow.querySelector('.rowCheckbox');
+    checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
+
+    toggleDeleteButtonVisibility();
+  }
+
+  function eliminarCalendariosSeleccionados() {
+    var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      var checkbox = checkboxes[i];
+      var tableRow = checkbox.closest('tr');
+      var deleteIcon = tableRow.querySelector('.delete-icon');
+      var editIcon = tableRow.querySelector('.edit-icon');
+
+      deleteIcon.classList.add('hide');
+      editIcon.classList.add('hide');
+      tableRow.classList.add('deleted-row');
+      checkbox.style.display = 'none';
+    }
+
+    toggleDeleteButtonVisibility();
+  }
+
+
+    function toggleRowSelection(checkbox) {
+      var tableRow = checkbox.closest('tr');
+      if (checkbox.checked) {
+        tableRow.classList.add('clicked');
+      } else {
+        tableRow.classList.remove('clicked');
+      }
+      toggleDeleteButtonVisibility();
+    }
+
+    function toggleSelectAll() {
+      var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
+      var selectAllCheckbox = document.getElementById('selectAll');
+
+      for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = selectAllCheckbox.checked;
+        toggleRowSelection(checkboxes[i]);
+      }
+    }
+
+    function eliminarCalendariosSeleccionados() {
+  var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+
+  for (var i = 0; i < checkboxes.length; i++) {
+    var checkbox = checkboxes[i];
+    var tableRow = checkbox.closest('tr');
+    var deleteIcon = tableRow.querySelector('.delete-icon');
+    var editIcon = tableRow.querySelector('.edit-icon');
+
+    deleteIcon.classList.add('hide');
+    editIcon.classList.add('hide');
+    tableRow.classList.add('deleted-row');
+    checkbox.style.display = 'none';
+
+    // Remover la clase 'clicked' y fondo gris de la fila
+    tableRow.classList.remove('clicked');
+  }
+
+  // Eliminar el fondo gris de las filas eliminadas
+  var deletedRows = document.querySelectorAll('.deleted-row');
+  for (var j = 0; j < deletedRows.length; j++) {
+    deletedRows[j].classList.remove('clicked');
+  }
+
+  toggleDeleteButtonVisibility();
+}
+
+
+    window.onload = function () {
+      var cells = document.getElementsByTagName('td');
+      for (var i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('click', function () {
+          this.setAttribute('tabindex', '0');
+          this.focus();
+        });
+        cells[i].addEventListener('blur', function () {
+          this.removeAttribute('tabindex');
+        });
+      }
+
+      var inputs = document.getElementsByClassName('search-input');
+      for (var j = 0; j < inputs.length; j++) {
+        inputs[j].addEventListener('input', function () {
+          filterTable();
+        });
+      }
+
+      toggleDeleteButtonVisibility();
+    };
+
+    function filterTable() {
+      var table = document.getElementsByTagName('table')[0];
+      var rows = table.getElementsByTagName('tr');
+
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        var shouldDisplayRow = true;
+
+        var cells = row.getElementsByTagName('td');
+        for (var j = 1; j < cells.length - 1; j++) { // Start from 1 to skip the checkbox column
+          var cell = cells[j];
+          var searchInput = document.getElementById('search' + (j - 1)); // Adjust the search input index
+
+          if (searchInput) {
+            var searchText = searchInput.value.toUpperCase();
+            var cellText = cell.textContent || cell.innerText;
+
+            // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
+            if (j === 4 && searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
+              // Obtener el valor del campo de fecha
+              var selectedDate = $(searchInput).datepicker('getDate');
+
+              // Formatear la fecha en el formato "dd/mm/yyyy"
+              searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+            }
+
+            if (cellText.toUpperCase().indexOf(searchText) === -1) {
+              shouldDisplayRow = false;
+              break;
+            }
+          }
+        }
+
+        row.style.display = shouldDisplayRow ? '' : 'none';
+      }
+    }
+
+    // Inicializar el selector de fecha en los campos con clase "datepicker"
+    $(document).ready(function () {
+      $(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy", // Formato de fecha: día/mes/año
+        changeMonth: true,
+        changeYear: true,
+      }).on("change", function () {
+        filterTable(); // Filtrar la tabla cuando cambie el valor del campo de fecha
+      });
+    });
+  </script>
+</body>
+
+</html>
