@@ -32,47 +32,59 @@
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
   <style>
-    .button-container {
-    margin-left: 720px;
-    margin-right: 0px;
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-left: 68px;
-    margin-right: 142px;
-  }
+.container {
+  display: flex;
+  justify-content: right;
+  margin-top: 30px;
+}
 
-  #eliminarCalendariosBtn {
-    margin-left: 0px;
-    margin-right: 725px;
-    border: none;
-    border-radius: 100px;
-    background-color: var(--third-color);
-    color: var(--fourth-color);
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 10px 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-  }
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+  padding: 0 18px; /* Ajustar el espacio horizontal entre los botones */
+}
 
-  .btn-agregar {
-    border: none;
-    border-radius: 100px;
-    background-color: var(--first-color);
-    color: var(--fourth-color);
-    font-family: 'Inter', sans-serif;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 10px 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+#eliminarCalendariosBtn {
+  margin-right: 10px; /* Ajustar el espacio entre los botones en pantallas más grandes */
+}
+
+.btn-agregar,
+.btn-eliminar {
+  border: none;
+  border-radius: 100px;
+  color: var(--fourth-color); /* Cambiar el color del texto según el formato */
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.btn-agregar {
+  background-color: var(--first-color); /* Utilizar el color del formato para el botón de agregar */
+}
+
+.btn-eliminar {
+  background-color: var(--third-color); /* Utilizar el color rojo para el botón de eliminar */
+}
+
+
+@media (max-width: 550px) {
+  /* Aplicar estilos para pantallas medianas */
+  .container {
+    justify-content: center; /* Centrar el contenedor de botones en pantallas medianas */
   }
+  .btn-agregar,
+  .btn-eliminar {
+  font-size: 14px;
+}
+}
+
   .hide {
   display: none;
 }
-
 
   </style>
 </head>
@@ -128,19 +140,19 @@
         style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
         Gestión de calendarios</h1>
     </div>
-      <!-- Contenedor para centrar el button-container -->
-<div style="display: flex; justify-content: flex-end; margin-top: 30px;">
-    <!-- Contenedor de botones con espacio entre ellos -->
-    <div class="button-container">
-      <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
-        Eliminar calendarios
-      </button>
-  
-      <button type="submit" class="click-animation btn-agregar">
-        Agregar calendario
-      </button>
-    </div>
+<!-- Contenedor para centrar el button-container -->
+<div class="container">
+  <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
+  <div class="button-container">
+    <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+      Eliminar calendarios
+    </button>
+    <button type="submit" class="click-animation btn-agregar">
+      Agregar calendario
+    </button>
   </div>
+</div>
+
 
     <!--tabla, el formato es generico (esta en style para hacerlas todas iguales)-->
     <table>
