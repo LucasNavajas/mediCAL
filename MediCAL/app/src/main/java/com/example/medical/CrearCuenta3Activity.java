@@ -35,6 +35,7 @@ public class CrearCuenta3Activity extends AppCompatActivity {
                         intent.putExtra("nombre", intent1.getStringExtra("nombre"));
                         intent.putExtra("apellido", intent1.getStringExtra("apellido"));
                         intent.putExtra("telefono", intent1.getStringExtra("telefono"));
+                        intent.putExtra("codusuario", intent1.getIntExtra("codusuario",0));
                         startActivity(intent);
                         break;
                     default:
@@ -47,6 +48,7 @@ public class CrearCuenta3Activity extends AppCompatActivity {
                         intent2.putExtra("nombre", intent1.getStringExtra("nombre"));
                         intent2.putExtra("apellido", intent1.getStringExtra("apellido"));
                         intent2.putExtra("telefono", intent1.getStringExtra("telefono"));
+                        intent2.putExtra("codusuario", intent1.getIntExtra("codusuario",0));
                         intent2.putExtra("genero", genero);
                         startActivity(intent2);
                 }

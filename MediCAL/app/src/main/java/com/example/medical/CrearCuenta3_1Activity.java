@@ -38,6 +38,7 @@ public class CrearCuenta3_1Activity extends AppCompatActivity {
                 intent.putExtra("nombre", intent1.getStringExtra("nombre"));
                 intent.putExtra("apellido", intent1.getStringExtra("apellido"));
                 intent.putExtra("telefono", intent1.getStringExtra("telefono"));
+                intent.putExtra("codusuario", intent1.getIntExtra("codusuario",0));
                 intent.putExtra("genero", genero);
                 startActivity(intent);
             }

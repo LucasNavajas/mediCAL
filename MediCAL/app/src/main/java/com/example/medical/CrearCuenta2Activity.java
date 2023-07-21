@@ -44,6 +44,7 @@ public class CrearCuenta2Activity extends AppCompatActivity {
                 intent.putExtra("usuario", intent1.getStringExtra("usuario"));
                 intent.putExtra("contrasenia", intent1.getStringExtra("contrasenia"));
                 intent.putExtra("mail", intent1.getStringExtra("mail"));
+                intent.putExtra("codusuario", intent1.getIntExtra("codusuario",0));
                 intent.putExtra("nombre", textoNombre);
                 intent.putExtra("apellido", textoApellido);
                 intent.putExtra("telefono", textoTelefono);
