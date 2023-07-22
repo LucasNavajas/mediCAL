@@ -15,6 +15,7 @@ import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +43,15 @@ public class CrearCuenta4Activity extends AppCompatActivity {
             int month = datePicker.getMonth() + 1;
             int year = datePicker.getYear();
 
+
             LocalDate fechaNacimiento = LocalDate.of(year, month, day);
+
+
+            LocalDate currentDate = LocalDate.now();
+            Period period = Period.between(fechaNacimiento, currentDate);
+            int age = period.getYears();
+
+            if (age >= 18) {
             String nombreUsuario = intent.getStringExtra("nombre");
             LocalDate fechaAltaUsuario = LocalDate.now();
             String apellidoUsuario = intent.getStringExtra("apellido");
@@ -73,22 +82,27 @@ public class CrearCuenta4Activity extends AppCompatActivity {
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                     // Aquí puedes verificar la respuesta del servidor
                     if (response.isSuccessful()) {
-                        Toast.makeText(CrearCuenta4Activity.this, "Usuario modificado correctamente", Toast.LENGTH_SHORT).show();
                         Intent intent2 = new Intent(CrearCuenta4Activity.this, BienvenidoUsuarioActivity.class);
                         intent2.putExtra("usuario", intent.getStringExtra("usuario"));
                         startActivity(intent2);
                     } else {
-                        Toast.makeText(CrearCuenta4Activity.this, "Error al modificar el usuario", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Usuario> call, Throwable t) {
-                    Toast.makeText(CrearCuenta4Activity.this, "Error al crear el usuario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
                     Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error occurred");
                 }
             });
+            }
+            else{
+                Toast.makeText(CrearCuenta4Activity.this, "Debe tener al menos 18 años para crear una cuenta", Toast.LENGTH_SHORT).show();
+            }
         });
+
+
 
         buttonVolver.setOnClickListener(new View.OnClickListener() {
             @Override

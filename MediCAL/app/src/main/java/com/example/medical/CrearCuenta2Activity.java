@@ -2,6 +2,7 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -31,12 +32,15 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n05_crear_cuenta_paso2);
         inicializarVariables();
+        nombre.setFilters(new InputFilter[] { new TextOnlyInputFilter() });
+        apellido.setFilters(new InputFilter[] { new TextOnlyInputFilter() });
 
         buttonSiguiente.setOnClickListener(view -> {
 
 
             String textoNombre = nombre.getText().toString();
             String textoApellido = apellido.getText().toString();
+
             String textoTelefono = telefono.getText().toString();
 
             if (camposLlenos(textoNombre, textoApellido, textoTelefono)){
@@ -78,4 +82,5 @@ public class CrearCuenta2Activity extends AppCompatActivity {
     private boolean camposLlenos(String nombre, String apellido, String telefono){
         return !(TextUtils.isEmpty(nombre) || TextUtils.isEmpty(apellido) || TextUtils.isEmpty(telefono));
     }
+
 }
