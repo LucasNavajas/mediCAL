@@ -352,15 +352,15 @@
 
     
     
-    // Función para restaurar filas
+    // Función para restaurar fila
     function toggleRestoreRow(row, icon) {
         var revertIcon= icon;
         var deleteIcon = revertIcon.previousElementSibling;
-        var editIcon = deleteIcon.previousElementSibling;
+        //var editIcon = deleteIcon.previousElementSibling;
 
         revertIcon.classList.toggle('hide');
         deleteIcon.classList.toggle('hide');
-        editIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
 
         var tableRow = revertIcon.closest('tr');
         tableRow.classList.remove('deleted-row');
@@ -373,7 +373,7 @@
     }
     
     
-    
+    // Función para restaurar varias filas
     function restaurarFilasSeleccionadas() {
         var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
         //var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox');
@@ -383,10 +383,10 @@
             var tableRow = checkbox.closest('tr');
             var revertIcon = tableRow.querySelector('.revert-icon');
             var deleteIcon = tableRow.querySelector('.delete-icon');
-            var editIcon = tableRow.querySelector('.edit-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
 
             deleteIcon.classList.remove('hide');
-            editIcon.classList.remove('hide');
+            //editIcon.classList.remove('hide');
             revertIcon.classList.add('hide');
             tableRow.classList.remove('deleted-row');
             //checkbox.style.display = 'inline-block';
@@ -396,14 +396,14 @@
         toggleRevertButtonVisibility();
     }
 
-    
+    // Función para eliminar fila
     function toggleDeleteRow(row, icon) {
         var deleteIcon = icon;
-        var editIcon = deleteIcon.previousElementSibling;
+        //var editIcon = deleteIcon.previousElementSibling;
         var revertIcon = deleteIcon.nextElementSibling;
 
         deleteIcon.classList.toggle('hide');
-        editIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
         revertIcon.classList.toggle('hide');
 
         var tableRow = deleteIcon.closest('tr');
@@ -417,7 +417,7 @@
     }
     
 
-
+    // Función para eliminar varias filas
     function eliminarCalendariosSeleccionados() {
         var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
 
@@ -425,11 +425,11 @@
             var checkbox = checkboxes[i];
             var tableRow = checkbox.closest('tr');
             var deleteIcon = tableRow.querySelector('.delete-icon');
-            var editIcon = tableRow.querySelector('.edit-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
             var revertIcon = tableRow.querySelector('.revert-icon');
 
             deleteIcon.classList.add('hide');
-            editIcon.classList.add('hide');
+            //editIcon.classList.add('hide');
             revertIcon.classList.remove('hide')
             tableRow.classList.add('deleted-row');
 
