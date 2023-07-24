@@ -10,15 +10,23 @@
         android:visibility="visible"
         tools:visibility="visible">
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/logo_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+        <ImageView
             android:layout_width="100dp"
             android:layout_height="120dp"
             android:layout_centerVertical="true"
             android:src="@drawable/logo_app"
+            android:layout_marginStart="30dp"
             tools:layout_editor_absoluteX="30dp"
             tools:layout_editor_absoluteY="0dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            />
 
         <ImageView
             android:id="@+id/nombre_logo"
@@ -26,11 +34,8 @@
             android:layout_height="100dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/logo_app"
-            android:src="@drawable/nombre_logo"
-            tools:layout_editor_absoluteX="130dp"
-            tools:layout_editor_absoluteY="16dp"
-            tools:ignore="MissingConstraints" />
-
+            android:src="@drawable/nombre_logo" />
+        </LinearLayout>
         <ImageView
             android:id="@+id/imagen_bienvenida"
             android:layout_width="wrap_content"
@@ -44,6 +49,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             />
+
+
 
         <TextView
             android:id="@+id/texto_bienvenida"

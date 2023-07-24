@@ -67,7 +67,7 @@ public class UsuarioDao {
 			return repository.save(usuario);
 			}
 	
-	public List<Usuario> obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
+	public Usuario obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
         return repository.findByUsuarioUnico(usuarioUnico);
     }
 	
