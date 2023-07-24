@@ -53,6 +53,11 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         EditText contrasenia = findViewById(R.id.textEdit_contrasenia);
         EditText mail = findViewById(R.id.textEdit_email);
         TextView errorUsuario = findViewById(R.id.error_usuario);
+        TextView errorLongitudUsuario = findViewById(R.id.error_longitud_usuario);
+        TextView errorLongitudContrasenia = findViewById(R.id.error_longitud_contrasenia);
+        TextView errorFormatoMail = findViewById(R.id.error_formato_mail);
+        View lineaInferiorMail = findViewById(R.id.linea_inferior_mail);
+        View lineaInferiorContrasenia = findViewById(R.id.linea_inferior_contrasenia);
         View lineaInferiorUsuario = findViewById(R.id.linea_inferior_usuario);
         buttonIngresar.setOnClickListener(view -> {
 
@@ -62,20 +67,42 @@ public class CrearCuenta1Activity extends AppCompatActivity {
             String textoContrasenia = contrasenia.getText().toString();
             String textoMail = mail.getText().toString();
 
+            if (textoUsuario.length() > 30) {
+                errorLongitudUsuario.setVisibility(View.VISIBLE);
+                lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
+                return;
+            }
+
+            if (usuariosUnicos.contains(textoUsuario)) {
+                errorUsuario.setVisibility(View.VISIBLE);
+                errorLongitudUsuario.setVisibility(View.GONE);
+                lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
+                return;
+            }
+
+            if (textoContrasenia.length() < 6 || textoContrasenia.length() > 15) {
+                errorLongitudContrasenia.setVisibility(View.VISIBLE);
+                lineaInferiorContrasenia.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
+                errorLongitudUsuario.setVisibility(View.GONE);
+                errorUsuario.setVisibility(View.GONE);
+                lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.gris));
+                return;
+            }
+
+            if (!isValidEmail(textoMail)) {
+                errorFormatoMail.setVisibility(View.VISIBLE);
+                lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
+                errorLongitudContrasenia.setVisibility(View.GONE);
+                lineaInferiorContrasenia.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.gris));
+                errorLongitudUsuario.setVisibility(View.GONE);
+                errorUsuario.setVisibility(View.GONE);
+                lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.gris));
+                return;
+            }
+
             if (camposLlenos(textoUsuario, textoContrasenia, textoMail)) {
-                if (usuariosUnicos == null) {
-                    // Handle the case where the usuariosUnicos list is still null (request in progress)
-                    Toast.makeText(getApplicationContext(), "Error, intente nuevamente", Toast.LENGTH_SHORT).show();
-                } else if (usuariosUnicos.contains(textoUsuario)) {
-                    errorUsuario.setVisibility(View.VISIBLE);
-                    lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
-                } else {
-                    errorUsuario.setVisibility(View.GONE);
-                    lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.black));
                     String emailAddress = textoMail;
                     CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
-
-
                     Usuario usuario1 = new Usuario();
                     usuario1.setUsuarioUnico(textoUsuario);
                     usuario1.setContraseniaUsuario(textoContrasenia);
@@ -94,8 +121,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                                     intent.putExtra("usuario", textoUsuario);
                                     intent.putExtra("contrasenia", textoContrasenia);
                                     intent.putExtra("mail", textoMail);
-                                    Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, ""+idUsuarioGenerado);
-                                    intent.putExtra("codusuario", String.valueOf(idUsuarioGenerado));
+                                    intent.putExtra("codusuario", idUsuarioGenerado);
                                     startActivity(intent);
                                 }
 
@@ -106,7 +132,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                                 }
                             });
                 }
-            }
+
             else{
                 Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();
             }
@@ -141,6 +167,10 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
     private boolean camposLlenos(String usuario, String contraseña, String mail){
         return !(TextUtils.isEmpty(usuario) || TextUtils.isEmpty(contraseña) || TextUtils.isEmpty(mail));
+    }
+
+    private boolean isValidEmail(CharSequence target) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
     private void fetchUsuariosUnicos() {
         Call<List<String>> call = usuarioApi.obtenerUsuariosUnicos();

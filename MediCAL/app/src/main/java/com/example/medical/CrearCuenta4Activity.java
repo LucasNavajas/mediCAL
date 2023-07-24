@@ -15,6 +15,7 @@ import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,34 +43,66 @@ public class CrearCuenta4Activity extends AppCompatActivity {
             int month = datePicker.getMonth() + 1;
             int year = datePicker.getYear();
 
+
             LocalDate fechaNacimiento = LocalDate.of(year, month, day);
+
+
+            LocalDate currentDate = LocalDate.now();
+            Period period = Period.between(fechaNacimiento, currentDate);
+            int age = period.getYears();
+
+            if (age >= 18) {
+            String nombreUsuario = intent.getStringExtra("nombre");
+            LocalDate fechaAltaUsuario = LocalDate.now();
+            String apellidoUsuario = intent.getStringExtra("apellido");
+            String contrasenia = intent.getStringExtra("contrasenia");
+            String generoUsuario = intent.getStringExtra("genero");
+            String mailUsuario = intent.getStringExtra("mail");
+            String usuarioUnico = intent.getStringExtra("usuario");
+            String telefono = intent.getStringExtra("telefono");
+            int codUsuario = intent.getIntExtra("codusuario",0);
+
             Usuario usuario = new Usuario();
-            usuario.setNombreUsuario(intent.getStringExtra("nombre"));
-            usuario.setFechaAltaUsuario(LocalDate.now());
+            usuario.setCodUsuario(codUsuario);
+            usuario.setNombreUsuario(nombreUsuario);
+            usuario.setApellidoUsuario(apellidoUsuario);
+            usuario.setContraseniaUsuario(contrasenia);
+            usuario.setFechaAltaUsuario(fechaAltaUsuario);
             usuario.setFechaNacimientoUsuario(fechaNacimiento);
-            usuario.setApellidoUsuario(intent.getStringExtra("apellido"));
-            usuario.setContraseniaUsuario(intent.getStringExtra("contrasenia"));
-            usuario.setGeneroUsuario(intent.getStringExtra("genero"));
-            usuario.setMailUsuario(intent.getStringExtra("mail"));
-            usuario.setUsuarioUnico(intent.getStringExtra("usuario"));
-            usuario.setTelefonoUsuario(intent.getStringExtra("telefono"));
+            usuario.setGeneroUsuario(generoUsuario);
+            usuario.setMailUsuario(mailUsuario);
+            usuario.setTelefonoUsuario(telefono);
+            usuario.setUsuarioUnico(usuarioUnico);
 
-            usuarioApi.save(usuario)
-                    .enqueue(new Callback<Usuario>() {
-                        @Override
-                        public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                            Intent intent2 = new Intent(CrearCuenta4Activity.this, BienvenidoUsuarioActivity.class);
-                            intent2.putExtra("usuario", intent.getStringExtra("usuario"));
-                            startActivity(intent2);
-                        }
+            // Llamar al método modificarUsuario en la interfaz UsuarioApi
+            Call<Usuario> call = usuarioApi.modificarUsuario(usuario);
 
-                        @Override
-                        public void onFailure(Call<Usuario> call, Throwable t) {
-                            Toast.makeText(CrearCuenta4Activity.this, "Error al crear el usuario", Toast.LENGTH_SHORT).show();
-                            Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error ocurred");
-                        }
-                    });
+            call.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    // Aquí puedes verificar la respuesta del servidor
+                    if (response.isSuccessful()) {
+                        Intent intent2 = new Intent(CrearCuenta4Activity.this, BienvenidoUsuarioActivity.class);
+                        intent2.putExtra("usuario", intent.getStringExtra("usuario"));
+                        startActivity(intent2);
+                    } else {
+                        Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
+                    Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error occurred");
+                }
+            });
+            }
+            else{
+                Toast.makeText(CrearCuenta4Activity.this, "Debe tener al menos 18 años para crear una cuenta", Toast.LENGTH_SHORT).show();
+            }
         });
+
+
 
         buttonVolver.setOnClickListener(new View.OnClickListener() {
             @Override

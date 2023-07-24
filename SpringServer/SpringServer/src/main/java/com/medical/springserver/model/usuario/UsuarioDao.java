@@ -53,7 +53,8 @@ public class UsuarioDao {
 			// Paso 2: Realizar los cambios necesarios
 			usuario.setNombreUsuario(nuevoNombre);
 			usuario.setApellidoUsuario(nuevoApellido);
-			usuario.setContraseniaUsuario(nuevaContrasenia);
+			String hashedPassword = passwordEncoder.encode(nuevaContrasenia);
+		    usuario.setContraseniaUsuario(hashedPassword);
 			usuario.setFechaAltaUsuario(nuevaFechaAlta);
 			usuario.setFechaNacimientoUsuario(nuevaFechaNacimiento);
 			usuario.setGeneroUsuario(nuevoGenero);

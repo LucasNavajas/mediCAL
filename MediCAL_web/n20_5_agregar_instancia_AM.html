@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>MediCAL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
+    <!--Iconos que uso de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <!--Tipografia Fuente:Inter sacada de google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <!--referencio el archivo de estilos-->
+    <link rel="stylesheet" href="css/style.css"/>
+    <!-- Referencia a jQuery para calendario fnacimiento -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <!--Iconito de la pestaña-->
+    <link rel="icon" href="img/Icono_MediCAL_Web.png">
+    <style>
+        /* Estilos CSS aquí */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        .popup-content h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    .camp-table td, .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    tr.clicked td {
+    background-color: transparent;
+    }
+
+    tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+.input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+.input-group input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+textarea {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            resize: none; /* Prevent textarea from being resizable */
+        }
+
+
+/* Estilos para el span que contiene los iconos */
+.input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    .icon-check,
+    .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    .icon-error {
+      color: red;
+    }
+/*boton guardar*/
+.button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+    </style>
+</head>
+<body>
+    <button onclick="openDialog()">Abrir pop-up</button>
+
+    <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Administración de Medicamento</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre" placeholder="Nombre de la administración" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="desc" placeholder="Descripción de la administración" oninput="limitarCaracteres(event)" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="tu_ruta_de_destino.html" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <script>
+        // JavaScript aquí
+        function openDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+        }
+
+        function closeDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "none";
+            overlay.style.opacity = "0";
+            dialog.style.display = "none";
+        }
+
+        function cancelDialog() {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById("popup-dialog");
+            overlay.style.display = "none";
+            overlay.style.opacity = "0";
+            dialog.style.display = "none";
+        }
+      
+        function limitarCaracteres(event) {
+            const input = event.target;
+            const maxLength = 300;
+            const currentLength = input.value.length;
+            const remainingChars = maxLength - currentLength;
+
+            if (remainingChars >= 0) {
+                document.getElementById('contadorCaracteres').textContent = remainingChars + ' caracteres restantes';
+            } else {
+                // Si excede el límite, cortamos el texto en 300 caracteres
+                input.value = input.value.slice(0, maxLength);
+                document.getElementById('contadorCaracteres').textContent = '0 caracteres restantes';
+            }
+        }
+        
+    </script>
+
+    <!--script para selector fecha fin vigencia, permitiendo hasta 20 años en adelante -->
+    <script> 
+        $(document).ready(function() {
+        // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
+        var maxDate = new Date();
+        maxDate.setFullYear(maxDate.getFullYear() + 20);
+        maxDate.setDate(maxDate.getDate());
+
+        var minDate = new Date();
+        minDate.setFullYear(minDate.getFullYear());
+        minDate.setDate(minDate.getDate());
+
+        $("#campo_fechaFV").datepicker({
+            dateFormat: "dd MM yy", // Formato de la fecha: "dd nombre_mes aaaa"
+            changeMonth: true, // Permite cambiar el mes
+            changeYear: true, // Permite cambiar el año
+            yearRange: "0:+30", // Rango de años permitidos
+            minDate: minDate, // Fecha mínima permitida, a partir de la fecha actual
+            maxDate: maxDate, // Fecha máxima permitida (20 años en adelante desde la fecha actual, incluyendo la fecha actual)
+            // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
+            showAnim: "fold"
+        });
+    });
+    </script>
+
+    <!--script para alertar campos editables-->
+    <script>
+
+        function checkName() {
+            var nameInput = document.getElementById("campo_nombre");
+            var name = nameInput.value;
+            var nameAlert = document.getElementById("name-alert");
+    
+            if (name.length > 30) {
+                nameAlert.innerText = "Ingresar nombre en 30 caracteres.";
+                nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                nameAlert.innerText = "";
+            }
+        } 
+
+    </script>
+
+</body>
+</html>

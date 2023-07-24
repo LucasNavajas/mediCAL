@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediCAL | Gestionar tablas</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+    crossorigin="anonymous"
+  />
+
+  <!--Iconos que uso de bootstrap-->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+  />
+
+  <!--Tipografia Fuente:Inter sacada de google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!--referencio el archivo de estilos-->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!--Iconito de la pestaña-->
+  <link rel="icon" href="img/Icono_MediCAL_Web.png" />
+
+  <style>
+    .container {
+      display: flex;
+      justify-content: right;
+      margin-top: 30px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 100%;
+      padding: 0 18px 15px; /* Ajustar el espacio horizontal entre los botones */
+    }
+
+    #eliminarCalendariosBtn {
+      margin-right: 10px; /* Ajustar el espacio entre los botones en pantallas más grandes */
+    }
+    
+    #revertInstanciasBtn {
+      margin-right: 15px; /* Ajustar el espacio entre los botones en pantallas más grandes */
+    }
+
+    .btn-agregar,
+    .btn-revert,
+    .btn-eliminar {
+      border: none;
+      border-radius: 100px;
+      color: var(--fourth-color); /* Cambiar el color del texto según el formato */
+      font-family: 'Inter', sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 10px 20px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .btn-agregar {
+      background-color: var(--first-color); /* Utilizar el color del formato para el botón de agregar */
+    }
+
+    .btn-revert {
+      background-color: var(--second-color); /* Utilizar el color del formato claro para el botón de revert */
+    }
+
+    .btn-eliminar {
+      background-color: var(--third-color); /* Utilizar el color rojo para el botón de eliminar */
+    }
+
+
+    @media (max-width: 550px) {
+      /* Aplicar estilos para pantallas medianas */
+      .container {
+        justify-content: center; /* Centrar el contenedor de botones en pantallas medianas */
+      }
+      .btn-agregar,
+      .btn-revert,
+      .btn-eliminar {
+      font-size: 14px;
+    }
+    }
+      .hide {
+      display: none;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!--Barra de arriba, ícono de configuración y el menú desplegable -->
+  <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+        MediCAL | Administrador del Sistema
+      </a>
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="bi bi-gear-fill"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          <!--opciones del dropdown-->
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-pencil-square"></i>
+              Editar perfil
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-question-circle"></i>
+              Ayuda y soporte
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="bi bi-box-arrow-left"></i>
+              Cerrar sesión
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--Pantalla-->
+  <main class="pt-5">
+
+    <!--flecha atras-->
+    <a href="#" class="btn-back">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <!--Titulo-->
+    <div style="margin-top: -34px; margin-left: 80px;">
+      <h1
+        style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
+        Gestión de tablas</h1>
+    </div>
+    <!-- Contenedor para centrar el button-container -->
+    <div class="container">
+      <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
+      <div class="button-container">
+          <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+            Eliminar instancias
+          </button>
+          <button id="revertInstanciasBtn" onclick="restaurarFilasSeleccionadas()" class="click-animation btn-revert hide">
+            Restablecer instancias
+          </button>
+          <button type="submit" class="click-animation btn-agregar">
+            Agregar instancia
+          </button>
+      </div>
+    </div>
+
+
+    <!-- lista desplegable para elegir las tablas mostradas -->
+    <div style="text-align: center;">
+        <label style="font-size: 18px; font-weight: bold; margin-right: 10px;" for="lista_usuarios">Tablas</label>
+        <select id="lista_usuarios">
+            <option value="Medicamento">Medicamento</option>
+            <option value="Consejo">Consejo</option>
+            <option value="FAQ">FAQ</option>
+            <option value="Medicion">Medición</option>
+            <option value="Sintoma">Síntoma</option>
+            <option value="AM">Administración Med</option>
+            <option value="PM">Presentación Med</option>
+    
+        </select>
+    </div>
+
+
+    <!--tabla, el formato es generico (esta en style para hacerlas todas iguales)-->
+    <table>
+      <!--cabeceras-->
+      <tr>
+        <th style="text-align: left;">
+          <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" />
+        </th>
+        <th onclick="toggleSearch(0)">
+            Cod Medicamento
+            <div id="searchContainer0" class="search-container">
+                <input type="search" id="search0" class="search-input" placeholder="Buscar por código de medicamento" />
+            </div>
+        </th>
+        <th onclick="toggleSearch(1)">
+            Fecha Alta
+            <div id="searchContainer1" class="search-container">
+              <input type="text" id="search1" class="search-input datepicker" placeholder="Buscar por fecha alta" />
+            </div>
+          </th>
+        <th onclick="toggleSearch(2)">
+          Nombre Medicamento
+          <div id="searchContainer2" class="search-container">
+            <input type="search" id="search2" class="search-input" placeholder="Buscar por nombre de medicamento" />
+          </div>
+        </th>
+        <th onclick="toggleSearch(3)">
+          Marca Medicamento
+          <div id="searchContainer3" class="search-container">
+            <input type="search" id="search3" class="search-input" placeholder="Buscar por marca de medicamento" />
+          </div>
+        </th>
+        <th class="fecha-fin-vigencia" onclick="toggleSearch(4)">
+            Fecha Fin Vigencia
+            <div id="searchContainer4" class="search-container">
+              <input type="search" id="search4" class="search-input" placeholder="Buscar por fecha fin vigencia" />
+            </div>
+        </th>
+      </tr>
+      <!--fila 1-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>0001</td>
+        <td>05/04/2023</td>
+        <td>T4</td>
+        <td>Bagó</td>
+        <td></td>
+        <td>
+          <div class="edit-delete-revert-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(0, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 2-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>0002</td>
+        <td>03/04/2023</td>
+        <td>Ibupirac</td>
+        <td>Pfizer</td>
+        <td></td>
+        <td>
+          <div class="edit-delete-revert-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(1, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 3-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>0003</td>
+        <td>05/04/2023</td>
+        <td>Aspirineta</td>
+        <td>Bayer</td>
+        <td></td>
+        <td>
+          <div class="edit-delete-revert-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(2, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(2, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(2, this)"></i>
+          </div>
+        </td>
+      </tr>
+      <!--fila 4-->
+      <tr>
+        <td>
+          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
+        </td>
+        <td>0004</td>
+        <td>03/04/2023</td>
+        <td>Ibuprofeno</td>
+        <td>Begó</td>
+        <td></td>
+        <td>
+          <div class="edit-delete-revert-icons">
+            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
+            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(3, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(3, this)"></i>
+          </div>
+        </td>
+      </tr>      
+      
+    </table>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+
+  <script>
+    function toggleSearch(index) {
+      var container = document.getElementById('searchContainer' + index);
+      container.classList.toggle('active');
+      var input = container.querySelector('.search-input');
+      if (container.classList.contains('active')) {
+        input.focus();
+      } else {
+        input.value = '';
+        filterTable();
+      }
+    }
+
+    function toggleDeleteButtonVisibility() {
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+        var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
+        eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+    }
+
+    function toggleRevertButtonVisibility() {
+        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
+        var revertInstanciasBtn = document.getElementById('revertInstanciasBtn');
+        revertInstanciasBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+    }
+
+
+
+    function toggleRowSelection(checkbox) {
+        var tableRow = checkbox.closest('tr');
+        if (checkbox.checked) {
+            tableRow.classList.add('clicked');
+        } else {
+            tableRow.classList.remove('clicked');
+        }
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+    }
+
+    function toggleSelectAll() {
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
+        var selectAllCheckbox = document.getElementById('selectAll');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = selectAllCheckbox.checked;
+            toggleRowSelection(checkboxes[i]);
+        }
+    }
+
+    
+    
+    // Función para restaurar filas
+    function toggleRestoreRow(row, icon) {
+        var revertIcon= icon;
+        var deleteIcon = revertIcon.previousElementSibling;
+        var editIcon = deleteIcon.previousElementSibling;
+
+        revertIcon.classList.toggle('hide');
+        deleteIcon.classList.toggle('hide');
+        editIcon.classList.toggle('hide');
+
+        var tableRow = revertIcon.closest('tr');
+        tableRow.classList.remove('deleted-row');
+
+        var checkbox = tableRow.querySelector('.rowCheckbox');
+        checkbox.style.display = 'inline-block';
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+    }
+    
+    
+    
+    function restaurarFilasSeleccionadas() {
+        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
+        //var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            var tableRow = checkbox.closest('tr');
+            var revertIcon = tableRow.querySelector('.revert-icon');
+            var deleteIcon = tableRow.querySelector('.delete-icon');
+            var editIcon = tableRow.querySelector('.edit-icon');
+
+            deleteIcon.classList.remove('hide');
+            editIcon.classList.remove('hide');
+            revertIcon.classList.add('hide');
+            tableRow.classList.remove('deleted-row');
+            //checkbox.style.display = 'inline-block';
+        }
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+    }
+
+    
+    function toggleDeleteRow(row, icon) {
+        var deleteIcon = icon;
+        var editIcon = deleteIcon.previousElementSibling;
+        var revertIcon = deleteIcon.nextElementSibling;
+
+        deleteIcon.classList.toggle('hide');
+        editIcon.classList.toggle('hide');
+        revertIcon.classList.toggle('hide');
+
+        var tableRow = deleteIcon.closest('tr');
+        tableRow.classList.toggle('deleted-row');
+
+        //var checkbox = tableRow.querySelector('.rowCheckbox');
+        //checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+    }
+    
+
+
+    function eliminarCalendariosSeleccionados() {
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            var tableRow = checkbox.closest('tr');
+            var deleteIcon = tableRow.querySelector('.delete-icon');
+            var editIcon = tableRow.querySelector('.edit-icon');
+            var revertIcon = tableRow.querySelector('.revert-icon');
+
+            deleteIcon.classList.add('hide');
+            editIcon.classList.add('hide');
+            revertIcon.classList.remove('hide')
+            tableRow.classList.add('deleted-row');
+
+        }
+
+        // Eliminar el fondo gris de las filas eliminadas
+        var deletedRows = document.querySelectorAll('.deleted-row');
+        for (var j = 0; j < deletedRows.length; j++) {
+            deletedRows[j].classList.remove('clicked');
+        }
+        
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+    }
+
+
+    
+
+
+    window.onload = function () {
+      var cells = document.getElementsByTagName('td');
+      for (var i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('click', function () {
+          this.setAttribute('tabindex', '0');
+          this.focus();
+        });
+        cells[i].addEventListener('blur', function () {
+          this.removeAttribute('tabindex');
+        });
+      }
+
+      var inputs = document.getElementsByClassName('search-input');
+      for (var j = 0; j < inputs.length; j++) {
+        inputs[j].addEventListener('input', function () {
+          filterTable();
+        });
+      }
+
+      toggleDeleteButtonVisibility();
+      toggleRevertButtonVisibility();
+    };
+
+    function filterTable() {
+      var table = document.getElementsByTagName('table')[0];
+      var rows = table.getElementsByTagName('tr');
+
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        var shouldDisplayRow = true;
+
+        var cells = row.getElementsByTagName('td');
+        for (var j = 1; j < cells.length - 1; j++) { // Start from 1 to skip the checkbox column
+          var cell = cells[j];
+          var searchInput = document.getElementById('search' + (j - 1)); // Adjust the search input index
+
+            if (searchInput) {
+                var searchText = searchInput.value.toUpperCase();
+                var cellText = cell.textContent || cell.innerText;
+
+                // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
+                if (j === 4 && searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
+                // Obtener el valor del campo de fecha
+                var selectedDate = $(searchInput).datepicker('getDate');
+
+                // Formatear la fecha en el formato "dd/mm/yyyy"
+                searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+                }
+
+                if (cellText.toUpperCase().indexOf(searchText) === -1) {
+                shouldDisplayRow = false;
+                break;
+                }
+            }
+            
+        }
+
+        row.style.display = shouldDisplayRow ? '' : 'none';
+      }
+    }
+
+   
+    // Inicializar el selector de fecha en los campos con clase "datepicker"
+    $(document).ready(function () {
+      $(".datepicker").datepicker({
+        dateFormat: "dd/mm/yy", // Formato de fecha: día/mes/año
+        changeMonth: true,
+        changeYear: true,
+      }).on("change", function () {
+        filterTable(); // Filtrar la tabla cuando cambie el valor del campo de fecha
+      });
+    });
+
+  </script>
+</body>
+
+</html>

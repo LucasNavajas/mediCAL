@@ -17,22 +17,12 @@ public class CodigoVerificacion {
 
     private LocalDateTime fechaGenerado;
 
-    // Relación con Usuario
-    @OneToOne(mappedBy = "codigoVerificacion")
-    private Usuario usuario;
 
     public CodigoVerificacion() {
         this.codVerificacion = generateRandomCode(); // Generamos el código aleatorio al crear una nueva instancia
         this.fechaGenerado = LocalDateTime.now();
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 
     public String getCodVerificacion() {
         return codVerificacion;

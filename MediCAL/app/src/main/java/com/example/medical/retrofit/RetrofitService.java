@@ -1,5 +1,4 @@
 package com.example.medical.retrofit;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -7,9 +6,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
-import java.time.LocalDateTime; // Importa la clase LocalDateTime
-import java.time.format.DateTimeFormatter; // Importa la clase DateTimeFormatter
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,13 +17,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
     private Retrofit retrofit;
 
-    public RetrofitService(){
+    public RetrofitService() {
         initializeRetrofit();
     }
 
-    private void initializeRetrofit(){
+    private void initializeRetrofit() {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()) // Usa el nuevo adaptador para LocalDateTime
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
 
         retrofit = new Retrofit.Builder()
@@ -32,11 +33,10 @@ public class RetrofitService {
                 .build();
     }
 
-    public Retrofit getRetrofit(){
+    public Retrofit getRetrofit() {
         return retrofit;
     }
 
-    // Nueva clase para manejar el formato de LocalDateTime
     private static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
         private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -60,5 +60,28 @@ public class RetrofitService {
             }
         }
     }
-}
 
+    private static class LocalDateAdapter extends TypeAdapter<LocalDate> {
+        private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        @Override
+        public void write(JsonWriter out, LocalDate value) throws IOException {
+            if (value != null) {
+                out.value(formatter.format(value));
+            } else {
+                out.nullValue();
+            }
+        }
+
+        @Override
+        public LocalDate read(JsonReader in) throws IOException {
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            } else {
+                String dateString = in.nextString();
+                return LocalDate.parse(dateString, formatter);
+            }
+        }
+    }
+}
