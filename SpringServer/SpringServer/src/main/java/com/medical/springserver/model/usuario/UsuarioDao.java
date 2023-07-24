@@ -7,13 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 @Service
-public class UsuarioDao implements UserDetailsService{
+public class UsuarioDao {
 	@Autowired
 	private UsuarioRepository repository;
 	private PasswordEncoder passwordEncoder;
@@ -21,16 +17,6 @@ public class UsuarioDao implements UserDetailsService{
 	public UsuarioDao(PasswordEncoder passwordEncoder) {
 		this.passwordEncoder=passwordEncoder;
 	}
-	
-	
-	@Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = repository.findByUsuarioUnico(username);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
-        }
-        return new User(usuario.getUsuarioUnico(), usuario.getContraseniaUsuario(), new ArrayList<>());
-    }
 	
 	public Usuario save(Usuario usuario) {
 		String hashedPassword = passwordEncoder.encode(usuario.getContraseniaUsuario());
@@ -54,14 +40,17 @@ public class UsuarioDao implements UserDetailsService{
             LocalDate nuevaFechaNacimiento, String nuevoGenero,
             String nuevoMail, String nuevoNombreInstitucion,
             String nuevoTelefono, String nuevoUsuarioUnico) {
+			// Paso 1 (opcional): Buscar el usuario por su ID
 			Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
 			Usuario usuario;
 			if (optionalUsuario.isPresent()) {
 			usuario = optionalUsuario.get();
 			} else {
+			// Si no se encontró el usuario, puedes crear uno nuevo (opcional)
 			usuario = new Usuario();
 			}
 			
+			// Paso 2: Realizar los cambios necesarios
 			usuario.setNombreUsuario(nuevoNombre);
 			usuario.setApellidoUsuario(nuevoApellido);
 			String hashedPassword = passwordEncoder.encode(nuevaContrasenia);
@@ -78,7 +67,7 @@ public class UsuarioDao implements UserDetailsService{
 			return repository.save(usuario);
 			}
 	
-	public Usuario obtenerUsuarioPorUsuarioUnico(String usuarioUnico) {
+	public List<Usuario> obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
         return repository.findByUsuarioUnico(usuarioUnico);
     }
 	
