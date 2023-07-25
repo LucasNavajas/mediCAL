@@ -5,18 +5,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MediCAL | Gestionar perfiles</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+    crossorigin="anonymous"
+  />
 
   <!--Iconos que uso de bootstrap-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+  />
 
   <!--Tipografia Fuente:Inter sacada de google fonts-->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
+    rel="stylesheet"
+  />
 
   <!--referencio el archivo de estilos-->
   <link rel="stylesheet" href="css/style.css" />
@@ -24,67 +32,69 @@
   <!--Iconito de la pestaña-->
   <link rel="icon" href="img/Icono_MediCAL_Web.png" />
 
-  <!-- Referencia a jQuery para calendario fnacimiento -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-
   <style>
-.container {
-  display: flex;
-  justify-content: right;
-  margin-top: 30px;
-}
+    .container {
+      display: flex;
+      justify-content: right;
+      margin-top: 30px;
+    }
 
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  max-width: 100%;
-  padding: 0 18px; /* Ajustar el espacio horizontal entre los botones */
-}
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 100%;
+      padding: 0 18px 15px; /* Ajustar el espacio horizontal entre los botones */
+    }
 
-#eliminarCalendariosBtn {
-  margin-right: 10px; /* Ajustar el espacio entre los botones en pantallas más grandes */
-}
+    #eliminarCalendariosBtn {
+      margin-right: 10px; /* Ajustar el espacio entre los botones en pantallas más grandes */
+    }
+    
+    #revertInstanciasBtn {
+      margin-right: 15px; /* Ajustar el espacio entre los botones en pantallas más grandes */
+    }
 
-.btn-agregar,
-.btn-eliminar {
-  border: none;
-  border-radius: 100px;
-  color: var(--fourth-color); /* Cambiar el color del texto según el formato */
-  font-family: 'Inter', sans-serif;
-  font-weight: bold;
-  font-size: 18px;
-  padding: 10px 20px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
+    .btn-agregar,
+    .btn-revert,
+    .btn-eliminar {
+      border: none;
+      border-radius: 100px;
+      color: var(--fourth-color); /* Cambiar el color del texto según el formato */
+      font-family: 'Inter', sans-serif;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 10px 20px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
 
-.btn-agregar {
-  background-color: var(--first-color); /* Utilizar el color del formato para el botón de agregar */
-}
+    .btn-agregar {
+      background-color: var(--first-color); /* Utilizar el color del formato para el botón de agregar */
+    }
 
-.btn-eliminar {
-  background-color: var(--third-color); /* Utilizar el color rojo para el botón de eliminar */
-}
+    .btn-revert {
+      background-color: var(--second-color); /* Utilizar el color del formato claro para el botón de revert */
+    }
+
+    .btn-eliminar {
+      background-color: var(--third-color); /* Utilizar el color rojo para el botón de eliminar */
+    }
 
 
-@media (max-width: 550px) {
-  /* Aplicar estilos para pantallas medianas */
-  .container {
-    justify-content: center; /* Centrar el contenedor de botones en pantallas medianas */
-  }
-  .btn-agregar,
-  .btn-eliminar {
-  font-size: 14px;
-}
-}
-
-  .hide {
-  display: none;
-}
+    @media (max-width: 550px) {
+      /* Aplicar estilos para pantallas medianas */
+      .container {
+        justify-content: center; /* Centrar el contenedor de botones en pantallas medianas */
+      }
+      .btn-agregar,
+      .btn-revert,
+      .btn-eliminar {
+      font-size: 14px;
+    }
+    }
+      .hide {
+      display: none;
+    }
 
   </style>
 </head>
@@ -140,21 +150,24 @@
         style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
         Gestión de perfiles</h1>
     </div>
-<!-- Contenedor para centrar el button-container -->
-<div class="container">
-  <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
-  <div class="button-container">
-    <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
-      Eliminar perfiles
-    </button>
-    <button type="submit" class="click-animation btn-agregar">
-      Agregar perfil
-    </button>
-  </div>
-</div>
+    <!-- Contenedor para centrar el button-container -->
+    <div class="container">
+      <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
+      <div class="button-container">
+          <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+            Eliminar perfiles
+          </button>
+          <button id="revertInstanciasBtn" onclick="restaurarFilasSeleccionadas()" class="click-animation btn-revert hide">
+            Restablecer perfiles
+          </button>
+          <button type="submit" class="click-animation btn-agregar">
+            Agregar perfil
+          </button>
+      </div>
+    </div>
 
 
-    <!--tabla, el formato es generico (esta en style para hacerlas todas iguales)-->
+       <!--tabla, el formato es generico (esta en style para hacerlas todas iguales)-->
     <table>
       <!--cabeceras-->
       <tr>
@@ -185,7 +198,7 @@
             <input type="text" id="search3" class="search-input datepicker" placeholder="Buscar por fecha alta" />
           </div>
         </th>
-        <th onclick="toggleSearch(4)">
+        <th id="motivo" onclick="toggleSearch(4)">
           Motivo Fin Vigencia
           <div id="searchContainer4" class="search-container">
             <input type="search" id="search4" class="search-input" placeholder="Buscar por motivo fin vigencia" />
@@ -210,9 +223,10 @@
         <td></td>
         <td></td>
         <td>
-          <div class="edit-delete-icons">
+          <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
             <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(0, this)"></i>
           </div>
         </td>
       </tr>
@@ -228,9 +242,10 @@
         <td></td>
         <td></td>
         <td>
-          <div class="edit-delete-icons">
+          <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
             <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(1, this)"></i>
           </div>
         </td>
       </tr>
@@ -246,9 +261,10 @@
         <td></td>
         <td></td>
         <td>
-          <div class="edit-delete-icons">
+          <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(2, this)"></i>
             <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(2, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(2, this)"></i>
           </div>
         </td>
       </tr>
@@ -261,19 +277,19 @@
         <td>Auxiliar de Enfermería</td>
         <td> perfil de prueba </td>
         <td>02/04/2023</td>
-        <td>Reemplazado por perfil Enfermero</td>
+        <td>Eliminado por administrador del sistema</td>
         <td>03/04/2023</td>
         <td>
-          <div class="edit-delete-icons">
+          <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
             <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(3, this)"></i>
+            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(3, this)"></i>
           </div>
         </td>
       </tr>
       
       
     </table>
-
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -292,118 +308,204 @@
         filterTable();
       }
     }
+
+   
+    // Función para mostrar la fila como eliminada si existe un motivo o fecha de fin vigencia
+    // No funciona
+    /*    
+    function toggleDeletedRowsVisibility() {
+        // Obtener todas las filas de la tabla
+        const tableRows = document.querySelectorAll('tr');
+
+        // Recorrer todas las filas (excluyendo la primera fila de cabecera)
+        for (let i = 1; i < tableRows.length; i++) {
+            const row = tableRows[i];
+
+            // Obtener el contenido de las columnas "Motivo Fin Vigencia" y "Fecha Fin Vigencia"
+            const motivoCell = row.querySelector('.motivo');
+            const fechaFinVigenciaCell = row.querySelector('.fecha-fin-vigencia');
+
+            // Obtener el texto contenido en las celdas
+            const motivoText = motivoCell.innerText;
+            const fechaFinVigenciaText = fechaFinVigenciaCell.innerText;
+
+            // Verificar si alguna de las celdas contiene algo
+            if (motivoText !== '' || fechaFinVigenciaText !== '') {
+                // Si alguna celda contiene algo, marcamos la fila como "deleted-row"
+                row.classList.add('deleted-row');
+            } else {
+                // Si ambas celdas están vacías, asegurémonos de eliminar la clase "deleted-row" si existe.
+                row.classList.remove('deleted-row');
+            }
+        }
+    }
+    */
+   
+
     function toggleDeleteButtonVisibility() {
         var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
         var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
         eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+
     }
 
-  function toggleDeleteRow(row, icon) {
-    var deleteIcon = icon;
-    var editIcon = deleteIcon.previousElementSibling;
-
-    deleteIcon.classList.toggle('hide');
-    editIcon.classList.toggle('hide');
-
-    var tableRow = deleteIcon.closest('tr');
-    tableRow.classList.toggle('deleted-row');
-
-    var checkbox = tableRow.querySelector('.rowCheckbox');
-    checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
-
-    toggleDeleteButtonVisibility();
-  }
-
-  function eliminarCalendariosSeleccionados() {
-    var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
-
-    for (var i = 0; i < checkboxes.length; i++) {
-      var checkbox = checkboxes[i];
-      var tableRow = checkbox.closest('tr');
-      var deleteIcon = tableRow.querySelector('.delete-icon');
-      var editIcon = tableRow.querySelector('.edit-icon');
-
-      deleteIcon.classList.add('hide');
-      editIcon.classList.add('hide');
-      tableRow.classList.add('deleted-row');
-      checkbox.style.display = 'none';
+    function toggleRevertButtonVisibility() {
+        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
+        var revertInstanciasBtn = document.getElementById('revertInstanciasBtn');
+        revertInstanciasBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
     }
 
-    toggleDeleteButtonVisibility();
-  }
 
 
     function toggleRowSelection(checkbox) {
-      var tableRow = checkbox.closest('tr');
-      if (checkbox.checked) {
-        tableRow.classList.add('clicked');
-      } else {
-        tableRow.classList.remove('clicked');
-      }
-      toggleDeleteButtonVisibility();
+        var tableRow = checkbox.closest('tr');
+        if (checkbox.checked) {
+            tableRow.classList.add('clicked');
+        } else {
+            tableRow.classList.remove('clicked');
+        }
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
+    }
+
+    function toggleSelectAll() {
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
+        var selectAllCheckbox = document.getElementById('selectAll');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = selectAllCheckbox.checked;
+            toggleRowSelection(checkboxes[i]);
+        }
     }
 
     
+    
+    // Función para restaurar fila
+    function toggleRestoreRow(row, icon) {
+        var revertIcon= icon;
+        var deleteIcon = revertIcon.previousElementSibling;
+        //var editIcon = deleteIcon.previousElementSibling;
 
-    function toggleSelectAll() {
-      var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
-      var selectAllCheckbox = document.getElementById('selectAll');
+        revertIcon.classList.toggle('hide');
+        deleteIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
 
-      for (var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = selectAllCheckbox.checked;
-        toggleRowSelection(checkboxes[i]);
-      }
+        var tableRow = revertIcon.closest('tr');
+        tableRow.classList.remove('deleted-row');
+
+        var checkbox = tableRow.querySelector('.rowCheckbox');
+        checkbox.style.display = 'inline-block';
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
+    }
+    
+    
+    // Función para restaurar varias filas
+    function restaurarFilasSeleccionadas() {
+        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
+        //var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            var tableRow = checkbox.closest('tr');
+            var revertIcon = tableRow.querySelector('.revert-icon');
+            var deleteIcon = tableRow.querySelector('.delete-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
+
+            deleteIcon.classList.remove('hide');
+            //editIcon.classList.remove('hide');
+            revertIcon.classList.add('hide');
+            tableRow.classList.remove('deleted-row');
+            //checkbox.style.display = 'inline-block';
+        }
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     }
 
 
+    // Función para eliminar fila
+    function toggleDeleteRow(row, icon) {
+        var deleteIcon = icon;
+        //var editIcon = deleteIcon.previousElementSibling;
+        var revertIcon = deleteIcon.nextElementSibling;
+
+        deleteIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
+        revertIcon.classList.toggle('hide');
+
+        var tableRow = deleteIcon.closest('tr');
+        tableRow.classList.toggle('deleted-row');
+        tableRow.classList.remove('clicked');
+
+        //var checkbox = tableRow.querySelector('.rowCheckbox');
+        //checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
+    }
+    
+
+    // Función para eliminar varias filas
     function eliminarCalendariosSeleccionados() {
-  var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
 
-  for (var i = 0; i < checkboxes.length; i++) {
-    var checkbox = checkboxes[i];
-    var tableRow = checkbox.closest('tr');
-    var deleteIcon = tableRow.querySelector('.delete-icon');
-    var editIcon = tableRow.querySelector('.edit-icon');
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            var tableRow = checkbox.closest('tr');
+            var deleteIcon = tableRow.querySelector('.delete-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
+            var revertIcon = tableRow.querySelector('.revert-icon');
 
-    deleteIcon.classList.add('hide');
-    editIcon.classList.add('hide');
-    tableRow.classList.add('deleted-row');
-    checkbox.style.display = 'none';
+            deleteIcon.classList.add('hide');
+            //editIcon.classList.add('hide');
+            revertIcon.classList.remove('hide')
+            tableRow.classList.add('deleted-row');
 
-    // Remover la clase 'clicked' y fondo gris de la fila
-    tableRow.classList.remove('clicked');
-  }
+        }
 
-  // Eliminar el fondo gris de las filas eliminadas
-  var deletedRows = document.querySelectorAll('.deleted-row');
-  for (var j = 0; j < deletedRows.length; j++) {
-    deletedRows[j].classList.remove('clicked');
-  }
+        // Eliminar el fondo gris de las filas eliminadas
+        var deletedRows = document.querySelectorAll('.deleted-row');
+        for (var j = 0; j < deletedRows.length; j++) {
+            deletedRows[j].classList.remove('clicked');
+        }
+        
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
+    }
 
-  toggleDeleteButtonVisibility();
-}
+
+    
 
 
     window.onload = function () {
-      var cells = document.getElementsByTagName('td');
-      for (var i = 0; i < cells.length; i++) {
-        cells[i].addEventListener('click', function () {
-          this.setAttribute('tabindex', '0');
-          this.focus();
-        });
-        cells[i].addEventListener('blur', function () {
-          this.removeAttribute('tabindex');
-        });
-      }
+        var cells = document.getElementsByTagName('td');
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('click', function () {
+            this.setAttribute('tabindex', '0');
+            this.focus();
+            });
+            cells[i].addEventListener('blur', function () {
+            this.removeAttribute('tabindex');
+            });
+        }
 
-      var inputs = document.getElementsByClassName('search-input');
-      for (var j = 0; j < inputs.length; j++) {
-        inputs[j].addEventListener('input', function () {
-          filterTable();
-        });
-      }
+        var inputs = document.getElementsByClassName('search-input');
+        for (var j = 0; j < inputs.length; j++) {
+            inputs[j].addEventListener('input', function () {
+            filterTable();
+            });
+        }
 
-      toggleDeleteButtonVisibility();
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     };
 
     function filterTable() {
@@ -456,6 +558,7 @@
       });
     });
   </script>
+
 </body>
 
 </html>

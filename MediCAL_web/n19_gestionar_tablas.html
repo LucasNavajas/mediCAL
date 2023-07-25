@@ -284,7 +284,7 @@
         <td>03/04/2023</td>
         <td>Ibuprofeno</td>
         <td>Begó</td>
-        <td></td>
+        <td>05/04/2023</td>
         <td>
           <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
@@ -328,6 +328,32 @@
     }
 
 
+    // Función para mostrar la fila como eliminada si existe una fecha de fin vigencia
+    // No funciona  
+    /*  
+    function toggleDeletedRowsVisibility() {
+        // Obtener todas las filas de la tabla
+        var tableRows = document.querySelectorAll('tr');
+
+        // Recorrer todas las filas (excluyendo la primera fila de cabecera)
+        for (let i = 1; i < tableRows.length; i++) {
+            var row = tableRows[i];
+
+            // Obtener el contenido de la columna "Fecha Fin Vigencia"
+            var fechaFinVigenciaCell = row.querySelector('.fecha-fin-vigencia');
+
+            // Obtener el texto contenido en la celda
+            var fechaFinVigenciaText = fechaFinVigenciaCell.innerText;
+
+            // Verificar si contiene algo
+            if (motivoText !== '' || fechaFinVigenciaText !== '') {
+                // Si contiene algo, marca la fila como "deleted-row"
+                row.classList.add('deleted-row');
+            } 
+        }
+    }
+    */
+
 
     function toggleRowSelection(checkbox) {
         var tableRow = checkbox.closest('tr');
@@ -338,6 +364,7 @@
         }
         toggleDeleteButtonVisibility();
         toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     }
 
     function toggleSelectAll() {
@@ -370,6 +397,7 @@
 
         toggleDeleteButtonVisibility();
         toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     }
     
     
@@ -394,7 +422,9 @@
 
         toggleDeleteButtonVisibility();
         toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     }
+
 
     // Función para eliminar fila
     function toggleDeleteRow(row, icon) {
@@ -414,6 +444,7 @@
 
         toggleDeleteButtonVisibility();
         toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     }
     
 
@@ -443,6 +474,7 @@
         
         toggleDeleteButtonVisibility();
         toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
     }
 
 
@@ -470,6 +502,7 @@
 
       toggleDeleteButtonVisibility();
       toggleRevertButtonVisibility();
+      toggleDeletedRowsVisibility();
     };
 
     function filterTable() {

@@ -400,15 +400,17 @@ var guardarButton = document.getElementById("guardar-button");
             }
         }
 
-       /*
-       // No Funciona
+       
+       // No Funciona: toma el date como nulo, y solo lo habilita cuando escribe texto
+       // No funciona el valueAsDate para que lo tome como fecha tampoco
        // Función para habilitar el motivo únicamente cuando ha elegido una fecha de fin vigencia
+       /*
         function habilitarMotivo() {
-                var fechaFV = document.getElementById("campo_fechaFV").valueAsDate;
+                var fechaFV = document.getElementById("campo_fechaFV").valueAsDate; 
                 var motivoTextArea = document.getElementById("motivo");
 
                 // Verificar si se ha seleccionado una fecha válida en el campo "Fecha Fin Vigencia"
-                if (fechaFV !== null) {
+                if (fechaFV !== "") {
                     // Habilitar el campo "Motivo" si se ha seleccionado una fecha válida
                     motivoTextArea.disabled = false;
                 } else {
