@@ -67,6 +67,7 @@
             android:textSize="21sp" />
 
         <View
+            android:id="@+id/linea_inferior_nombre"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/textEdit_nombre"
@@ -74,11 +75,22 @@
             android:layout_marginEnd="20dp"
             android:background="#808080" />
 
+        <TextView
+            android:id="@+id/error_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="El nombre ingresado debe contener menos de 30 caracteres"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/rojoError"
+            android:layout_below="@id/linea_inferior_nombre"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"/>
+
         <EditText
             android:id="@+id/textEdit_apellido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textEdit_nombre"
+            android:layout_below="@id/error_nombre"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
@@ -90,6 +102,7 @@
             android:textSize="21sp" />
 
         <View
+            android:id="@+id/linea_inferior_apellido"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/textEdit_apellido"
@@ -98,10 +111,21 @@
             android:background="#808080" />
 
         <TextView
+            android:id="@+id/error_apellido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="El apellido ingresado debe contener menos de 30 caracteres"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/rojoError"
+            android:layout_below="@id/linea_inferior_apellido"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/text_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textEdit_apellido"
+            android:layout_below="@id/error_apellido"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"

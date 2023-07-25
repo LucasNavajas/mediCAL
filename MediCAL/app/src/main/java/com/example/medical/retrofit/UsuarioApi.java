@@ -29,7 +29,13 @@ public interface UsuarioApi {
     @GET("/usuario/get-all-usuarios-unicos")
     Call<List<String>> obtenerUsuariosUnicos();
 
+    @GET("/usuario/get-all-mails-unicos")
+    Call<List<String>> obtenerMailsUnicos();
+
     @GET("/usuario/{codUsuario}")
     Call<Usuario> getByCodUsuario(@Path("codUsuario") int codUsuario);
+
+    @GET("/usuario/{mailUsuario}")
+    Call<Usuario> getByMailUsuario(@Path("mailUsuario") String mailUsuario);
 
 }

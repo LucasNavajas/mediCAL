@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.medical.retrofit.CodigoVerificacionApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -26,6 +28,10 @@ public class CrearCuenta2Activity extends AppCompatActivity {
     private EditText nombre;
     private EditText apellido;
     private EditText telefono;
+    private TextView errorNombre;
+    private TextView errorApellido;
+    private View lineaInferiorNombre;
+    private View lineaInferiorApellido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,9 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         inicializarVariables();
         nombre.setFilters(new InputFilter[] { new TextOnlyInputFilter() });
         apellido.setFilters(new InputFilter[] { new TextOnlyInputFilter() });
+        if(intent1.getStringExtra("cuentaExistente")!=null){
+            Toast.makeText(getApplicationContext(),intent1.getStringExtra("cuentaExistente") , Toast.LENGTH_SHORT).show();
+        }
 
         buttonSiguiente.setOnClickListener(view -> {
 
@@ -43,7 +52,27 @@ public class CrearCuenta2Activity extends AppCompatActivity {
 
             String textoTelefono = telefono.getText().toString();
 
-            if (camposLlenos(textoNombre, textoApellido, textoTelefono)){
+            if (!camposLlenos(textoNombre, textoApellido, textoTelefono)) {
+                Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(textoNombre.length()>30){
+                errorNombre.setVisibility(View.VISIBLE);
+                lineaInferiorNombre.setBackgroundColor(ContextCompat.getColor(CrearCuenta2Activity.this,R.color.rojoError));
+                return;
+            }
+            if(textoApellido.length()>30){
+                errorNombre.setVisibility(View.GONE);
+                lineaInferiorNombre.setBackgroundColor(ContextCompat.getColor(CrearCuenta2Activity.this,R.color.black));
+                errorApellido.setVisibility(View.VISIBLE);
+                lineaInferiorApellido.setBackgroundColor(ContextCompat.getColor(CrearCuenta2Activity.this,R.color.rojoError));
+                return;
+            }
+            errorNombre.setVisibility(View.GONE);
+            lineaInferiorNombre.setBackgroundColor(ContextCompat.getColor(CrearCuenta2Activity.this,R.color.black));
+            errorApellido.setVisibility(View.GONE);
+            lineaInferiorApellido.setBackgroundColor(ContextCompat.getColor(CrearCuenta2Activity.this,R.color.black));
                 Intent intent = new Intent(CrearCuenta2Activity.this, CrearCuenta3Activity.class);
                 intent.putExtra("usuario", intent1.getStringExtra("usuario"));
                 intent.putExtra("contrasenia", intent1.getStringExtra("contrasenia"));
@@ -53,10 +82,7 @@ public class CrearCuenta2Activity extends AppCompatActivity {
                 intent.putExtra("apellido", textoApellido);
                 intent.putExtra("telefono", textoTelefono);
                 startActivity(intent);
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();
-            }
+
         });
 
         buttonVolver.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +103,10 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         nombre = findViewById(R.id.textEdit_nombre);
         apellido = findViewById(R.id.textEdit_apellido);
         telefono = findViewById(R.id.textEdit_telefono);
+        errorNombre = findViewById(R.id.error_nombre);
+        errorApellido = findViewById(R.id.error_apellido);
+        lineaInferiorApellido = findViewById(R.id.linea_inferior_apellido);
+        lineaInferiorNombre = findViewById(R.id.linea_inferior_nombre);
     }
 
     private boolean camposLlenos(String nombre, String apellido, String telefono){

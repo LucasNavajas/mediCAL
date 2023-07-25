@@ -29,6 +29,11 @@ public class UsuarioController {
 		return usuarioDao.obtenerUsuariosUnicos();
 	}
 	
+	@GetMapping("/usuario/get-all-mails-unicos")
+	public List<String> obtenerMailsUnicos(){
+		return usuarioDao.obtenerMailsUnicos();
+	}
+	
 	@PostMapping("/usuario/save")
 	public Usuario save(@RequestBody Usuario usuario){
 		return usuarioDao.save(usuario);
@@ -44,6 +49,12 @@ public class UsuarioController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping("/usuario/{mailUsuario}")
+	public ResponseEntity<Usuario> getByMailUsuario(@PathVariable String mailUsuario){
+		Usuario usuario = usuarioDao.getByMailUsuario(mailUsuario);
+		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
 	
 	@PostMapping("/usuario/modificar")

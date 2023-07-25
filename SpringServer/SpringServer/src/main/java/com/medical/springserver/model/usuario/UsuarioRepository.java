@@ -11,9 +11,13 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends CrudRepository<Usuario, Integer>{
 	Optional<Usuario> findByCodUsuario(int codUsuario);
 	Usuario findByUsuarioUnico(String usuarioUnico);
+	Usuario findByMailUsuario(String mailUsuario);
 	
 	@Query("SELECT u.usuarioUnico FROM Usuario u")
     List<String> findAllDistinctUsuarioUnico();
+	
+	@Query("SELECT u.mailUsuario FROM Usuario u")
+    List<String> findAllDistinctMailUsuario();
 	
 	@Query("SELECT u FROM Usuario u WHERE u.codigoVerificacion.codVerificacion = :codVerificacion")
     Usuario findByCodigoVerificacion(String codVerificacion);

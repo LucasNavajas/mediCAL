@@ -50,7 +50,7 @@
         android:layout_weight="1"
         android:background="@drawable/rounded_background"
         android:layout_below="@+id/text_login"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         >
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
             android:text="Ingrese su nombre de usuario  (Este debe ser único)"
@@ -225,10 +225,21 @@
             android:visibility="gone"
             />
 
+        <TextView
+            android:id="@+id/error_mail_existente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Este correo ya fue utilizado, ingrese uno nuevo"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/rojoError"
+            android:layout_below="@id/linea_inferior_mail"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textEdit_email"
+            android:layout_below="@id/error_mail_existente"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:background="@color/white"
