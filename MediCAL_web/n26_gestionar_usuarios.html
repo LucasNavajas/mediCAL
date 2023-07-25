@@ -153,7 +153,7 @@
     <div style="margin-top: -34px; margin-left: 80px;">
       <h1
         style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: var(--second-color); text-align: left;">
-        Gestión de tablas</h1>
+        Gestión de usuarios del sistema</h1>
     </div>
     <!-- Contenedor para centrar el button-container -->
     <div class="container">
@@ -191,79 +191,81 @@
         <th style="text-align: left;">
           <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" />
         </th>
-        <th onclick="toggleSearch(0)">
+        <th style="font-size: 14px;" onclick="toggleSearch(0)">
           Usuario
               <div id="searchContainer0" class="search-container">
                 <input type="search" id="search0" class="search-input" placeholder="Buscar por usuario" />
               </div>
             </th>
   
-          <th onclick="toggleSearch(1)">
+          <th style="font-size: 14px;" onclick="toggleSearch(1)">
           Código
               <div id="searchContainer1" class="search-container">
                   <input type="search" id="search1" class="search-input" placeholder="Buscar por código" />
               </div>
           </th>
          
-          <th onclick="toggleSearch(2)">
+          <th style="font-size: 14px;" onclick="toggleSearch(2)">
               Contraseña
-          </th>
-          
+          </th>          
   
-          <th onclick="toggleSearch(3)">
+          <th style="font-size: 14px;" onclick="toggleSearch(3)">
             Nombre
             <div id="searchContainer3" class="search-container">
               <input type="search" id="search3" class="search-input" placeholder="Buscar por nombre" />
             </div>
           </th>
-          <th onclick="toggleSearch(4)">
+
+          <th style="font-size: 14px;" onclick="toggleSearch(4)">
             Apellido
             <div id="searchContainer4" class="search-container">
               <input type="search" id="search4" class="search-input" placeholder="Buscar por apellido" />
             </div>
           </th>
          
-          <th onclick="toggleSearch(5)">
+          <th style="font-size: 14px;" onclick="toggleSearch(5)">
             Género
             <div id="searchContainer5" class="search-container">
               <input type="search" id="search5" class="search-input" placeholder="Buscar por género" />
             </div>
           </th>
-          <th onclick="toggleSearch(6)">
+
+          <th style="font-size: 14px;" onclick="toggleSearch(6)">
             Correo electrónico
             <div id="searchContainer6" class="search-container">
               <input type="search" id="search6" class="search-input" placeholder="Buscar por correo electrónico" />
             </div>
           </th>
-          <th onclick="toggleSearch(7)">
+
+          <th style="font-size: 14px;" onclick="toggleSearch(7)">
             Télefono
             <div id="searchContainer7" class="search-container">
               <input type="search" id="search7" class="search-input" placeholder="Buscar por teléfono" />
             </div>
           </th>
   
-          <th onclick="toggleSearch(8)">
+          <th style="font-size: 14px;" onclick="toggleSearch(8)">
             Fecha<br>Nacimiento
             <div id="searchContainer8" class="search-container">
               <input type="search" id="search8" class="search-input datepicker" placeholder="Buscar por fecha de Nacimiento" />
             </div>
           </th>
   
-          <th onclick="toggleSearch(9)">
+          <th style="font-size: 14px;" onclick="toggleSearch(9)">
               Fecha Alta<br>Usuario
               <div id="searchContainer9" class="search-container">
                 <input type="search" id="search9" class="search-input datepicker" placeholder="Buscar por fecha de Alta" />
               </div>
           </th>
   
-          <th onclick="toggleSearch(10)">
+          <th style="font-size: 14px;" onclick="toggleSearch(10)">
             Fecha Desde<br>(Vigencia) 
               <div id="searchContainer10" class="search-container">
                 <input type="search" id="search10" class="search-input datepicker" placeholder="Buscar por fecha Desde (Vigencia)" />
               </div>
           </th>
   
-          <th onclick="toggleSearch(11)">
+          <th style="font-size: 14px;" onclick="toggleSearch(11)">
               Motivo Fin<br>Vigencia
               <div id="searchContainer11" class="search-container">
                 <input type="search" id="search11" class="search-input" placeholder="Buscar por Motivo Fin Vigencia" />
@@ -272,26 +274,26 @@
       </tr>
 
       <!--fila 1-->
-      <tr>
+      <tr style="font-size: 12px;">
         <td>
           <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
         </td>
-        <td>JuanP</td>
-        <td>98256</td>
-        <td>
+        <td style="font-size: 12px;">JuanP</td>
+        <td style="font-size: 12px;">98256</td>
+        <td style="font-size: 12px;">
           <!-- Aquí se muestra la contraseña como asteriscos -->
           <input type="password" value="qwerty" disabled class="password-field" />
-      </td>
-        <td>Juan</td>
-        <td>Perez</td>
-        <td>Hombre</td>
-        <td>juanperez@gmail.com</td>
-        <td>261894333</td>
-        <td>01/04/96</td>
-        <td>20/07/23</td>
-        <td></td>
-        <td></td>
-        <td>
+        </td>
+        <td style="font-size: 12px;">Juan</td>
+        <td style="font-size: 12px;">Perez</td>
+        <td style="font-size: 12px;">Hombre</td>
+        <td style="font-size: 12px;">juanperez@gmail.com</td>
+        <td style="font-size: 12px;">261894333</td>
+        <td style="font-size: 12px;">01/04/96</td>
+        <td style="font-size: 12px;">20/07/23</td>
+        <td style="font-size: 12px;"></td>
+        <td style="font-size: 12px;"></td>
+        <td >
           <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
             <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
@@ -300,26 +302,26 @@
         </td>
       </tr>
       <!--fila 2-->
-      <tr>
+      <tr style="font-size: 12px;">
         <td>
           <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
         </td>
-        <td>MariaG</td>
-        <td>35892</td>
-        <td>
+        <td style="font-size: 12px;">MariaG</td>
+        <td style="font-size: 12px;">35892</td>
+        <td style="font-size: 12px;">
           <!-- Aquí se muestra la contraseña como asteriscos -->
           <input type="password" value="hola25" disabled class="password-field" />
-      </td>
-        <td>Maria</td>
-        <td>Gomez</td>
-        <td>Mujer</td>
-        <td>mariagomez@gmail.com</td>
-        <td>2619023569</td>
-        <td>29/04/98</td>
-        <td>05/03/22</td>
-        <td>20/07/23</td>
-        <td>Baja por Vacaciones</td>
-        <td>
+        </td>
+        <td style="font-size: 12px;">Maria</td>
+        <td style="font-size: 12px;">Gomez</td>
+        <td style="font-size: 12px;">Mujer</td>
+        <td style="font-size: 12px;">mariagomez@gmail.com</td>
+        <td style="font-size: 12px;">2619023569</td>
+        <td style="font-size: 12px;">29/04/98</td>
+        <td style="font-size: 12px;">05/03/22</td>
+        <td style="font-size: 12px;">20/07/23</td>
+        <td style="font-size: 12px;">Baja por Vacaciones</td>
+        <td >
           <div class="edit-delete-revert-icons">
             <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
             <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
@@ -328,23 +330,23 @@
         </td>
       </tr>
       <!--fila 3-->
-      <tr>
+      <tr style="font-size: 12px;">
         <td>
           <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
         </td>
-        <td>mariagonz</td>
-        <td>12345</td>
-        <td>
+        <td style="font-size: 12px;">mariagonz</td>
+        <td style="font-size: 12px;">12345</td>
+        <td style="font-size: 12px;">
           <!-- Aquí se muestra la contraseña como asteriscos -->
           <input type="password" value="argentina122561" disabled class="password-field"  />
-      </td>
-        <td>Melisa</td>
-        <td>Gomez</td>
-        <td>Mujer</td>
-        <td>melisag@example.com</td>
-        <td>2617953475</td>
-        <td>25/03/94</td>
-        <td>22/09/21</td>
+        </td>
+        <td style="font-size: 12px;">Melisa</td>
+        <td style="font-size: 12px;">Gomez</td>
+        <td style="font-size: 12px;">Mujer</td>
+        <td style="font-size: 12px;">melisag@example.com</td>
+        <td style="font-size: 12px;">2617953475</td>
+        <td style="font-size: 12px;">25/03/94</td>
+        <td style="font-size: 12px;">22/09/21</td>
         <td></td>
         <td></td>
         <td>
@@ -356,22 +358,22 @@
         </td>
       </tr>
       <!--fila 4-->
-      <tr>
+      <tr style="font-size: 12px;">
         <td>
           <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-          <td>joserodri</td>
-          <td>67890</td>
-          <td>
+          <td style="font-size: 12px;">joserodri</td>
+          <td style="font-size: 12px;">67890</td>
+          <td style="font-size: 12px;">
             <!-- Aquí se muestra la contraseña como asteriscos -->
             <input type="password" value="casa52" disabled class="password-field"  />
-        </td>
-          <td>José</td>
-          <td>Rodríguez</td>
-          <td>Hombre</td>
-          <td>jose.rodriguez@example.com</td>
-          <td>2614278234</td>
-          <td>01/02/97</td>
-          <td>19/03/22</td>
+          </td>
+          <td style="font-size: 12px;">José</td>
+          <td style="font-size: 12px;">Rodríguez</td>
+          <td style="font-size: 12px;">Hombre</td>
+          <td style="font-size: 12px;">jose.rodriguez@example.com</td>
+          <td style="font-size: 12px;">2614278234</td>
+          <td style="font-size: 12px;">01/02/97</td>
+          <td style="font-size: 12px;">19/03/22</td>
           <td></td>
           <td></td>
           <td>
@@ -445,11 +447,11 @@
     function toggleRestoreRow(row, icon) {
         var revertIcon= icon;
         var deleteIcon = revertIcon.previousElementSibling;
-        var editIcon = deleteIcon.previousElementSibling;
+        //var editIcon = deleteIcon.previousElementSibling;
 
         revertIcon.classList.toggle('hide');
         deleteIcon.classList.toggle('hide');
-        editIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
 
         var tableRow = revertIcon.closest('tr');
         tableRow.classList.remove('deleted-row');
@@ -472,10 +474,10 @@
             var tableRow = checkbox.closest('tr');
             var revertIcon = tableRow.querySelector('.revert-icon');
             var deleteIcon = tableRow.querySelector('.delete-icon');
-            var editIcon = tableRow.querySelector('.edit-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
 
             deleteIcon.classList.remove('hide');
-            editIcon.classList.remove('hide');
+            //editIcon.classList.remove('hide');
             revertIcon.classList.add('hide');
             tableRow.classList.remove('deleted-row');
             //checkbox.style.display = 'inline-block';
@@ -488,11 +490,11 @@
     
     function toggleDeleteRow(row, icon) {
         var deleteIcon = icon;
-        var editIcon = deleteIcon.previousElementSibling;
+        //var editIcon = deleteIcon.previousElementSibling;
         var revertIcon = deleteIcon.nextElementSibling;
 
         deleteIcon.classList.toggle('hide');
-        editIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
         revertIcon.classList.toggle('hide');
 
         var tableRow = deleteIcon.closest('tr');
@@ -514,11 +516,11 @@
             var checkbox = checkboxes[i];
             var tableRow = checkbox.closest('tr');
             var deleteIcon = tableRow.querySelector('.delete-icon');
-            var editIcon = tableRow.querySelector('.edit-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
             var revertIcon = tableRow.querySelector('.revert-icon');
 
             deleteIcon.classList.add('hide');
-            editIcon.classList.add('hide');
+            //editIcon.classList.add('hide');
             revertIcon.classList.remove('hide')
             tableRow.classList.add('deleted-row');
 
