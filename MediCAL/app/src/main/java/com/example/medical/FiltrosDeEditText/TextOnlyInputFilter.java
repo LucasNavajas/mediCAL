@@ -1,4 +1,4 @@
-package com.example.medical;
+package com.example.medical.FiltrosDeEditText;
 
 import android.text.InputFilter;
 import android.text.Spanned;

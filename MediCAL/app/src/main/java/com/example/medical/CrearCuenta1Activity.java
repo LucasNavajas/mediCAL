@@ -2,7 +2,10 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +23,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.medical.FiltrosDeEditText.NoSpaceInputFilter;
+import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.javamail.SendEmailTask;
 import com.example.medical.model.CodigoVerificacion;
 import com.example.medical.model.Usuario;
@@ -65,7 +70,8 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         setContentView(R.layout.n04_0_crear_cuenta_paso1);
         inicializarVariables();
         fetchUsuariosUnicos();
-
+        usuario.setFilters(new InputFilter[] { new NoSpaceInputFilter() });
+        mail.setFilters(new InputFilter[] { new NoSpaceInputFilter() });
         buttonIngresar.setOnClickListener(view -> {
 
 
@@ -226,6 +232,8 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         lineaInferiorMail = findViewById(R.id.linea_inferior_mail);
         lineaInferiorContrasenia = findViewById(R.id.linea_inferior_contrasenia);
         lineaInferiorUsuario = findViewById(R.id.linea_inferior_usuario);
+
+
     }
 
     private void ocultarErrores() {
