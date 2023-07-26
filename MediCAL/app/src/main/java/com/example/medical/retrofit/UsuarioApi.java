@@ -32,10 +32,10 @@ public interface UsuarioApi {
     @GET("/usuario/get-all-mails-unicos")
     Call<List<String>> obtenerMailsUnicos();
 
-    @GET("/usuario/{codUsuario}")
+    @GET("/usuario/cod/{codUsuario}")
     Call<Usuario> getByCodUsuario(@Path("codUsuario") int codUsuario);
 
-    @GET("/usuario/{mailUsuario}")
+    @GET("/usuario/mail/{mailUsuario}")
     Call<Usuario> getByMailUsuario(@Path("mailUsuario") String mailUsuario);
 
 }

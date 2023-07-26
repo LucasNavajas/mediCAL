@@ -39,7 +39,7 @@ public class UsuarioController {
 		return usuarioDao.save(usuario);
 	}
 	
-	@GetMapping("/usuario/{codUsuario}")
+	@GetMapping("/usuario/cod/{codUsuario}")
 	public ResponseEntity<Usuario> getByCodUsuario(@PathVariable int codUsuario){
 		Optional<Usuario> usuarioOptional = usuarioDao.getByCodUsuario(codUsuario);
 		
@@ -51,7 +51,7 @@ public class UsuarioController {
 		}
 	}
 	
-	@GetMapping("/usuario/{mailUsuario}")
+	@GetMapping("/usuario/mail/{mailUsuario}")
 	public ResponseEntity<Usuario> getByMailUsuario(@PathVariable String mailUsuario){
 		Usuario usuario = usuarioDao.getByMailUsuario(mailUsuario);
 		return new ResponseEntity<>(usuario, HttpStatus.OK);

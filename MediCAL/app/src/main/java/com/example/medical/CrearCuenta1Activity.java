@@ -69,101 +69,113 @@ public class CrearCuenta1Activity extends AppCompatActivity {
             String textoContrasenia = contrasenia.getText().toString();
             String textoMail = mail.getText().toString();
 
-            if (!camposLlenos(textoUsuario, textoContrasenia, textoMail)) {
-                Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (textoUsuario.length() > 30) {
-                ocultarErrores();
-                errorLongitudUsuario.setVisibility(View.VISIBLE);
-                lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
-                return;
-            }
-
-            if (usuariosUnicos.contains(textoUsuario)) {
-                ocultarErrores();
-                errorUsuario.setVisibility(View.VISIBLE);
-                lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
-                return;
-            }
-
-            if (textoContrasenia.length() < 6 || textoContrasenia.length() > 15) {
-                ocultarErrores();
-                errorLongitudContrasenia.setVisibility(View.VISIBLE);
-                lineaInferiorContrasenia.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
-                return;
-            }
-
-            if (!isValidEmail(textoMail)) {
-                ocultarErrores();
-                errorFormatoMail.setVisibility(View.VISIBLE);
-                lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
-                return;
-            }
-
-            if (mailsUnicos.contains(textoMail)){
-                ocultarErrores();
-                Call<Usuario> call = usuarioApi.getByMailUsuario(textoMail);
-                call.enqueue(new Callback<Usuario>() {
+            if (mailsUnicos.contains(textoMail)) {
+                // If the email exists, fetch the existing user details and pass them to the next activity
+                usuarioApi.getByMailUsuario(textoMail).enqueue(new Callback<Usuario>() {
                     @Override
                     public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                         if (response.isSuccessful()) {
-                            usuarioExistenteMail = response.body();
-                            if(usuarioExistenteMail.getFechaAltaUsuario()!=null){
+                            Usuario existingUser = response.body();
+                            if(existingUser.getFechaAltaUsuario()==null) {
+                                int idUsuarioExistente = existingUser.getCodUsuario();
+                                String usuarioExistente = existingUser.getUsuarioUnico();
+                                String contraseniaUsuarioExistente = existingUser.getContraseniaUsuario();
+
+                                // Pass the details of the existing user to the next activity
                                 Intent intent = new Intent(CrearCuenta1Activity.this, CodigoVerificacionActivity.class);
-                                intent.putExtra("usuario", usuarioExistenteMail.getUsuarioUnico());
-                                intent.putExtra("contrasenia", usuarioExistenteMail.getContraseniaUsuario());
-                                intent.putExtra("mail", usuarioExistenteMail.getMailUsuario());
-                                intent.putExtra("codusuario", usuarioExistenteMail.getCodUsuario());
-                                intent.putExtra("cuentaExistente", "Ya existe una cuenta en proceso de creación relacionada a este correo, por favor revise su bandeja de entrada");
+                                intent.putExtra("usuario", usuarioExistente);
+                                intent.putExtra("contrasenia", contraseniaUsuarioExistente);
+                                intent.putExtra("mail", textoMail);
+                                intent.putExtra("codusuario", idUsuarioExistente);
                                 startActivity(intent);
                                 return;
                             }
+                            else{
+                                lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
+                                errorMailExistente.setVisibility(View.VISIBLE);
+                                return;
+                            }
+                        } else {
+                            // Show an error message if the response is not successful
+                            Toast.makeText(getApplicationContext(), "Error retrieving existing user details", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Usuario> call, Throwable t) {
-                        errorMailExistente.setVisibility(View.VISIBLE);
-                        lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
-                        return;
+                        // Show an error message if the API call fails
+                        Toast.makeText(getApplicationContext(), "API CALL ERROR Error retrieving existing user details", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
 
+            } else {
+
+
+                if (!camposLlenos(textoUsuario, textoContrasenia, textoMail)) {
+                    Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (textoUsuario.length() > 30) {
                     ocultarErrores();
-                    String emailAddress = textoMail;
-                    CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
-                    Usuario usuario1 = new Usuario();
-                    usuario1.setUsuarioUnico(textoUsuario);
-                    usuario1.setContraseniaUsuario(textoContrasenia);
-                    usuario1.setMailUsuario(textoMail);
-                    usuario1.setCodigoVerificacion(codigoVerificacion);
+                    errorLongitudUsuario.setVisibility(View.VISIBLE);
+                    lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
+                    return;
+                }
 
-                    usuarioApi.save(usuario1)
-                            .enqueue(new Callback<Usuario>() {
-                                @Override
-                                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                                    Intent intent = new Intent(CrearCuenta1Activity.this, CodigoVerificacionActivity.class);
-                                    Usuario usuarioInsertado = response.body();
-                                    int idUsuarioGenerado = usuarioInsertado.getCodUsuario();
-                                    SendEmailTask sendEmailTask = new SendEmailTask(emailAddress, codigoVerificacion.getCodVerificacion());
-                                    sendEmailTask.execute();
-                                    intent.putExtra("usuario", textoUsuario);
-                                    intent.putExtra("contrasenia", textoContrasenia);
-                                    intent.putExtra("mail", textoMail);
-                                    intent.putExtra("codusuario", idUsuarioGenerado);
-                                    startActivity(intent);
-                                }
+                if (usuariosUnicos.contains(textoUsuario)) {
+                    ocultarErrores();
+                    errorUsuario.setVisibility(View.VISIBLE);
+                    lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
+                    return;
+                }
 
-                                @Override
-                                public void onFailure(Call<Usuario> call, Throwable t) {
-                                    Toast.makeText(CrearCuenta1Activity.this, "Error al crear el usuario", Toast.LENGTH_SHORT).show();
-                                    Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error ocurred");
-                                }
-                            });
+                if (textoContrasenia.length() < 6 || textoContrasenia.length() > 15) {
+                    ocultarErrores();
+                    errorLongitudContrasenia.setVisibility(View.VISIBLE);
+                    lineaInferiorContrasenia.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
+                    return;
+                }
 
+                if (!isValidEmail(textoMail)) {
+                    ocultarErrores();
+                    errorFormatoMail.setVisibility(View.VISIBLE);
+                    lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
+                    return;
+                }
+
+                ocultarErrores();
+                String emailAddress = textoMail;
+                CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
+                Usuario usuario1 = new Usuario();
+                usuario1.setUsuarioUnico(textoUsuario);
+                usuario1.setContraseniaUsuario(textoContrasenia);
+                usuario1.setMailUsuario(textoMail);
+                usuario1.setCodigoVerificacion(codigoVerificacion);
+
+                usuarioApi.save(usuario1)
+                        .enqueue(new Callback<Usuario>() {
+                            @Override
+                            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                                Intent intent = new Intent(CrearCuenta1Activity.this, CodigoVerificacionActivity.class);
+                                Usuario usuarioInsertado = response.body();
+                                int idUsuarioGenerado = usuarioInsertado.getCodUsuario();
+                                SendEmailTask sendEmailTask = new SendEmailTask(emailAddress, codigoVerificacion.getCodVerificacion());
+                                sendEmailTask.execute();
+                                intent.putExtra("usuario", textoUsuario);
+                                intent.putExtra("contrasenia", textoContrasenia);
+                                intent.putExtra("mail", textoMail);
+                                intent.putExtra("codusuario", idUsuarioGenerado);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Usuario> call, Throwable t) {
+                                Toast.makeText(CrearCuenta1Activity.this, "Error al crear el usuario", Toast.LENGTH_SHORT).show();
+                                Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error ocurred");
+                            }
+                        });
+            }
         });
 
         buttonVolver.setOnClickListener(new View.OnClickListener() {
