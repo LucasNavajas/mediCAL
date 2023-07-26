@@ -7,7 +7,7 @@
     android:background="@drawable/background">
 
     <ImageView
-        android:id="@+id/boton_volver"
+        android:id="@+id/boton_volver2"
         android:layout_width="25dp"
         android:layout_height="32dp"
         android:layout_alignParentStart="true"

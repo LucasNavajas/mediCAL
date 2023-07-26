@@ -5,10 +5,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +93,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                                 intent.putExtra("mail", textoMail);
                                 intent.putExtra("codusuario", idUsuarioExistente);
                                 startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Ya se ha enviado un código de verificación al mail "+textoMail+", por favor revise su bandeja de entrada", Toast.LENGTH_LONG).show();
                                 return;
                             }
                             else{
@@ -127,6 +133,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                     ocultarErrores();
                     errorUsuario.setVisibility(View.VISIBLE);
                     lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
+                    popupInvalido(R.layout.n04_1_popup_usuarioinvalido);
                     return;
                 }
 
@@ -134,6 +141,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                     ocultarErrores();
                     errorLongitudContrasenia.setVisibility(View.VISIBLE);
                     lineaInferiorContrasenia.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
+                    popupInvalido(R.layout.n04_2_popup_contrasenainvalida);
                     return;
                 }
 
@@ -275,5 +283,41 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         super.onResume();
         // Refresh the usuariosUnicos list when the activity resumes (e.g., when coming back from CodigoVerificacionActivity)
         fetchUsuariosUnicos();
+    }
+
+    private void popupInvalido(int layoutResId) {
+        View popupView = getLayoutInflater().inflate(layoutResId, null);
+
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
+
+        textViewAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 }

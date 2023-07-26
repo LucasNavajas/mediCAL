@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,10 @@ import androidx.core.content.ContextCompat;
 import com.example.medical.retrofit.CodigoVerificacionApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CrearCuenta2Activity extends AppCompatActivity {
     private Intent intent1;
@@ -40,10 +45,6 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         inicializarVariables();
         nombre.setFilters(new InputFilter[] { new TextOnlyInputFilter() });
         apellido.setFilters(new InputFilter[] { new TextOnlyInputFilter() });
-        if(intent1.getStringExtra("cuentaExistente")!=null){
-            Toast.makeText(getApplicationContext(),intent1.getStringExtra("cuentaExistente") , Toast.LENGTH_SHORT).show();
-        }
-
         buttonSiguiente.setOnClickListener(view -> {
 
 
@@ -91,6 +92,8 @@ public class CrearCuenta2Activity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+
     }
 
     private void inicializarVariables() {
@@ -99,7 +102,7 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
         usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
         buttonSiguiente = findViewById(R.id.button_siguiente);
-        buttonVolver = findViewById(R.id.boton_volver);
+        buttonVolver = findViewById(R.id.boton_volver2);
         nombre = findViewById(R.id.textEdit_nombre);
         apellido = findViewById(R.id.textEdit_apellido);
         telefono = findViewById(R.id.textEdit_telefono);
@@ -107,6 +110,8 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         errorApellido = findViewById(R.id.error_apellido);
         lineaInferiorApellido = findViewById(R.id.linea_inferior_apellido);
         lineaInferiorNombre = findViewById(R.id.linea_inferior_nombre);
+
+
     }
 
     private boolean camposLlenos(String nombre, String apellido, String telefono){

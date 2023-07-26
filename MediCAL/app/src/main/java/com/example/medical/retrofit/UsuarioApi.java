@@ -3,6 +3,7 @@ package com.example.medical.retrofit;
 import com.example.medical.model.Usuario;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 
@@ -37,5 +38,8 @@ public interface UsuarioApi {
 
     @GET("/usuario/mail/{mailUsuario}")
     Call<Usuario> getByMailUsuario(@Path("mailUsuario") String mailUsuario);
+
+    @DELETE("/usuario/delete/{codUsuario}")
+    Call<Void> deleteUsuario(@Path("codUsuario") int codUsuario);
 
 }

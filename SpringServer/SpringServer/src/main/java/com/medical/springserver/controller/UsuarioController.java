@@ -81,5 +81,18 @@ public class UsuarioController {
 	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
 	}
+	
+	@DeleteMapping("/usuario/delete/{codUsuario}")
+	public ResponseEntity<String> deleteUsuario(@PathVariable int codUsuario) {
+	    // Verifica si el usuario existe antes de eliminarlo
+	    Optional<Usuario> usuarioOptional = usuarioDao.getByCodUsuario(codUsuario);
+	    if (usuarioOptional.isPresent()) {
+	    	Usuario usuario = usuarioOptional.get();
+	        usuarioDao.delete(usuario);
+	        return new ResponseEntity<>("Usuario eliminado correctamente.", HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>("El usuario no existe.", HttpStatus.NOT_FOUND);
+	    }
+	}
 
 }
