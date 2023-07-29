@@ -42,4 +42,5 @@ public interface UsuarioApi {
     @DELETE("/usuario/delete/{codUsuario}")
     Call<Void> deleteUsuario(@Path("codUsuario") int codUsuario);
 
+
 }

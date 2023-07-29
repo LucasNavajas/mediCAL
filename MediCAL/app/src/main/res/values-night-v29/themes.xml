@@ -1,5 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
     <style name="Theme.MediCAL" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/verdeClaro</item>
@@ -12,17 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/verdeClaro</item>
         <item name="android:windowLightStatusBar">true</item>
-
-
-        <item name="colorAccent">@color/verdeTextos</item>
+        <item name="android:forceDarkAllowed">false</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="ButtonOverrideStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/boton_redondo_blanco</item>
-    </style>
-
-    <style name="RadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:buttonTint">@color/radio_button_tint_selector</item>
-    </style>
-
 </resources>

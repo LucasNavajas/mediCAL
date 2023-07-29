@@ -32,7 +32,8 @@ public class BienvenidoActivity extends AppCompatActivity {
         Button buttonIngresar = findViewById(R.id.button_ingresar);
 
         buttonIngresar.setOnClickListener(view -> {
-
+            Intent intent2 = new Intent(BienvenidoActivity.this, IniciarSesionActivity.class);
+            startActivity(intent2);
         });
 
 

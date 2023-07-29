@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +40,7 @@
         <activity android:name=".EditarDosisFuturasActivity"></activity>
         <activity android:name=".PoliticasPrivacidadActivity"></activity>
         <activity android:name=".CodigoVerificacionActivity"></activity>
+        <activity android:name=".IniciarSesionActivity"></activity>
     </application>
 
 </manifest>
