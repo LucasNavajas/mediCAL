@@ -85,5 +85,4 @@ public class UsuarioDao {
 	public Usuario getByMailUsuario(String mailUsuario) {
 		return repository.findByMailUsuario(mailUsuario);
 	}
-	
 }
