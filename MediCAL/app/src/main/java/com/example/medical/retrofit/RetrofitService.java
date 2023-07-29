@@ -1,4 +1,6 @@
 package com.example.medical.retrofit;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -28,7 +30,7 @@ public class RetrofitService {
                 .create();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.56.1:8080")
+                .baseUrl("http://192.168.100.5:8080/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }

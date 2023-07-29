@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediCAL"
         tools:targetApi="31">
+        <activity
+            android:name=".FAQActivity"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -39,6 +43,7 @@
         <activity android:name=".EditarDosisFuturasActivity"></activity>
         <activity android:name=".PoliticasPrivacidadActivity"></activity>
         <activity android:name=".CodigoVerificacionActivity"></activity>
+
     </application>
 
 </manifest>
