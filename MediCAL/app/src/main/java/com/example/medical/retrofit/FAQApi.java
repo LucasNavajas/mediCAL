@@ -13,9 +13,9 @@ import retrofit2.http.Path;
 
 public interface FAQApi {
 
-    @GET("/faq/get-all")
+    @GET("FAQ/get-all")
     Call<List<FAQ>> getAllFAQ();
 
-    @POST("/faq/save")
+    @POST("/FAQ/save")
     Call<FAQ> save(@Body FAQ faq);
 }

@@ -26,7 +26,7 @@ public class FAQActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faqactivity);
+        setContentView(R.layout.n28y29_preguntas_respuestas_frecuentes);
 
         recyclerView = findViewById(R.id.listafaqs_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +54,7 @@ public class FAQActivity extends AppCompatActivity {
                             Toast.makeText(FAQActivity.this, "Respuesta vacía o incorrecta del servidor", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    
+
                     @Override
                     public void onFailure(Call<List<FAQ>> call, Throwable t) {
                         Log.d("FAQActivity", "no carga");

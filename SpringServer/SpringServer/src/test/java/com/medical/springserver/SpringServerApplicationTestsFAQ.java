@@ -23,12 +23,24 @@ class SpringServerApplicationTestsFAQ {
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
 		
-		FAQ faq = new FAQ();
-		faq.setFechaActualizacionFAQ(fechaHoy);
-		faq.setPreguntatFAQ("¿Presenta algun problema para registrar un recordatorio?");
-		faq.setRespuestaFAQ("Para registrar un recordatorio debe realizar ...");
+		FAQ faq1 = new FAQ();
+		faq1.setFechaActualizacionFAQ(fechaHoy);
+		faq1.setPreguntatFAQ("¿Cómo protege Google mi privacidad y mantiene mi información segura?");
+		faq1.setRespuestaFAQ("La seguridad de su información y la garantía de que podrá acceder a ella cuando lo necesite son nuestras prioridades.");
+		faqDao.save(faq1);
 		
-		faqDao.save(faq);
+		FAQ faq2 = new FAQ();
+		faq2.setFechaActualizacionFAQ(fechaHoy);
+		faq2.setPreguntatFAQ("¿Cómo puedo eliminar información acerca de mí de los resultados de búsqueda de Google?");
+		faq2.setRespuestaFAQ("Los resultados de búsqueda de Google reflejan el contenido disponible públicamente en la Web. Los motores de búsqueda no pueden eliminar contenido de la Web directamente.");
+		faqDao.save(faq2);
+		
+		FAQ faq3 = new FAQ();
+		faq3.setFechaActualizacionFAQ(fechaHoy);
+		faq3.setPreguntatFAQ("¿Mis consultas de búsqueda se envían a los sitios web cuando hago clic en los resultados de Búsqueda de Google?");
+		faq3.setRespuestaFAQ("En algunos casos, sí. Cuando hace clic en un resultado de la Búsqueda de Google, el navegador web también puede enviar la dirección de Internet (URL) de la página de los resultados de la búsqueda a la página web de destino como la URL de referencia.");
+		
+		faqDao.save(faq3);
 		
 		
 	}
