@@ -19,6 +19,9 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer>{
 	@Query("SELECT u.mailUsuario FROM Usuario u")
     List<String> findAllDistinctMailUsuario();
 	
+	@Query("SELECT u.mailUsuario FROM Usuario u WHERE u.fechaAltaUsuario IS NOT NULL")
+    List<String> findAllDistinctMailCuentas();
+	
 	@Query("SELECT u FROM Usuario u WHERE u.codigoVerificacion.codVerificacion = :codVerificacion")
     Usuario findByCodigoVerificacion(String codVerificacion);
 

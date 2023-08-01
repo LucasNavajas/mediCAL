@@ -163,12 +163,22 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                         String codigoVerificacionIngresado = editText1.getText().toString() + editText2.getText().toString() + editText3.getText().toString() + editText4.getText().toString();
 
                         if (codverificacion.getCodVerificacion().equals(codigoVerificacionIngresado)) {
-                            Intent intent = new Intent(CodigoVerificacionActivity.this, CrearCuenta2Activity.class);
-                            intent.putExtra("usuario", intent1.getStringExtra("usuario"));
-                            intent.putExtra("contrasenia", intent1.getStringExtra("contrasenia"));
-                            intent.putExtra("mail", intent1.getStringExtra("mail"));
-                            intent.putExtra("codusuario", intent1.getIntExtra("codusuario",0));
-                            startActivity(intent);
+                            if(intent1.getStringExtra("contrasenia")!=null) {//Si contrasenia se pasa en el intent significa que estamos registrando, si solo se pasa el usuario, cod y el mail es reset de contraseña
+                                Intent intent = new Intent(CodigoVerificacionActivity.this, CrearCuenta2Activity.class);
+                                intent.putExtra("usuario", intent1.getStringExtra("usuario"));
+                                intent.putExtra("contrasenia", intent1.getStringExtra("contrasenia"));
+                                intent.putExtra("mail", intent1.getStringExtra("mail"));
+                                intent.putExtra("codusuario", intent1.getIntExtra("codusuario", 0));
+                                startActivity(intent);
+                            }
+                            else{
+                                popupCambiarContrasenia();
+                                Intent intent2 = new Intent(CodigoVerificacionActivity.this, BienvenidoActivity.class);
+                                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent2);
+                                finish();
+                            }
+
                         } else {
                            popupInvalido(R.layout.n12_popup_codigoinvalido);
                         }
@@ -187,6 +197,47 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void popupCambiarContrasenia() {
+        View popupView = getLayoutInflater().inflate(R.layout.n25_2_contrasenia_nueva, null);
+
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
+        EditText editContrasenia = popupView.findViewById(R.id.textEdit_nueva_contrasenia);
+
+        textViewAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contraseniaNueva = editContrasenia.getText().toString();
+
+                    // Ocultar el PopupWindow
+                    popupWindow.dismiss();
+
+                    // Ocultar el fondo oscurecido
+                    dimView.setVisibility(View.GONE);
+
+            }
+        });
+    }
+
     private void popupInvalido(int layoutResId) {
         View popupView = getLayoutInflater().inflate(layoutResId, null);
 
@@ -234,36 +285,40 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Realiza la acción adicional que desees antes de volver hacia atrás
+        if(intent1.getStringExtra("contrasenia")==null){
+            CodigoVerificacionActivity.super.onBackPressed();
+        }
+        else {
+            int codUsuarioAEliminar = intent1.getIntExtra("codusuario", 0);
 
-        int codUsuarioAEliminar = intent1.getIntExtra("codusuario", 0);
+            Call<Void> call = usuarioApi.deleteUsuario(codUsuarioAEliminar);
 
-        Call<Void> call = usuarioApi.deleteUsuario(codUsuarioAEliminar);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // La eliminación fue exitosa, realizar las acciones necesarias
+                        Log.d("DeleteUsuario", "Usuario eliminado correctamente.");
+                    } else {
+                        // Hubo un error en la solicitud o el usuario no existe
+                        Log.d("DeleteUsuario", "Error al eliminar el usuario.");
+                    }
 
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    // La eliminación fue exitosa, realizar las acciones necesarias
-                    Log.d("DeleteUsuario", "Usuario eliminado correctamente.");
-                } else {
-                    // Hubo un error en la solicitud o el usuario no existe
-                    Log.d("DeleteUsuario", "Error al eliminar el usuario.");
+                    // Después de realizar la eliminación, puedes llamar a super.onBackPressed()
+                    // para cerrar la actividad actual y volver hacia atrás en la pila de actividades.
+                    CodigoVerificacionActivity.super.onBackPressed();
                 }
 
-                // Después de realizar la eliminación, puedes llamar a super.onBackPressed()
-                // para cerrar la actividad actual y volver hacia atrás en la pila de actividades.
-                CodigoVerificacionActivity.super.onBackPressed();
-            }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    // Error en la comunicación o en la respuesta del servidor
+                    Log.e("DeleteUsuario", "Error en la solicitud: " + t.getMessage());
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                // Error en la comunicación o en la respuesta del servidor
-                Log.e("DeleteUsuario", "Error en la solicitud: " + t.getMessage());
-
-                // Si ocurre un error al eliminar el usuario, igualmente puedes llamar a
-                // super.onBackPressed() para volver hacia atrás sin eliminar el usuario.
-                CodigoVerificacionActivity.super.onBackPressed();
-            }
-        });
+                    // Si ocurre un error al eliminar el usuario, igualmente puedes llamar a
+                    // super.onBackPressed() para volver hacia atrás sin eliminar el usuario.
+                    CodigoVerificacionActivity.super.onBackPressed();
+                }
+            });
+        }
     }
 }

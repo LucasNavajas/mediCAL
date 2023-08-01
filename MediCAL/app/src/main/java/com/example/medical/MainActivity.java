@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.example.medical.retrofit.FAQApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, FAQActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
+                Intent intent = new Intent(MainActivity.this, BienvenidoActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
                 startActivity(intent);
                 finish();
             }

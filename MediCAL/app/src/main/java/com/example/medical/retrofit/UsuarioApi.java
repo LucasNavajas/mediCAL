@@ -33,6 +33,9 @@ public interface UsuarioApi {
     @GET("/usuario/get-all-mails-unicos")
     Call<List<String>> obtenerMailsUnicos();
 
+    @GET("/usuario/get-all-mails-unicos-cuentas")
+    Call<List<String>> obtenerMailsUnicosCuentas();//Obtener todos los mails de cuentas que ya fueron creadas y no estan en periodo de creacion
+
     @GET("/usuario/cod/{codUsuario}")
     Call<Usuario> getByCodUsuario(@Path("codUsuario") int codUsuario);
 
@@ -42,5 +45,10 @@ public interface UsuarioApi {
     @DELETE("/usuario/delete/{codUsuario}")
     Call<Void> deleteUsuario(@Path("codUsuario") int codUsuario);
 
+    @POST("/usuario/set-cod-verificacion/{codUsuario}")
+    Call<Usuario> setCodigoVerificacion(@Path("codUsuario") int codUsuario);
+
+    @POST("/usuario/modificarContrasenia/{codUsuario}")
+    Call<Void> modificarContrasenia(@Path("codUsuario") int codUsuario, @Body String nuevaContrasenia);
 
 }

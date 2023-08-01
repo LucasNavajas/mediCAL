@@ -8,6 +8,7 @@
 
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -44,6 +45,7 @@
         <activity android:name=".EditarDosisFuturasActivity"></activity>
         <activity android:name=".PoliticasPrivacidadActivity"></activity>
         <activity android:name=".CodigoVerificacionActivity"></activity>
+        <activity android:name=".IniciarSesionActivity"></activity>
 
     </application>
 

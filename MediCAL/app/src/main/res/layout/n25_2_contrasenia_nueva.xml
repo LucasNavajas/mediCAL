@@ -23,7 +23,7 @@
         />
 
     <EditText
-        android:id="@+id/textEdit_motivo"
+        android:id="@+id/textEdit_nueva_contrasenia"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"

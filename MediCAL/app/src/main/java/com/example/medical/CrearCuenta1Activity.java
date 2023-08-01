@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
@@ -71,7 +72,6 @@ public class CrearCuenta1Activity extends AppCompatActivity {
     private View lineaInferiorContrasenia;
     private View lineaInferiorMail;
     private View lineaInferiorUsuario;
-    private Usuario usuarioExistenteMail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -338,7 +338,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
             }
         });
     }
-    public void registrarUsuario(String email, String password){
+    public void registrarUsuario(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

@@ -67,6 +67,19 @@ public class UsuarioDao {
 			return repository.save(usuario);
 			}
 	
+	public Usuario modificarContrasenia(int codUsuario, String nuevaContrasenia) {
+		Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
+		Usuario usuario;
+		if (optionalUsuario.isPresent()) {
+		usuario = optionalUsuario.get();
+		} else {
+		// Si no se encontró el usuario, puedes crear uno nuevo (opcional)
+		usuario = new Usuario();
+		}
+		String hashedPassword = passwordEncoder.encode(nuevaContrasenia);
+	    usuario.setContraseniaUsuario(hashedPassword);
+		return repository.save(usuario);
+	}
 	public Usuario obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
         return repository.findByUsuarioUnico(usuarioUnico);
     }
@@ -84,5 +97,9 @@ public class UsuarioDao {
 	}
 	public Usuario getByMailUsuario(String mailUsuario) {
 		return repository.findByMailUsuario(mailUsuario);
+	}
+	
+	public List<String> obtenerMailsCuentas(){
+		return repository.findAllDistinctMailCuentas();
 	}
 }
