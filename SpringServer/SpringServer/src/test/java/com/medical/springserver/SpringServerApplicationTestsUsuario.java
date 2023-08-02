@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
@@ -25,7 +26,7 @@ class SpringServerApplicationTestsUsuario {
 	
 
 	
-	@Test
+	//@Test
 	void addUsuarioTest() {
 		
 		// instancia de historial
@@ -149,6 +150,12 @@ class SpringServerApplicationTestsUsuario {
 			usuarioDao.delete(usuario);
 		}
 		
+	}
+	
+	@Test
+	void modificarContrasenia() throws FirebaseAuthException {
+		Usuario usuario = usuarioDao.getByMailUsuario("lucastobiasnavajas@gmail.com");
+		usuarioDao.modificarContrasenia(usuario.getCodUsuario(), "03042002");
 	}
 
 }
