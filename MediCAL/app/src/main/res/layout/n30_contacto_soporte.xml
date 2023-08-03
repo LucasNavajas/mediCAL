@@ -6,46 +6,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
-    <RelativeLayout
-        android:id="@+id/layout_contacto_soporte"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/boton_volver"
+        android:layout_width="25dp"
+        android:layout_height="32dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:clickable="true"
-        android:focusable="true">
-
-        <ImageView
-            android:id="@+id/boton_volver"
-            android:layout_width="30dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/flecha_atras"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/texto_editar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/boton_volver"
-            android:fontFamily="@font/inter_regular"
-            android:text="Contacto soporte"
-            android:textColor="#FFF"
-            android:textSize="25sp" />
-
-    </RelativeLayout>
+        android:focusable="true"
+        android:src="@drawable/flecha_atras"
+        app:tint="@color/white" />
+    <TextView
+        android:id="@+id/text_faq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contacto con soporte"
+        android:textSize="25sp"
+        android:textColor="#FFF"
+        android:layout_toEndOf="@id/boton_volver"
+        android:layout_alignBottom="@id/boton_volver"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/inter_medium" />
 
     <RelativeLayout
         android:id="@+id/rectangle_top"
         android:layout_width="match_parent"
-        android:layout_height="665dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
         android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:background="@drawable/rounded_background">
+        android:background="@drawable/norounded_background"
+        >
 
         <TextView
             android:id="@+id/text_Ayuda"
@@ -57,7 +49,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/inter_regular"
             android:text="¿Necesitas ayuda o tienes alguna pregunta? Nuestro equipo de soporte está aquí para asistirte.\n\nPor favor, envíanos un correo con tu consulta y nos pondremos en contacto contigo lo antes posible."
-            android:textColor="@color/verdeClaro"
+            android:textColor="@color/verdeTextos"
             android:textSize="18sp" />
 
         <TextView
@@ -66,11 +58,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_Ayuda"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/inter_medium"
+            android:fontFamily="@font/inter_semibold"
             android:text="Emailnuestrocomunicacionsoporte@dominio.com"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:breakStrategy="simple"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,11 +73,12 @@
             android:layout_below="@id/email"
             android:orientation="horizontal"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/button_copiar"
-                android:layout_width="145dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/boton_redondo_verde_oscuro"
                 android:focusable="false"
@@ -90,6 +86,9 @@
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
                 android:text="Copiar"
+                android:gravity="start"
+                android:layout_weight="1"
+                android:layout_marginEnd="20dp"
                 android:textAllCaps="false"
                 android:textAppearance="@style/CustomButtonText"
                 android:textColor="@color/white"
@@ -97,8 +96,10 @@
 
             <Button
                 android:id="@+id/button_compartir"
-                android:layout_width="175dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_weight="1"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/boton_redondo_verde_oscuro"
                 android:focusable="false"
@@ -112,8 +113,5 @@
                 android:textSize="19sp" />
 
         </LinearLayout>
-
-
     </RelativeLayout>
-
 </RelativeLayout>

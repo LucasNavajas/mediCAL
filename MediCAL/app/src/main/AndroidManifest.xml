@@ -46,7 +46,7 @@
         <activity android:name=".PoliticasPrivacidadActivity"></activity>
         <activity android:name=".CodigoVerificacionActivity"></activity>
         <activity android:name=".IniciarSesionActivity"></activity>
-
+        <activity android:name=".ContactoSoporteActivity"></activity>
     </application>
 
 </manifest>

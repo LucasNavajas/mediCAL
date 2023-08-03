@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.medical.adapter.FaqAdapter;
@@ -32,6 +34,10 @@ public class FAQActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadFaqs();
+    }
+    public void openContactoSoporteActivity(View view) {
+        Intent intent = new Intent(this, ContactoSoporteActivity.class);
+        startActivity(intent);
     }
     private void loadFaqs(){
         RetrofitService retrofitService = new RetrofitService();
