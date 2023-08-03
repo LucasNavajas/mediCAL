@@ -77,6 +77,7 @@ public class UsuarioDao {
 	public Usuario modificarContrasenia(int codUsuario, String nuevaContrasenia) throws FirebaseAuthException {
         Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
         Usuario usuario;
+        nuevaContrasenia = nuevaContrasenia.replace("\"", "");
         if (optionalUsuario.isPresent()) {
             usuario = optionalUsuario.get();
         } else {
@@ -85,6 +86,8 @@ public class UsuarioDao {
         UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuario.getMailUsuario());
         String uid = userRecord.getUid();
         UpdateRequest request = new UpdateRequest(uid).setPassword(nuevaContrasenia);
+        System.out.println(nuevaContrasenia);
+        System.out.println(codUsuario);
         UserRecord userRecord2 = FirebaseAuth.getInstance().updateUser(request);
         String hashedPassword = passwordEncoder.encode(nuevaContrasenia);
         usuario.setContraseniaUsuario(hashedPassword);

@@ -97,7 +97,7 @@ public class UsuarioController {
 	@PostMapping("/usuario/modificarContrasenia/{codUsuario}")
     public ResponseEntity<String> modificarContrasenia(@PathVariable int codUsuario, @RequestBody String nuevaContrasenia) {
         try {
-            Usuario usuario = usuarioDao.modificarContrasenia(codUsuario, nuevaContrasenia);
+            Usuario usuario = usuarioDao.modificarContrasenia(codUsuario, nuevaContrasenia.trim());
             return new ResponseEntity<>("Contraseña modificada correctamente.", HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("El usuario no existe.", HttpStatus.NOT_FOUND);

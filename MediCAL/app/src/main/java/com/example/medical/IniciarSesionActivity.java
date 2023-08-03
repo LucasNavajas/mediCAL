@@ -231,8 +231,13 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 usuarioApi.getByMailUsuario(mailReset).enqueue(new Callback<Usuario>() {
                     @Override
                     public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                        popupWindow.dismiss();
+
+                        // Ocultar el fondo oscurecido
+                        dimView.setVisibility(View.GONE);
                         Usuario usuarioReset = response.body();
                         enviarCodigoVerificacion(usuarioReset);
+
                     }
 
                     @Override

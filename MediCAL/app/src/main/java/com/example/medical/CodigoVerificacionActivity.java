@@ -42,6 +42,8 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
     private Button botonValidar;
     private Intent intent1;
     private int codUsuario;
+    private PopupWindow popupWindow2;
+    private PopupWindow popupWindow;
     private Usuario usuario;
     private CodigoVerificacion codverificacion;
     private RetrofitService retrofitService = new RetrofitService();
@@ -173,10 +175,6 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                             }
                             else{
                                 popupCambiarContrasenia();
-                                Intent intent2 = new Intent(CodigoVerificacionActivity.this, BienvenidoActivity.class);
-                                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent2);
-                                finish();
                             }
 
                         } else {
@@ -203,7 +201,57 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
 
 
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow2 = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow2.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow2.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
+        EditText editContrasenia = popupView.findViewById(R.id.textEdit_nueva_contrasenia);
+
+        textViewAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contraseniaNueva = editContrasenia.getText().toString();
+                usuarioApi.modificarContrasenia(intent1.getIntExtra("codusuario", 0),contraseniaNueva.trim()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        popupWindow2.dismiss();
+                        dimView.setVisibility(View.GONE);
+                        popupRestablecido();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(CodigoVerificacionActivity.this, "Error con el servidor al modificar la contraseña", Toast.LENGTH_SHORT).show();
+                        popupWindow2.dismiss();
+                        dimView.setVisibility(View.GONE);
+                    }
+                });
+
+
+            }
+        });
+    }
+
+    private void popupRestablecido() {
+        View popupView = getLayoutInflater().inflate(R.layout.n25_1_popup_contrasenia_restablecida, null);
+
+
+        // Crear la instancia de PopupWindow
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);
@@ -221,19 +269,18 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
-        EditText editContrasenia = popupView.findViewById(R.id.textEdit_nueva_contrasenia);
 
         textViewAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String contraseniaNueva = editContrasenia.getText().toString();
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
 
-                    // Ocultar el PopupWindow
-                    popupWindow.dismiss();
-
-                    // Ocultar el fondo oscurecido
-                    dimView.setVisibility(View.GONE);
-
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+                Intent intent2 = new Intent(CodigoVerificacionActivity.this, BienvenidoActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent2);
             }
         });
     }
@@ -243,7 +290,7 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
 
 
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);
@@ -319,6 +366,28 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                     CodigoVerificacionActivity.super.onBackPressed();
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+        if (popupWindow2 != null && popupWindow2.isShowing()) {
+            popupWindow2.dismiss();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+        if (popupWindow2 != null && popupWindow2.isShowing()) {
+            popupWindow2.dismiss();
         }
     }
 }
