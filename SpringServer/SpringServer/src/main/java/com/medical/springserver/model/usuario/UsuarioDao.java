@@ -86,8 +86,6 @@ public class UsuarioDao {
         UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuario.getMailUsuario());
         String uid = userRecord.getUid();
         UpdateRequest request = new UpdateRequest(uid).setPassword(nuevaContrasenia);
-        System.out.println(nuevaContrasenia);
-        System.out.println(codUsuario);
         UserRecord userRecord2 = FirebaseAuth.getInstance().updateUser(request);
         String hashedPassword = passwordEncoder.encode(nuevaContrasenia);
         usuario.setContraseniaUsuario(hashedPassword);

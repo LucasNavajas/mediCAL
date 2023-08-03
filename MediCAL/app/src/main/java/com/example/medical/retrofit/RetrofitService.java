@@ -1,5 +1,4 @@
 package com.example.medical.retrofit;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,6 +12,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -32,6 +35,17 @@ public class RetrofitService {
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.54.228:8080/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request originalRequest = chain.request();
+                        Request request = originalRequest.newBuilder()
+                                .header("Content-Type", "application/json; charset=utf-8")
+                                .method(originalRequest.method(), originalRequest.body())
+                                .build();
+                        return chain.proceed(request);
+                    }
+                }).build())
                 .build();
     }
 

@@ -36,6 +36,32 @@
         android:textSize="24sp"
         android:inputType="textPassword"/>
 
+    <TextView
+        android:id="@+id/error_longitud_contrasenia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Debe ingresar una contraseña entre 6 y 15 caracteres"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="@color/rojoError"
+        android:layout_below="@id/textEdit_nueva_contrasenia"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/error_misma_contrasenia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Debe ingresar una contraseña diferente a la actual"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="@color/rojoError"
+        android:layout_below="@id/textEdit_nueva_contrasenia"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="gone"
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +81,8 @@
             android:clickable="true"
             android:layout_weight="1"
             android:layout_marginBottom="15dp"
-            android:gravity="end"/>
+            android:gravity="end"
+            android:focusable="false"/>
 
     </LinearLayout>
 

@@ -188,9 +188,8 @@ public class IniciarSesionActivity extends AppCompatActivity {
     private void popupResetContrasenia() {
         View popupView = getLayoutInflater().inflate(R.layout.n10_popup_reiniciarpassword, null);
 
-
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);

@@ -21,12 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.medical.model.CodigoVerificacion;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CodigoVerificacionApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -220,32 +225,63 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
 
         TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
         EditText editContrasenia = popupView.findViewById(R.id.textEdit_nueva_contrasenia);
+        TextView errorLongitudContrasenia = popupView.findViewById(R.id.error_longitud_contrasenia);
+        TextView errorMismaContrasenia = popupView.findViewById(R.id.error_misma_contrasenia);
 
         textViewAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String contraseniaNueva = editContrasenia.getText().toString();
-                usuarioApi.modificarContrasenia(intent1.getIntExtra("codusuario", 0),contraseniaNueva.trim()).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        popupWindow2.dismiss();
-                        dimView.setVisibility(View.GONE);
-                        popupRestablecido();
-                    }
+                String contraseniaNueva = editContrasenia.getText().toString().trim().replace("\"", "");
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(CodigoVerificacionActivity.this, "Error con el servidor al modificar la contraseña", Toast.LENGTH_SHORT).show();
-                        popupWindow2.dismiss();
-                        dimView.setVisibility(View.GONE);
-                    }
-                });
+                if (contraseniaNueva.length() < 6 || contraseniaNueva.length() > 15) {
+                    errorMismaContrasenia.setVisibility(View.GONE);
+                    errorLongitudContrasenia.setVisibility(View.VISIBLE);
+                    return;
+                }
+               usuarioApi.getByCodUsuario(intent1.getIntExtra("codusuario", 0)).enqueue(new Callback<Usuario>() {
+                   @Override
+                   public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                       Usuario usuarioresponse = response.body();
+                       if(usuarioresponse.getContraseniaUsuario().equals(encode(contraseniaNueva))){
+                           modificarContrasenia(contraseniaNueva);
+                       }
+                       else{
+                           errorMismaContrasenia.setVisibility(View.VISIBLE);
+                           return;
+                       }
+                   }
+
+                   @Override
+                   public void onFailure(Call<Usuario> call, Throwable t) {
+                       errorMismaContrasenia.setVisibility(View.VISIBLE);
+                       return;
+                   }
+               });
 
 
             }
         });
     }
 
+    private void modificarContrasenia(String contraseniaNueva){
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+        usuarioApi.modificarContrasenia(intent1.getIntExtra("codusuario", 0),contraseniaNueva.trim()).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                popupWindow2.dismiss();
+                dimView.setVisibility(View.GONE);
+                popupRestablecido();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(CodigoVerificacionActivity.this, "Error con el servidor al modificar la contraseña", Toast.LENGTH_SHORT).show();
+                popupWindow2.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
     private void popupRestablecido() {
         View popupView = getLayoutInflater().inflate(R.layout.n25_1_popup_contrasenia_restablecida, null);
 
@@ -389,5 +425,24 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         if (popupWindow2 != null && popupWindow2.isShowing()) {
             popupWindow2.dismiss();
         }
+    }
+
+    public static String encode(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hash);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte b : bytes) {
+            result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
+        return result.toString();
     }
 }
