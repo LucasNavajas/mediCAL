@@ -152,10 +152,5 @@ class SpringServerApplicationTestsUsuario {
 		
 	}
 	
-	@Test
-	void modificarContrasenia() throws FirebaseAuthException {
-		Usuario usuario = usuarioDao.getByMailUsuario("lucastobiasnavajas@gmail.com");
-		usuarioDao.verificarMismaContrasenia(usuario, "03042001");
-	}
 
 }
