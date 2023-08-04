@@ -49,6 +49,7 @@
         <activity android:name=".ContactoSoporteActivity"></activity>
         <activity android:name=".CrearCalendario1Activity"></activity>
         <activity android:name=".CrearCalendario2Activity"></activity>
+        <activity android:name=".EditarPerfilUsuarioActivity"></activity>
     </application>
 
 </manifest>

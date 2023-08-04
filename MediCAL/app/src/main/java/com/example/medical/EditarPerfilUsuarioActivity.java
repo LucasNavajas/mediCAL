@@ -5,6 +5,7 @@ import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     private EditText textEditEmail;
     private EditText textEditTelefono;
     private Button buttonGuardar;
-    private Button botonCerrar;
+    private ImageView botonCerrar;
 
     private RetrofitService retrofitService;
     private UsuarioApi usuarioApi;
@@ -95,7 +96,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
 
     private void obtenerDatosUsuario(int idUsuario) {
-        Call<Usuario> call = usuarioApi.getByCodUsuario(idUsuario);
+        Call<Usuario> call = usuarioApi.getByCodUsuario(1);
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -105,7 +106,8 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                         // Llenar los campos de texto con los datos del usuario
                         textEditNombreUsuario.setText(usuario.getNombreUsuario());
                         textEditApellidoUsuario.setText(usuario.getApellidoUsuario());
-                        String fechaNacimientoString = usuario.getFechaNacimientoUsuario().format(formatter);
+                        textEditFechaNac.setText(usuario.getFechaNacimientoUsuario().toString());
+                        // String fechaNacimientoString = usuario.getFechaNacimientoUsuario().format(formatter);
                         textEditEmail.setText(usuario.getMailUsuario());
                         textEditTelefono.setText(usuario.getTelefonoUsuario());
                     }
@@ -122,7 +124,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("WrongViewCast")
+    //@SuppressLint("WrongViewCast")
     private void inicializarVariables() {
         textEditNombreUsuario = findViewById(R.id.textEdit_nombre_usuario);
         textEditApellidoUsuario = findViewById(R.id.textEdit_apellido_usuario);
@@ -141,6 +143,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         // Obtener los nuevos datos ingresados por el usuario
         String nuevoNombre = textEditNombreUsuario.getText().toString();
         String nuevoApellido = textEditApellidoUsuario.getText().toString();
+        // Revisar
         String nuevaFechaNac = textEditFechaNac.getText().toString();
         String nuevoEmail = textEditEmail.getText().toString();
         String nuevoTelefono = textEditTelefono.getText().toString();
