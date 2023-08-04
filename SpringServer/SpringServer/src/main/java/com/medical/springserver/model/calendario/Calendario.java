@@ -81,15 +81,7 @@ public class Calendario {
 	public void setRelacionCalendario(String relacionCalendario) {
 		this.relacionCalendario = relacionCalendario;
 	}
-	
-	@Override
-	public String toString() {
-		return "Calendario [codCalendario=" + codCalendario + ", fechaAltaCalendario=" + fechaAltaCalendario
-				+ ", fechaFinVigenciaC=" + fechaFinVigenciaC + ", nombreCalendario=" + nombreCalendario
-				+ ", nombrePaciente=" + nombrePaciente + ", relacionCalendario=" + relacionCalendario + ", usuario="
-				+ usuario + ", recordatorio=" + recordatorio + ", varcalendariomedicion=" + varcalendariomedicion
-				+ ", varcalendariosintoma=" + varcalendariosintoma + "]";
-	}
+
 	
 	// Relacion
 	

@@ -66,7 +66,7 @@
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="text"
                 android:maxLength="30"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
@@ -74,7 +74,7 @@
                 android:textColor="@color/black"
                 android:textSize="21sp"
                 android:fontFamily="@font/inter_regular"
-                android:textColorHint="@color/gris_medical" />
+                android:textColorHint="@color/gris_medical"/>
         </RelativeLayout>
 
         <!-- Contador de caracteres (ver en java) -->
