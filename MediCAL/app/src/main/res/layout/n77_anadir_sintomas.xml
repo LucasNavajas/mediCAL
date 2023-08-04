@@ -58,21 +58,28 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rectangulo_buscar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
+
+                <AutoCompleteTextView
+                    android:id="@+id/editText_buscar"
+                    android:layout_width="324dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Buscar"
-                    android:textColor="@color/black"
+                    android:hint="Buscar"
+                    android:maxLength="20"
+                    android:textColor="#000"
+                    android:imeOptions="actionSearch"
                     android:textSize="22sp" />
 
+
                 <ImageView
+                    android:id="@+id/lupa_buscar"
                     android:layout_width="35dp"
                     android:layout_height="29dp"
                     android:layout_alignParentEnd="true"
@@ -91,10 +98,11 @@
             android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/parte_blanca"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:padding="10dp">
+            android:padding="25dp">
 
             <LinearLayout
                 android:id="@+id/texto_uno"
@@ -406,7 +414,7 @@
 
 
             <Button
-                android:id="@+id/button_siguiente"
+                android:id="@+id/button_guardar"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
