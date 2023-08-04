@@ -2,10 +2,17 @@ package com.example.medical;
 
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +29,8 @@ import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 
+import org.w3c.dom.Text;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -31,9 +40,10 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
     private EditText textEditNombreUsuario;
     private EditText textEditApellidoUsuario;
-    private EditText textEditFechaNac;
+    private TextView textEditFechaNac;
     private EditText textEditEmail;
     private EditText textEditTelefono;
+    private EditText textEditGenero;
     private Button buttonGuardar;
     private ImageView botonCerrar;
 
@@ -42,6 +52,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
     private DateTimeFormatter formatter;
     private Usuario usuario;
+    private LocalDate fechaNacimiento;
 
     // Se debe obtener la id del usuario actual a través de su SESIÓN
     private int idUsuarioActual;
@@ -64,31 +75,73 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
         buttonGuardar.setOnClickListener(view -> {
             guardarCambios();
-            // Obtiene el nuevo valor del campo de texto
-            String nuevaFechaNacString = textEditFechaNac.getText().toString();
-
-            // Convierte el nuevo valor a un objeto LocalDate
-            try {
-                LocalDate nuevaFechaNac = LocalDate.parse(nuevaFechaNacString, formatter);
-
-                // Guarda el nuevo objeto LocalDate en tu objeto Usuario
-                usuario.setFechaNacimientoUsuario(nuevaFechaNac);
-
-                // Luego puedes llamar a tu función para guardar los cambios en la base de datos
-                // guardarCambiosEnLaBaseDeDatos();
-
-                // Muestra un mensaje de éxito
-                Toast.makeText(getApplicationContext(), "Cambios guardados", Toast.LENGTH_SHORT).show();
-            } catch (DateTimeParseException e) {
-                // Si el formato de fecha ingresado por el usuario es incorrecto, muestra un mensaje de error
-                Toast.makeText(getApplicationContext(), "Formato de fecha incorrecto", Toast.LENGTH_SHORT).show();
-            }
         });
 
         botonCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        textEditFechaNac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupFechaNacimiento();
+            }
+        });
+
+    }
+
+    private void popupFechaNacimiento() {
+        View popupView = getLayoutInflater().inflate(R.layout.n15_3_popup_fecha_nacimiento, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, 1000);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        DatePicker datePicker = popupView.findViewById(R.id.datePicker);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth() + 1;
+                int year = datePicker.getYear();
+
+                fechaNacimiento = LocalDate.of(year, month, day);
+                textEditFechaNac.setText(fechaNacimiento.toString());
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
             }
         });
 
@@ -101,7 +154,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.isSuccessful()) {
-                    Usuario usuario = response.body();
+                    usuario = response.body();
                     if (usuario != null) {
                         // Llenar los campos de texto con los datos del usuario
                         textEditNombreUsuario.setText(usuario.getNombreUsuario());
@@ -110,6 +163,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                         // String fechaNacimientoString = usuario.getFechaNacimientoUsuario().format(formatter);
                         textEditEmail.setText(usuario.getMailUsuario());
                         textEditTelefono.setText(usuario.getTelefonoUsuario());
+                        textEditGenero.setText(usuario.getGeneroUsuario());
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show();
@@ -132,6 +186,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         textEditEmail = findViewById(R.id.textEdit_email);
         textEditTelefono = findViewById(R.id.textEdit_telefono);
 
+        textEditGenero = findViewById(R.id.textEdit_Mujer);
         buttonGuardar = findViewById(R.id.button_guardar);
         botonCerrar = findViewById(R.id.boton_cerrar);
 
@@ -144,15 +199,15 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         String nuevoNombre = textEditNombreUsuario.getText().toString();
         String nuevoApellido = textEditApellidoUsuario.getText().toString();
         // Revisar
-        String nuevaFechaNac = textEditFechaNac.getText().toString();
+        //String nuevaFechaNac = textEditFechaNac.getText().toString();
         String nuevoEmail = textEditEmail.getText().toString();
         String nuevoTelefono = textEditTelefono.getText().toString();
 
         // Aquí puedes crear un objeto Usuario con los nuevos datos ingresados por el usuario.
-        Usuario usuarioModificado = new Usuario();
+        Usuario usuarioModificado = usuario;
         usuarioModificado.setNombreUsuario(nuevoNombre);
         usuarioModificado.setApellidoUsuario(nuevoApellido);
-        usuarioModificado.setFechaNacimientoUsuario(LocalDate.parse(nuevaFechaNac));
+        usuarioModificado.setFechaNacimientoUsuario(fechaNacimiento);
         usuarioModificado.setMailUsuario(nuevoEmail);
         usuarioModificado.setTelefonoUsuario(nuevoTelefono);
 
