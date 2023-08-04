@@ -32,40 +32,8 @@ public class BienvenidoActivity extends AppCompatActivity {
         Button buttonIngresar = findViewById(R.id.button_ingresar);
 
         buttonIngresar.setOnClickListener(view -> {
-            View popupView = getLayoutInflater().inflate(R.layout.n12_popup_codigoinvalido, null);
-
-
-            // Crear la instancia de PopupWindow
-            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            // Hacer que el popup sea enfocable (opcional)
-            popupWindow.setFocusable(true);
-
-            // Configurar animación para oscurecer el fondo
-            View rootView = findViewById(android.R.id.content);
-
-            View dimView = findViewById(R.id.dim_view);
-            dimView.setVisibility(View.VISIBLE);
-
-            Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
-            popupView.startAnimation(scaleAnimation);
-
-            // Mostrar el popup en la ubicación deseada
-            popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-
-            TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
-
-            textViewAceptar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Ocultar el PopupWindow
-                    popupWindow.dismiss();
-
-                    // Ocultar el fondo oscurecido
-                    dimView.setVisibility(View.GONE);
-                }
-            });
-
+            Intent intent2 = new Intent(BienvenidoActivity.this, IniciarSesionActivity.class);
+            startActivity(intent2);
         });
 
 

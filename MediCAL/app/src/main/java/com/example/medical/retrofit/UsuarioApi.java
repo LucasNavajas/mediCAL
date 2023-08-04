@@ -3,6 +3,7 @@ package com.example.medical.retrofit;
 import com.example.medical.model.Usuario;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 
@@ -29,7 +30,25 @@ public interface UsuarioApi {
     @GET("/usuario/get-all-usuarios-unicos")
     Call<List<String>> obtenerUsuariosUnicos();
 
-    @GET("/usuario/{codUsuario}")
+    @GET("/usuario/get-all-mails-unicos")
+    Call<List<String>> obtenerMailsUnicos();
+
+    @GET("/usuario/get-all-mails-unicos-cuentas")
+    Call<List<String>> obtenerMailsUnicosCuentas();//Obtener todos los mails de cuentas que ya fueron creadas y no estan en periodo de creacion
+
+    @GET("/usuario/cod/{codUsuario}")
     Call<Usuario> getByCodUsuario(@Path("codUsuario") int codUsuario);
+
+    @GET("/usuario/mail/{mailUsuario}")
+    Call<Usuario> getByMailUsuario(@Path("mailUsuario") String mailUsuario);
+
+    @DELETE("/usuario/delete/{codUsuario}")
+    Call<Void> deleteUsuario(@Path("codUsuario") int codUsuario);
+
+    @POST("/usuario/set-cod-verificacion/{codUsuario}")
+    Call<Usuario> setCodigoVerificacion(@Path("codUsuario") int codUsuario);
+
+    @POST("/usuario/modificarContrasenia/{codUsuario}")
+    Call<Void> modificarContrasenia(@Path("codUsuario") int codUsuario, @Body String nuevaContrasenia);
 
 }

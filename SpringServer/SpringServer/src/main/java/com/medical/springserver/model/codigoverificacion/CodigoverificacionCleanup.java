@@ -36,8 +36,13 @@ public class CodigoverificacionCleanup {
         for (CodigoVerificacion codigoVerificacion : expiredCodigos) {
             Usuario usuario = usuarioRepository.findByCodigoVerificacion(codigoVerificacion.getCodVerificacion());
             if (usuario != null) {
-                usuario.setCodigoVerificacion(null);
-                usuarioRepository.save(usuario);
+            	if(usuario.getFechaAltaUsuario()!=null) {
+	                usuario.setCodigoVerificacion(null);
+	                usuarioRepository.save(usuario);
+            	}
+            	else {
+            		usuarioRepository.delete(usuario);
+            	}
             }
         }
 

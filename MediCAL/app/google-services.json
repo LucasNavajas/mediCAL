@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "42219694888",
+    "project_id": "medicalauth-9419f",
+    "storage_bucket": "medicalauth-9419f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42219694888:android:c1e9671123fb85c724be1d",
+        "android_client_info": {
+          "package_name": "com.example.medical"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42219694888-a8l4me0anc76p6k3ealbaojbtslo8mbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medical",
+            "certificate_hash": "95c42aeba8b1b0758dc1cc0b946d8b64687dc87b"
+          }
+        },
+        {
+          "client_id": "42219694888-233qjg4qlvedau3rbl59iahrlfgp80oq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByWlIF39E-JIq3pSHlfhOi0HvNDNtFHeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42219694888-233qjg4qlvedau3rbl59iahrlfgp80oq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
