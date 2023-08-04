@@ -93,10 +93,12 @@ public class CrearCuenta4Activity extends AppCompatActivity {
                     // Aquí puedes verificar la respuesta del servidor
                     if (response.isSuccessful()) {
                         Intent intent2 = new Intent(CrearCuenta4Activity.this, BienvenidoUsuarioActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent2.putExtra("usuario", intent.getStringExtra("usuario"));
                         intent2.putExtra("mail", mailUsuario);
                         intent2.putExtra("contrasenia", contrasenia);
                         startActivity(intent2);
+                        finish();
                     } else {
                         Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
                     }

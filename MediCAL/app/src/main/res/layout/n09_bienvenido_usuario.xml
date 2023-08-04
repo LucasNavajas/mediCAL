@@ -49,10 +49,10 @@
         android:paddingEnd="30dp"
         android:textAlignment="center"/>
     <Button
-            android:id="@+id/button_agregarRecordatorio"
+            android:id="@+id/button_agregarCalendario"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Agregar recordatorio"
+            android:text="Crear un calendario"
             android:fontFamily="@font/inter_bold"
             android:textColor="@color/white"
             android:textSize="19sp"

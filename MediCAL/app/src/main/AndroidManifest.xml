@@ -47,6 +47,8 @@
         <activity android:name=".CodigoVerificacionActivity"></activity>
         <activity android:name=".IniciarSesionActivity"></activity>
         <activity android:name=".ContactoSoporteActivity"></activity>
+        <activity android:name=".CrearCalendario1Activity"></activity>
+        <activity android:name=".CrearCalendario2Activity"></activity>
     </application>
 
 </manifest>

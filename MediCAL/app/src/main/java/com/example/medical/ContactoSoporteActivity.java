@@ -70,7 +70,10 @@ public class ContactoSoporteActivity extends AppCompatActivity {
         if (!email.isEmpty()) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, email);
+            intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
+                    "\n" +
+                    "Estoy usando MediCAL. Te comparto el correo de soporte por si tienes alguna consulta o necesitas ayuda: \n"+
+                    "\n" + email); // Agregar el texto del correo prellenado
             startActivity(Intent.createChooser(intent, "Compartir vía"));
         } else {
             Toast.makeText(this, "No se puede compartir un email vacío", Toast.LENGTH_SHORT).show();
@@ -85,3 +88,4 @@ public class ContactoSoporteActivity extends AppCompatActivity {
         finish(); // Finalizar la actividad actual para no volver a ella al tocar el botón "volver"
     }
 }
+

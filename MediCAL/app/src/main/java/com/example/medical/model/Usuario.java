@@ -2,6 +2,7 @@ package com.example.medical.model;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class Usuario {
@@ -19,9 +20,9 @@ public class Usuario {
 	private String usuarioUnico;
 
 	/*private List<HistorialFinVigencia> historial;
-
+*/
 	private List<Calendario> varcalendario;
-
+/*
 	private List<Reporte> reportes;
 
 	private List<Perfil> perfil;
@@ -139,13 +140,13 @@ public class Usuario {
 	}
 	public void setHistorial(List<HistorialFinVigencia> historial) {
 		this.historial = historial;
-	}
+	}*/
 	public List<Calendario> getVarcalendario() {
 		return varcalendario;
 	}
 	public void setVarcalendario(List<Calendario> varcalendario) {
 		this.varcalendario = varcalendario;
-	}
+	}/*
 	public List<Reporte> getReportes() {
 		return reportes;
 	}

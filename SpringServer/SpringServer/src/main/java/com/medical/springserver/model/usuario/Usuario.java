@@ -3,6 +3,7 @@ package com.medical.springserver.model.usuario;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
@@ -37,22 +38,27 @@ public class Usuario {
 	
 	// relacion historial fin vigencia
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<HistorialFinVigencia> historial;
 	
 	// relacion calendario
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Calendario> varcalendario;
 	
 	// relacion con reportes
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Reporte> reportes;
 	
 	// relacion con Perfil
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Perfil> perfil;
 	
 	// relacion con Solicitud Controlador
 	@OneToMany (mappedBy = "usuarioControlador", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Solicitud> solicitudControlador;
 	
 	// relacion con CodVerificacion
