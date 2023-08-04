@@ -51,4 +51,7 @@ public interface UsuarioApi {
     @POST("/usuario/modificarContrasenia/{codUsuario}")
     Call<Void> modificarContrasenia(@Path("codUsuario") int codUsuario, @Body String nuevaContrasenia);
 
+    @POST("/usuario/misma-contrasenia/{codUsuario}/{nuevaContrasenia}")
+    Call<Boolean> verificarMismaContrasenia(@Path("codUsuario") int codUsuario, @Path("nuevaContrasenia") String nuevaContrasenia);
+
 }

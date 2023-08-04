@@ -68,6 +68,10 @@ public class UsuarioController {
 		Usuario usuario = usuarioDao.getByMailUsuario(mailUsuario);
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
+	@PostMapping("/usuario/misma-contrasenia/{codUsuario}/{nuevaContrasenia}")
+	public boolean verificarMismaContrasenia(@PathVariable int codUsuario, @PathVariable String nuevaContrasenia){
+		return usuarioDao.verificarMismaContrasenia(codUsuario, nuevaContrasenia);
+	}
 	
 	@PostMapping("/usuario/modificar")
 	public ResponseEntity<Usuario> modificarUsuario(@RequestBody Usuario usuario) {
@@ -140,7 +144,7 @@ public class UsuarioController {
             usuario.setCodigoVerificacion(nuevoCodigoVerificacion);
 
             // Guarda los cambios en la base de datos
-            Usuario modifiedUsuario = usuarioDao.save(usuario);
+            Usuario modifiedUsuario = usuarioDao.saveSinHash(usuario);
 
             return new ResponseEntity<>(modifiedUsuario, HttpStatus.OK);
         } else {

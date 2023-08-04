@@ -250,6 +250,11 @@ public class IniciarSesionActivity extends AppCompatActivity {
     }
 
     private void enviarCodigoVerificacion(Usuario usuarioReset) {
+        Intent intent2 = new Intent(IniciarSesionActivity.this, CodigoVerificacionActivity.class);
+        intent2.putExtra("codusuario", usuarioReset.getCodUsuario());
+        intent2.putExtra("mail", usuarioReset.getMailUsuario());
+        intent2.putExtra("contrasenia", usuarioReset.getContraseniaUsuario());
+        Toast.makeText(IniciarSesionActivity.this,  usuarioReset.getContraseniaUsuario(), Toast.LENGTH_SHORT).show();
         usuarioApi.setCodigoVerificacion(usuarioReset.getCodUsuario()).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -257,9 +262,6 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 String codigoVerificacionNuevo = usuarioModificado.getCodigoVerificacion().getCodVerificacion();
                 SendEmailTask sendEmailTask = new SendEmailTask(usuarioModificado.getMailUsuario(), codigoVerificacionNuevo);
                 sendEmailTask.execute();
-                Intent intent2 = new Intent(IniciarSesionActivity.this, CodigoVerificacionActivity.class);
-                intent2.putExtra("codusuario", usuarioReset.getCodUsuario());
-                intent2.putExtra("mail", usuarioReset.getMailUsuario());
                 startActivity(intent2);
             }
 

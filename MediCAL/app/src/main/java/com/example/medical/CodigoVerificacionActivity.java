@@ -170,7 +170,7 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                         String codigoVerificacionIngresado = editText1.getText().toString() + editText2.getText().toString() + editText3.getText().toString() + editText4.getText().toString();
 
                         if (codverificacion.getCodVerificacion().equals(codigoVerificacionIngresado)) {
-                            if(intent1.getStringExtra("contrasenia")!=null) {//Si contrasenia se pasa en el intent significa que estamos registrando, si solo se pasa el usuario, cod y el mail es reset de contraseña
+                            if(intent1.getStringExtra("usuario")!=null) {//Si usuario se pasa en el intent significa que estamos registrando, si solo se pasa el usuario, cod y el mail es reset de contraseña
                                 Intent intent = new Intent(CodigoVerificacionActivity.this, CrearCuenta2Activity.class);
                                 intent.putExtra("usuario", intent1.getStringExtra("usuario"));
                                 intent.putExtra("contrasenia", intent1.getStringExtra("contrasenia"));
@@ -238,22 +238,26 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                     errorLongitudContrasenia.setVisibility(View.VISIBLE);
                     return;
                 }
-               usuarioApi.getByCodUsuario(intent1.getIntExtra("codusuario", 0)).enqueue(new Callback<Usuario>() {
+               usuarioApi.verificarMismaContrasenia(intent1.getIntExtra("codusuario", 0), contraseniaNueva).enqueue(new Callback<Boolean>() {
                    @Override
-                   public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                       Usuario usuarioresponse = response.body();
-                       if(usuarioresponse.getContraseniaUsuario().equals(encode(contraseniaNueva))){
+                   public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                       Boolean responseBool = response.body();
+                       if(responseBool==false){
+                           errorMismaContrasenia.setVisibility(View.GONE);
+                           errorLongitudContrasenia.setVisibility(View.GONE);
                            modificarContrasenia(contraseniaNueva);
                        }
                        else{
                            errorMismaContrasenia.setVisibility(View.VISIBLE);
+                           errorLongitudContrasenia.setVisibility(View.GONE);
                            return;
                        }
                    }
 
                    @Override
-                   public void onFailure(Call<Usuario> call, Throwable t) {
+                   public void onFailure(Call<Boolean> call, Throwable t) {
                        errorMismaContrasenia.setVisibility(View.VISIBLE);
+                       errorLongitudContrasenia.setVisibility(View.GONE);
                        return;
                    }
                });

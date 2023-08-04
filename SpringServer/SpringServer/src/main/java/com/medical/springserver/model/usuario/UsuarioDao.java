@@ -31,6 +31,9 @@ public class UsuarioDao {
 		return repository.save(usuario);
 	}
 	
+	public Usuario saveSinHash(Usuario usuario) {
+		return repository.save(usuario);
+	}
 	public List<Usuario> getAllUsuarios() {
 	    Streamable<Usuario> streamableUsuarios = Streamable.of(repository.findAll());
 	    List<Usuario> usuarios = new ArrayList<>();
@@ -80,6 +83,7 @@ public class UsuarioDao {
         nuevaContrasenia = nuevaContrasenia.replace("\"", "");
         if (optionalUsuario.isPresent()) {
             usuario = optionalUsuario.get();
+            usuario.setCodigoVerificacion(null);
         } else {
             throw new NoSuchElementException("El usuario no existe.");
         }
@@ -112,5 +116,21 @@ public class UsuarioDao {
 	
 	public List<String> obtenerMailsCuentas(){
 		return repository.findAllDistinctMailCuentas();
+	}
+
+	public boolean verificarMismaContrasenia(int codUsuario, String nuevaContrasenia) {
+		Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
+        Usuario usuario;
+        nuevaContrasenia = nuevaContrasenia.replace("\"", "");
+        if (optionalUsuario.isPresent()) {
+            usuario = optionalUsuario.get();
+        } else {
+            throw new NoSuchElementException("El usuario no existe.");
+        }
+        System.out.println("03042001".equals(nuevaContrasenia));
+        System.out.println(passwordEncoder.matches("03042001", usuario.getContraseniaUsuario()));
+        System.out.println(usuario.getContraseniaUsuario());
+        System.out.println(passwordEncoder.matches(nuevaContrasenia, usuario.getContraseniaUsuario()));
+        return(passwordEncoder.matches(nuevaContrasenia, usuario.getContraseniaUsuario()));
 	}
 }
