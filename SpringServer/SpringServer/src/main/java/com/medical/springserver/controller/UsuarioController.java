@@ -3,6 +3,7 @@ package com.medical.springserver.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacionDao;
@@ -74,7 +75,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/usuario/modificar")
-	public ResponseEntity<Usuario> modificarUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> modificarUsuario(@RequestBody Usuario usuario) throws FirebaseAuthException {
 	    int codUsuario = usuario.getCodUsuario();
 	    String nuevoNombre = usuario.getNombreUsuario();
 	    String nuevoApellido = usuario.getApellidoUsuario();

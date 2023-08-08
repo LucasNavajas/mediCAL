@@ -143,7 +143,12 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                 dimView.setVisibility(View.GONE);
             }
         });
-
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
 

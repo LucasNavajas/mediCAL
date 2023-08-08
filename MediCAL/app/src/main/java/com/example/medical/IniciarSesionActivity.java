@@ -223,6 +223,12 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 dimView.setVisibility(View.GONE);
             }
         });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void popupResetContrasenia() {
@@ -271,12 +277,10 @@ public class IniciarSesionActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                         popupWindow.dismiss();
-
                         // Ocultar el fondo oscurecido
                         dimView.setVisibility(View.GONE);
                         Usuario usuarioReset = response.body();
                         enviarCodigoVerificacion(usuarioReset);
-
                     }
 
                     @Override
@@ -286,6 +290,12 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 });
             }
         });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void enviarCodigoVerificacion(Usuario usuarioReset) {
@@ -293,7 +303,6 @@ public class IniciarSesionActivity extends AppCompatActivity {
         intent2.putExtra("codusuario", usuarioReset.getCodUsuario());
         intent2.putExtra("mail", usuarioReset.getMailUsuario());
         intent2.putExtra("contrasenia", usuarioReset.getContraseniaUsuario());
-        Toast.makeText(IniciarSesionActivity.this,  usuarioReset.getContraseniaUsuario(), Toast.LENGTH_SHORT).show();
         usuarioApi.setCodigoVerificacion(usuarioReset.getCodUsuario()).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {

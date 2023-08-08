@@ -52,6 +52,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
     private List<Calendario> listaCalendarios;
     private LinearLayout contenedorCalendarios;
+    private RelativeLayout soporte;
     private FirebaseUser usuario;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -107,6 +108,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 startActivity(intent);
             }
         });
+        soporte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, FAQActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -126,6 +134,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         contenedorCalendarios = findViewById(R.id.contenedor_calendarios);
         nombreUsuario = findViewById(R.id.nombre_usuario);
         editarPerfil = findViewById(R.id.editar_perfil);
+        soporte = findViewById(R.id.soporte);
         llenarListaCalendarios();
     }
 

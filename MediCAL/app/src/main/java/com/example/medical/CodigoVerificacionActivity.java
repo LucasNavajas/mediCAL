@@ -265,6 +265,12 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
 
             }
         });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void modificarContrasenia(String contraseniaNueva){
@@ -323,6 +329,12 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void popupInvalido(int layoutResId) {
@@ -356,6 +368,12 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
                 popupWindow.dismiss();
 
                 // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
                 dimView.setVisibility(View.GONE);
             }
         });
@@ -409,44 +427,4 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        }
-        if (popupWindow2 != null && popupWindow2.isShowing()) {
-            popupWindow2.dismiss();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        }
-        if (popupWindow2 != null && popupWindow2.isShowing()) {
-            popupWindow2.dismiss();
-        }
-    }
-
-    public static String encode(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(hash);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte b : bytes) {
-            result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-        }
-        return result.toString();
-    }
 }

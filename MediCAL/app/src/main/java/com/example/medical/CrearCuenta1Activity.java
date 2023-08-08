@@ -337,6 +337,12 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                 dimView.setVisibility(View.GONE);
             }
         });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
     public void registrarUsuario(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.medical.adapter.FaqAdapter;
@@ -24,16 +25,25 @@ import retrofit2.Response;
 public class FAQActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private ImageView botonCerrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n28y29_preguntas_respuestas_frecuentes);
 
+        botonCerrar = findViewById(R.id.boton_volver);
         recyclerView = findViewById(R.id.listafaqs_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadFaqs();
+
+        botonCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
     public void openContactoSoporteActivity(View view) {
         Intent intent = new Intent(this, ContactoSoporteActivity.class);
