@@ -488,34 +488,16 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginStart="20dp"/>
 
-                    <RelativeLayout
-                        android:id="@+id/calendario1"
+                    <LinearLayout
+                        android:id="@+id/contenedor_calendarios"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:padding="10dp">
 
-                        <ImageView
-                            android:id="@+id/calendario_imagen1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/calendario_contic"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginStart="20dp"/>
 
-                        <TextView
-                            android:id="@+id/calendario_texto1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nombre de Calendario"
-                            android:textSize="20sp"
-                            android:textColor="@color/black"
-                            android:layout_marginStart="10dp"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/calendario_imagen1"
-                            android:fontFamily="@font/inter_regular"
-                            />
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:id="@+id/calendario_nuevo"

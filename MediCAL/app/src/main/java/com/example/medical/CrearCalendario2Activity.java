@@ -60,7 +60,11 @@ public class CrearCalendario2Activity extends AppCompatActivity {
                     calendarioApi.save(calendario).enqueue(new Callback<Calendario>() {
                         @Override
                         public void onResponse(Call<Calendario> call, Response<Calendario> response) {
-                            Toast.makeText(CrearCalendario2Activity.this, "Calendario creado con éxito", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CrearCalendario2Activity.this, CalendarioCreadoActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("nombreCalendario", nombreCalendarioString);
+                            startActivity(intent);
+                            finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
                         }
 
                         @Override

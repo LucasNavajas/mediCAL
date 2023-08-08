@@ -27,5 +27,9 @@ public class CalendarioDao {
 	public void delete(Calendario calendario) {
 		repository.delete(calendario);
 	}
+	
+	public List<Calendario> findByCodUsuario(int codUsuario){
+		return repository.findByCodUsuario(codUsuario);
+	}
 
 }

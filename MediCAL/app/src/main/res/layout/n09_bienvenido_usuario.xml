@@ -22,7 +22,7 @@
         android:layout_below="@id/boton_cerrar"
         android:layout_marginStart="30dp"
         android:fontFamily="@font/inter_regular"
-        android:text="Bienvenido, "
+        android:text="Bienvenido"
         android:textColor="@color/verdeClaro"
         android:textSize="30sp"
         android:layout_centerHorizontal="true"/>

@@ -46,7 +46,13 @@ public class BienvenidoUsuarioActivity extends AppCompatActivity {
 
         String contenidoActual = bienvenido.getText().toString();
         String textoAdicional = intent1.getStringExtra("usuario");
-        String nuevoContenido = contenidoActual + textoAdicional + "!";
+        String nuevoContenido;
+        if(intent1.getStringExtra("usuario")==null){
+            nuevoContenido = contenidoActual + "!";
+        }
+        else {
+            nuevoContenido = contenidoActual+", " + textoAdicional + "!";
+        }
         bienvenido.setText(nuevoContenido);
         bienvenido.setGravity(Gravity.CENTER_HORIZONTAL);
 

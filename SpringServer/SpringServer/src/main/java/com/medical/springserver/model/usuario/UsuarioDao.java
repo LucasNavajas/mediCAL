@@ -49,7 +49,7 @@ public class UsuarioDao {
             String nuevaContrasenia, LocalDate nuevaFechaAlta, 
             LocalDate nuevaFechaNacimiento, String nuevoGenero,
             String nuevoMail, String nuevoNombreInstitucion,
-            String nuevoTelefono, String nuevoUsuarioUnico) {
+            String nuevoTelefono, String nuevoUsuarioUnico) throws FirebaseAuthException {
 			// Paso 1 (opcional): Buscar el usuario por su ID
 			Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
 			Usuario usuario;
@@ -59,7 +59,14 @@ public class UsuarioDao {
 			// Si no se encontró el usuario, puedes crear uno nuevo (opcional)
 			usuario = new Usuario();
 			}
-			
+			if(!usuario.getMailUsuario().equals(nuevoMail)) {
+				UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuario.getMailUsuario());
+		        String uid = userRecord.getUid();
+		        UpdateRequest request = new UpdateRequest(uid).setPassword(nuevaContrasenia);
+		        UpdateRequest request2 = new UpdateRequest(uid).setEmail(nuevoMail);
+		        UserRecord userRecord2 = FirebaseAuth.getInstance().updateUser(request);
+		        FirebaseAuth.getInstance().updateUser(request2);
+			}
 			// Paso 2: Realizar los cambios necesarios
 			usuario.setNombreUsuario(nuevoNombre);
 			usuario.setApellidoUsuario(nuevoApellido);

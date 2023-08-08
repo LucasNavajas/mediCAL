@@ -24,5 +24,10 @@ public class CalendarioController {
 	public Calendario save(@RequestBody Calendario calendario) {
 		return calendarioDao.save(calendario);
 	}
+	
+	@GetMapping("/calendario/usuario/{codUsuario}")
+	public List<Calendario> getByCodUsuario(@PathVariable int codUsuario){
+		return calendarioDao.findByCodUsuario(codUsuario);
+	}
 
 }

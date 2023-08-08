@@ -23,7 +23,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medical.javamail.SendEmailTask;
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Usuario;
+import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,7 +54,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private RetrofitService retrofitService = new RetrofitService();
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
-
+    private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +140,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            redirigirUsuario(mail);
                             Intent intent2 = new Intent(IniciarSesionActivity.this, BienvenidoUsuarioActivity.class);
                             startActivity(intent2);
 
@@ -148,6 +151,42 @@ public class IniciarSesionActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void redirigirUsuario(String mail) {
+        usuarioApi.getByMailUsuario(mail).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                Usuario usuarioLogeado = response.body();
+                calendarioApi.getByCodUsuario(usuarioLogeado.getCodUsuario()).enqueue(new Callback<List<Calendario>>() {
+                    @Override
+                    public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
+                        List<Calendario> calendarios = response.body();
+                        if(calendarios.isEmpty()){
+                            Intent intent = new Intent(IniciarSesionActivity.this, BienvenidoUsuarioActivity.class);
+                            intent.putExtra("usuario", usuarioLogeado.getUsuarioUnico());
+                            startActivity(intent);
+                        }
+                        else{
+                            Intent intent2 = new Intent(IniciarSesionActivity.this, InicioCalendarioActivity.class);
+                            startActivity(intent2);
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Calendario>> call, Throwable t) {
+                        Toast.makeText(IniciarSesionActivity.this, "Hubo un error al iniciar sesión, intente nuevamente", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Toast.makeText(IniciarSesionActivity.this, "Hubo un error al iniciar sesión, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void popupInvalido(int layoutResId) {

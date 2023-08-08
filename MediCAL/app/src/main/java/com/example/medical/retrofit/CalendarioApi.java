@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface CalendarioApi {
 
@@ -16,4 +17,7 @@ public interface CalendarioApi {
 
     @POST("/calendario/save")
     Call<Calendario> save(@Body Calendario calendario);
+
+    @GET("/calendario/usuario/{codUsuario}")
+    Call<List<Calendario>> getByCodUsuario(@Path("codUsuario") int codUsuario);
 }

@@ -1,5 +1,6 @@
 package com.example.medical;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.Gravity;
@@ -54,14 +55,12 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     private Usuario usuario;
     private LocalDate fechaNacimiento;
 
-    // Se debe obtener la id del usuario actual a través de su SESIÓN
-    private int idUsuarioActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n15_0_editar_perfil_usuario);
-
+        Intent intent1 = getIntent();
         inicializarVariables();
 
         // Se formatea la fecha en el formato deseado
@@ -71,7 +70,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         textEditApellidoUsuario.setFilters(new InputFilter[]{new TextOnlyInputFilter()});
 
         // Se supone se tiene el ID del usuario actual almacenado en una variable llamada "idUsuarioActual".
-        obtenerDatosUsuario(idUsuarioActual);
+        obtenerDatosUsuario(intent1.getIntExtra("codUsuario",0));
 
         buttonGuardar.setOnClickListener(view -> {
             guardarCambios();
@@ -149,7 +148,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
 
     private void obtenerDatosUsuario(int idUsuario) {
-        Call<Usuario> call = usuarioApi.getByCodUsuario(1);
+        Call<Usuario> call = usuarioApi.getByCodUsuario(idUsuario);
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
