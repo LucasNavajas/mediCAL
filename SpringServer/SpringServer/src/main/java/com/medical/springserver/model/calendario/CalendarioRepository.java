@@ -11,4 +11,5 @@ public interface CalendarioRepository extends CrudRepository<Calendario, Integer
     @Query("SELECT c FROM Calendario c WHERE c.usuario.codUsuario = :codusuario")
     List<Calendario> findByCodUsuario(@Param("codusuario") Integer codusuario);
 
+    Calendario findByCodCalendario(Integer codCalendario);
 }

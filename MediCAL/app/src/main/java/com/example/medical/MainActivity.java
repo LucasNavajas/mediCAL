@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else{
                             Intent intent2 = new Intent(MainActivity.this, InicioCalendarioActivity.class);
+                            intent2.putExtra("codCalendario", calendarios.get(0).getCodCalendario());
                             startActivity(intent2);
                         }
 

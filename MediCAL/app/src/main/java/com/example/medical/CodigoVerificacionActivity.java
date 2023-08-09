@@ -265,7 +265,7 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
 
             }
         });
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        popupWindow2.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 dimView.setVisibility(View.GONE);

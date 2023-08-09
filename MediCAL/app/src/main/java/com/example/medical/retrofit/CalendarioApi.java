@@ -20,4 +20,7 @@ public interface CalendarioApi {
 
     @GET("/calendario/usuario/{codUsuario}")
     Call<List<Calendario>> getByCodUsuario(@Path("codUsuario") int codUsuario);
+
+    @GET("/calendario/{codCalendario}")
+    Call<Calendario> getByCodCalendario(@Path("codCalendario") int codCalendario);
 }

@@ -29,5 +29,10 @@ public class CalendarioController {
 	public List<Calendario> getByCodUsuario(@PathVariable int codUsuario){
 		return calendarioDao.findByCodUsuario(codUsuario);
 	}
+	
+	@GetMapping("/calendario/{codCalendario}")
+	public Calendario getByCodCalendario(@PathVariable int codCalendario) {
+		return calendarioDao.findByCodCalendario(codCalendario);
+	}
 
 }

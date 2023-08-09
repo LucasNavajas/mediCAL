@@ -2,6 +2,7 @@ package com.example.medical;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,11 +10,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medical.model.Calendario;
@@ -40,6 +43,8 @@ import retrofit2.Response;
 public class InicioCalendarioActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
 
     private LocalDate selectedDate;
+    private Calendario calendarioSeleccionado;
+    private TextView nombreCalendario;
     private TextView fechaHoyText;
     private RecyclerView calendarRecyclerView;
     private TextView nombreUsuario;
@@ -57,6 +62,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
+    private Intent intent1;
 
 
     @Override
@@ -71,7 +77,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         }
         setContentView(R.layout.n13y14_calendario_y_menu);
         selectedDate = LocalDate.now();
+        intent1 = getIntent();
         initWidgets();
+        mostrarCalendarioSeleccionado();
         setView();
         ImageView menuButton = findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +123,24 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 startActivity(intent);
             }
         });
+
+
     }
 
+    private void mostrarCalendarioSeleccionado() {
+        calendarioApi.getByCodCalendario(intent1.getIntExtra("codCalendario", 0)).enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                calendarioSeleccionado = response.body();
+                nombreCalendario.setText(calendarioSeleccionado.getNombreCalendario());
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+                Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al cargar el calendario, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     private void initWidgets() {
@@ -135,6 +159,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         nombreUsuario = findViewById(R.id.nombre_usuario);
         editarPerfil = findViewById(R.id.editar_perfil);
         soporte = findViewById(R.id.soporte);
+        nombreCalendario = findViewById(R.id.nombre_calendario);
         llenarListaCalendarios();
     }
 
@@ -178,6 +203,16 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             );
             params.setMargins(0, dpToPx(10), 0, 0);
             layoutCalendario.setLayoutParams(params);
+            layoutCalendario.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                    intent.putExtra("codCalendario", calendario.getCodCalendario());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+                }
+            });
 
             contenedorCalendarios.addView(layoutCalendario);
         }
@@ -199,6 +234,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                     @Override
                     public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
                         listaCalendarios = response.body();
+                        if(listaCalendarios.size()>=3){
+                            calendarioNuevo.setVisibility(View.GONE);
+                        }
+                        else{
+                            calendarioNuevo.setVisibility(View.VISIBLE);
+                        }
                         llenarContenedorCalendarios();
                     }
 
@@ -256,7 +297,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         }
 
         String month = new DateFormatSymbols(new Locale("es")).getMonths()[date.getMonthValue() - 1];
-        String formattedDate = dayString +  + date.getDayOfMonth() + " de " + month;
+        String formattedDate = dayString +  + date.getDayOfMonth() + " de " + month + ", " + date.getYear();
         return formattedDate;
     }
 
@@ -292,4 +333,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         selectedDate = date;
         setView();
     }
+
+    @Override
+    public void onBackPressed(){}
 }

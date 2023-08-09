@@ -31,5 +31,9 @@ public class CalendarioDao {
 	public List<Calendario> findByCodUsuario(int codUsuario){
 		return repository.findByCodUsuario(codUsuario);
 	}
+	
+	public Calendario findByCodCalendario(int codCalendario) {
+		return repository.findByCodCalendario(codCalendario);
+	}
 
 }

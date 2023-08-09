@@ -169,6 +169,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
                         }
                         else{
                             Intent intent2 = new Intent(IniciarSesionActivity.this, InicioCalendarioActivity.class);
+                            intent2.putExtra("codCalendario", calendarios.get(0).getCodCalendario());
                             startActivity(intent2);
                         }
 
