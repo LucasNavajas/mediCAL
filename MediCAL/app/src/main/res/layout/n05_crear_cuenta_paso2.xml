@@ -23,7 +23,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/boton_volver"
+        android:layout_below="@id/boton_volver2"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/formulario_web"

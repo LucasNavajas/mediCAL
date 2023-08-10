@@ -1,6 +1,8 @@
 package com.example.medical.model;
 
 
+import android.os.Parcelable;
+
 import java.time.LocalDate;
 import java.util.List;
 

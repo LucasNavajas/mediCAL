@@ -34,5 +34,18 @@ public class CalendarioController {
 	public Calendario getByCodCalendario(@PathVariable int codCalendario) {
 		return calendarioDao.findByCodCalendario(codCalendario);
 	}
+	
+	@PostMapping("/calendario/modificar/{codCalendario}")
+	public Calendario modificarCalendario(@PathVariable int codCalendario, @RequestBody Calendario calendario) {
+		return calendarioDao.modificarCalendario(codCalendario, calendario.getFechaAltaCalendario(), calendario.getFechaFinVigenciaC(),
+				calendario.getNombreCalendario(), calendario.getRelacionCalendario(), calendario.getNombrePaciente());
+	}
+	
+	@PostMapping("/calendario/eliminar/{codCalendario}")
+	public void eliminarCalendario(@PathVariable int codCalendario) {
+		calendarioDao.eliminarCalendario(codCalendario);
+	}
+		
+	
 
 }

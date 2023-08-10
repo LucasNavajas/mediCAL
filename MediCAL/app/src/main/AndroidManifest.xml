@@ -51,6 +51,7 @@
         <activity android:name=".CrearCalendario2Activity"></activity>
         <activity android:name=".EditarPerfilUsuarioActivity"></activity>
         <activity android:name=".CalendarioCreadoActivity"></activity>
+        <activity android:name=".EditarCalendarioActivity"></activity>
     </application>
 
 </manifest>

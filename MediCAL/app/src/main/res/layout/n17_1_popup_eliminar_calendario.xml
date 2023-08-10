@@ -45,15 +45,15 @@
             android:id="@+id/cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:clickable="true"
             android:fontFamily="@font/inter_regular"
+            android:gravity="start"
+            android:layout_marginStart="20dp"
             android:text="CANCELAR"
             android:textColor="@color/verdeTextos"
-            android:textSize="22sp"
-            android:layout_marginEnd="95dp"
-            android:clickable="true"
-            android:layout_weight="1"
-            android:layout_marginBottom="15dp"
-            android:gravity="end"/>
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/aceptar"

@@ -2,6 +2,8 @@ package com.example.medical;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
@@ -40,7 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class InicioCalendarioActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
+public class InicioCalendarioActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
     private LocalDate selectedDate;
     private Calendario calendarioSeleccionado;
@@ -59,10 +62,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private LinearLayout contenedorCalendarios;
     private RelativeLayout soporte;
     private FirebaseUser usuario;
+    private ImageView editarCalendario;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
     private Intent intent1;
+
 
 
     @Override
@@ -79,7 +84,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         selectedDate = LocalDate.now();
         intent1 = getIntent();
         initWidgets();
-        mostrarCalendarioSeleccionado();
         setView();
         ImageView menuButton = findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
@@ -124,22 +128,43 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
+        editarCalendario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, EditarCalendarioActivity.class);
+                String jsonCalendario = new Gson().toJson(calendarioSeleccionado);
+                intent.putExtra("calendarioJson", jsonCalendario);
+                startActivity(intent);
+            }
+        });
 
     }
 
     private void mostrarCalendarioSeleccionado() {
-        calendarioApi.getByCodCalendario(intent1.getIntExtra("codCalendario", 0)).enqueue(new Callback<Calendario>() {
-            @Override
-            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
-                calendarioSeleccionado = response.body();
-                nombreCalendario.setText(calendarioSeleccionado.getNombreCalendario());
+        if (listaCalendarios != null && !listaCalendarios.isEmpty()) {
+            int codCalendarioseleccionado = listaCalendarios.get(0).getCodCalendario();
+            if (intent1.getIntExtra("codCalendario", 0) != 0) {
+                codCalendarioseleccionado = intent1.getIntExtra("codCalendario", 0);
             }
+            calendarioApi.getByCodCalendario(codCalendarioseleccionado).enqueue(new Callback<Calendario>() {
+                @Override
+                public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                    calendarioSeleccionado = response.body();
+                    nombreCalendario.setText(calendarioSeleccionado.getNombreCalendario());
+                }
 
-            @Override
-            public void onFailure(Call<Calendario> call, Throwable t) {
-                Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al cargar el calendario, intente nuevamente", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Calendario> call, Throwable t) {
+                    Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al cargar el calendario, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Intent intent = new Intent(InicioCalendarioActivity.this, BienvenidoUsuarioActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
 
@@ -160,6 +185,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         editarPerfil = findViewById(R.id.editar_perfil);
         soporte = findViewById(R.id.soporte);
         nombreCalendario = findViewById(R.id.nombre_calendario);
+        editarCalendario = findViewById(R.id.editar_calendario);
         llenarListaCalendarios();
     }
 
@@ -239,8 +265,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                         }
                         else{
                             calendarioNuevo.setVisibility(View.VISIBLE);
+
                         }
                         llenarContenedorCalendarios();
+                        mostrarCalendarioSeleccionado();
                     }
 
                     @Override
@@ -336,4 +364,5 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     @Override
     public void onBackPressed(){}
+
 }

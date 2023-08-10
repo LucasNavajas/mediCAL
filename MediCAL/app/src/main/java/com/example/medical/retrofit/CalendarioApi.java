@@ -23,4 +23,10 @@ public interface CalendarioApi {
 
     @GET("/calendario/{codCalendario}")
     Call<Calendario> getByCodCalendario(@Path("codCalendario") int codCalendario);
+
+    @POST("/calendario/modificar/{codCalendario}")
+    Call<Calendario> modificarCalendario(@Path("codCalendario") int codCalendario, @Body Calendario calendario);
+
+    @POST("/calendario/eliminar/{codCalendario}")
+    Call<Void> eliminarCalendario(@Path("codCalendario") int codCalendario);
 }

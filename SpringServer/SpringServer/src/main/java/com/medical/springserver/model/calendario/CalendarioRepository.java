@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 public interface CalendarioRepository extends CrudRepository<Calendario, Integer>{
 	// Método para buscar todas las instancias de Calendario con un codusuario específico
-    @Query("SELECT c FROM Calendario c WHERE c.usuario.codUsuario = :codusuario")
+    @Query("SELECT c FROM Calendario c WHERE c.usuario.codUsuario = :codusuario AND c.fechaFinVigenciaC = null")
     List<Calendario> findByCodUsuario(@Param("codusuario") Integer codusuario);
 
     Calendario findByCodCalendario(Integer codCalendario);

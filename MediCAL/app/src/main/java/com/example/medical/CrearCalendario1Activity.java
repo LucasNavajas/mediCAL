@@ -8,8 +8,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.model.Calendario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 public class CrearCalendario1Activity extends AppCompatActivity {
     private TextView opcion1;
@@ -27,17 +29,28 @@ public class CrearCalendario1Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n18_relacionar_calendario_paraquienes);
+        String jsonCalendario = getIntent().getStringExtra("calendarioJson");
+        Calendario calendario = new Gson().fromJson(jsonCalendario, Calendario.class);
         inicializarVariables();
 
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(CrearCalendario1Activity.this, CrearCalendario2Activity.class);
                 TextView textView = findViewById(view.getId());
                 String relacion = textView.getText().toString();
-                intent1.putExtra("relacion", relacion);
-                startActivity(intent1);
+                if(getIntent().getStringExtra("calendarioJson")==null) {
+                    Intent intent1 = new Intent(CrearCalendario1Activity.this, CrearCalendario2Activity.class);
+                    intent1.putExtra("relacion", relacion);
+                    startActivity(intent1);
+                }
+                else{
+                    calendario.setRelacionCalendario(relacion);
+                    Intent intent = new Intent(CrearCalendario1Activity.this, EditarCalendarioActivity.class);
+                    String jsonCalendario2 = new Gson().toJson(calendario);
+                    intent.putExtra("calendarioJson", jsonCalendario2);
+                    startActivity(intent);
+                }
             }
         };
 

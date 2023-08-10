@@ -20,6 +20,7 @@ import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.time.LocalDate;
 
@@ -46,33 +47,46 @@ public class CrearCalendario2Activity extends AppCompatActivity {
         inicializarVariables();
         obtenerUsuarioPorMail();
         Intent intent1 = getIntent();
+        String jsonCalendario = getIntent().getStringExtra("calendarioJson");
+        Calendario calendario = new Gson().fromJson(jsonCalendario, Calendario.class);
+        if (getIntent().getStringExtra("calendarioJson") != null) {
+            nombreCalendario.setText(calendario.getNombreCalendario());
+        }
 
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String nombreCalendarioString = nombreCalendario.getText().toString();
-                if(nombreCalendarioString != "" && usuarioActual != null){
-                    Calendario calendario = new Calendario();
-                    calendario.setRelacionCalendario(intent1.getStringExtra("relacion"));
+                if (getIntent().getStringExtra("calendarioJson") == null) {
+                    if (nombreCalendarioString != "" && usuarioActual != null) {
+                        Calendario calendario = new Calendario();
+                        calendario.setRelacionCalendario(intent1.getStringExtra("relacion"));
+                        calendario.setNombreCalendario(nombreCalendarioString);
+                        calendario.setUsuario(usuarioActual);
+                        calendario.setFechaAltaCalendario(LocalDate.now());
+                        calendarioApi.save(calendario).enqueue(new Callback<Calendario>() {
+                            @Override
+                            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                                Intent intent = new Intent(CrearCalendario2Activity.this, CalendarioCreadoActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("nombreCalendario", nombreCalendarioString);
+                                startActivity(intent);
+                                finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+                            }
+
+                            @Override
+                            public void onFailure(Call<Calendario> call, Throwable t) {
+                                Toast.makeText(CrearCalendario2Activity.this, "Error al crear el calendario", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                }else{
                     calendario.setNombreCalendario(nombreCalendarioString);
-                    calendario.setUsuario(usuarioActual);
-                    calendario.setFechaAltaCalendario(LocalDate.now());
-                    calendarioApi.save(calendario).enqueue(new Callback<Calendario>() {
-                        @Override
-                        public void onResponse(Call<Calendario> call, Response<Calendario> response) {
-                            Intent intent = new Intent(CrearCalendario2Activity.this, CalendarioCreadoActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("nombreCalendario", nombreCalendarioString);
-                            startActivity(intent);
-                            finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
-                        }
-
-                        @Override
-                        public void onFailure(Call<Calendario> call, Throwable t) {
-                            Toast.makeText(CrearCalendario2Activity.this, "Error al crear el calendario", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioActivity.class);
+                    String jsonCalendario2 = new Gson().toJson(calendario);
+                    intent.putExtra("calendarioJson", jsonCalendario2);
+                    startActivity(intent);
                 }
             }
         });
