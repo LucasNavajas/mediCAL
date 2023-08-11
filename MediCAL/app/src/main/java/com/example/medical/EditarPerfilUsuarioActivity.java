@@ -33,6 +33,7 @@ import com.example.medical.retrofit.UsuarioApi;
 import org.w3c.dom.Text;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -44,7 +45,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     private TextView textEditFechaNac;
     private EditText textEditEmail;
     private EditText textEditTelefono;
-    private EditText textEditGenero;
+    private TextView textEditGenero;
     private Button buttonGuardar;
     private ImageView botonCerrar;
 
@@ -55,6 +56,9 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     private Usuario usuario;
     private LocalDate fechaNacimiento;
 
+    private TextView errorNombre;
+    private TextView errorApellido;
+    private TextView error_Telefono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,31 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         obtenerDatosUsuario(intent1.getIntExtra("codUsuario",0));
 
         buttonGuardar.setOnClickListener(view -> {
+            String nuevoNombre = textEditNombreUsuario.getText().toString();
+            String nuevoApellido = textEditApellidoUsuario.getText().toString();
+
+            if(nuevoNombre.length()>30){
+                errorNombre.setVisibility(View.VISIBLE);
+                return;
+            }
+            if(nuevoApellido.length()>30){
+                errorNombre.setVisibility(View.GONE);
+                errorApellido.setVisibility(View.VISIBLE);
+                return;
+            }
+            if(nuevoApellido.length()>30){
+                errorNombre.setVisibility(View.GONE);
+                errorApellido.setVisibility(View.GONE);
+                error_Telefono.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            errorNombre.setVisibility(View.GONE);
+            errorApellido.setVisibility(View.GONE);
+            error_Telefono.setVisibility(View.GONE);
+
             guardarCambios();
+
         });
 
         botonCerrar.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +115,149 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 popupFechaNacimiento();
+            }
+        });
+
+        textEditGenero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupGenero_1();
+            }
+        });
+
+    }
+
+    private void popupGenero_1() {
+        View popupView = getLayoutInflater().inflate(R.layout.n15_1_popup_cambiogenero_1, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, 1000);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView opcion1 = findViewById(R.id.text_mujer);
+        TextView opcion2 = findViewById(R.id.text_hombre);
+        TextView opcion3= findViewById(R.id.text_nobinario);
+        TextView opcion4 = findViewById(R.id.text_otro);
+        TextView regresar = popupView.findViewById(R.id.regresar);
+
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch(view.getId()){
+                    case R.id.text_otro:
+                        popupGenero_2();
+                        break;
+                    default:
+                        TextView textView = findViewById(view.getId());
+                        String genero = textView.getText().toString();
+
+                        textEditGenero.setText(genero);
+                }
+            }
+        };
+
+        opcion1.setOnClickListener(onClickListener);
+        opcion2.setOnClickListener(onClickListener);
+        opcion3.setOnClickListener(onClickListener);
+        opcion4.setOnClickListener(onClickListener);
+
+        regresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void popupGenero_2()  {
+        View popupView = getLayoutInflater().inflate(R.layout.n15_2_popup_cambiogenero_2, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, 1000);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView opcion1 = findViewById(R.id.text_agenero);
+        TextView opcion2 = findViewById(R.id.text_bigenero);
+        TextView opcion3 = findViewById(R.id.text_hombretrans);
+        TextView opcion4 = findViewById(R.id.text_mujertrans);
+        TextView opcion5 = findViewById(R.id.text_queer);
+        TextView opcion6 = findViewById(R.id.text_nodecir);
+        TextView regresar = popupView.findViewById(R.id.regresar);
+
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView textView = findViewById(view.getId());
+                String genero = textView.getText().toString();
+
+                textEditGenero.setText(genero);
+            }
+        };
+
+        opcion1.setOnClickListener(onClickListener);
+        opcion2.setOnClickListener(onClickListener);
+        opcion3.setOnClickListener(onClickListener);
+        opcion4.setOnClickListener(onClickListener);
+        opcion5.setOnClickListener(onClickListener);
+        opcion6.setOnClickListener(onClickListener);
+
+        regresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
             }
         });
 
@@ -135,7 +306,18 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                 int year = datePicker.getYear();
 
                 fechaNacimiento = LocalDate.of(year, month, day);
-                textEditFechaNac.setText(fechaNacimiento.toString());
+
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(fechaNacimiento, currentDate);
+                int age = period.getYears();
+
+                if (age >= 18) {
+                    textEditFechaNac.setText(fechaNacimiento.toString());
+                }
+                else{
+                    Toast.makeText(EditarPerfilUsuarioActivity.this, "Debe tener al menos 18 años para crear una cuenta", Toast.LENGTH_SHORT).show();
+                }
+
                 // Ocultar el PopupWindow
                 popupWindow.dismiss();
 
@@ -167,7 +349,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                         // String fechaNacimientoString = usuario.getFechaNacimientoUsuario().format(formatter);
                         textEditEmail.setText(usuario.getMailUsuario());
                         textEditTelefono.setText(usuario.getTelefonoUsuario());
-                        textEditGenero.setText(usuario.getGeneroUsuario());
+                        // textEditGenero.setText(usuario.getGeneroUsuario());
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show();
@@ -189,6 +371,9 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         textEditFechaNac = findViewById(R.id.textEdit_fecha_nac);
         textEditEmail = findViewById(R.id.textEdit_email);
         textEditTelefono = findViewById(R.id.textEdit_telefono);
+        errorNombre = findViewById(R.id.error_nombre);
+        errorApellido = findViewById(R.id.error_apellido);
+        error_Telefono = findViewById(R.id.error_telefono);
 
         textEditGenero = findViewById(R.id.textEdit_Mujer);
         buttonGuardar = findViewById(R.id.button_guardar);
