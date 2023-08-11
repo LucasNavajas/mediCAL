@@ -349,7 +349,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                         // String fechaNacimientoString = usuario.getFechaNacimientoUsuario().format(formatter);
                         textEditEmail.setText(usuario.getMailUsuario());
                         textEditTelefono.setText(usuario.getTelefonoUsuario());
-                        // textEditGenero.setText(usuario.getGeneroUsuario());
+                        textEditGenero.setText(usuario.getGeneroUsuario());
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Error al obtener los datos del usuario", Toast.LENGTH_SHORT).show();
@@ -391,6 +391,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         //String nuevaFechaNac = textEditFechaNac.getText().toString();
         String nuevoEmail = textEditEmail.getText().toString();
         String nuevoTelefono = textEditTelefono.getText().toString();
+        String nuevoGenero = textEditGenero.getText().toString();
 
         // Aquí puedes crear un objeto Usuario con los nuevos datos ingresados por el usuario.
         Usuario usuarioModificado = usuario;
@@ -399,6 +400,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         usuarioModificado.setFechaNacimientoUsuario(fechaNacimiento);
         usuarioModificado.setMailUsuario(nuevoEmail);
         usuarioModificado.setTelefonoUsuario(nuevoTelefono);
+        usuarioModificado.setGeneroUsuario(nuevoGenero);
 
         // Llamamos al método modificarUsuario de UsuarioApi para guardar los cambios en la base de datos.
         Call<Usuario> call = usuarioApi.modificarUsuario(usuarioModificado);
