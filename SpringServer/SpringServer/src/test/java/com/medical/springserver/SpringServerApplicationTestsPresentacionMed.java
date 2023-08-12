@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.medical.springserver.model.administracionmed.AdministracionMed;
+import com.medical.springserver.model.administracionmed.AdministracionMedDao;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
 import com.medical.springserver.model.presentacionMed.PresentacionMed;
@@ -19,11 +20,18 @@ public class SpringServerApplicationTestsPresentacionMed {
 	@Autowired
 	private PresentacionMedDao presentacionMedDao;
 	
+	@Autowired
+	private AdministracionMedDao adminMedDao;
+	
 	@Test
 	void addPresentacionMed() {
 		
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
+		
+		
+		
+		// instancia de presentacion med
 		
 		//instancia de administracion med
 		AdministracionMed administracionmed = new AdministracionMed();
@@ -31,22 +39,16 @@ public class SpringServerApplicationTestsPresentacionMed {
 		administracionmed.setFechaAltaAdministracionMed(fechaHoy);
 		administracionmed.setFechaFinVigenciaAM(null);
 		administracionmed.setNombreAdministracionMed("De Forma Topica");
-		
-		// instancia de presentacion med
+	
 		PresentacionMed presentacionMed = new PresentacionMed();
 		presentacionMed.setDescPresentacionMed("Administracion topica");
 		presentacionMed.setNombrePresentacionMed("Crema");
 		presentacionMed.setFechaAltaPresentacionMed(LocalDate.now());
 		presentacionMed.setFechaFinVigenciaPM(null);
-	
-		administracionmed.setPresentacionmed(presentacionMed);
-		List<AdministracionMed> varadministracionmed = new ArrayList<>();
-		varadministracionmed.add(administracionmed);
-		presentacionMed.setVaradministracionmed(varadministracionmed);
+		presentacionMed.setVaradministracionmed(administracionmed);
 		
-	
-		System.out.println(presentacionMed.getVaradministracionmed());
-	
+		adminMedDao.save(administracionmed);
+		
 		presentacionMedDao.save(presentacionMed);
 		
 	}

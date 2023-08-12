@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -23,8 +25,9 @@ public class PresentacionMed {
 	private String nombrePresentacionMed;
 	
 	//relacion adm med
-	@OneToMany (mappedBy = "presentacionmed", cascade = CascadeType.ALL)
-	private List<AdministracionMed> varadministracionmed;
+	@ManyToOne
+	@JoinColumn(name = "codAdministracionMed")
+	private AdministracionMed administracionMed;
 	
 	public int getCodPresentacionMed() {
 		return codPresentacionMed;
@@ -63,11 +66,11 @@ public class PresentacionMed {
 				+ ", fechaFinVigenciaPM=" + fechaFinVigenciaPM + ", nombrePresentacionMed=" + nombrePresentacionMed
 				+ "]";
 	}
-	public List<AdministracionMed> getVaradministracionmed() {
-		return varadministracionmed;
+	public AdministracionMed getVaradministracionmed() {
+		return administracionMed;
 	}
-	public void setVaradministracionmed(List<AdministracionMed> varadministracionmed) {
-		this.varadministracionmed = varadministracionmed;
+	public void setVaradministracionmed(AdministracionMed varadministracionmed) {
+		this.administracionMed = varadministracionmed;
 	}
 
 }

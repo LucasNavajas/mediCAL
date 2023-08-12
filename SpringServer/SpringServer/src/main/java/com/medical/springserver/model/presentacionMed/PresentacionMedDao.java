@@ -26,4 +26,12 @@ public class PresentacionMedDao {
 	public void delete(PresentacionMed presentacionMed) {
 		repository.delete(presentacionMed);
 	}
+	
+	public PresentacionMed findByCodPresentacionMed(int codPresentacionMed) {
+        return repository.findByCodPresentacionMed(codPresentacionMed);
+    }
+
+    public List<PresentacionMed> findByCodAdministracionMed(int codAdministracionMed) {
+        return repository.findByAdministracionMed_CodAdministracionMed(codAdministracionMed);
+    }
 }

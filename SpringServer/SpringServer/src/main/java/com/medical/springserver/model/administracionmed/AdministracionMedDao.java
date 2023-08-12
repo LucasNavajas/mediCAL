@@ -2,6 +2,7 @@ package com.medical.springserver.model.administracionmed;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
@@ -26,6 +27,11 @@ public class AdministracionMedDao {
 	
 	public void delete(AdministracionMed administracionmed) {
 		repository.delete(administracionmed);
+	}
+	
+	public Optional<AdministracionMed> findByCodAdministracionMed(int codAdministracionMed) {
+		Optional<AdministracionMed> optionalAdministracionMed = repository.findByCodAdministracionMed(codAdministracionMed);
+	    return Optional.ofNullable(optionalAdministracionMed.orElse(null)); // o maneja el caso de null según tus necesidades
 	}
 
 }

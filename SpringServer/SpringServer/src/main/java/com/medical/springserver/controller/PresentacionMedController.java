@@ -24,5 +24,15 @@ public class PresentacionMedController {
 	public PresentacionMed save(@RequestBody PresentacionMed presentacionMed) {
 		return presentacionMedDao.save(presentacionMed);
 	}
+	
+	@GetMapping("/presentacionmed/{codPresentacionMed}")
+    public PresentacionMed getPresentacionMedByCod(@PathVariable int codPresentacionMed) {
+        return presentacionMedDao.findByCodPresentacionMed(codPresentacionMed);
+    }
+
+    @GetMapping("/presentacionmed/administracion/{codAdministracionMed}")
+    public List<PresentacionMed> getPresentacionesMedByCodAdministracionMed(@PathVariable int codAdministracionMed) {
+        return presentacionMedDao.findByCodAdministracionMed(codAdministracionMed);
+    }
 
 }

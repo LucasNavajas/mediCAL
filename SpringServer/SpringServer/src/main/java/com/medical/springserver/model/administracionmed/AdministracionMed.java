@@ -2,6 +2,7 @@ package com.medical.springserver.model.administracionmed;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.medicamento.Medicamento;
 import com.medical.springserver.model.presentacionMed.PresentacionMed;
 
@@ -29,9 +30,9 @@ public class AdministracionMed {
 	private List<Medicamento> varmedicamento;
 	
 	//relacion con presentacion med
-	@ManyToOne
-	@JoinColumn(name = "codPresentacionMed")
-	private PresentacionMed presentacionmed;
+	@OneToMany(mappedBy = "administracionMed", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<PresentacionMed> presentacionmed;
 	
 	public int getCodAdministracionMed() {
 		return codAdministracionMed;
@@ -76,12 +77,6 @@ public class AdministracionMed {
 	}
 	public void setVarmedicamento(List<Medicamento> varmedicamento) {
 		this.varmedicamento = varmedicamento;
-	}
-	public PresentacionMed getPresentacionmed() {
-		return presentacionmed;
-	}
-	public void setPresentacionmed(PresentacionMed presentacionmed) {
-		this.presentacionmed = presentacionmed;
 	}
 	
 	
