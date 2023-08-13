@@ -3,31 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
-
+    android:padding="1dp"
+    android:layout_marginTop="25dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp">
+    <!--items tanto de administracion medica y presentacion-->
     <TextView
-        android:id="@+id/faqlist_pregunta"
+        android:id="@+id/admpre_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="21sp"
         android:textColor="@color/black"
-        android:text="Pregunta"
-        android:fontFamily="@font/inter_medium"
+        android:text="Item"
+        android:fontFamily="@font/inter_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="4dp"/>
+        android:layout_marginBottom="5dp"/>
 
-    <TextView
-        android:id="@+id/faqlist_respuesta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/gris_masoscuro"
-        android:text="Respuesta"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/faqlist_pregunta"/>
     <!--divider-->
     <View
         android:id="@+id/divider"
@@ -35,7 +27,7 @@
         android:layout_height="1dp"
         android:background="#808080"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/faqlist_respuesta"
+        app:layout_constraintTop_toBottomOf="@id/admpre_list"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         />

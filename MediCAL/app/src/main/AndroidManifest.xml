@@ -22,6 +22,12 @@
             android:name=".FAQActivity"
             android:exported="false"/>
         <activity
+            android:name=".ElegirAdministracionMedActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ElegirPresentacionMedActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
