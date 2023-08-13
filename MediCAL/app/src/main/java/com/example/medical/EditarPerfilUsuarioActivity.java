@@ -79,6 +79,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         buttonGuardar.setOnClickListener(view -> {
             String nuevoNombre = textEditNombreUsuario.getText().toString();
             String nuevoApellido = textEditApellidoUsuario.getText().toString();
+            String nuevoTelefono = textEditTelefono.getText().toString();
 
             if(nuevoNombre.length()>30){
                 errorNombre.setVisibility(View.VISIBLE);
@@ -89,7 +90,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                 errorApellido.setVisibility(View.VISIBLE);
                 return;
             }
-            if(nuevoApellido.length()>30){
+            if(nuevoTelefono.length()>30){
                 errorNombre.setVisibility(View.GONE);
                 errorApellido.setVisibility(View.GONE);
                 error_Telefono.setVisibility(View.VISIBLE);
@@ -131,7 +132,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         View popupView = getLayoutInflater().inflate(R.layout.n15_1_popup_cambiogenero_1, null);
 
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, 1000, 1000);
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);
@@ -148,10 +149,11 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         // Mostrar el popup en la ubicación deseada
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
-        TextView opcion1 = findViewById(R.id.text_mujer);
-        TextView opcion2 = findViewById(R.id.text_hombre);
-        TextView opcion3= findViewById(R.id.text_nobinario);
-        TextView opcion4 = findViewById(R.id.text_otro);
+        TextView opcion1 = popupView.findViewById(R.id.text_mujer);
+        TextView opcion2 = popupView.findViewById(R.id.text_hombre);
+        TextView opcion3= popupView.findViewById(R.id.text_nobinario);
+        TextView opcion4 = popupView.findViewById(R.id.text_otro);
+        TextView opcion5 = popupView.findViewById(R.id.text_nodecir);
         TextView regresar = popupView.findViewById(R.id.regresar);
 
 
@@ -167,6 +169,12 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                         String genero = textView.getText().toString();
 
                         textEditGenero.setText(genero);
+
+                        // Ocultar el PopupWindow
+                        popupWindow.dismiss();
+
+                        // Ocultar el fondo oscurecido
+                        dimView.setVisibility(View.GONE);
                 }
             }
         };
@@ -175,6 +183,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         opcion2.setOnClickListener(onClickListener);
         opcion3.setOnClickListener(onClickListener);
         opcion4.setOnClickListener(onClickListener);
+        opcion5.setOnClickListener(onClickListener);
 
         regresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +209,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         View popupView = getLayoutInflater().inflate(R.layout.n15_2_popup_cambiogenero_2, null);
 
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, 1000, 1000);
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);
@@ -217,12 +226,11 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         // Mostrar el popup en la ubicación deseada
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
-        TextView opcion1 = findViewById(R.id.text_agenero);
-        TextView opcion2 = findViewById(R.id.text_bigenero);
-        TextView opcion3 = findViewById(R.id.text_hombretrans);
-        TextView opcion4 = findViewById(R.id.text_mujertrans);
-        TextView opcion5 = findViewById(R.id.text_queer);
-        TextView opcion6 = findViewById(R.id.text_nodecir);
+        TextView opcion1 = popupView.findViewById(R.id.text_agenero);
+        TextView opcion2 = popupView.findViewById(R.id.text_bigenero);
+        TextView opcion3 = popupView.findViewById(R.id.text_hombretrans);
+        TextView opcion4 = popupView.findViewById(R.id.text_mujertrans);
+        TextView opcion5 = popupView.findViewById(R.id.text_queer);
         TextView regresar = popupView.findViewById(R.id.regresar);
 
 
@@ -241,7 +249,6 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         opcion3.setOnClickListener(onClickListener);
         opcion4.setOnClickListener(onClickListener);
         opcion5.setOnClickListener(onClickListener);
-        opcion6.setOnClickListener(onClickListener);
 
         regresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,8 +256,6 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                 // Ocultar el PopupWindow
                 popupWindow.dismiss();
 
-                // Ocultar el fondo oscurecido
-                dimView.setVisibility(View.GONE);
             }
         });
 
