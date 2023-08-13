@@ -93,10 +93,6 @@
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
         <RelativeLayout
             android:id="@+id/parte_blanca"
             android:layout_width="match_parent"
@@ -104,315 +100,32 @@
             android:background="@android:color/white"
             android:padding="25dp">
 
-            <LinearLayout
-                android:id="@+id/texto_uno"
+            <!-- Agregar un ScrollView para permitir desplazamiento si hay muchos elementos -->
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:gravity="top">
+                android:layout_height="match_parent">
 
-                <CheckBox
-                    android:id="@+id/checkBox1"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/lineargrande"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Calambres"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
 
-            <LinearLayout
-                android:id="@+id/texto_dos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_uno"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-            <CheckBox
-                    android:id="@+id/checkBox2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cansancio"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_tres"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_dos"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dolor de Espalda"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_cuatro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_tres"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dolores de Cabeza"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_quinto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_cuatro"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Palpitaciones"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_seis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_quinto"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reflujo Ácido"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_siete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_seis"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Abrumado"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_ocho"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_siete"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Acné"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_nueve"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_ocho"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Agitación"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_dies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_nueve"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alergias"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_once"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/texto_dies"
-                android:gravity="top"
-                android:layout_marginTop="-10dp">
-
-                <CheckBox
-                    android:id="@+id/checkBox11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ansiedad"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="top">
 
 
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </ScrollView>
             <Button
                 android:id="@+id/button_guardar"
                 android:layout_width="300dp"
@@ -432,13 +145,21 @@
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/textView_no_encontrado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_centerInParent="true"
+                android:text="No se encuentra el síntoma ingresado"
+                android:textColor="@color/rojoEliminar"
+                android:textSize="22sp"
+                android:visibility="gone" />
+
 
         </RelativeLayout>
-        </ScrollView>
-
 
     </LinearLayout>
-
 
 
 </RelativeLayout>
