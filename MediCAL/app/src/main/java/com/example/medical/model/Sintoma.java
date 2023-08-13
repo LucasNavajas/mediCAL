@@ -28,6 +28,10 @@ public class Sintoma {
     public void setFechaFinVigenciaS(LocalDate fechaFinVigenciaS) {
         this.fechaFinVigenciaS = fechaFinVigenciaS;
     }
+
+    public boolean tieneFechaAlta() {
+        return fechaAltaSintoma != null; // Devuelve true si la fecha de alta no es nula
+    }
     public String getNombreSintoma() {
         return nombreSintoma;
     }
