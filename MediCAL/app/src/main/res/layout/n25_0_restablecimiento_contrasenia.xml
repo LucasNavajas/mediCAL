@@ -78,9 +78,20 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/inter_regular"
                 android:hint="Contraseña Actual"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColorHint="#888888"
                 android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/ojoContraseniaActual"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="-100dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ojocontrasenia"
+                android:layout_below="@id/text_contrasenia_actual"
+                android:layout_toEndOf="@id/textEdit_contrasenia_actual"
+                android:focusable="false"/>
 
             <View
                 android:layout_width="match_parent"
@@ -89,6 +100,18 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="#808080" />
+            <TextView
+                android:id="@+id/error_diferente_contrasenia_actual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="La contraseña actual es incorrecta"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/rojoError"
+                android:layout_below="@id/textEdit_contrasenia_actual"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/tick"
@@ -97,7 +120,7 @@
                 android:layout_alignRight="@id/textEdit_contrasenia_actual"
                 android:layout_alignBottom="@id/textEdit_contrasenia_actual"
                 android:layout_marginRight="0dp"
-                android:src="@drawable/tick" />
+                android:src="@drawable/cruz_roja" />
 
             <TextView
                 android:id="@+id/text_OlvidoContraseña"
@@ -160,9 +183,19 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/inter_regular"
                 android:hint="Contraseña Nueva"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColorHint="#888888"
                 android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/ojoContraseniaNueva"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="-60dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ojocontrasenia"
+                android:layout_below="@id/text_nueva_contrasenia_2"
+                android:layout_toEndOf="@id/textEdit_nueva_contrasenia"
+                android:focusable="false"/>
 
             <View
                 android:layout_width="match_parent"
@@ -171,6 +204,32 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="#808080" />
+
+            <TextView
+                android:id="@+id/error_longitud_contrasenia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Debe ingresar una contraseña entre 6 y 15 caracteres"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/rojoError"
+                android:layout_below="@id/textEdit_nueva_contrasenia"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/error_misma_contrasenia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Debe ingresar una contraseña diferente a la actual"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/rojoError"
+                android:layout_below="@id/textEdit_nueva_contrasenia"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                />
 
 
             <Button
@@ -195,5 +254,12 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/dim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
 
 </RelativeLayout>

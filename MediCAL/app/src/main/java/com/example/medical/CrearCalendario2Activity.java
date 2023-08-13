@@ -2,6 +2,8 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Usuario;
@@ -51,6 +54,7 @@ public class CrearCalendario2Activity extends AppCompatActivity {
         Calendario calendario = new Gson().fromJson(jsonCalendario, Calendario.class);
         if (getIntent().getStringExtra("calendarioJson") != null) {
             nombreCalendario.setText(calendario.getNombreCalendario());
+            contadorLetras.setText(calendario.getNombreCalendario().length()+"/30");
         }
 
         siguiente.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +99,20 @@ public class CrearCalendario2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        nombreCalendario.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String newText = editable.toString();
+                contadorLetras.setText(newText.length()+"/30");
             }
         });
     }

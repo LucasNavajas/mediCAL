@@ -54,6 +54,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RelativeLayout editarPerfil;
     private RelativeLayout cerrarSesion;
     private RelativeLayout calendarioNuevo;
+    private RelativeLayout restablecerContrasenia;
     private List<TextView> textosDia = new ArrayList<>();
     private RetrofitService retrofitService = new RetrofitService();
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
@@ -138,6 +139,16 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
+        restablecerContrasenia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, RestablecerContraseniaActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     private void mostrarCalendarioSeleccionado() {
@@ -186,6 +197,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         soporte = findViewById(R.id.soporte);
         nombreCalendario = findViewById(R.id.nombre_calendario);
         editarCalendario = findViewById(R.id.editar_calendario);
+        restablecerContrasenia = findViewById(R.id.restablecer_contrasenia);
         llenarListaCalendarios();
     }
 

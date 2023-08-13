@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -52,8 +53,8 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
     private Usuario usuario;
     private CodigoVerificacion codverificacion;
     private RetrofitService retrofitService = new RetrofitService();
-    private CodigoVerificacionApi codigoVerificacionApi = retrofitService.getRetrofit().create(CodigoVerificacionApi.class);
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+    private boolean mostrarContrasenia = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,6 +228,23 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         EditText editContrasenia = popupView.findViewById(R.id.textEdit_nueva_contrasenia);
         TextView errorLongitudContrasenia = popupView.findViewById(R.id.error_longitud_contrasenia);
         TextView errorMismaContrasenia = popupView.findViewById(R.id.error_misma_contrasenia);
+        ImageView ojoContrasenia = popupView.findViewById(R.id.ojoContrasenia);
+        mostrarContrasenia = false;
+
+        ojoContrasenia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarContrasenia = !mostrarContrasenia;
+                if (mostrarContrasenia) {
+                    editContrasenia.setTransformationMethod(null);
+                    ojoContrasenia.setImageResource(R.drawable.ojocontraseniavisible);
+                } else {
+                    editContrasenia.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    ojoContrasenia.setImageResource(R.drawable.ojocontrasenia);
+                }
+                editContrasenia.setSelection(editContrasenia.getText().length());
+            }
+        });
 
         textViewAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -332,7 +350,10 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                dimView.setVisibility(View.GONE);
+            dimView.setVisibility(View.GONE);
+            Intent intent2 = new Intent(CodigoVerificacionActivity.this, BienvenidoActivity.class);
+            intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent2);
             }
         });
     }
@@ -390,7 +411,7 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Realiza la acción adicional que desees antes de volver hacia atrás
-        if(intent1.getStringExtra("contrasenia")==null){
+        if(intent1.getStringExtra("usuario")==null){
             CodigoVerificacionActivity.super.onBackPressed();
         }
         else {

@@ -52,6 +52,7 @@
         <activity android:name=".EditarPerfilUsuarioActivity"></activity>
         <activity android:name=".CalendarioCreadoActivity"></activity>
         <activity android:name=".EditarCalendarioActivity"></activity>
+        <activity android:name=".RestablecerContraseniaActivity"></activity>
     </application>
 
 </manifest>

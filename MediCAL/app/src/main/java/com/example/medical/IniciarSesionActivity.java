@@ -316,7 +316,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-
+                Toast.makeText(IniciarSesionActivity.this, "Error al crear un codigo verificación", Toast.LENGTH_SHORT).show();
             }
         });
 
