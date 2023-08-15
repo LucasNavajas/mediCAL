@@ -1,6 +1,7 @@
 package com.medical.springserver.model.solicitud;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.estadosolicitud.EstadoSolicitud;
 import com.medical.springserver.model.usuario.Usuario;
 
@@ -20,17 +21,17 @@ public class Solicitud {
 	private int codSolicitud;
 	private LocalDate fechaSolicitud;
 	
-	@ManyToOne 
+	@ManyToOne(cascade = CascadeType.MERGE) 
 	@JoinColumn(name = "codEstadoSolicitud")
 	private EstadoSolicitud estadoSolicitud;
 	
 	//relacion con usuario controlador
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "codUsuarioControlador")
 	private Usuario usuarioControlador;
 	
     //relacion con usuario controlado
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "codUsuarioControlado")
     private Usuario usuarioControlado;
 	

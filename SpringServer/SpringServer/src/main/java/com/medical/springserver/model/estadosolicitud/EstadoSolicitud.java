@@ -3,6 +3,7 @@ package com.medical.springserver.model.estadosolicitud;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.solicitud.Solicitud;
 
 import jakarta.persistence.CascadeType;
@@ -20,6 +21,7 @@ public class EstadoSolicitud {
 	private String nombreEstadoSolicitud;
 
 	@OneToMany (mappedBy = "estadoSolicitud", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Solicitud> solicitudes;
 	
 	

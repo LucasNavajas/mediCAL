@@ -43,5 +43,11 @@ public class BienvenidoActivity extends AppCompatActivity {
             Intent intent = new Intent(BienvenidoActivity.this, PoliticasPrivacidadActivity.class);
             startActivity(intent);
         });
+
+        TextView contactoSoporte = findViewById(R.id.text_contacto_soporte);
+        contactoSoporte.setOnClickListener(view -> {
+            Intent intent = new Intent(BienvenidoActivity.this, ContactoSoporteActivity.class);
+            startActivity(intent);
+        });
     }
 }

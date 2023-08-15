@@ -14,6 +14,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 public interface UsuarioApi {
@@ -53,5 +54,8 @@ public interface UsuarioApi {
 
     @POST("/usuario/misma-contrasenia/{codUsuario}/{nuevaContrasenia}")
     Call<Boolean> verificarMismaContrasenia(@Path("codUsuario") int codUsuario, @Path("nuevaContrasenia") String nuevaContrasenia);
+
+    @GET("/usuario/buscar-mail-y-usuario")
+    Call<Usuario> buscarUsuariosPorMailYUser(@Query("usuarioTexto") String usuarioTexto);
 
 }

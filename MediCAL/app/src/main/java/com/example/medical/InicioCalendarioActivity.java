@@ -4,10 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +61,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RelativeLayout cerrarSesion;
     private RelativeLayout calendarioNuevo;
     private RelativeLayout restablecerContrasenia;
+    private RelativeLayout contactoNuevo;
     private List<TextView> textosDia = new ArrayList<>();
     private RetrofitService retrofitService = new RetrofitService();
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
@@ -64,6 +71,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RelativeLayout soporte;
     private FirebaseUser usuario;
     private ImageView editarCalendario;
+    private ImageView menuButton;
+    private ImageView menuButtonUsuario;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
@@ -86,7 +95,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         intent1 = getIntent();
         initWidgets();
         setView();
-        ImageView menuButton = findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,14 +103,18 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
+        menuButtonUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth.signOut();
-                Intent intent = new Intent(InicioCalendarioActivity.this, BienvenidoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+                popupCerrarSesion();
             }
         });
 
@@ -148,6 +160,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
             }
         });
+
+        contactoNuevo.setOnClickListener(view -> {
+            Intent intent = new Intent(InicioCalendarioActivity.this, NuevoContactoActivity.class);
+            intent.putExtra("codUsuario", codUsuarioLogeado);
+            startActivity(intent);
+        } );
 
     }
 
@@ -198,6 +216,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         nombreCalendario = findViewById(R.id.nombre_calendario);
         editarCalendario = findViewById(R.id.editar_calendario);
         restablecerContrasenia = findViewById(R.id.restablecer_contrasenia);
+        menuButton = findViewById(R.id.menu_button);
+        menuButtonUsuario = findViewById(R.id.menu_button_nav);
+        contactoNuevo = findViewById(R.id.contacto_nuevo);
         llenarListaCalendarios();
     }
 
@@ -377,4 +398,58 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     @Override
     public void onBackPressed(){}
 
+    private void popupCerrarSesion() {
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        View popupView = getLayoutInflater().inflate(R.layout.n14_3_popup_cerrar_sesion, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView textViewAceptar = popupView.findViewById(R.id.aceptar);
+        TextView textViewCancelar = popupView.findViewById(R.id.cancelar);
+
+        textViewCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        textViewAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(InicioCalendarioActivity.this, BienvenidoActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
 }

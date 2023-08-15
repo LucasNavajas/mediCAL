@@ -49,7 +49,7 @@ public class UsuarioController {
 	
 	@PostMapping("/usuario/save")
 	public Usuario save(@RequestBody Usuario usuario){
-		return usuarioDao.save(usuario);
+		return usuarioDao.saveConHash(usuario);
 	}
 	
 	@GetMapping("/usuario/cod/{codUsuario}")
@@ -145,7 +145,7 @@ public class UsuarioController {
             usuario.setCodigoVerificacion(nuevoCodigoVerificacion);
 
             // Guarda los cambios en la base de datos
-            Usuario modifiedUsuario = usuarioDao.saveSinHash(usuario);
+            Usuario modifiedUsuario = usuarioDao.save(usuario);
 
             return new ResponseEntity<>(modifiedUsuario, HttpStatus.OK);
         } else {
@@ -153,4 +153,20 @@ public class UsuarioController {
         }
     }
 	
+	@GetMapping("/usuario/buscar-mail-y-usuario")
+    public Usuario buscarUsuariosPorMailYUser(@RequestParam(name = "usuarioTexto") String usuarioTexto) {
+
+        if (usuarioTexto != null) {
+            Usuario usuarioPorUsuarioUnico = usuarioDao.obtenerUsuariosPorUsuarioUnico(usuarioTexto);
+            if (usuarioPorUsuarioUnico != null) {
+                return usuarioPorUsuarioUnico;
+            }
+            Usuario usuarioPorMail = usuarioDao.getByMailUsuario(usuarioTexto);
+            if (usuarioPorMail != null) {
+               return usuarioPorMail;
+        }
+ 
+    }
+    return null;
+}
 }

@@ -25,13 +25,13 @@ public class UsuarioDao {
 		this.passwordEncoder=passwordEncoder;
 	}
 	
-	public Usuario save(Usuario usuario) {
+	public Usuario saveConHash(Usuario usuario) {
 		String hashedPassword = passwordEncoder.encode(usuario.getContraseniaUsuario());
 	    usuario.setContraseniaUsuario(hashedPassword);
 		return repository.save(usuario);
 	}
 	
-	public Usuario saveSinHash(Usuario usuario) {
+	public Usuario save(Usuario usuario) {
 		return repository.save(usuario);
 	}
 	public List<Usuario> getAllUsuarios() {

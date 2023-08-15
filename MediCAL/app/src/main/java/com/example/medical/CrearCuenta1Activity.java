@@ -143,7 +143,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                     return;
                 }
 
-                if (usuariosUnicos.contains(textoUsuario)) {
+                if (usuariosUnicos.contains(textoUsuario) || mailsUnicos.contains(textoUsuario)) {
                     ocultarErrores();
                     errorUsuario.setVisibility(View.VISIBLE);
                     lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));

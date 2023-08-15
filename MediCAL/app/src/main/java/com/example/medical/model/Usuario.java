@@ -26,12 +26,12 @@ public class Usuario {
 	private List<Reporte> reportes;
 
 	private List<Perfil> perfil;
-
+*/
 	private List<Solicitud> solicitudControlador;
-	*/
+
 	private CodigoVerificacion codigoVerificacion;
 
-	/*private Solicitud solicitudControlado;
+	private Solicitud solicitudControlado;
 
 	public List<Solicitud> getSolicitudControlador() {
 		return solicitudControlador;
@@ -44,7 +44,7 @@ public class Usuario {
 	}
 	public void setSolicitudControlado(Solicitud solicitudControlado) {
 		this.solicitudControlado = solicitudControlado;
-	}*/
+	}
 	public CodigoVerificacion getCodigoVerificacion() {
 		return codigoVerificacion;
 	}

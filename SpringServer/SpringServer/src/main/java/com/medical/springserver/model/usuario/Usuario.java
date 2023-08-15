@@ -57,18 +57,19 @@ public class Usuario {
 	private List<Perfil> perfil;
 	
 	// relacion con Solicitud Controlador
-	@OneToMany (mappedBy = "usuarioControlador", cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "usuarioControlador", cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private List<Solicitud> solicitudControlador;
+	
+	@OneToOne(mappedBy = "usuarioControlado", cascade = CascadeType.MERGE)
+	@JsonIgnore
+    private Solicitud solicitudControlado;
 	
 	// relacion con CodVerificacion
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "codVerificacion")
     private CodigoVerificacion codigoVerificacion;
 	
-	// relacion con Solicitud Controlado
-	@OneToOne(mappedBy = "usuarioControlado")
-    private Solicitud solicitudControlado;
 		
 	public List<Solicitud> getSolicitudControlador() {
 		return solicitudControlador;

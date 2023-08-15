@@ -80,12 +80,5 @@ public class ContactoSoporteActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        // Navegar hacia la pantalla anterior (n28y29) al tocar el botón de retroceso
-        Intent intent = new Intent(this, FAQActivity.class);
-        startActivity(intent);
-        finish(); // Finalizar la actividad actual para no volver a ella al tocar el botón "volver"
-    }
 }
 

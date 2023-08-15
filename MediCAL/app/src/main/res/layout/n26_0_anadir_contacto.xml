@@ -86,13 +86,14 @@
                 android:layout_marginEnd="20dp"
                 android:hint="Usuario, correo o teléfono"
                 android:textColorHint="@color/gris_medical"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:inputType="text"/>
 
             <ImageView
                 android:id="@+id/tick"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/tick"
+                android:src="@drawable/cruz_roja"
                 android:layout_below="@+id/textEdit_contacto"
                 android:layout_alignRight="@id/textEdit_contacto"/>
 

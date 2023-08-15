@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/inter_bold"
         android:text="¿Está Seguro?"
         android:textColor="@color/rojoError"
@@ -49,11 +49,11 @@
             android:text="CANCELAR"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginEnd="95dp"
+            android:layout_marginStart="20dp"
             android:clickable="true"
             android:layout_weight="1"
             android:layout_marginBottom="15dp"
-            android:gravity="end"/>
+            android:gravity="left"/>
 
         <TextView
             android:id="@+id/aceptar"
@@ -63,7 +63,7 @@
             android:text="ACEPTAR"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:clickable="true"
             android:layout_weight="1"
             android:layout_marginBottom="15dp"
