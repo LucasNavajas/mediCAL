@@ -27,4 +27,8 @@ public class EstadoSolicitudDao {
 		repository.delete(estadoSolicitud);
 	}
 	
+	public EstadoSolicitud findByCodEstadoSolicitud(int codEstadoSolicitud) {
+		return repository.findByCodEstadoSolicitud(codEstadoSolicitud);
+	}
+	
 }

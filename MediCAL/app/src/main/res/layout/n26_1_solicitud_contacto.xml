@@ -25,7 +25,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginTop="35dp"
         android:fontFamily="@font/inter_medium"
-        android:text="NombreUsuario quiere ser tu contacto"
+        android:text=" quiere ser tu contacto"
         android:inputType="textMultiLine"
         android:textColor="@color/black"
         android:textSize="24sp"

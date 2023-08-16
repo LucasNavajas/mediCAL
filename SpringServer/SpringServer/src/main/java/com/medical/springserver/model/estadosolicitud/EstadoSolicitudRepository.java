@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoSolicitudRepository extends CrudRepository<EstadoSolicitud, Integer>{
+	EstadoSolicitud findByCodEstadoSolicitud(int codEstadoSolicitud);
 	
 }

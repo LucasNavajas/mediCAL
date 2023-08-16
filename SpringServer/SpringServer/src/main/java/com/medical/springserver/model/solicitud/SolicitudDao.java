@@ -1,4 +1,5 @@
 package com.medical.springserver.model.solicitud;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class SolicitudDao {
 	private SolicitudRepository repository;
 	
 	public Solicitud save(Solicitud Solicitud){
+		Solicitud.setFechaSolicitud(LocalDate.now());
 		return repository.save(Solicitud);
 	}
 	
@@ -24,5 +26,16 @@ public class SolicitudDao {
 
 	public void delete(Solicitud Solicitud) {
 		repository.delete(Solicitud);
+	}
+	public Solicitud obtenerSolicitudPendiente(int codUsuarioControlado) {
+		return repository.obtenerSolicitudPendienteUsuario(codUsuarioControlado);
+	}
+	
+	public Solicitud findByCodSolicitud(int codSolicitud) {
+		return repository.findByCodSolicitud(codSolicitud);
+	}
+	
+	public List<Solicitud> obtenerRespuestasSolicitud(int codUsuarioControlador){
+		return repository.obtenerRespuestasSolicitudes(codUsuarioControlador);
 	}
 }

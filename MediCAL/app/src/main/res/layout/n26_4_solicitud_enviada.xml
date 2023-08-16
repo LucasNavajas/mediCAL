@@ -44,7 +44,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginBottom="70dp"
         android:fontFamily="@font/inter_medium"
-        android:text=" ha rechazado tu solicitud"
+        android:text="Se ha enviado una solicitud al usuario"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textAlignment="center"

@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<List<Calendario>> call, Throwable t) {
                         Toast.makeText(MainActivity.this, "Hubo un error al iniciar sesión, intente nuevamente", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, BienvenidoActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
+                        startActivity(intent);
+                        finish();
                     }
                 });
 
@@ -91,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Hubo un error al iniciar sesión, intente nuevamente", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, BienvenidoActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
+                startActivity(intent);
+                finish();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.medical;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +18,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.model.EstadoSolicitud;
 import com.example.medical.model.Solicitud;
 import com.example.medical.model.Usuario;
+import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.SolicitudApi;
 import com.example.medical.retrofit.UsuarioApi;
@@ -38,6 +41,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
     private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
+    private EstadoSolicitudApi estadoSolicitudApi = retrofitService.getRetrofit().create(EstadoSolicitudApi.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +103,26 @@ public class NuevoContactoActivity extends AppCompatActivity {
                 Solicitud solicitud = new Solicitud();
                 solicitud.setUsuarioControlado(usuarioContacto);
                 solicitud.setUsuarioControlador(usuarioLogeado);
-                solicitudApi.save(solicitud).enqueue(new Callback<Solicitud>() {
+                estadoSolicitudApi.findByCodEstadoSolicitud(4).enqueue(new Callback<EstadoSolicitud>() {
                     @Override
-                    public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
-                        Toast.makeText(NuevoContactoActivity.this, "Solicitud Creada", Toast.LENGTH_SHORT).show();
+                    public void onResponse(Call<EstadoSolicitud> call, Response<EstadoSolicitud> response) {
+                        solicitud.setEstadoSolicitud(response.body());
+                        solicitudApi.save(solicitud).enqueue(new Callback<Solicitud>() {
+                            @Override
+                            public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                                popupSolicitudCreada();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Solicitud> call, Throwable t) {
+                                Toast.makeText(NuevoContactoActivity.this, "Error al crear la solicitud", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
-                    public void onFailure(Call<Solicitud> call, Throwable t) {
-                        Toast.makeText(NuevoContactoActivity.this, "Error al crear la solicitud", Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<EstadoSolicitud> call, Throwable t) {
+                        Toast.makeText(NuevoContactoActivity.this, "Error al crear la solicitud (al configurarla como pendiente)", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -116,6 +131,60 @@ public class NuevoContactoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void popupSolicitudCreada() {
+        View popupView = getLayoutInflater().inflate(R.layout.n26_4_solicitud_enviada, null);
+
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+        TextView textoPopUp = popupView.findViewById(R.id.text);
+        String texto = textoPopUp.getText().toString();
+        textoPopUp.setText(texto + " "+ usuarioContacto.getUsuarioUnico());
+
+        cerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+                Intent intent = new Intent(NuevoContactoActivity.this, InicioCalendarioActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+                Intent intent = new Intent(NuevoContactoActivity.this, InicioCalendarioActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+
+            }
+        });
     }
 
     private void inicializarVariables() {

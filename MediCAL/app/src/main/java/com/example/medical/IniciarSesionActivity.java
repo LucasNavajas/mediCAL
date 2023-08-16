@@ -141,8 +141,6 @@ public class IniciarSesionActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             redirigirUsuario(mail);
-                            Intent intent2 = new Intent(IniciarSesionActivity.this, BienvenidoUsuarioActivity.class);
-                            startActivity(intent2);
 
                         } else {
                             // If sign in fails, display a message to the user.

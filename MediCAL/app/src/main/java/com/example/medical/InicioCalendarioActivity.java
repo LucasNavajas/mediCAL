@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,10 +29,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medical.model.Calendario;
+import com.example.medical.model.EstadoSolicitud;
+import com.example.medical.model.Solicitud;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.CodigoVerificacionApi;
+import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.SolicitudApi;
 import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +62,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private TextView fechaHoyText;
     private RecyclerView calendarRecyclerView;
     private TextView nombreUsuario;
+    private PopupWindow popupWindow;
     private RelativeLayout editarPerfil;
     private RelativeLayout cerrarSesion;
     private RelativeLayout calendarioNuevo;
@@ -66,6 +72,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RetrofitService retrofitService = new RetrofitService();
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+    private EstadoSolicitudApi estadoSolicitudApi = retrofitService.getRetrofit().create(EstadoSolicitudApi.class);
+    private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
     private List<Calendario> listaCalendarios;
     private LinearLayout contenedorCalendarios;
     private RelativeLayout soporte;
@@ -77,7 +85,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
     private Intent intent1;
-
+    private List<EstadoSolicitud> estadosSolicitud;
 
 
     @Override
@@ -169,6 +177,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     }
 
+
+
     private void mostrarCalendarioSeleccionado() {
         if (listaCalendarios != null && !listaCalendarios.isEmpty()) {
             int codCalendarioseleccionado = listaCalendarios.get(0).getCodCalendario();
@@ -220,6 +230,21 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         contactoNuevo = findViewById(R.id.contacto_nuevo);
         llenarListaCalendarios();
+        llenarEstadosSolicitud();
+    }
+
+    private void llenarEstadosSolicitud() {
+        estadoSolicitudApi.getAllEstadoSolicitud().enqueue(new Callback<List<EstadoSolicitud>>() {
+            @Override
+            public void onResponse(Call<List<EstadoSolicitud>> call, Response<List<EstadoSolicitud>> response) {
+                estadosSolicitud = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<EstadoSolicitud>> call, Throwable t) {
+                Toast.makeText(InicioCalendarioActivity.this, "Error al cargar los estados de solicitudes", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void llenarContenedorCalendarios() {
@@ -289,6 +314,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 Usuario usuarioLogeado = response.body();
                 nombreUsuario.setText(usuarioLogeado.getUsuarioUnico());
                 codUsuarioLogeado = usuarioLogeado.getCodUsuario();
+                buscarSolicitudPendiente();
+                buscarRespuestasSolicitudes();
                 calendarioApi.getByCodUsuario(usuarioLogeado.getCodUsuario()).enqueue(new Callback<List<Calendario>>() {
                     @Override
                     public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
@@ -318,6 +345,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
     }
+
+
 
 
     private void setView() {
@@ -404,7 +433,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         View popupView = getLayoutInflater().inflate(R.layout.n14_3_popup_cerrar_sesion, null);
 
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);
@@ -452,4 +481,150 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+    }
+
+    private void buscarSolicitudPendiente() {
+        solicitudApi.obtenerSolicitudPendiente(codUsuarioLogeado).enqueue(new Callback<Solicitud>() {
+            @Override
+            public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                if(response.body()!=null){
+                    popupSolicitudPendiente(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<Solicitud> call, Throwable t) {}
+        });
+    }
+
+    private void buscarRespuestasSolicitudes() {
+        solicitudApi.obtenerRespuestasSolicitud(codUsuarioLogeado).enqueue(new Callback<List<Solicitud>>() {
+            @Override
+            public void onResponse(Call<List<Solicitud>> call, Response<List<Solicitud>> response) {
+                for(Solicitud solicitud : response.body()){
+                        popupRespuesta(solicitud, solicitud.getEstadoSolicitud().getCodEstadoSolicitud());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Solicitud>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void popupRespuesta(Solicitud solicitud, int codEstadoSolicitud) {
+        int layoutPopupSolicitud= 0;
+        boolean aceptada = true;//Si es falso, se muestra el popup rechazado y se cambia su estado
+        if(codEstadoSolicitud==5){
+            layoutPopupSolicitud = R.layout.n26_2_solicitud_aceptada;
+            aceptada = true;
+        }
+        else{
+            layoutPopupSolicitud = R.layout.n26_3_solicitud_rechazada;
+            aceptada = false;
+        }
+        View popupView = getLayoutInflater().inflate(layoutPopupSolicitud, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        if(aceptada == true){
+            actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(0), dimView, popupWindow);
+        }
+        else{
+            actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(1), dimView, popupWindow);
+        }
+
+        TextView text = popupView.findViewById(R.id.text);
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+        String textPopup = text.getText().toString();
+        text.setText(solicitud.getUsuarioControlado().getUsuarioUnico() + textPopup);
+
+        cerrar.setOnClickListener(view -> {
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+
+    }
+
+
+    private void popupSolicitudPendiente(Solicitud solicitud) {
+        View popupView = getLayoutInflater().inflate(R.layout.n26_1_solicitud_contacto, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text);
+        Button aceptar = popupView.findViewById(R.id.button_aceptar);
+        Button rechazar = popupView.findViewById(R.id.button_rechazar);
+        String textoPopup = texto.getText().toString();
+        texto.setText(solicitud.getUsuarioControlador().getUsuarioUnico()+ textoPopup);
+
+        aceptar.setOnClickListener(view ->{
+            actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(4), dimView, popupWindow);
+        });
+        rechazar.setOnClickListener(view ->{
+            actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(5), dimView, popupWindow);
+        });
+
+    }
+
+    private void actualizarEstadoSolicitud(Solicitud solicitud, EstadoSolicitud estadoSolicitud, View dimView, PopupWindow popupWindow) {
+        solicitudApi.actualizarEstadoSolicitud(solicitud.getCodSolicitud(), estadoSolicitud).enqueue(new Callback<Solicitud>() {
+            @Override
+            public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                if(estadoSolicitud.getCodEstadoSolicitud()==5 || estadoSolicitud.getCodEstadoSolicitud()==6) {
+                    popupWindow.dismiss();
+                    dimView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Solicitud> call, Throwable t) {
+                Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al aceptar/rechazar la solicitud", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

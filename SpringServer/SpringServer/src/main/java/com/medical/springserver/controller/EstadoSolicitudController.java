@@ -26,4 +26,9 @@ public class EstadoSolicitudController {
 	public EstadoSolicitud save(@RequestBody EstadoSolicitud estadoSolicitud){
 		return estadoSolicitudDao.save(estadoSolicitud);
 	}
+	
+	@GetMapping("/estadoSolicitud/{codEstadoSolicitud}")
+	public EstadoSolicitud findByCodEstadoSolicitud(@PathVariable int codEstadoSolicitud) {
+		return estadoSolicitudDao.findByCodEstadoSolicitud(codEstadoSolicitud);
+	}
 }

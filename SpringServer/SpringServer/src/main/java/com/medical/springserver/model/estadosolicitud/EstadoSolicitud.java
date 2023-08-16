@@ -1,6 +1,7 @@
 package com.medical.springserver.model.estadosolicitud;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +20,7 @@ public class EstadoSolicitud {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codEstadoSolicitud;
 	private String nombreEstadoSolicitud;
+	private LocalDate fechaFinVigenciaES;
 
 	@OneToMany (mappedBy = "estadoSolicitud", cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -55,6 +57,14 @@ public class EstadoSolicitud {
 
 	public void setSolicitudes(List<Solicitud> solicitudes) {
 		this.solicitudes = solicitudes;
+	}
+
+	public LocalDate getFechaFinVigenciaES() {
+		return fechaFinVigenciaES;
+	}
+
+	public void setFechaFinVigenciaES(LocalDate fechaFinVigenciaES) {
+		this.fechaFinVigenciaES = fechaFinVigenciaES;
 	}
 	
 	

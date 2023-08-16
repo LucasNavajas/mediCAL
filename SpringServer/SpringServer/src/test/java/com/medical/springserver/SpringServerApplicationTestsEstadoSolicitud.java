@@ -23,6 +23,25 @@ class SpringServerApplicationTestsEstadoSolicitud {
 	    estadoSolicitud.setNombreEstadoSolicitud("Aceptada");
 		estadoSolicitudDao.save(estadoSolicitud);
 		
+		EstadoSolicitud estadoSolicitud2 = new EstadoSolicitud();
+	    estadoSolicitud2.setNombreEstadoSolicitud("Rechazada");
+		estadoSolicitudDao.save(estadoSolicitud2);
+		
+		EstadoSolicitud estadoSolicitud3 = new EstadoSolicitud();
+	    estadoSolicitud3.setNombreEstadoSolicitud("Baja");
+		estadoSolicitudDao.save(estadoSolicitud3);
+		
+		EstadoSolicitud estadoSolicitud4 = new EstadoSolicitud();
+	    estadoSolicitud4.setNombreEstadoSolicitud("Pendiente");
+		estadoSolicitudDao.save(estadoSolicitud4);
+		
+		EstadoSolicitud estadoSolicitud5 = new EstadoSolicitud();
+	    estadoSolicitud5.setNombreEstadoSolicitud("Aceptado sin visualizar");
+		estadoSolicitudDao.save(estadoSolicitud5);
+		
+		EstadoSolicitud estadoSolicitud6 = new EstadoSolicitud();
+	    estadoSolicitud6.setNombreEstadoSolicitud("Rechazado sin visualizar");
+		estadoSolicitudDao.save(estadoSolicitud6);
 		
 	}
 	
