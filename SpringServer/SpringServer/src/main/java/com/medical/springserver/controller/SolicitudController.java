@@ -54,4 +54,9 @@ public class SolicitudController {
 	public List<Solicitud> obtenerRespuestasSolicitud(@PathVariable int codUsuario) {
 		return solicitudDao.obtenerRespuestasSolicitud(codUsuario);
 	}
+	
+	@GetMapping("/solicitud/contactos/{codUsuario}")
+	public List<Solicitud> obtenerContactos(@PathVariable int codUsuario) {
+		return solicitudDao.obtenerContactos(codUsuario);
+	}
 }

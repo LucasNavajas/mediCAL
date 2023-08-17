@@ -556,34 +556,16 @@
                         android:layout_marginStart="20dp"
                        />
 
-                    <RelativeLayout
-                        android:id="@+id/calendario_contacto1"
+                    <LinearLayout
+                        android:id="@+id/contenedor_calendarios_contactos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:padding="10dp">
 
-                        <ImageView
-                            android:id="@+id/calendario_contacto_imagen1"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/calendario_contic"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginStart="20dp"/>
 
-                        <TextView
-                            android:id="@+id/calendario_contacto_texto1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nombre de Contacto"
-                            android:textSize="20sp"
-                            android:textColor="@color/black"
-                            android:layout_marginStart="10dp"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/inter_regular"
-                            android:layout_toEndOf="@id/calendario_contacto_imagen1"
-                            />
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:id="@+id/contacto_nuevo"

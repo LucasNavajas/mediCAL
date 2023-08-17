@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -81,6 +83,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private ImageView editarCalendario;
     private ImageView menuButton;
     private ImageView menuButtonUsuario;
+    private LinearLayout contenedorCalendariosContactos;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
@@ -229,6 +232,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         menuButton = findViewById(R.id.menu_button);
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         contactoNuevo = findViewById(R.id.contacto_nuevo);
+        contenedorCalendariosContactos = findViewById(R.id.contenedor_calendarios_contactos);
         llenarListaCalendarios();
         llenarEstadosSolicitud();
     }
@@ -316,6 +320,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 codUsuarioLogeado = usuarioLogeado.getCodUsuario();
                 buscarSolicitudPendiente();
                 buscarRespuestasSolicitudes();
+                buscarContactosVinculados();
                 calendarioApi.getByCodUsuario(usuarioLogeado.getCodUsuario()).enqueue(new Callback<List<Calendario>>() {
                     @Override
                     public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
@@ -345,6 +350,113 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
     }
+
+    private void buscarContactosVinculados() {
+        solicitudApi.obtenerContactos(codUsuarioLogeado).enqueue(new Callback<List<Solicitud>>() {
+            @Override
+            public void onResponse(Call<List<Solicitud>> call, Response<List<Solicitud>> response) {
+                List<Solicitud> solicitudes = response.body();
+                if(solicitudes.size()>=3){
+                    contactoNuevo.setVisibility(View.GONE);
+                }
+                else {
+                    contactoNuevo.setVisibility(View.VISIBLE);
+                }
+                for (Solicitud solicitud: solicitudes){
+                    calendarioApi.getByCodUsuario(solicitud.getUsuarioControlado().getCodUsuario()).enqueue(new Callback<List<Calendario>>() {
+                        @Override
+                        public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
+                            llenarCalendariosContactos(response.body());
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Calendario>> call, Throwable t) {}//No tienen onfailure porque si un usuario no tiene contactos va a saltar el onfailure por mas que ande la BD
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Solicitud>> call, Throwable t) {}//No tienen onfailure porque si un usuario no tiene contactos va a saltar el onfailure por mas que ande la BD
+        });
+    }
+
+    private void llenarCalendariosContactos(List<Calendario> calendarios) {
+        RelativeLayout.LayoutParams imageLayoutParams = new RelativeLayout.LayoutParams(
+                dpToPx(50),
+                dpToPx(50)
+        );
+        imageLayoutParams.setMargins(dpToPx(20), dpToPx(5), 0, 0);
+
+        for (Calendario calendario : calendarios) {
+            RelativeLayout layoutCalendario = new RelativeLayout(this);
+            layoutCalendario.setId(View.generateViewId()); // Asignar un ID único al RelativeLayout
+
+            ImageView imagenCalendario = new ImageView(this);
+            imagenCalendario.setImageResource(R.drawable.calendario_contic);
+            imagenCalendario.setLayoutParams(imageLayoutParams);
+            imagenCalendario.setId(View.generateViewId());
+
+            TextView textoNombreContacto = new TextView(this);
+            textoNombreContacto.setText(calendario.getUsuario().getUsuarioUnico());
+            textoNombreContacto.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            textoNombreContacto.setTextColor(getResources().getColor(R.color.black, null));
+            textoNombreContacto.setTypeface(ResourcesCompat.getFont(this, R.font.inter_regular));
+            textoNombreContacto.setId(View.generateViewId());
+
+            TextView textoNombreCalendario = new TextView(this);
+            textoNombreCalendario.setText(calendario.getNombreCalendario());
+            textoNombreCalendario.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            textoNombreCalendario.setTextColor(getResources().getColor(R.color.black, null));
+            textoNombreCalendario.setTypeface(ResourcesCompat.getFont(this, R.font.inter_regular));
+            textoNombreCalendario.setId(View.generateViewId());
+
+            RelativeLayout.LayoutParams textNombreContactoLayoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            textNombreContactoLayoutParams.addRule(RelativeLayout.END_OF, imagenCalendario.getId());
+            textNombreContactoLayoutParams.setMarginStart(dpToPx(10));
+            textNombreContactoLayoutParams.topMargin=dpToPx(10);
+            textoNombreContacto.setLayoutParams(textNombreContactoLayoutParams);
+
+            RelativeLayout.LayoutParams textNombreCalendarioLayoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            textNombreCalendarioLayoutParams.addRule(RelativeLayout.BELOW, textoNombreContacto.getId());
+            textNombreCalendarioLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+            textNombreCalendarioLayoutParams.addRule(RelativeLayout.ALIGN_START, textoNombreContacto.getId());
+            textNombreCalendarioLayoutParams.topMargin=dpToPx(-5);
+            textoNombreCalendario.setLayoutParams(textNombreCalendarioLayoutParams);
+
+            layoutCalendario.addView(imagenCalendario);
+            layoutCalendario.addView(textoNombreContacto);
+            layoutCalendario.addView(textoNombreCalendario);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, dpToPx(10), 0, 0);
+            layoutCalendario.setLayoutParams(params);
+
+            layoutCalendario.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                    intent.putExtra("codCalendario", calendario.getCodCalendario());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            contenedorCalendariosContactos.addView(layoutCalendario);
+        }
+    }
+
+
+
 
 
 

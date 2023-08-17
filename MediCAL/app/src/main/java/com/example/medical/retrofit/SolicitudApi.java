@@ -26,4 +26,7 @@ public interface SolicitudApi {
 
     @GET("/solicitud/respuestas/{codUsuario}")
     Call <List<Solicitud>> obtenerRespuestasSolicitud(@Path("codUsuario") int codUsuario);
+
+    @GET("/solicitud/contactos/{codUsuario}")
+    Call <List<Solicitud>> obtenerContactos(@Path("codUsuario") int codUsuario);
 }

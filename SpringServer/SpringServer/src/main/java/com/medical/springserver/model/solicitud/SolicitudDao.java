@@ -38,4 +38,8 @@ public class SolicitudDao {
 	public List<Solicitud> obtenerRespuestasSolicitud(int codUsuarioControlador){
 		return repository.obtenerRespuestasSolicitudes(codUsuarioControlador);
 	}
+	
+	public List<Solicitud> obtenerContactos(int codUsuarioControlador){
+		return repository.obtenerContactos(codUsuarioControlador);
+	}
 }
