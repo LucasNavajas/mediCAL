@@ -60,6 +60,14 @@
         <activity android:name=".EditarCalendarioActivity"></activity>
         <activity android:name=".RestablecerContraseniaActivity"></activity>
         <activity android:name=".NuevoContactoActivity"></activity>
+        <activity android:name=".ElegirFrecuenciaActivity"></activity>
+        <activity android:name=".FrecuenciaxciclosActivity"></activity>
+        <activity android:name=".FrecuenciaxdiasActivity"></activity>
+        <activity android:name=".FrecuenciaxhorasActivity"></activity>
+        <activity android:name=".FrecuenciaxmesesActivity"></activity>
+        <activity android:name=".FrecuenciaxnecesidadActivity"></activity>
+        <activity android:name=".FrecuenciaxsemanasActivity"></activity>
+
     </application>
 
 </manifest>

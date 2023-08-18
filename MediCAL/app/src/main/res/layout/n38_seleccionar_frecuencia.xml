@@ -88,12 +88,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginEnd="20dp"
                     android:background="@android:color/transparent"
                     android:text="Cada X horas"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"
+                    />
 
                 <View
                     android:layout_width="match_parent"
@@ -101,6 +104,8 @@
                     android:layout_below="@id/text_x_horas"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#808080" />
 
                 <TextView
@@ -109,12 +114,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text_x_horas"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginEnd="20dp"
                     android:background="@android:color/transparent"
                     android:text="Cada X días"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -122,6 +129,8 @@
                     android:layout_below="@id/text_x_dias"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#808080" />
 
                 <TextView
@@ -130,12 +139,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text_x_dias"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="35dp"
                     android:background="@android:color/transparent"
                     android:text="Cada X semanas"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -143,6 +153,8 @@
                     android:layout_below="@id/text_x_semanas"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#808080" />
 
                 <TextView
@@ -151,12 +163,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text_x_semanas"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginEnd="20dp"
                     android:background="@android:color/transparent"
                     android:text="Cada X meses"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -164,6 +178,8 @@
                     android:layout_below="@id/text_x_meses"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#808080" />
 
                 <TextView
@@ -172,12 +188,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text_x_meses"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginEnd="20dp"
                     android:background="@android:color/transparent"
                     android:text="Ciclo recurrente"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -185,6 +203,8 @@
                     android:layout_below="@id/text_ciclo_recurrente"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#808080" />
 
                 <TextView
@@ -193,12 +213,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/text_ciclo_recurrente"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginEnd="20dp"
                     android:background="@android:color/transparent"
                     android:text="Según sea necesario"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -206,6 +228,8 @@
                     android:layout_below="@id/text_segun_sea_necesario"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="#808080" />
 
 
