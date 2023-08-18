@@ -6,11 +6,13 @@ import com.medical.springserver.model.administracionmed.AdministracionMed;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -26,6 +28,9 @@ public class Medicamento {
 	private String marcaMedicamento;
 	private String nombreMedicamento;
 	
+	@Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] imagen;
 	// Relacion con Recordatorio
 	@OneToMany (mappedBy = "medicamento", cascade = CascadeType.ALL)
 	private List<Recordatorio> recordatorio;
@@ -83,5 +88,13 @@ public class Medicamento {
 	public void setRecordatorio(List<Recordatorio> recordatorio) {
 		this.recordatorio = recordatorio;
 	}
+	
+	  public byte[] getImagen() {
+	        return imagen;
+	    }
+
+	    public void setImagen(byte[] imagen) {
+	        this.imagen = imagen;
+	    }
 
 }

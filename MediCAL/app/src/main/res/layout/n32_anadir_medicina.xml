@@ -116,7 +116,6 @@
             android:background="@android:color/transparent"
             android:text="Marca de Medicamento"
             android:textColor="@color/black"
-            android:inputType="phone"
             android:textColorHint="#888888"
             android:textSize="21sp" />
 
@@ -159,7 +158,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="10dp"
+            android:focusable="false"
             android:src="@drawable/foto_remedio" />
+
 
         <Button
             android:id="@+id/button_siguiente"

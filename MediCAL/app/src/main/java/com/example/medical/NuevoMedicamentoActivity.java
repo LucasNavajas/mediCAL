@@ -7,14 +7,19 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -25,15 +30,30 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.medical.model.Medicamento;
+import com.example.medical.retrofit.MedicamentoApi;
+import com.example.medical.retrofit.RetrofitService;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.time.LocalDate;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NuevoMedicamentoActivity extends AppCompatActivity {
+
+    private RetrofitService retrofitService = new RetrofitService();
+    private MedicamentoApi medicamentoApi = retrofitService.getRetrofit().create(MedicamentoApi.class);
     private static final int REQUEST_IMAGE_PICK = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private ImageView botonVolver;
     private ImageView fotoMedicamento;
     private EditText nombreMedicamento;
     private EditText marcaMedicamento;
+    private Button siguiente;
+    private Medicamento medicamento = new Medicamento();
 
     private File capturedPhotoFile;  // Declare the File object
     private ActivityResultLauncher<Intent> galleryLauncher;
@@ -44,6 +64,14 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n32_anadir_medicina);
         inicializarVariables();
+
+        botonVolver.setOnClickListener(view ->{onBackPressed();});
+
+        siguiente.setOnClickListener(view -> {
+            Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
+            new ImageProcessingTask().execute(imagenBitmap);
+
+        });
 
         capturedPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_photo.jpg");
 
@@ -87,6 +115,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
         nombreMedicamento = findViewById(R.id.text_nombreMedicamento);
         marcaMedicamento = findViewById(R.id.text_marcaMedicamento);
         fotoMedicamento = findViewById(R.id.imagen);
+        siguiente = findViewById(R.id.button_siguiente);
 
         fotoMedicamento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,4 +143,41 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
         }
     }
 
+    public static byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+    private class ImageProcessingTask extends AsyncTask<Bitmap, Void, byte[]> {
+        @Override
+        protected byte[] doInBackground(Bitmap... bitmaps) {
+            Bitmap imageBitmap = bitmaps[0];
+            return bitmapToByteArray(imageBitmap);
+        }
+
+        @Override
+        protected void onPostExecute(byte[] bytes) {
+            // Aquí puedes continuar con la creación y envío del objeto Medicamento con la imagen
+            medicamento.setImagen(bytes);
+            String nombreMedicamentoString = nombreMedicamento.getText().toString();
+            String marcaMedicamentoString = marcaMedicamento.getText().toString();
+
+            medicamento.setMarcaMedicamento(marcaMedicamentoString);
+            medicamento.setNombreMedicamento(nombreMedicamentoString);
+            medicamento.setEsParticular(true);
+            medicamento.setFechaAltaMedicamento(LocalDate.now());
+            medicamentoApi.saveMedicamento(medicamento).enqueue(new Callback<Medicamento>() {
+                @Override
+                public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
+                    Toast.makeText(NuevoMedicamentoActivity.this, "Medicamento creado", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Medicamento> call, Throwable t) {
+                    Toast.makeText(NuevoMedicamentoActivity.this, "Error de medicamento creado", Toast.LENGTH_SHORT).show();
+                }
+            });
+            // ...
+        }
+    }
 }
