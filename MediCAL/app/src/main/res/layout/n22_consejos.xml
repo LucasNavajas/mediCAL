@@ -5,9 +5,11 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    tools:context=".ConsejosActivity"
+    android:background="@drawable/background"
+    tools:openDrawer="start">
 
-
+    <!-- Contenido Principal -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +42,8 @@
             android:layout_alignTop="@id/menu_button"
             android:layout_alignBottom="@id/menu_button"
             android:fontFamily="@font/inter_medium"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            tools:ignore="DuplicateIds" />
 
 
 
@@ -59,6 +62,7 @@
                 android:background="@color/gris"
                 android:layout_centerHorizontal="true" />
 
+            <!--Scroll de todo el contenido del rectangulo blanco-->
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -69,206 +73,225 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <!-- Contenido -->
+
+                    <!-- RecyclerView para mostrar la lista de consejos -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listaconsejos_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/nombre_usuario" />
+
+
+                    <!-- Consejos Hardcodeados anteriores -->
+                    <!--
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="0dp">
+                    -->
 
-                    <!-- Consejo 1 -->
-                    <RelativeLayout
-                        android:id="@+id/rectangle_consejo1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/background_blanco_recto">
-
-                        <ImageView
-                            android:id="@+id/imagen_consejo1"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:src="@drawable/foco_consejo" />
-
-                        <TextView
-                            android:id="@+id/texto_titulo_consejo1"
+                        <!-- Consejo 1 -->
+                        <!--
+                        <RelativeLayout
+                            android:id="@+id/rectangle_consejo1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="20dp"
                             android:layout_marginTop="15dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_toRightOf="@id/imagen_consejo1"
-                            android:text="Su consejo diario de MediCAL"
-                            android:textSize="25dp"
-                            android:textStyle="bold" />
+                            android:background="@drawable/background_blanco_recto">
 
-                        <ImageView
-                            android:id="@+id/cerrar_cruz"
-                            android:layout_width="20dp"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginLeft="-35dp"
-                            android:layout_toRightOf="@id/texto_titulo_consejo1"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:src="@drawable/cerrar_cruz_delgada" />
+                            <ImageView
+                                android:id="@+id/imagen_consejo1"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginBottom="20dp"
+                                android:src="@drawable/foco_consejo" />
 
-                        <TextView
-                            android:id="@+id/texto_consejo1"
+                            <TextView
+                                android:id="@+id/texto_titulo_consejo1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_toRightOf="@id/imagen_consejo1"
+                                android:text="Su consejo diario de MediCAL"
+                                android:textSize="25dp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/cerrar_cruz"
+                                android:layout_width="20dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="-35dp"
+                                android:layout_toRightOf="@id/texto_titulo_consejo1"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:src="@drawable/cerrar_cruz_delgada" />
+
+                            <TextView
+                                android:id="@+id/texto_consejo1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/texto_titulo_consejo1"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginBottom="20dp"
+                                android:text="¡Es fácil añadir un medicamento!
+                                Pulse en “Leer” para obtener más información."
+                                android:textSize="22dp" />
+
+                            <TextView
+                                android:id="@+id/text_Leer_mas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/texto_consejo1"
+                                android:layout_marginLeft="-230dp"
+                                android:layout_alignBottom="@id/texto_consejo1"
+                                android:background="@android:color/transparent"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="Leer más"
+                                android:textColor="@color/verdeClaro"
+                                android:textSize="22sp" />
+                            <View
+                                android:layout_width="100dp"
+                                android:layout_below="@id/text_Leer_mas"
+                                android:layout_height="1dp"
+                                android:layout_alignParentStart="@id/text_Leer_mas"
+                                android:layout_toRightOf="@id/texto_consejo1"
+                                android:layout_marginLeft="-230dp"
+                                android:background="@color/verdeClaro" />
+
+                            <ImageView
+                                android:id="@+id/imagen_consejo_like"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_below="@id/text_Leer_mas"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/consejo_like" />
+
+                            <TextView
+                                android:id="@+id/texto_MediCAL"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/text_Leer_mas"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginTop="40dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_alignParentStart="@id/imagen_consejo_like"
+                                android:text="MediCAL"
+                                android:textSize="20dp"
+                                android:gravity="end"
+                                />
+
+                        </RelativeLayout>
+                        -->
+
+                        <!-- Consejo 2 -->
+                        <!--
+                        <RelativeLayout
+                            android:id="@+id/rectangle_consejo2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/texto_titulo_consejo1"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:text="¡Es fácil añadir un medicamento!
-                            Pulse en “Leer” para obtener más información."
-                            android:textSize="22dp" />
-
-                        <TextView
-                            android:id="@+id/text_Leer_mas"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/texto_consejo1"
-                            android:layout_marginLeft="-230dp"
-                            android:layout_alignBottom="@id/texto_consejo1"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/inter_regular"
-                            android:text="Leer más"
-                            android:textColor="@color/verdeClaro"
-                            android:textSize="22sp" />
-                        <View
-                            android:layout_width="100dp"
-                            android:layout_below="@id/text_Leer_mas"
-                            android:layout_height="1dp"
-                            android:layout_alignParentStart="@id/text_Leer_mas"
-                            android:layout_toRightOf="@id/texto_consejo1"
-                            android:layout_marginLeft="-230dp"
-                            android:background="@color/verdeClaro" />
-
-                        <ImageView
-                            android:id="@+id/imagen_consejo_like"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/text_Leer_mas"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/consejo_like" />
-
-                        <TextView
-                            android:id="@+id/texto_MediCAL"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/text_Leer_mas"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginTop="40dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_alignParentStart="@id/imagen_consejo_like"
-                            android:text="MediCAL"
-                            android:textSize="20dp"
-                            android:gravity="end"
-                            />
-
-                    </RelativeLayout>
-
-                    <!-- Consejo 2 -->
-                    <RelativeLayout
-                        android:id="@+id/rectangle_consejo2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/rectangle_consejo1"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/background_blanco_recto"
-                        android:layout_marginBottom="15dp">
-
-                        <TextView
-                            android:id="@+id/texto_titulo_consejo2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_below="@id/rectangle_consejo1"
                             android:layout_marginTop="15dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="7 Cuidados básicos para personas con hipertensión"
-                            android:textSize="25dp"
-                            android:textStyle="bold" />
+                            android:background="@drawable/background_blanco_recto"
+                            android:layout_marginBottom="15dp">
 
-                        <ImageView
-                            android:id="@+id/cerrar_cruz2"
-                            android:layout_width="20dp"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginLeft="-35dp"
-                            android:layout_toRightOf="@id/texto_titulo_consejo2"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:src="@drawable/cerrar_cruz_delgada" />
+                            <TextView
+                                android:id="@+id/texto_titulo_consejo2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="30dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="7 Cuidados básicos para personas con hipertensión"
+                                android:textSize="25dp"
+                                android:textStyle="bold" />
 
-                        <!-- Ajustar altura (height) según resolución del video -->
-                        <ImageView
-                            android:id="@+id/videoImageView"
-                            android:layout_width="match_parent"
-                            android:layout_height="160dp"
-                            android:scaleType="fitCenter"
-                            android:layout_below="@id/texto_titulo_consejo2"
-                            android:layout_marginTop="1dp"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:id="@+id/cerrar_cruz2"
+                                android:layout_width="20dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="-35dp"
+                                android:layout_toRightOf="@id/texto_titulo_consejo2"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:src="@drawable/cerrar_cruz_delgada" />
 
-                        <ImageView
-                            android:id="@+id/imagen_consejo_compartir_2"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/videoImageView"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/consejo_compartir" />
 
-                        <ImageView
-                            android:id="@+id/imagen_consejo_like_2"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/videoImageView"
-                            android:layout_toRightOf="@id/imagen_consejo_compartir_2"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/consejo_like" />
+                            <ImageView
+                                android:id="@+id/videoImageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="160dp"
+                                android:scaleType="fitCenter"
+                                android:layout_below="@id/texto_titulo_consejo2"
+                                android:layout_marginTop="1dp"
+                                android:layout_marginBottom="15dp"/>
 
-                        <TextView
-                            android:id="@+id/texto_auspiciante"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/videoImageView"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_alignParentStart="@id/imagen_consejo_like_2"
-                            android:text="Auspicia: Bagó"
-                            android:textSize="20dp"
-                            android:gravity="end"
-                            />
+                            <ImageView
+                                android:id="@+id/imagen_consejo_compartir_2"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_below="@id/videoImageView"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/consejo_compartir" />
 
+                            <ImageView
+                                android:id="@+id/imagen_consejo_like_2"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_below="@id/videoImageView"
+                                android:layout_toRightOf="@id/imagen_consejo_compartir_2"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/consejo_like" />
+
+                            <TextView
+                                android:id="@+id/texto_auspiciante"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/videoImageView"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_alignParentStart="@id/imagen_consejo_like_2"
+                                android:text="Auspicia: Bagó"
+                                android:textSize="20dp"
+                                android:gravity="end"
+                                />
+
+                        </RelativeLayout>
+                        -->
+
+                    <!--
                     </RelativeLayout>
+                    -->
 
-
-                </RelativeLayout>
                 </LinearLayout>
-            </ScrollView>
+            </ScrollView> <!--Fin del scroll-->
+
         </RelativeLayout>
 
-
-
+        <!-- Botones Inferiores -->
         <LinearLayout
             android:id="@+id/botones"
             android:layout_width="match_parent"
@@ -286,6 +309,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
+                    android:id="@+id/casa_inicio"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/casa_inicio"
@@ -381,5 +405,235 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/dim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+    <!-- Menú Hamburguesa Reducido -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/menu_button_nav"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/user"
+                android:padding="8dp"
+                android:clickable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Abrir menú" />
+
+            <TextView
+                android:id="@+id/nombre_usuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NombreUsuario"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/menu_button_nav"
+                android:layout_alignTop="@id/menu_button_nav"
+                android:layout_alignBottom="@id/menu_button_nav"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/inter_medium"
+                tools:ignore="DuplicateIds" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp"
+                android:background="@color/gris_medical" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/editar_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+                        <ImageView
+                            android:id="@+id/editar_perfil_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/lapiz_editar"
+                            android:layout_marginStart="20dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/editar_perfil_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Editar Perfil"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@id/editar_perfil_imagen"
+                            android:layout_alignTop="@id/editar_perfil_imagen"
+                            android:layout_alignBottom="@id/editar_perfil_imagen"
+                            android:fontFamily="@font/inter_regular" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/restablecer_contrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/restablecer_contrasenia_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/candado"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/restablecer_contrasenia_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Restablecer Contraseña"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:layout_toEndOf="@id/restablecer_contrasenia_imagen"
+                            />
+
+                    </RelativeLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <!-- Cerrar Sesión -->
+                    <RelativeLayout
+                        android:id="@+id/cerrar_sesion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/cerrar_sesion_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/cerrar_sesion"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/cerrar_sesion_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cerrar sesión"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/cerrar_sesion_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <!-- Ayuda y Soporte -->
+                    <RelativeLayout
+                        android:id="@+id/soporte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/soporte_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/soporte"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/soporte_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ayuda y soporte"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/soporte_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <!-- Eliminar Cuenta -->
+                    <RelativeLayout
+                        android:id="@+id/eliminar_cuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp" >
+
+                        <ImageView
+                            android:id="@+id/eliminar_cuenta_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/eliminar"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/eliminar_cuenta_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Eliminar Cuenta"
+                            android:textSize="20sp"
+                            android:textColor="@color/rojoEliminar"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/eliminar_cuenta_imagen"
+                            android:fontFamily="@font/inter_semibold"
+                            />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

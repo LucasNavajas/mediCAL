@@ -263,6 +263,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
+                    android:id="@+id/casa_inicio"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/casa_inicio"
@@ -288,6 +289,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
+                    android:id="@id/consejos"
                     android:layout_width="45dp"
                     android:layout_height="50dp"
                     android:src="@drawable/consejos"

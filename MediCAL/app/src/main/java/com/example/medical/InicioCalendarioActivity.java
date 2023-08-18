@@ -65,6 +65,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RecyclerView calendarRecyclerView;
     private TextView nombreUsuario;
     private PopupWindow popupWindow;
+    private RelativeLayout consejos;
     private RelativeLayout editarPerfil;
     private RelativeLayout cerrarSesion;
     private RelativeLayout calendarioNuevo;
@@ -178,6 +179,18 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             startActivity(intent);
         } );
 
+        // Botones de la Barra Inferior
+
+
+        consejos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, ConsejosActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -224,6 +237,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         calendarioNuevo = findViewById(R.id.calendario_nuevo);
         contenedorCalendarios = findViewById(R.id.contenedor_calendarios);
         nombreUsuario = findViewById(R.id.nombre_usuario);
+        consejos = findViewById(R.id.consejos);
         editarPerfil = findViewById(R.id.editar_perfil);
         soporte = findViewById(R.id.soporte);
         nombreCalendario = findViewById(R.id.nombre_calendario);

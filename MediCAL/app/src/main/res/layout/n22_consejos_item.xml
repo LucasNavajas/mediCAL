@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+        <!-- Consejo Genérico -->
+        <RelativeLayout
+            android:id="@+id/rectangle_consejo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_blanco_recto"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/icono_consejo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/foco_consejo" />
+
+            <TextView
+                android:id="@+id/texto_titulo_consejo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="2dp"
+                android:layout_toRightOf="@id/icono_consejo"
+                android:text="Nombre Consejo"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/cerrar_cruz"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="-40dp"
+                android:layout_toRightOf="@id/texto_titulo_consejo"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/cerrar_cruz_delgada" />
+
+            <TextView
+                android:id="@+id/texto_consejo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_titulo_consejo"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="2dp"
+                android:text="Descripción Consejo"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/text_Leer_mas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_consejo"
+                android:layout_marginStart="250dp"
+                android:layout_marginLeft="0dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_regular"
+                android:text="Leer más"
+                android:textColor="@color/verdeClaro"
+                android:textSize="22sp" />
+            <View
+                android:layout_width="100dp"
+                android:layout_below="@id/text_Leer_mas"
+                android:layout_height="1dp"
+                android:layout_alignParentStart="@id/text_Leer_mas"
+                android:layout_marginStart="250dp"
+                android:background="@color/verdeClaro" />
+
+            <ImageView
+                android:id="@+id/videoImageView"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:scaleType="fitCenter"
+                android:layout_below="@id/text_Leer_mas"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="5dp"/>
+
+            <ImageView
+                android:id="@+id/imagen_consejo_compartir"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/videoImageView"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_compartir" />
+
+            <ImageView
+                android:id="@+id/imagen_consejo_like"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/videoImageView"
+                android:layout_toRightOf="@id/imagen_consejo_compartir"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_like" />
+
+            <TextView
+                android:id="@+id/texto_Auspiciante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/videoImageView"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentStart="@id/imagen_consejo_like"
+                android:text="Auspiciante: "
+                android:textSize="20dp"
+                android:gravity="end"
+                />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="wrap_content"
+                android:layout_height="1.5dp"
+                android:background="#808080"
+                android:layout_below="@+id/texto_Auspiciante"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout>
+
+
+
+        <!-- Estructura Consejo sobre la App (Sin Video) -->
+        <!-- <RelativeLayout
+            android:id="@+id/rectangle_consejo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_blanco_recto">
+
+            <ImageView
+                android:id="@+id/imagen_consejo1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/foco_consejo" />
+
+            <TextView
+                android:id="@+id/texto_titulo_consejo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="2dp"
+                android:layout_toRightOf="@id/imagen_consejo1"
+                android:text="Su consejo diario de MediCAL!"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/cerrar_cruz1"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="-35dp"
+                android:layout_toRightOf="@id/texto_titulo_consejo1"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/cerrar_cruz_delgada" />
+
+            <TextView
+                android:id="@+id/texto_consejo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_titulo_consejo1"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="2dp"
+                android:text="¡Es fácil añadir un medicamento!
+                                            Pulse en “Leer” para obtener más información."
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/text_Leer_mas1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/texto_consejo1"
+                android:layout_marginLeft="250dp"
+                android:layout_alignBottom="@id/texto_consejo1"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/inter_regular"
+                android:text="Leer más"
+                android:textColor="@color/verdeClaro"
+                android:textSize="22sp" />
+            <View
+                android:layout_width="100dp"
+                android:layout_below="@id/text_Leer_mas1"
+                android:layout_height="1dp"
+                android:layout_alignParentStart="@id/text_Leer_mas1"
+                android:layout_toRightOf="@id/texto_consejo1"
+                android:layout_marginLeft="-230dp"
+                android:background="@color/verdeClaro" />
+
+            <ImageView
+                android:id="@+id/imagen_consejo_like1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/text_Leer_mas1"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_like" />
+
+            <TextView
+                android:id="@+id/texto_MediCAL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_Leer_mas1"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentStart="@id/imagen_consejo_like1"
+                android:text="MediCAL"
+                android:textSize="20dp"
+                android:gravity="end"
+                />
+
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#808080"
+                android:layout_below="@+id/texto_MediCAL1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout> -->
+
+        <!-- Estructura Consejo Salud y Bienestar (Sin Video) -->
+        <!-- <RelativeLayout
+            android:id="@+id/rectangle_consejo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/rectangle_consejo1"
+            android:background="@drawable/background_blanco_recto">
+
+            <ImageView
+                android:id="@+id/imagen_consejo2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/foto_salud" />
+
+            <TextView
+                android:id="@+id/texto_titulo_consejo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@id/imagen_consejo2"
+                android:text="Consejo sobre Salud y Bienestar"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/cerrar_cruz2"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="-35dp"
+                android:layout_toRightOf="@id/texto_titulo_consejo2"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/cerrar_cruz_delgada" />
+
+            <TextView
+                android:id="@+id/texto_consejo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_titulo_consejo2"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Dormir bien es muy importante. No dormir lo suficiente puede afectar tus hormonas, así como tu salud física y mental."
+                android:textSize="22dp" />
+
+
+            <ImageView
+                android:id="@+id/imagen_consejo_like2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/texto_consejo2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_like" />
+
+            <TextView
+                android:id="@+id/texto_MediCAL2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_consejo2"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentStart="@id/imagen_consejo_like2"
+                android:text="MediCAL"
+                android:textSize="20dp"
+                android:gravity="end"
+                />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#808080"
+                android:layout_below="@+id/texto_MediCAL2"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout> -->
+
+        <!-- Estructura Consejo Médico (Con Video) -->
+        <!-- <RelativeLayout
+            android:id="@+id/rectangle_consejo3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rectangle_consejo2"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_blanco_recto"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/texto_titulo_consejo3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="7 Cuidados básicos para personas con hipertensión"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/cerrar_cruz3"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="-35dp"
+                android:layout_toRightOf="@id/texto_titulo_consejo3"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/cerrar_cruz_delgada" />
+
+
+            <ImageView
+                android:id="@+id/videoImageView"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:scaleType="fitCenter"
+                android:layout_below="@id/texto_titulo_consejo3"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="5dp"/>
+
+            <ImageView
+                android:id="@+id/imagen_consejo_compartir_3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/videoImageView"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_compartir" />
+
+            <ImageView
+                android:id="@+id/imagen_consejo_like_3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/videoImageView"
+                android:layout_toRightOf="@id/imagen_consejo_compartir_3"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_like" />
+
+            <TextView
+                android:id="@+id/texto_auspiciante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/videoImageView"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentStart="@id/imagen_consejo_like_3"
+                android:text="Auspicia: Bagó"
+                android:textSize="20dp"
+                android:gravity="end"
+                />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#808080"
+                android:layout_below="@+id/texto_auspiciante"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </RelativeLayout> -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
