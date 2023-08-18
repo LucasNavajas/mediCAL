@@ -15,9 +15,10 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:clickable="true"
-        android:focusable="true"
+        android:focusable="false"
         android:src="@drawable/cerrar_cruz_delgada"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        />
 
     <ImageView
         android:id="@+id/imagen_medicina"
@@ -28,7 +29,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/medicina"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:focusable="false"/>
     <TextView
         android:id="@+id/text_login"
         android:layout_width="wrap_content"
@@ -39,7 +41,8 @@
         android:textColor="#FFF"
         android:layout_below="@id/imagen_medicina"
         android:layout_marginStart="30dp"
-        android:fontFamily="@font/inter_regular"/>
+        android:fontFamily="@font/inter_regular"
+        android:focusable="false"/>
 
     <RelativeLayout
         android:id="@+id/rectangle_top"
@@ -51,6 +54,7 @@
         android:background="@drawable/rounded_background">
 
         <RelativeLayout
+            android:id="@+id/barra_busqueda"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
@@ -58,15 +62,21 @@
             android:layout_marginEnd="20dp"
             android:background="@drawable/rectangulo_buscador">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <EditText
+                android:id="@+id/buscar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:text="Buscar"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="18sp" />
+                android:layout_marginEnd="35dp"
+                android:hint="Buscar"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:inputType="text"
+                android:backgroundTint="@android:color/transparent"
+                android:imeOptions="actionSearch"
+                />
 
 
             <ImageView
@@ -77,38 +87,58 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/icone_loupe_gris"
-                app:tint="@android:color/darker_gray" />
+                app:tint="@android:color/darker_gray"
+                android:focusable="false"/>
 
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barra_busqueda"
+            android:id="@+id/lista">
+        <ListView
+            android:id="@+id/listViewMedicamentos"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:focusable="false"/>
 
         <TextView
             android:id="@+id/text_buscar_medicamento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="75dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/inter_regular"
             android:text="Busque o escriba el nombre del medicamento."
             android:textColor="@color/verdeClaro"
-            android:textSize="18sp" />
-
+            android:textSize="18sp"
+            android:focusable="false"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/text_agregar_medicamento"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="87dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:layout_below="@id/lista"
             android:background="@android:color/transparent"
+            android:textAlignment="center"
             android:fontFamily="@font/inter_regular"
             android:text="Agregar Nuevo Medicamento"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/verdeClaro"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:focusable="false"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

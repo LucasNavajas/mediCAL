@@ -39,13 +39,6 @@ class SpringServerApplicationTestsAdministracionMed {
 		administracionmed.setFechaFinVigenciaAM(null);
 		administracionmed.setNombreAdministracionMed("De Forma Oral");
 		
-		medicamento.setAdministracionmed(administracionmed);
-		List<Medicamento> varmedicamento = new ArrayList<>();
-		varmedicamento.add(medicamento);
-		administracionmed.setVarmedicamento(varmedicamento);
-				
-		
-		System.out.println(administracionmed.getVarmedicamento());
 		administracionmedDao.save(administracionmed);
 	
 	}

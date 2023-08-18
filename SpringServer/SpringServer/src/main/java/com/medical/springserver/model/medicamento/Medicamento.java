@@ -30,11 +30,6 @@ public class Medicamento {
 	@OneToMany (mappedBy = "medicamento", cascade = CascadeType.ALL)
 	private List<Recordatorio> recordatorio;
 	
-	// Relacion adm medica
-	@ManyToOne
-	@JoinColumn(name = "codAdministracionMed")
-	private AdministracionMed administracionmed;
-	
 	public int getCodMedicamento() {
 		return codMedicamento;
 	}
@@ -77,17 +72,11 @@ public class Medicamento {
 		return "Medicamento [codMedicamento=" + codMedicamento + ", esParticular=" + esParticular
 				+ ", fechaAltaMedicamento=" + fechaAltaMedicamento + ", fechaFinVigenciaMed=" + fechaFinVigenciaMed
 				+ ", marcaMedicamento=" + marcaMedicamento + ", nombreMedicamento=" + nombreMedicamento
-				+ ", recordatorio=" + recordatorio + ", administracionmed=" + administracionmed + "]";
+				+ ", recordatorio=" + recordatorio + "]";
 	}
 	
 	// Relaciones
 	
-	public AdministracionMed getAdministracionmed() {
-		return administracionmed;
-	}
-	public void setAdministracionmed(AdministracionMed administracionmed) {
-		this.administracionmed = administracionmed;
-	}
 	public List<Recordatorio> getRecordatorio() {
 		return recordatorio;
 	}

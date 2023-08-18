@@ -26,4 +26,8 @@ public class MedicamentoDao {
 	public void delete(Medicamento medicamento) {
 		repository.delete(medicamento);
 	}
+	
+	public List<Medicamento> getAllMedicamentosGenericos(){
+		return repository.obtenerMedicamentosGenericos();
+	}
 }

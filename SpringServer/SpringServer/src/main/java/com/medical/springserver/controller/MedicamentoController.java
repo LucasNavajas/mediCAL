@@ -24,4 +24,9 @@ public class MedicamentoController {
 	public Medicamento save(@RequestBody Medicamento medicamento) {
 		return medicamentoDao.save(medicamento);
 	}
+	
+	@GetMapping("/medicamento/get-all-genericos")
+	public List<Medicamento> getAllMedicamentosGenericos(){
+		return medicamentoDao.getAllMedicamentosGenericos();
+	}
 }

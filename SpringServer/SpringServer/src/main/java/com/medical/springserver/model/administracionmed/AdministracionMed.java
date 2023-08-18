@@ -25,9 +25,6 @@ public class AdministracionMed {
 	private LocalDate fechaAltaAdministracionMed;
 	private LocalDate fechaFinVigenciaAM;
 	private String nombreAdministracionMed;
-	//relacion con medicamento
-	@OneToMany (mappedBy = "administracionmed", cascade = CascadeType.ALL)
-	private List<Medicamento> varmedicamento;
 	
 	//relacion con presentacion med
 	@OneToMany(mappedBy = "administracionMed", cascade = CascadeType.ALL)
@@ -71,12 +68,6 @@ public class AdministracionMed {
 				+ descAdministracionMed + ", fechaAltaAdministracionMed=" + fechaAltaAdministracionMed
 				+ ", fechaFinVigenciaAM=" + fechaFinVigenciaAM + ", nombreAdministracionMed=" + nombreAdministracionMed
 				+ "]";
-	}
-	public List<Medicamento> getVarmedicamento() {
-		return varmedicamento;
-	}
-	public void setVarmedicamento(List<Medicamento> varmedicamento) {
-		this.varmedicamento = varmedicamento;
 	}
 	
 	

@@ -5,6 +5,7 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +23,6 @@ import retrofit2.Response;
 public class ElegirAdministracionMedActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,8 @@ public class ElegirAdministracionMedActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadAdministracionMed();
+        ImageView botonVolver = findViewById(R.id.boton_volver);
+        botonVolver.setOnClickListener(view -> {onBackPressed();});
     }
 
     private void loadAdministracionMed() {
