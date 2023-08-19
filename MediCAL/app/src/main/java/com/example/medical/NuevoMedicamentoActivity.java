@@ -1,5 +1,7 @@
 package com.example.medical;
 
+import static android.content.Intent.ACTION_PICK;
+
 import android.app.Activity;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -110,19 +112,20 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
-                        if (intent.getAction() == null) {
+                        Uri selectedImageUri = intent.getData();
+                        if (selectedImageUri != null) {
+                            // Se seleccionó una imagen de la galería
+                            // Establecer la imagen seleccionada en el ImageView
+                            fotoMedicamento.setImageURI(selectedImageUri);
+
+                        } else {
                             // Load the captured image from the file
                             Bitmap imgBitmap = BitmapFactory.decodeFile(capturedPhotoFile.getAbsolutePath());
                             if (imgBitmap != null) {
                                 fotoMedicamento.setImageBitmap(imgBitmap);
                             }
-                        } else {
-                            // Se seleccionó una imagen de la galería
-                            Uri selectedImageUri = intent.getData();
-                            // Establecer la imagen seleccionada en el ImageView
-                            fotoMedicamento.setImageURI(selectedImageUri);
                         }
                     }
                 });
@@ -145,7 +148,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
     private void abrirSelectorImagen() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             // Si ya tienes el permiso de la cámara, abre el selector de imágenes
-            Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent pickImageIntent = new Intent(ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
             Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", capturedPhotoFile);
