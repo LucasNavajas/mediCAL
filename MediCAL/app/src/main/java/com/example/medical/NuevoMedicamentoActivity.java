@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,7 +70,24 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
 
         siguiente.setOnClickListener(view -> {
             Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
-            new ImageProcessingTask().execute(imagenBitmap);
+            String nombreMedicamentoString = nombreMedicamento.getText().toString();
+            String marcaMedicamentoString = marcaMedicamento.getText().toString();
+            medicamento.setImagen(bitmapToBase64(imagenBitmap));
+            medicamento.setMarcaMedicamento(marcaMedicamentoString);
+            medicamento.setNombreMedicamento(nombreMedicamentoString);
+            medicamento.setEsParticular(true);
+            medicamento.setFechaAltaMedicamento(LocalDate.now());
+            medicamentoApi.saveMedicamento(medicamento).enqueue(new Callback<Medicamento>() {
+                @Override
+                public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
+                    Toast.makeText(NuevoMedicamentoActivity.this, "Medicamento creado", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Medicamento> call, Throwable t) {
+                    Toast.makeText(NuevoMedicamentoActivity.this, "Error de medicamento creado", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         });
 
@@ -143,41 +161,12 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
         }
     }
 
-    public static byte[] bitmapToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
-    private class ImageProcessingTask extends AsyncTask<Bitmap, Void, byte[]> {
-        @Override
-        protected byte[] doInBackground(Bitmap... bitmaps) {
-            Bitmap imageBitmap = bitmaps[0];
-            return bitmapToByteArray(imageBitmap);
-        }
+    public static String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-        @Override
-        protected void onPostExecute(byte[] bytes) {
-            // Aquí puedes continuar con la creación y envío del objeto Medicamento con la imagen
-            medicamento.setImagen(bytes);
-            String nombreMedicamentoString = nombreMedicamento.getText().toString();
-            String marcaMedicamentoString = marcaMedicamento.getText().toString();
-
-            medicamento.setMarcaMedicamento(marcaMedicamentoString);
-            medicamento.setNombreMedicamento(nombreMedicamentoString);
-            medicamento.setEsParticular(true);
-            medicamento.setFechaAltaMedicamento(LocalDate.now());
-            medicamentoApi.saveMedicamento(medicamento).enqueue(new Callback<Medicamento>() {
-                @Override
-                public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
-                    Toast.makeText(NuevoMedicamentoActivity.this, "Medicamento creado", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(Call<Medicamento> call, Throwable t) {
-                    Toast.makeText(NuevoMedicamentoActivity.this, "Error de medicamento creado", Toast.LENGTH_SHORT).show();
-                }
-            });
-            // ...
-        }
+// Codifica el arreglo de bytes en una cadena Base64.
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }

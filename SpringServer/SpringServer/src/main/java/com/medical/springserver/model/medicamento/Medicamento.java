@@ -30,7 +30,7 @@ public class Medicamento {
 	
 	@Lob
     @Column(columnDefinition = "LONGBLOB")
-    private byte[] imagen;
+    private String imagen;
 	// Relacion con Recordatorio
 	@OneToMany (mappedBy = "medicamento", cascade = CascadeType.ALL)
 	private List<Recordatorio> recordatorio;
@@ -89,11 +89,11 @@ public class Medicamento {
 		this.recordatorio = recordatorio;
 	}
 	
-	  public byte[] getImagen() {
+	  public String getImagen() {
 	        return imagen;
 	    }
 
-	    public void setImagen(byte[] imagen) {
+	    public void setImagen(String imagen) {
 	        this.imagen = imagen;
 	    }
 
