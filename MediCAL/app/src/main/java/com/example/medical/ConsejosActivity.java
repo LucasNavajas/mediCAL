@@ -35,11 +35,8 @@ import android.annotation.SuppressLint;
 
 import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.adapter.ConsejoAdapter;
-import com.example.medical.adapter.FaqAdapter;
 import com.example.medical.model.Consejo;
-import com.example.medical.model.FAQ;
 import com.example.medical.retrofit.ConsejoApi;
-import com.example.medical.retrofit.FAQApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

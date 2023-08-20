@@ -2,6 +2,7 @@ package com.medical.springserver.model.tipoconsejo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.consejo.Consejo;
 
 
@@ -20,6 +21,7 @@ public class TipoConsejo {
 	private String nombreTipoConsejo;
 
 	@OneToMany (mappedBy = "tipoconsejo", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Consejo> varconsejo;
 
 	

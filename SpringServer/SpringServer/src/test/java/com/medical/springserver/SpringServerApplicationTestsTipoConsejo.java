@@ -47,7 +47,7 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo.setLinkConsejo("www.youtube.com");
 		consejo.setFechaAltaConsejo(fechaHoy);
 		consejo.setDescConsejo("Dormir bien es muy importante. No dormir lo suficiente puede afectar tus hormonas, así como tu salud física y mental.");
-		consejo.setTipoconsejo(tipoConsejo2);
+		consejo.setTipoConsejo(tipoConsejo2);
 		consejoDao.save(consejo);
 		
 		
@@ -57,7 +57,7 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo2.setLinkConsejo("www.youtube.com");
 		consejo2.setFechaAltaConsejo(fechaHoy);
 		consejo2.setDescConsejo("7 Cuidados básicos para personas con hipertensión.");
-		consejo2.setTipoconsejo(tipoConsejo);
+		consejo2.setTipoConsejo(tipoConsejo);
 		consejoDao.save(consejo2);
 		
 		//System.out.println(tipoConsejo.getVarconsejo());
