@@ -80,6 +80,12 @@
         <activity android:name=".ElegirFrecuenciaActivity"></activity>
         <activity android:name=".FrecuenciaxciclosActivity"></activity>
         <activity android:name=".FrecuenciaxdiasActivity"></activity>
+        <activity android:name=".AnadirSintomaActivity"></activity>
+        <activity android:name=".AnadirMedicionActivity"></activity>
+        <activity android:name=".AgregarSeguimientoActivity"></activity>
+        <activity android:name=".ElegirSeguimientoActivity"></activity>
+        <activity android:name=".EstablecerMedicionActivity"></activity>
+        <activity android:name=".CambiarFechaHoraActivity"></activity>
         <activity android:name=".FrecuenciaxhorasActivity"></activity>
         <activity android:name=".FrecuenciaxmesesActivity"></activity>
         <activity android:name=".FrecuenciaxnecesidadActivity"></activity>

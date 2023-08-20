@@ -35,7 +35,7 @@
             android:layout_toEndOf="@id/boton_volver"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
-            android:text="Medición"
+            android:text="Añadir Síntoma"
             android:fontFamily="@font/inter_medium"
             android:textSize="26sp"
             android:textColor="#FFF" />

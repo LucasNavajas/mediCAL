@@ -61,18 +61,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/editText_buscar"
+                    android:layout_width="324dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/inter_regular"
-                    android:text="Buscar"
-                    android:textColor="@color/black"
+                    android:hint="Buscar"
+                    android:maxLength="20"
+                    android:textColor="#000"
+                    android:imeOptions="actionSearch"
                     android:textSize="22sp" />
 
                 <ImageView
+                    android:id="@+id/lupa_buscar"
                     android:layout_width="35dp"
                     android:layout_height="29dp"
                     android:layout_alignParentEnd="true"
@@ -87,118 +91,76 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/parte_blanca_buscada"
             android:layout_width="match_parent"
-            android:layout_height="664dp"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             android:padding="10dp">
 
-            <TextView
-                android:id="@+id/texto_medicionescomunes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Mediciones más comunes"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="@color/verdeTextos"
-                android:textSize="22sp" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/texto_presionart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/texto_medicionescomunes"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/inter_regular"
-                android:text="Presión arterial"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/texto_frec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:text="Frecuencia cardíaca en reposo"
-                android:layout_below="@+id/texto_presionart"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-            <TextView
-                android:id="@+id/texto_peso"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Peso"
-                android:layout_below="@+id/texto_frec"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-            <TextView
-                android:id="@+id/texto_glucosa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:text="Glucosa en sangre"
-                android:layout_below="@+id/texto_peso"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
+                    <TextView
+                        android:id="@+id/texto_medicionescomunes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Mediciones más comunes"
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/verdeTextos"
+                        android:textSize="22sp" />
 
-            <TextView
-                android:id="@+id/texto_todasmediciones"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="10dp"
-                android:text="Todas las mediciones"
-                android:layout_below="@+id/texto_glucosa"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="@color/verdeTextos"
-                android:textSize="22sp" />
+                    <ListView
+                        android:id="@+id/lista_mediciones_comunes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/texto_medicionescomunes"
+                        android:layout_marginTop="8dp"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="1dp" />
 
-            <TextView
-                android:id="@+id/texto_aferesis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="10dp"
-                android:text="Aféresis"
-                android:layout_below="@+id/texto_todasmediciones"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-            <TextView
-                android:id="@+id/texto_capvital"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Capacidad Vital"
-                android:layout_below="@+id/texto_aferesis"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
-            <TextView
-                android:id="@+id/texto_circunferenciacintura"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:text="Circunferencia de la cintura"
-                android:layout_below="@+id/texto_capvital"
-                android:fontFamily="@font/inter_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp" />
+                    <TextView
+                        android:id="@+id/texto_todasmediciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="10dp"
+                        android:text="Todas las mediciones"
+                        android:layout_below="@id/lista_mediciones_comunes"
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/verdeTextos"
+                        android:textSize="22sp" />
+
+                    <ListView
+                        android:id="@+id/lista_todas_mediciones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/texto_todasmediciones"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="1dp" />
 
 
+                    <TextView
+                        android:id="@+id/textView_no_encontrado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_centerInParent="true"
+                        android:text="No se encuentra el síntoma ingresado"
+                        android:textColor="@color/rojoEliminar"
+                        android:textSize="22sp"
+                        android:visibility="gone" />
 
-
-
+                </LinearLayout>
+            </ScrollView>
         </RelativeLayout>
+
 
     </LinearLayout>
 

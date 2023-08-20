@@ -60,6 +60,14 @@ public class AnadirSintomaActivity extends AppCompatActivity {
 
         obtenerSintomasDesdeApi();
 
+        // Configura el clic de la flecha hacia atrás
+        findViewById(R.id.boton_volver).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Vuelve a la pantalla anterior (Puede ser tu pantalla 73)
+                onBackPressed();
+            }
+        });
 
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.editText_buscar);
         ImageView lupaImageView = findViewById(R.id.lupa_buscar);
@@ -109,8 +117,8 @@ public class AnadirSintomaActivity extends AppCompatActivity {
                     List<Sintoma> sintomas = response.body();
 
                     for (Sintoma sintoma : sintomas) {
-                        agregarCheckBoxYSintoma(sintoma); // No es necesario pasar el linearLayout aquí
-                        codigosSintomasExistentes.add(sintoma.getCodSintoma()); // Agregar códigos existentes a la lista
+                        agregarCheckBoxYSintoma(sintoma);
+                        codigosSintomasExistentes.add(sintoma.getCodSintoma());
                     }
                 }
             }
@@ -140,7 +148,7 @@ public class AnadirSintomaActivity extends AppCompatActivity {
                     boolean sintomaEncontrado = false; // Variable para rastrear si se encontró un síntoma
 
                     for (Sintoma sintoma : sintomas) {
-                        if (!sintoma.tieneFechaAlta() && sintoma.getNombreSintoma().toLowerCase().contains(searchText.toLowerCase())) {
+                        if (sintoma.getNombreSintoma().toLowerCase().contains(searchText.toLowerCase())) {
                             agregarCheckBoxYSintoma(sintoma);
                             sintomaEncontrado = true; // Se encontró al menos un síntoma
                         }
@@ -163,7 +171,6 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         });
     }
 
-
     private void mostrarNoEncontrado() {
         TextView textViewNoEncontrado = findViewById(R.id.textView_no_encontrado);
         textViewNoEncontrado.setVisibility(View.VISIBLE); // Mostrar el mensaje
@@ -176,7 +183,9 @@ public class AnadirSintomaActivity extends AppCompatActivity {
 
 
 
+
     private void agregarCheckBoxYSintoma(Sintoma sintoma) {
+        // Crear un nuevo LinearLayout para cada síntoma
         LinearLayout linearLayout = new LinearLayout(AnadirSintomaActivity.this);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -193,8 +202,6 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         int checkBoxId = View.generateViewId(); // Generar un ID único para el CheckBox
         checkBox.setId(checkBoxId);
         checkBoxIds.add(checkBoxId); // Agregar el ID a la lista
-
-        linearLayout.addView(checkBox);
 
         // Crear un TextView para mostrar el nombre del síntoma
         TextView textView = new TextView(AnadirSintomaActivity.this);
@@ -222,9 +229,10 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         textView.setLinkTextColor(ContextCompat.getColor(AnadirSintomaActivity.this, R.color.verdeTextos));
         textView.setTypeface(ResourcesCompat.getFont(AnadirSintomaActivity.this, R.font.inter_regular));
 
+        linearLayout.addView(checkBox);
         linearLayout.addView(textView);
 
-        lineargrande.addView(linearLayout);
+        lineargrande.addView(linearLayout); // Agregar el LinearLayout a la vista principal
     }
 
 
@@ -306,3 +314,4 @@ public class AnadirSintomaActivity extends AppCompatActivity {
     }
 
 }
+

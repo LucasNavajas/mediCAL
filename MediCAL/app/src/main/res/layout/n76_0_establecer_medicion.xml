@@ -99,6 +99,7 @@
             android:background="#808080" />
 
         <LinearLayout
+            android:id="@+id/layout_hora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_unidad"
@@ -107,11 +108,13 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/imagen_reloj"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/reloj_medicion" />
 
             <TextView
+                android:id="@+id/texto_fecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hoy, 22 may"
@@ -123,6 +126,7 @@
                 android:paddingStart="10dp" />
 
             <TextView
+                android:id="@+id/texto_hora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20:35"

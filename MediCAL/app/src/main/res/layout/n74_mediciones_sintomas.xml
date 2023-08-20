@@ -59,11 +59,13 @@
             android:padding="10dp">
 
             <FrameLayout
+                android:id="@+id/todo_medicion"
                 android:layout_width="match_parent"
                 android:layout_height="136dp">
 
                 <ImageView
-                    android:layout_width="351dp"
+                    android:id="@+id/imagen_medicion"
+                    android:layout_width="395dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
@@ -113,11 +115,13 @@
             android:padding="10dp">
 
             <FrameLayout
+                android:id="@+id/todo_Sintoma"
                 android:layout_width="match_parent"
                 android:layout_height="136dp">
 
                 <ImageView
-                    android:layout_width="351dp"
+                    android:id="@+id/imagen_Sintoma"
+                    android:layout_width="395dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
