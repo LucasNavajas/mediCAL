@@ -28,11 +28,11 @@ public class CambiarFechaHoraActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Mostrar el DatePicker para cambiar la fecha
-                showDatePickerDialog();
+                //showDatePickerDialog();
             }
         });
 
-        // Configurar clic en el botón ACEPTAR para obtener la fecha seleccionada y cerrar la actividad
+       // Configurar clic en el botón ACEPTAR para obtener la fecha seleccionada y cerrar la actividad
         TextView aceptarTextView = findViewById(R.id.aceptar);
         aceptarTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,4 +89,4 @@ public class CambiarFechaHoraActivity extends AppCompatActivity {
         }, year, month, day);
         datePickerDialog.show();
     }
-}
+    }

@@ -2,6 +2,7 @@ package com.medical.springserver.model.sintoma;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
 
@@ -22,6 +23,7 @@ public class Sintoma {
 	private String nombreSintoma;
 	//relacion con calendariosintoma
 	@OneToMany (mappedBy = "sintoma", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<CalendarioSintoma> varcalendariosintoma;
 	
 	public int getCodSintoma() {

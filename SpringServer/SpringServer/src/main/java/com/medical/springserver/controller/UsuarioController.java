@@ -2,9 +2,7 @@ package com.medical.springserver.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacionDao;
 import com.medical.springserver.model.usuario.Usuario;

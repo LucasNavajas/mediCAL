@@ -20,7 +20,7 @@ public class SintomaController {
 		return sintomaDao.getAllSintomas();
 	}
 	
-	@PostMapping("/sintoma/get-all")
+	@PostMapping("/sintoma/save")
 	public Sintoma save(@RequestBody Sintoma sintoma) {
 		return sintomaDao.save(sintoma);
 	}

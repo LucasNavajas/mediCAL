@@ -117,21 +117,8 @@ class SpringServerApplicationTestsSintoma {
 
 		
 		
-		// ¿Está bien que navegue desde Sintoma hacia CalendarioSintoma?
-				
-		// instancia de CalendarioSintoma
-		CalendarioSintoma calendariosintoma = new CalendarioSintoma();
-		calendariosintoma.setFechaCalendarioSintoma(fechaHoy);
-		calendariosintoma.setFechaFinVigenciaCS(null);
-		
-		calendariosintoma.setSintoma(sintoma);
-		List<CalendarioSintoma> varcalendariosintoma = new ArrayList<>();
-		varcalendariosintoma.add(calendariosintoma);
-		sintoma.setVarcalendariosintoma(varcalendariosintoma);
 		
 		
-		
-		System.out.println(sintoma.getVarcalendariosintoma());
 		System.out.println(ansiedad.getVarcalendariosintoma());
 		sintomaDao.save(sintoma);
 		sintomaDao.save(ansiedad);
@@ -151,6 +138,7 @@ class SpringServerApplicationTestsSintoma {
 		sintomaDao.save(gratitud);
 		sintomaDao.save(indiferencia);
 		
+		System.out.println(sintomaDao.getAllSintomas());
 	}
 	
 	//@Test

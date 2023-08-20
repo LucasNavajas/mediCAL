@@ -2,6 +2,7 @@ package com.medical.springserver.model.medicion;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 
 
@@ -24,6 +25,7 @@ public class Medicion {
 	
 	// Relacion con CalendarioMedicion
 	@OneToMany (mappedBy = "medicion", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<CalendarioMedicion> calendariomed;
 	
 	public List<CalendarioMedicion> getCalendariomed() {

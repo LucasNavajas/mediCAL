@@ -8,7 +8,6 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class MedicionDao {
 	@Autowired
 	private MedicionRepository repository;

@@ -133,7 +133,7 @@ public class AnadirSintomaActivity extends AppCompatActivity {
     }
 
 
-    private void buscarSintomas(String searchText) {
+   private void buscarSintomas(String searchText) {
         Call<List<Sintoma>> call = sintomaApi.getAllSintomas();
 
         call.enqueue(new Callback<List<Sintoma>>() {
