@@ -107,12 +107,12 @@ public class Consejo {
 	}
 
 
-	public TipoConsejo getTipoconsejo() {
+	public TipoConsejo getTipoConsejo() {
 		return tipoconsejo;
 	}
 
 
-	public void setTipoconsejo(TipoConsejo tipoconsejo) {
+	public void setTipoConsejo(TipoConsejo tipoconsejo) {
 		this.tipoconsejo = tipoconsejo;
 	}
 

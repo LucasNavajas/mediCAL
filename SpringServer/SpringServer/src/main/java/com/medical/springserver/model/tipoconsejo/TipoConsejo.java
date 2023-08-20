@@ -51,13 +51,13 @@ public class TipoConsejo {
 
 
 
-	public List<Consejo> getVarconsejo() {
+	public List<Consejo> getVarConsejo() {
 		return varconsejo;
 	}
 
 
 
-	public void setVarconsejo(List<Consejo> varconsejo) {
+	public void setVarConsejo(List<Consejo> varconsejo) {
 		this.varconsejo = varconsejo;
 	}
 
