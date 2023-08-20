@@ -12,8 +12,6 @@ import retrofit2.http.Query;
 public interface SintomaApi {
     @GET("/sintoma/get-all")
     Call<List<Sintoma>> getAllSintomas();
-    @GET("/sintoma/getNombresSintomasSinFechaAlta")
-    Call<List<String>> obtenerNombresSintomasSinFechaAlta();
 
     @POST("/sintoma/save")
     Call<Sintoma> saveSintoma(@Body Sintoma sintoma);
