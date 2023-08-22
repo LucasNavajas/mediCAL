@@ -167,4 +167,8 @@ public class UsuarioController {
     }
     return null;
 }
+	@PostMapping("/usuario/eliminar/{codUsuario}")
+	public void eliminarUsuario(@PathVariable int codUsuario, @RequestBody String motivoFinVigencia) throws FirebaseAuthException {
+		usuarioDao.eliminarUsuario(codUsuario, motivoFinVigencia);
+	}
 }

@@ -44,6 +44,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -65,7 +67,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RecyclerView calendarRecyclerView;
     private TextView nombreUsuario;
     private PopupWindow popupWindow;
-    private RelativeLayout consejos;
+    private LinearLayout consejos;
     private RelativeLayout editarPerfil;
     private RelativeLayout cerrarSesion;
     private RelativeLayout calendarioNuevo;
@@ -85,6 +87,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private ImageView menuButton;
     private ImageView menuButtonUsuario;
     private LinearLayout contenedorCalendariosContactos;
+    private RelativeLayout eliminarCuenta;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
@@ -191,6 +194,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
+        eliminarCuenta.setOnClickListener(view ->{
+            popupEliminarCuenta();
+        });
     }
 
 
@@ -247,6 +253,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         contactoNuevo = findViewById(R.id.contacto_nuevo);
         contenedorCalendariosContactos = findViewById(R.id.contenedor_calendarios_contactos);
+        eliminarCuenta = findViewById(R.id.eliminar_cuenta);
         llenarListaCalendarios();
         llenarEstadosSolicitud();
     }
@@ -749,6 +756,97 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onFailure(Call<Solicitud> call, Throwable t) {
                 Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al aceptar/rechazar la solicitud", Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    public void popupEliminarCuenta(){
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        View popupView = getLayoutInflater().inflate(R.layout.n14_1_popup_eliminar_cuenta, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+
+        aceptar.setOnClickListener(view ->{
+            popupMotivoEliminacion();
+            popupWindow.dismiss();
+        });
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+    }
+
+    private void popupMotivoEliminacion() {
+        View popupView = getLayoutInflater().inflate(R.layout.n14_2_popup_motivo_finvigencia, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        EditText motivo = popupView.findViewById(R.id.textEdit_motivo);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+
+        aceptar.setOnClickListener(view ->{
+            String textMotivo = motivo.getText().toString();
+            usuarioApi.eliminarUsuario(codUsuarioLogeado, textMotivo).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(InicioCalendarioActivity.this, BienvenidoActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(InicioCalendarioActivity.this, "Error al eliminar la cuenta, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        });
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
         });
     }
 

@@ -26,4 +26,9 @@ public class HistorialFinVigenciaController {
 	public HistorialFinVigencia save(@RequestBody HistorialFinVigencia historialfinvigencia){
 		return historialfinvigenciaDao.save(historialfinvigencia);
 	}
+	
+	@GetMapping("/historialfinvigencia/{codUsuario}")
+	public List<HistorialFinVigencia> findByCodUsuario(@PathVariable int codUsuario){
+		return historialfinvigenciaDao.findByCodUsuario(codUsuario);
+	}
 }

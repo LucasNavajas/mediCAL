@@ -18,8 +18,10 @@ import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.retrofit.CodigoVerificacionApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class CrearCuenta2Activity extends AppCompatActivity {
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private Intent intent1;
     private RetrofitService retrofitService;
     private CodigoVerificacionApi codigoVerificacionApi;
@@ -114,4 +116,9 @@ public class CrearCuenta2Activity extends AppCompatActivity {
         return !(TextUtils.isEmpty(nombre) || TextUtils.isEmpty(apellido) || TextUtils.isEmpty(telefono));
     }
 
+    @Override
+    public void onDestroy() {
+        mAuth.signOut();
+        super.onDestroy();
+    }
 }

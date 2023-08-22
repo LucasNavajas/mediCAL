@@ -8,7 +8,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class CrearCuenta3_1Activity extends AppCompatActivity {
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,5 +62,9 @@ public class CrearCuenta3_1Activity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onDestroy() {
+        mAuth.signOut();
+        super.onDestroy();
+    }
 }
