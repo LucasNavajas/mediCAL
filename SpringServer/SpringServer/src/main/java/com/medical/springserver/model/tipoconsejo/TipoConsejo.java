@@ -48,23 +48,6 @@ public class TipoConsejo {
 		this.nombreTipoConsejo = nombreTipoConsejo;
 	}
 
-
-
-
-
-
-	public List<Consejo> getVarConsejo() {
-		return varconsejo;
-	}
-
-
-
-	public void setVarConsejo(List<Consejo> varconsejo) {
-		this.varconsejo = varconsejo;
-	}
-
-
-
 	@Override
 	public String toString() {
 		return "TipoConsejo [ nroTipoConsejo=" +  nroTipoConsejo + ", nombreTipoConsejo=" + nombreTipoConsejo + "]";

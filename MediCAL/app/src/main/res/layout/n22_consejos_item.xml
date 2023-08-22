@@ -91,7 +91,8 @@
                 android:scaleType="fitCenter"
                 android:layout_below="@id/text_Leer_mas"
                 android:layout_marginTop="1dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                />
 
             <ImageView
                 android:id="@+id/imagen_consejo_compartir"

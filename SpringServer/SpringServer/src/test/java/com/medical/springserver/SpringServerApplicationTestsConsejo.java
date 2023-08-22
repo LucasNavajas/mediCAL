@@ -45,7 +45,6 @@ class SpringServerApplicationTestsConsejo {
 		
 		consejo.setTipoConsejo(tipoConsejo3);
 		consejoDao.save(consejo);
-		tipoConsejo3.setVarConsejo(consejos);
 		tipoConsejoDao.save(tipoConsejo3);		
 				
 	}

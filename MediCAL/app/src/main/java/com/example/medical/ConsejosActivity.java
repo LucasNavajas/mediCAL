@@ -51,7 +51,7 @@ public class ConsejosActivity extends AppCompatActivity {
 
         private ImageView menuButton;
         private TextView nombreUsuario;
-        private RelativeLayout casa_inicio;
+        private LinearLayout casa_inicio;
         private ImageView menuButtonUsuario;
         private RelativeLayout editarPerfil;
         private RelativeLayout restablecerContrasenia;
@@ -161,12 +161,12 @@ public class ConsejosActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<List<Consejo>> call, Throwable t) {
                             Log.d("ConsejoActivity", "no carga");
-                            Toast.makeText(ConsejosActivity.this, "Fallo en cargar FAQs", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ConsejosActivity.this, "Fallo en la base de datos", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
 
-        private <ConsejoActivity> void populateListView(List<Consejo> consejoList) {
+        private void populateListView(List<Consejo> consejoList) {
             if (consejoList != null && !consejoList.isEmpty()) {
                 Log.d("ConsejoActivity", "la populo en la list");
                 ConsejoAdapter consejoAdapter = new ConsejoAdapter (consejoList);
@@ -190,7 +190,7 @@ public class ConsejosActivity extends AppCompatActivity {
             cerrarSesion = findViewById(R.id.cerrar_sesion);
             soporte = findViewById(R.id.soporte);
 
-            casa_inicio = findViewById(R.id.casa_inicio);
+            casa_inicio = findViewById(R.id.inicio);
             menuButton = findViewById(R.id.menu_button);
             menuButtonUsuario = findViewById(R.id.menu_button_nav);
 

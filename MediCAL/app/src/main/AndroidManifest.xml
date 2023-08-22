@@ -44,6 +44,8 @@
         <activity
             android:name=".ElegirPresentacionMedActivity"
             android:exported="false"/>
+        <activity android:name=".ConsejosActivity"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

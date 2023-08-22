@@ -3,8 +3,8 @@ package com.medical.springserver.model.consejo;
 //import java.awt.Image;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.tipoconsejo.TipoConsejo;
-import com.medical.springserver.model.usuario.Usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,11 +22,13 @@ public class Consejo {
 	private String linkConsejo;
 	private boolean likeConsejo;
 	private String descConsejo;
+	private String auspiciante;
 	private LocalDate fechaAltaConsejo;
 	//private Image fotoConsejo;
 	
 	@ManyToOne
 	@JoinColumn(name = "nroTipoConsejo")
+	@JsonIgnore
 	private TipoConsejo tipoconsejo;
 	
 	public int getNroConsejo() {
@@ -114,6 +116,16 @@ public class Consejo {
 
 	public void setTipoConsejo(TipoConsejo tipoconsejo) {
 		this.tipoconsejo = tipoconsejo;
+	}
+
+
+	public String getAuspiciante() {
+		return auspiciante;
+	}
+
+
+	public void setAuspiciante(String auspiciante) {
+		this.auspiciante = auspiciante;
 	}
 
 
