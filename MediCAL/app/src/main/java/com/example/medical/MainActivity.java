@@ -11,6 +11,7 @@ import com.example.medical.model.Calendario;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.AdministracionMedApi;
 import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.ConsejoApi;
 import com.example.medical.retrofit.FAQApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
@@ -43,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
                     redirigirUsuario(usuario.getEmail());
                 }
                 else {
+
                     Intent intent = new Intent(MainActivity.this, ElegirSeguimientoActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
-                    startActivity(intent);
+
+      startActivity(intent);
                     finish();
                 }
             }
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         RetrofitService retrofitService = new RetrofitService();
         FAQApi faqApi = retrofitService.getRetrofit().create(FAQApi.class);
         AdministracionMedApi administracionMedApi= retrofitService.getRetrofit().create(AdministracionMedApi.class);
+        ConsejoApi consejoApi = retrofitService.getRetrofit().create(ConsejoApi.class);
     }
 
     private void redirigirUsuario(String mail) {

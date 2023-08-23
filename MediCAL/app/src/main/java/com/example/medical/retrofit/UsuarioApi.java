@@ -58,4 +58,7 @@ public interface UsuarioApi {
     @GET("/usuario/buscar-mail-y-usuario")
     Call<Usuario> buscarUsuariosPorMailYUser(@Query("usuarioTexto") String usuarioTexto);
 
+    @POST("/usuario/eliminar/{codUsuario}")
+    Call<Void> eliminarUsuario(@Path("codUsuario") int codUsuario, @Body String motivoFinVigencia);
+
 }

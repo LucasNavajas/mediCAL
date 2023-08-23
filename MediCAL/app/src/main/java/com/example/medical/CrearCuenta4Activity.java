@@ -33,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CrearCuenta4Activity extends AppCompatActivity {
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,5 +128,9 @@ public class CrearCuenta4Activity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        mAuth.signOut();
+        super.onDestroy();
+    }
 }

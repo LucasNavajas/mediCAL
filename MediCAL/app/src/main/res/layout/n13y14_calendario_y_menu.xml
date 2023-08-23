@@ -282,6 +282,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/consejos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -289,7 +290,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
-                    android:id="@id/consejos"
+                    android:id="@+id/imagen_consejos"
                     android:layout_width="45dp"
                     android:layout_height="50dp"
                     android:src="@drawable/consejos"

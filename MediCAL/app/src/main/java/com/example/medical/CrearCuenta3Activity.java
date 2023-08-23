@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class CrearCuenta3Activity extends AppCompatActivity {
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,10 @@ public class CrearCuenta3Activity extends AppCompatActivity {
         });
 
     }
-
+    @Override
+    public void onDestroy() {
+        mAuth.signOut();
+        super.onDestroy();
+    }
 
 }

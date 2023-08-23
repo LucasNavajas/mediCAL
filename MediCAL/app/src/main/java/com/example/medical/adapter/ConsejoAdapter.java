@@ -18,14 +18,14 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
 
     private List<Consejo> consejoList;
 
-    public ConsejoAdapter(List<Consejo> faqList) {
+    public ConsejoAdapter(List<Consejo> consejoList) {
         this.consejoList = consejoList;
     }
 
     @NonNull
     @Override
     public ConsejoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.n22_consejos, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.n22_consejos_item, parent, false);
         return new ConsejoViewHolder(view);
     }
 
