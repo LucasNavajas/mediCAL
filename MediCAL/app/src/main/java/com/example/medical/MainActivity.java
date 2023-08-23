@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     redirigirUsuario(usuario.getEmail());
                 }
                 else {
-                    Intent intent = new Intent(MainActivity.this, AnadirMedicionActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
+                    Intent intent = new Intent(MainActivity.this, ElegirSeguimientoActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
                     startActivity(intent);
                     finish();
                 }

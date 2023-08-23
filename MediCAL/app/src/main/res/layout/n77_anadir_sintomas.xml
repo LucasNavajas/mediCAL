@@ -100,10 +100,23 @@
             android:background="@android:color/white"
             android:padding="25dp">
 
+            <TextView
+                android:id="@+id/textView_no_encontrado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_centerInParent="false"
+                android:gravity="center_vertical"
+                android:text="No se encuentra el síntoma ingresado"
+                android:textColor="@color/rojoEliminar"
+                android:textSize="22sp"
+                android:visibility="gone" />
+
             <!-- Agregar un ScrollView para permitir desplazamiento si hay muchos elementos -->
             <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/scroll"
+                android:layout_width="330dp"
+                android:layout_height="565dp">
 
                 <LinearLayout
                     android:id="@+id/lineargrande"
@@ -117,8 +130,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:orientation="horizontal"
-                        android:gravity="top">
+                        android:gravity="top"
+                        android:orientation="horizontal">
 
 
                     </LinearLayout>
@@ -129,10 +142,12 @@
             <Button
                 android:id="@+id/button_guardar"
                 android:layout_width="300dp"
+                android:layout_below="@id/scroll"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="529dp"
+                android:layout_marginTop="605dp"
                 android:layout_marginBottom="60dp"
+                android:layout_alignParentBottom="false"
                 android:background="@drawable/boton_redondo_verde"
                 android:focusable="false"
                 android:fontFamily="@font/inter_bold"
@@ -144,17 +159,6 @@
                 android:textAppearance="@style/CustomButtonText"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView_no_encontrado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_centerInParent="true"
-                android:text="No se encuentra el síntoma ingresado"
-                android:textColor="@color/rojoEliminar"
-                android:textSize="22sp"
-                android:visibility="gone" />
 
 
         </RelativeLayout>
