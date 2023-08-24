@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/nombre_usuario"
+            android:id="@+id/nombre"
             android:text="NombreUsuario"
             android:textSize="25sp"
             android:layout_marginTop="20dp"
@@ -203,6 +203,7 @@
             >
 
             <LinearLayout
+                android:id="@+id/inicio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -210,6 +211,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
+                    android:id="@+id/imageninicio"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/casa_inicio"
@@ -228,6 +230,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/seccionconsejos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -235,6 +238,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
+                    android:id="@+id/imagenconsejos"
                     android:layout_width="45dp"
                     android:layout_height="50dp"
                     android:src="@drawable/consejos"
@@ -253,6 +257,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/seccionmedicamentos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -278,6 +283,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/mas"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -305,5 +311,371 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+
+    <View
+        android:id="@+id/dim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+    <!-- Menú hamburguesa -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/menu_button_nav"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/user"
+                android:padding="8dp"
+                android:clickable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Abrir menú" />
+
+            <TextView
+                android:id="@+id/nombre_usuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NombreUsuario"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/menu_button_nav"
+                android:layout_alignTop="@id/menu_button_nav"
+                android:layout_alignBottom="@id/menu_button_nav"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/inter_medium" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp"
+                android:background="@color/gris_medical" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/editar_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+                        <ImageView
+                            android:id="@+id/editar_perfil_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/lapiz_editar"
+                            android:layout_marginStart="20dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/editar_perfil_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Editar Perfil"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@id/editar_perfil_imagen"
+                            android:layout_alignTop="@id/editar_perfil_imagen"
+                            android:layout_alignBottom="@id/editar_perfil_imagen"
+                            android:fontFamily="@font/inter_regular" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/restablecer_contrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/restablecer_contrasenia_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/candado"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/restablecer_contrasenia_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Restablecer Contraseña"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:layout_toEndOf="@id/restablecer_contrasenia_imagen"
+                            />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <TextView
+                        android:id="@+id/titulo_mis_calendarios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mis calendarios"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/gris_medical"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/contenedor_calendarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/calendario_nuevo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/calendario_nuevo_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/agregar_perfil"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/calendario_nuevo_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Añadir calendario"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/calendario_nuevo_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <TextView
+                        android:id="@+id/titulo_contactos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contactos Vinculados"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/gris_medical"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="20dp"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/contenedor_calendarios_contactos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/contacto_nuevo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/contacto_nuevo_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/agregar_perfil"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/contacto_nuevo_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Añadir contacto"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/contacto_nuevo_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/gestionar_contactos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/gestionar_contactos_imagen"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/contactos"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/gestionar_contactos_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gestionar contactos"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/gestionar_contactos_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <RelativeLayout
+                        android:id="@+id/cerrar_sesion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/cerrar_sesion_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/cerrar_sesion"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/cerrar_sesion_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cerrar sesión"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/cerrar_sesion_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/soporte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/soporte_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/soporte"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/soporte_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ayuda y soporte"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/soporte_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/eliminar_cuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/eliminar_cuenta_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/eliminar"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/eliminar_cuenta_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Eliminar Cuenta"
+                            android:textSize="20sp"
+                            android:textColor="@color/rojoEliminar"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/eliminar_cuenta_imagen"
+                            android:fontFamily="@font/inter_semibold"
+                            />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

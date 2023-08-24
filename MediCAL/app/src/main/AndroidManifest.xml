@@ -96,6 +96,8 @@
         <activity android:name=".FrecuenciaxnecesidadActivity"></activity>
         <activity android:name=".FrecuenciaxsemanasActivity"></activity>
         <activity android:name=".ElegirMedicamentoActivity"></activity>
+        <activity android:name=".MasActivity"></activity>
+        <activity android:name=".InicioMedicionesSintomasActivity"></activity>
         <activity android:name=".NuevoMedicamentoActivity"></activity>
         <activity android:name=".GestionarContactosActivity"></activity>
     </application>

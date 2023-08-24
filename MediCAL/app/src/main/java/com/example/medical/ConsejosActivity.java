@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -53,6 +54,9 @@ public class ConsejosActivity extends AppCompatActivity {
         private TextView nombreUsuario;
         private LinearLayout casa_inicio;
         private ImageView menuButtonUsuario;
+        private LinearLayout mas;
+        private ImageButton masimagen;
+        private ImageButton imageninicio;
         private RelativeLayout editarPerfil;
         private RelativeLayout restablecerContrasenia;
         private RelativeLayout cerrarSesion;
@@ -133,6 +137,46 @@ public class ConsejosActivity extends AppCompatActivity {
                 }
             });
 
+            // iconos debajo
+
+            mas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ConsejosActivity.this, MasActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    startActivity(intent);
+                }
+            });
+
+            masimagen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ConsejosActivity.this, MasActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    startActivity(intent);
+                }
+            });
+
+            casa_inicio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ConsejosActivity.this, InicioCalendarioActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    startActivity(intent);
+
+                }
+            });
+
+            imageninicio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ConsejosActivity.this, InicioCalendarioActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    startActivity(intent);
+
+                }
+            });
+
 
         }
 
@@ -189,7 +233,9 @@ public class ConsejosActivity extends AppCompatActivity {
 
             cerrarSesion = findViewById(R.id.cerrar_sesion);
             soporte = findViewById(R.id.soporte);
-
+            mas = findViewById(R.id.mas);
+            masimagen =findViewById(R.id.masimagen);
+            imageninicio =findViewById(R.id.casa_inicio);
             casa_inicio = findViewById(R.id.inicio);
             menuButton = findViewById(R.id.menu_button);
             menuButtonUsuario = findViewById(R.id.menu_button_nav);

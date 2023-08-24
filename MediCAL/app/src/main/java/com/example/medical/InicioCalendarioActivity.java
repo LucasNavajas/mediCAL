@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -68,6 +69,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private TextView nombreUsuario;
     private PopupWindow popupWindow;
     private LinearLayout consejos;
+    private LinearLayout mas;
     private RelativeLayout editarPerfil;
     private RelativeLayout cerrarSesion;
     private RelativeLayout gestionarContactos;
@@ -87,6 +89,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private ImageView editarCalendario;
     private ImageView menuButton;
     private ImageView menuButtonUsuario;
+    private ImageButton masimagen;
+    private ImageButton imagenconsejos;
     private LinearLayout contenedorCalendariosContactos;
     private RelativeLayout eliminarCuenta;
 
@@ -203,6 +207,35 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
+        mas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, MasActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+            }
+        });
+
+        masimagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, MasActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+            }
+        });
+
+        imagenconsejos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, ConsejosActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+
+            }
+        });
+
+
 
     }
 
@@ -251,6 +284,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         contenedorCalendarios = findViewById(R.id.contenedor_calendarios);
         nombreUsuario = findViewById(R.id.nombre_usuario);
         consejos = findViewById(R.id.consejos);
+        imagenconsejos =findViewById(R.id.imagen_consejos);
+        mas = findViewById(R.id.mas);
+        masimagen = findViewById(R.id.masimagen);
         editarPerfil = findViewById(R.id.editar_perfil);
         soporte = findViewById(R.id.soporte);
         nombreCalendario = findViewById(R.id.nombre_calendario);
