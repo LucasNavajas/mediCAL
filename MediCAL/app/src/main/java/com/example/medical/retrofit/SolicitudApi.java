@@ -29,4 +29,7 @@ public interface SolicitudApi {
 
     @GET("/solicitud/contactos/{codUsuario}")
     Call <List<Solicitud>> obtenerContactos(@Path("codUsuario") int codUsuario);
+
+    @GET("/solicitud/supervisor/{codUsuario}")
+    Call <List<Solicitud>> obtenerSupervisor(@Path("codUsuario") int codUsuario);
 }

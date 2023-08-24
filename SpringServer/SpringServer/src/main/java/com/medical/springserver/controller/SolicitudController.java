@@ -59,4 +59,9 @@ public class SolicitudController {
 	public List<Solicitud> obtenerContactos(@PathVariable int codUsuario) {
 		return solicitudDao.obtenerContactos(codUsuario);
 	}
+	
+	@GetMapping("/solicitud/supervisor/{codUsuario}")
+	public List<Solicitud> obtenerSupervisor(@PathVariable int codUsuario){
+		return solicitudDao.obtenerSupervisor(codUsuario);
+	}
 }

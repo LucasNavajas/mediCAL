@@ -566,8 +566,6 @@
                         android:orientation="vertical"
                         android:padding="10dp">
 
-
-
                     </LinearLayout>
 
                     <RelativeLayout
@@ -594,6 +592,35 @@
                             android:layout_marginStart="20dp"
                             android:layout_centerVertical="true"
                             android:layout_toEndOf="@id/contacto_nuevo_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/gestionar_contactos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/gestionar_contactos_imagen"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/contactos"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/gestionar_contactos_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gestionar contactos"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/gestionar_contactos_imagen"
                             android:fontFamily="@font/inter_regular"
                             />
 

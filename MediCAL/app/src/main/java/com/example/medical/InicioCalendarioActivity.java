@@ -70,6 +70,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private LinearLayout consejos;
     private RelativeLayout editarPerfil;
     private RelativeLayout cerrarSesion;
+    private RelativeLayout gestionarContactos;
     private RelativeLayout calendarioNuevo;
     private RelativeLayout restablecerContrasenia;
     private RelativeLayout contactoNuevo;
@@ -181,6 +182,14 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             intent.putExtra("codUsuario", codUsuarioLogeado);
             startActivity(intent);
         } );
+        eliminarCuenta.setOnClickListener(view ->{
+            popupEliminarCuenta();
+        });
+        gestionarContactos.setOnClickListener(view ->{
+            Intent intent = new Intent(InicioCalendarioActivity.this, GestionarContactosActivity.class);
+            intent.putExtra("codUsuario",codUsuarioLogeado);
+            startActivity(intent);
+        });
 
         // Botones de la Barra Inferior
 
@@ -194,9 +203,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
-        eliminarCuenta.setOnClickListener(view ->{
-            popupEliminarCuenta();
-        });
+
     }
 
 
@@ -254,6 +261,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         contactoNuevo = findViewById(R.id.contacto_nuevo);
         contenedorCalendariosContactos = findViewById(R.id.contenedor_calendarios_contactos);
         eliminarCuenta = findViewById(R.id.eliminar_cuenta);
+        gestionarContactos = findViewById(R.id.gestionar_contactos);
         llenarListaCalendarios();
         llenarEstadosSolicitud();
     }

@@ -42,4 +42,12 @@ public class SolicitudDao {
 	public List<Solicitud> obtenerContactos(int codUsuarioControlador){
 		return repository.obtenerContactos(codUsuarioControlador);
 	}
+	
+	public List<Solicitud> obtenerSupervisor(int codUsuario){
+		return repository.obtenerSupervisor(codUsuario);
+	}
+	
+	public List<Solicitud> obtenerTodasSolicitudesUsuario(int codUsuario){
+		return repository.obtenerTodasSolicitudesUsuario(codUsuario);
+	}
 }

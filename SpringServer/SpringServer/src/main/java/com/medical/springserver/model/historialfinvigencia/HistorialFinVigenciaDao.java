@@ -27,6 +27,10 @@ public class HistorialFinVigenciaDao {
 		repository.delete(historialfinvigencia);
 	}
 	
+	public List<HistorialFinVigencia> findByCodUsuario(int codUsuario){
+		return repository.findHistorialByUsuarioCod(codUsuario);
+	}
+	
 }
 
 

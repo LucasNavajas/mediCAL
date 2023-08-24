@@ -75,7 +75,7 @@
             android:textSize="28sp"
             android:gravity="center" />
         <!--contacto supervisor-->
-        <RelativeLayout
+       <!-- <RelativeLayout
             android:id="@+id/datos_supervisor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,6 +129,7 @@
 
 
         </RelativeLayout>
+        -->
         <!--divider-->
         <View
             android:id="@+id/divider"
