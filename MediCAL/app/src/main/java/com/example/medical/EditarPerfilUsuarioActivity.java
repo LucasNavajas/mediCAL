@@ -162,10 +162,11 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
             public void onClick(View view) {
                 switch(view.getId()){
                     case R.id.text_otro:
+                        popupWindow.dismiss();
                         popupGenero_2();
                         break;
                     default:
-                        TextView textView = findViewById(view.getId());
+                        TextView textView = popupView.findViewById(view.getId());
                         String genero = textView.getText().toString();
 
                         textEditGenero.setText(genero);
@@ -237,10 +238,12 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView textView = findViewById(view.getId());
+                TextView textView = popupView.findViewById(view.getId());
                 String genero = textView.getText().toString();
-
                 textEditGenero.setText(genero);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+
             }
         };
 
