@@ -56,7 +56,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                     break;
                 default:
                     int duracion = obtenerEnteroDuracion(view.getId());
-                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, AgregarDatosRecordatorioActivity.class);
+                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, ElegirDiasActivity.class);
                     intent2.putExtra("year", getIntent().getIntExtra("year", 0));
                     intent2.putExtra("month", getIntent().getIntExtra("month", 0));
                     intent2.putExtra("day", getIntent().getIntExtra("day", 0));
@@ -70,25 +70,18 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
         switch (id){
             case R.id.text_cinco_dias:
                 return 5;
-                break;
             case R.id.text_una_semana:
                 return 7;
-                break;
             case R.id.text_diez_dias:
                 return 10;
-                break;
             case R.id.text_treinta_dias:
                 return 30;
-                break;
             case R.id.text_seis_meses:
                 return 180;
-                break;
             case R.id.text_doce_meses:
                 return 360;
-                break;
             case R.id.text_veinticuatro_meses:
                 return 720;
-                break;
             default:
                 return 0;
         }

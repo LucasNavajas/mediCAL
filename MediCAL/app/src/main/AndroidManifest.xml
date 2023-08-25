@@ -102,6 +102,7 @@
         <activity android:name=".GestionarContactosActivity"></activity>
         <activity android:name=".AgregarFechaInicioRecordatorioActivity"></activity>
         <activity android:name=".AgregarDuracionRecordatorioActivity"></activity>
+        <activity android:name=".ElegirDiasActivity"></activity>
     </application>
 
 </manifest>
