@@ -43,6 +43,10 @@ class SpringServerApplicationTestsEstadoSolicitud {
 	    estadoSolicitud6.setNombreEstadoSolicitud("Rechazado sin visualizar");
 		estadoSolicitudDao.save(estadoSolicitud6);
 		
+		EstadoSolicitud estadoSolicitud7 = new EstadoSolicitud();
+	    estadoSolicitud7.setNombreEstadoSolicitud("Desvinculado sin visualizar");
+		estadoSolicitudDao.save(estadoSolicitud7);
+		
 	}
 	
 	//@Test

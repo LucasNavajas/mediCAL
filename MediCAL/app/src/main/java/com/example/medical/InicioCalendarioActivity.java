@@ -697,53 +697,64 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popupRespuesta(Solicitud solicitud, int codEstadoSolicitud) {
-        int layoutPopupSolicitud= 0;
+        int layoutPopupSolicitud = 0;
         boolean aceptada = true;//Si es falso, se muestra el popup rechazado y se cambia su estado
-        if(codEstadoSolicitud==5){
-            layoutPopupSolicitud = R.layout.n26_2_solicitud_aceptada;
-            aceptada = true;
+        if (codEstadoSolicitud == 7) {
+            popUpDesvinculacion(solicitud, codEstadoSolicitud);
+        } else {
+            if (codEstadoSolicitud == 5) {
+                layoutPopupSolicitud = R.layout.n26_2_solicitud_aceptada;
+                aceptada = true;
+            } else {
+                layoutPopupSolicitud = R.layout.n26_3_solicitud_rechazada;
+                aceptada = false;
+            }
+
+            View popupView = getLayoutInflater().inflate(layoutPopupSolicitud, null);
+
+            // Crear la instancia de PopupWindow
+            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            // Hacer que el popup sea enfocable (opcional)
+            popupWindow.setFocusable(true);
+
+            // Configurar animación para oscurecer el fondo
+            View rootView = findViewById(android.R.id.content);
+
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.VISIBLE);
+
+            Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+            popupView.startAnimation(scaleAnimation);
+
+            popupWindow.setFocusable(true);
+            // Mostrar el popup en la ubicación deseada
+            popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+            if (aceptada == true) {
+                actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(0), dimView, popupWindow);
+            } else {
+                actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(1), dimView, popupWindow);
+            }
+
+            TextView text = popupView.findViewById(R.id.text);
+            ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+            String textPopup = text.getText().toString();
+            text.setText(solicitud.getUsuarioControlado().getUsuarioUnico() + textPopup);
+
+            cerrar.setOnClickListener(view -> {
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            });
+
+
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    dimView.setVisibility(View.GONE);
+                }
+            });
         }
-        else{
-            layoutPopupSolicitud = R.layout.n26_3_solicitud_rechazada;
-            aceptada = false;
-        }
-        View popupView = getLayoutInflater().inflate(layoutPopupSolicitud, null);
-
-        // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        // Hacer que el popup sea enfocable (opcional)
-        popupWindow.setFocusable(true);
-
-        // Configurar animación para oscurecer el fondo
-        View rootView = findViewById(android.R.id.content);
-
-        View dimView = findViewById(R.id.dim_view);
-        dimView.setVisibility(View.VISIBLE);
-
-        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
-        popupView.startAnimation(scaleAnimation);
-
-        popupWindow.setFocusable(true);
-        // Mostrar el popup en la ubicación deseada
-        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-
-        if(aceptada == true){
-            actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(0), dimView, popupWindow);
-        }
-        else{
-            actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(1), dimView, popupWindow);
-        }
-
-        TextView text = popupView.findViewById(R.id.text);
-        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
-        String textPopup = text.getText().toString();
-        text.setText(solicitud.getUsuarioControlado().getUsuarioUnico() + textPopup);
-
-        cerrar.setOnClickListener(view -> {
-            popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
-        });
 
     }
 
@@ -893,6 +904,50 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             dimView.setVisibility(View.GONE);
         });
     }
+    private void popUpDesvinculacion(Solicitud solicitud, int codEstadoSolicitud) {
+        Usuario usuarioDesvinculado;
+        View popupView = getLayoutInflater().inflate(R.layout.n27_2_popup_desvinculacion, null);
+        if(solicitud.getUsuarioControlador().getCodUsuario()==codUsuarioLogeado){usuarioDesvinculado= solicitud.getUsuarioControlado();}
+        else{usuarioDesvinculado= solicitud.getUsuarioControlador();}
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        TextView texto = popupView.findViewById(R.id.text);
+        String textoPopup = texto.getText().toString();
+        texto.setText(usuarioDesvinculado.getUsuarioUnico()+" "+ textoPopup);
+        ImageView botonCerrar = popupView.findViewById(R.id.boton_cerrar);
+
+        botonCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(1), dimView, popupWindow);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(1), dimView, popupWindow);
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+    }
 
 }

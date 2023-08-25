@@ -74,8 +74,17 @@
             android:layout_marginEnd="30dp"
             android:textSize="28sp"
             android:gravity="center" />
+
+            <LinearLayout
+                android:id="@+id/layout_contacto_supervisor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/texto_supervisor"
+                android:orientation="vertical">
+                <!-- Aquí se agregarán los RelativeLayout generados dinámicamente -->
+            </LinearLayout>
         <!--contacto supervisor-->
-       <RelativeLayout
+       <!--<RelativeLayout
             android:id="@+id/datos_supervisor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,7 +144,6 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="5px"
-            android:layout_below="@id/datos_supervisor"
             android:background="#808080"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
@@ -157,8 +165,17 @@
             android:layout_marginEnd="30dp"
             android:textSize="28sp"
             android:gravity="center" />
+
+            <LinearLayout
+                android:id="@+id/layout_contacto_supervisado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/texto_supervisados"
+                android:orientation="vertical">
+                <!-- Aquí se agregarán los RelativeLayout generados dinámicamente -->
+            </LinearLayout>
         <!--contacto supervisados-->
-        <RelativeLayout
+        <!--<RelativeLayout
             android:id="@+id/datos_supervisados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -266,7 +283,7 @@
             </LinearLayout>
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -302,4 +319,11 @@
         </ScrollView> <!--Fin del scroll-->
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/dim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
 </RelativeLayout>
