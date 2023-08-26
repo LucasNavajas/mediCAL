@@ -56,7 +56,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                     break;
                 default:
                     int duracion = obtenerEnteroDuracion(view.getId());
-                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, ElegirDiasActivity.class);
+                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, DatosObligatoriosRecordatorioActivity.class);
                     intent2.putExtra("year", getIntent().getIntExtra("year", 0));
                     intent2.putExtra("month", getIntent().getIntExtra("month", 0));
                     intent2.putExtra("day", getIntent().getIntExtra("day", 0));

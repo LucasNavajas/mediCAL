@@ -103,6 +103,7 @@
         <activity android:name=".AgregarFechaInicioRecordatorioActivity"></activity>
         <activity android:name=".AgregarDuracionRecordatorioActivity"></activity>
         <activity android:name=".ElegirDiasActivity"></activity>
+        <activity android:name=".DatosObligatoriosRecordatorioActivity"></activity>
     </application>
 
 </manifest>

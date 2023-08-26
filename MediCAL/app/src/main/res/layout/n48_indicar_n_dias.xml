@@ -106,36 +106,33 @@
             >
 
             <!--Adentro de la pantalla-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="25dp"
+                android:gravity="center_horizontal">
+            <NumberPicker
+                android:id="@+id/number_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_medium"
+                android:textColor="@color/verdeClaro"
+                android:textSize="50sp"
 
-                <FrameLayout
-                    android:id="@+id/rectangulo_buscador"
-                    android:layout_marginTop="35dp"
-                    android:layout_width="54dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/rectangulo_buscador"
-                    android:layout_centerHorizontal="true">
+                />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="X"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="18sp" />
-
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@id/rectangulo_buscador"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="días"
-                    android:textColor="@color/verdeTextos"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="18sp" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="día(s)"
+                android:textColor="@color/verdeClaro"
+                android:textSize="21sp" />
+            </LinearLayout>
 
             <!--boton-->
                 <Button
