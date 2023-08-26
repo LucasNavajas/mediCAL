@@ -1,8 +1,11 @@
 package com.example.medical;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,22 +23,27 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ImageView botonVolver;
+    private int codAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent1 = getIntent();
+        codAdmin = intent1.getIntExtra("administracionMedId",0);
+        Toast.makeText(ElegirPresentacionMedActivity.this, "Codigo administracion pasado: "+ codAdmin, Toast.LENGTH_SHORT).show();
         setContentView(R.layout.n34_35_36_37_presentacion_medica);
 
         recyclerView = findViewById(R.id.listapresentacionmed_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         botonVolver = findViewById(R.id.boton_volver);
 
-        int administracionMedId = getIntent().getIntExtra("administracionMedId", -1);
+        loadPresentacionMed(codAdmin);
+        /*int administracionMedId = getIntent().getIntExtra("administracionMedId", -1);
         if (administracionMedId != -1) {
             loadPresentacionMed(administracionMedId);
         } else {
             // Mostrar un mensaje de error si no se proporcionó un ID válido
-        }
+        }*/
 
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
