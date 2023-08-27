@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medical.adapter.AdministracionMedAdapter;
 import com.example.medical.adapter.PresentacionMedAdapter;
+import com.example.medical.model.AdministracionMed;
 import com.example.medical.model.PresentacionMed;
 import com.example.medical.retrofit.PresentacionMedApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -43,6 +45,7 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
             loadPresentacionMed(administracionMedId);
         } else {
             // Mostrar un mensaje de error si no se proporcionó un ID válido
+        }
         }*/
 
         botonVolver.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +76,19 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
 
     private void populateListView(List<PresentacionMed> presentacionMedList) {
         PresentacionMedAdapter presentacionMedAdapter = new PresentacionMedAdapter(presentacionMedList);
+
+        presentacionMedAdapter.setOnItemClickListener(new PresentacionMedAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(PresentacionMed item) {
+                Intent intent = new Intent(ElegirPresentacionMedActivity.this, ElegirFrecuenciaActivity.class);
+                intent.putExtra("presentacionMedId", item.getCodPresentacionMed());
+                intent.putExtra("administracionMedId", codAdmin);
+                startActivity(intent);
+            }
+        });
+
+
+
         recyclerView.setAdapter(presentacionMedAdapter);
     }
 

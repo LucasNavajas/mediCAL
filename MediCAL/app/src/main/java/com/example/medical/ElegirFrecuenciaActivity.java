@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,12 +24,29 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
 
     private ImageView botonVolver;
 
+    private int codAdmin;
+
+    private int codPresen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n38_seleccionar_frecuencia);
 
         botonVolver = findViewById(R.id.boton_volver);
+
+        // Recibiendo los valores codAdmin y codPresen de la actividad anterior
+        Intent intent = getIntent();
+        codAdmin = intent.getIntExtra("administracionMedId", 0);
+        codPresen = intent.getIntExtra("presentacionMedId", 0);
+
+        // Mostrando los valores recibidos
+        Toast.makeText(ElegirFrecuenciaActivity.this, "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen, Toast.LENGTH_SHORT).show();
+
+        setContentView(R.layout.n38_seleccionar_frecuencia);
+
+        botonVolver = findViewById(R.id.boton_volver);
+
 
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +117,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {
