@@ -36,6 +36,7 @@ import android.annotation.SuppressLint;
 
 import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.adapter.ConsejoAdapter;
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Consejo;
 import com.example.medical.retrofit.ConsejoApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -73,6 +74,8 @@ public class MasActivity extends AppCompatActivity {
     private int codUsuarioLogeado;
 
     private RelativeLayout rectangleMedYSintomas;
+    private Calendario calendarioSeleccionado;
+    private int codCalendario;
 
 
     @SuppressLint("MissingInflatedId")
@@ -80,8 +83,14 @@ public class MasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n24_mas);
-        Intent intent1 = getIntent();
         inicializarVariables();
+
+
+        // Recuperar el objeto calendarioSeleccionado del Intent
+        Intent intent1 = getIntent();
+        codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
+        Log.d("MiApp", "codCalendario en MasActivity: " + codCalendario); // Agregar este log
+
 
         // Obtén la referencia al RelativeLayout
         rectangleMedYSintomas = findViewById(R.id.rectangle_med_y_sintomas);
@@ -92,6 +101,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Aquí maneja la acción de navegación a AgregarSeguimientoActivity
                 Intent intent = new Intent(MasActivity.this, AgregarSeguimientoActivity.class);
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }
         });
@@ -198,6 +208,7 @@ public class MasActivity extends AppCompatActivity {
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         retrofitService = new RetrofitService();
     }
+
 
 
     private void popupCerrarSesion() {

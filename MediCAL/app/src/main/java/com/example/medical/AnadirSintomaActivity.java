@@ -1,19 +1,32 @@
 package com.example.medical;
 
 
+import com.example.medical.model.Calendario;
+import com.example.medical.model.CalendarioSintoma;
 import com.example.medical.model.Sintoma; // Asegúrate de importar la clase Sintoma correctamente
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,11 +36,24 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.medical.model.Sintoma;
+import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.CalendarioSintomaApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.SintomaApi;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,14 +63,21 @@ import retrofit2.Response;
 public class AnadirSintomaActivity extends AppCompatActivity {
 
     private SintomaApi sintomaApi;
+    private CalendarioApi calendarioApi;
+    private CalendarioSintomaApi calendarioSintomaApi;
+    // Declarar una variable para llevar el registro del último código utilizado
+    private int lastCalendarioSintomaCode = 0;
     private LinearLayout lineargrande;
+    private Calendar selectedDate = Calendar.getInstance();
+    private List<Sintoma> sintomas = new ArrayList<>(); // Lista de síntomas
+    private Map<Integer, CheckBox> checkBoxMap = new HashMap<>();
+    private Map<Integer, Boolean> savedSelections = new HashMap<>(); // Guarda el estado de selección
 
-    // Variables para guardar los IDs generados dinámicamente
-    private List<Integer> checkBoxIds = new ArrayList<>();
-    private List<Integer> textViewIds = new ArrayList<>();
+    private Set<Sintoma> sintomasSeleccionados = new HashSet<>(); // Síntomas seleccionados
 
-    private int codigoSintomaCounter = 1; // Inicializar el contador de códigos únicos
-    private List<Integer> codigosSintomasExistentes = new ArrayList<>(); // Lista de códigos existentes
+    private Calendario calendarioSeleccionado;
+    private int codCalendario ;
+    private List<Calendario> listaCalendarios;
 
 
     @Override
@@ -52,30 +85,34 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n77_anadir_sintomas);
 
-        RetrofitService retrofitService = new RetrofitService();
-        sintomaApi = retrofitService.getRetrofit().create(SintomaApi.class);
+
+        // Configura tus APIs y otros elementos necesarios
 
         lineargrande = findViewById(R.id.lineargrande);
 
+        RetrofitService retrofitService = new RetrofitService();
+        sintomaApi = retrofitService.getRetrofit().create(SintomaApi.class);
+        calendarioSintomaApi =retrofitService.getRetrofit().create(CalendarioSintomaApi.class);
+
+        // Recuperar el objeto calendarioSeleccionado del Intent
+        Intent intent1 = getIntent();
+        codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
+        Log.d("MiApp", "codCalendario en AnadirSintomaActivity: " + codCalendario);
+
+        // Crear una instancia de la interfaz de la API utilizando Retrofit
+        calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
 
         obtenerSintomasDesdeApi();
 
-        // Configura el clic de la flecha hacia atrás
-        findViewById(R.id.boton_volver).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Vuelve a la pantalla anterior (Puede ser tu pantalla 73)
-                onBackPressed();
-            }
-        });
+        // Configura la flecha hacia atrás y otros elementos
 
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.editText_buscar);
+        autoCompleteTextView = findViewById(R.id.editText_buscar);
         ImageView lupaImageView = findViewById(R.id.lupa_buscar);
 
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -84,42 +121,61 @@ public class AnadirSintomaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable editable) {}
+        });
+
+
+
+        Button buttonaceptar = findViewById(R.id.button_guardar);
+        buttonaceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupCambiarFechaHora();
             }
         });
 
-        lupaImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = autoCompleteTextView.getText().toString().trim();
-                buscarSintomas(searchText);
+        autoCompleteTextView = findViewById(R.id.editText_buscar); // Reemplaza con el ID correcto
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            Sintoma selectedSintoma = (Sintoma) parent.getItemAtPosition(position);
+            boolean isSelected = !sintomasSeleccionados.contains(selectedSintoma);
+
+            if (isSelected) {
+                sintomasSeleccionados.add(selectedSintoma);
+            } else {
+                sintomasSeleccionados.remove(selectedSintoma);
             }
+
+            // Actualizar la interfaz de usuario inmediatamente
+            actualizarInterfazUsuario();
         });
 
-        Button buttonGuardar = findViewById(R.id.button_guardar);
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                guardarSintomasSeleccionados();
-            }
-        });
+        // Almacena el estado de selección actual en savedSelections
+        for (Sintoma sintoma : sintomas) {
+            savedSelections.put(sintoma.getCodSintoma(), sintoma.isSelected());
+        }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Actualizar la interfaz de usuario al volver a la actividad
+        actualizarInterfazUsuario();
+    }
+
 
 
     private void obtenerSintomasDesdeApi() {
         Call<List<Sintoma>> call = sintomaApi.getAllSintomas();
-
         call.enqueue(new Callback<List<Sintoma>>() {
             @Override
             public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Sintoma> sintomas = response.body();
+                    sintomas = response.body();
+                    Log.d("MiApp", "Síntomas obtenidos desde la API: " + sintomas.size());
 
-                    for (Sintoma sintoma : sintomas) {
-                        agregarCheckBoxYSintoma(sintoma);
-                        codigosSintomasExistentes.add(sintoma.getCodSintoma());
-                    }
+                    // Actualizar la interfaz después de obtener los síntomas
+                    actualizarInterfazUsuario();
                 }
             }
 
@@ -128,70 +184,49 @@ public class AnadirSintomaActivity extends AppCompatActivity {
                 // Manejar error de la API
                 Toast.makeText(AnadirSintomaActivity.this, "Error al obtener los síntomas. Por favor, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 
+    private void actualizarInterfazUsuario() {
+        // Limpiar el layout antes de agregar los checkboxes actualizados
+        lineargrande.removeAllViews();
 
-   private void buscarSintomas(String searchText) {
-        Call<List<Sintoma>> call = sintomaApi.getAllSintomas();
-
-        call.enqueue(new Callback<List<Sintoma>>() {
-            @Override
-            public void onResponse(Call<List<Sintoma>> call, Response<List<Sintoma>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Sintoma> sintomas = response.body();
-
-                    // Limpiar la lista de checkboxes antes de agregar los nuevos
-                    lineargrande.removeAllViews();
-
-                    boolean sintomaEncontrado = false; // Variable para rastrear si se encontró un síntoma
-
-                    for (Sintoma sintoma : sintomas) {
-                        if (sintoma.getNombreSintoma().toLowerCase().contains(searchText.toLowerCase())) {
-                            agregarCheckBoxYSintoma(sintoma);
-                            sintomaEncontrado = true; // Se encontró al menos un síntoma
-                        }
-                    }
-
-                    if (!sintomaEncontrado) {
-                        mostrarNoEncontrado(); // Mostrar mensaje solo si no se encontró ningún síntoma
-                    } else {
-                        ocultarNoEncontrado(); // Ocultar el mensaje si se encontró algún síntoma
-                    }
-                } else {
-                    mostrarError();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Sintoma>> call, Throwable t) {
-                mostrarError();
-            }
-        });
+        // Agregar los checkboxes actualizados en función de la lista sintomas
+        for (Sintoma sintoma : sintomas) {
+            agregarCheckBoxYSintoma(sintoma);
+        }
     }
-
-    private void mostrarNoEncontrado() {
-        TextView textViewNoEncontrado = findViewById(R.id.textView_no_encontrado);
-        textViewNoEncontrado.setVisibility(View.VISIBLE); // Mostrar el mensaje
-    }
-
-    private void ocultarNoEncontrado() {
-        TextView textViewNoEncontrado = findViewById(R.id.textView_no_encontrado);
-        textViewNoEncontrado.setVisibility(View.GONE); // Ocultar el mensaje
-    }
-
-
-
 
     private void agregarCheckBoxYSintoma(Sintoma sintoma) {
-        // Crear un nuevo LinearLayout para cada síntoma
         LinearLayout linearLayout = new LinearLayout(AnadirSintomaActivity.this);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
+        // Crear una nueva instancia de CheckBox y agregarla al mapa checkBoxMap
         CheckBox checkBox = new CheckBox(AnadirSintomaActivity.this);
+        Integer codSintoma = sintoma.getCodSintoma();
+        checkBoxMap.put(codSintoma, checkBox);
 
-        // Añadir margen izquierdo al CheckBox para moverlo a la derecha
+        // Configurar los atributos del CheckBox
+        checkBox.setTag(codSintoma);
+
+        Boolean isSelected = savedSelections.get(codSintoma);
+        if (isSelected != null) {
+            checkBox.setChecked(isSelected);
+        }
+
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sintoma.setSelected(isChecked);
+            savedSelections.put(codSintoma, isChecked);
+
+            if (isChecked) {
+                sintomasSeleccionados.add(sintoma);
+            } else {
+                sintomasSeleccionados.remove(sintoma);
+            }
+
+            Log.d("MiApp", "Síntoma " + codSintoma + " isChecked: " + isChecked);
+        });
+
         LinearLayout.LayoutParams checkBoxParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -199,11 +234,6 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         checkBoxParams.leftMargin = getResources().getDimensionPixelSize(R.dimen.checkbox_left_margin);
         checkBox.setLayoutParams(checkBoxParams);
 
-        int checkBoxId = View.generateViewId(); // Generar un ID único para el CheckBox
-        checkBox.setId(checkBoxId);
-        checkBoxIds.add(checkBoxId); // Agregar el ID a la lista
-
-        // Crear un TextView para mostrar el nombre del síntoma
         TextView textView = new TextView(AnadirSintomaActivity.this);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -211,11 +241,6 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         ));
         textView.setText(sintoma.getNombreSintoma());
 
-        int textViewId = View.generateViewId(); // Generar un ID único para el TextView
-        textView.setId(textViewId);
-        textViewIds.add(textViewId); // Agregar el ID a la lista
-
-        // Añadir margen izquierdo al TextView para moverlo a la derecha
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -232,8 +257,55 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         linearLayout.addView(checkBox);
         linearLayout.addView(textView);
 
-        lineargrande.addView(linearLayout); // Agregar el LinearLayout a la vista principal
+        lineargrande.addView(linearLayout);
     }
+
+
+
+    private void buscarSintomas(String searchText) {
+        // Filtrar la lista de síntomas basada en el texto de búsqueda
+        List<Sintoma> sintomasFiltrados = new ArrayList<>();
+        for (Sintoma sintoma : sintomas) {
+            if (sintoma.getNombreSintoma().toLowerCase().contains(searchText.toLowerCase())) {
+                sintomasFiltrados.add(sintoma);
+            }
+        }
+
+        // Limpiar la vista antes de agregar los checkboxes filtrados
+        lineargrande.removeAllViews();
+
+        for (Sintoma sintoma : sintomasFiltrados) {
+            agregarCheckBoxYSintoma(sintoma);
+        }
+
+        // Mostrar u ocultar mensaje de no encontrado
+        if (sintomasFiltrados.isEmpty()) {
+            mostrarNoEncontrado();
+        } else {
+            ocultarNoEncontrado();
+        }
+    }
+
+
+    private void mostrarNoEncontrado() {
+        TextView textViewNoEncontrado = findViewById(R.id.textView_no_encontrado);
+        textViewNoEncontrado.setVisibility(View.VISIBLE); // Mostrar el mensaje
+    }
+
+    private void ocultarNoEncontrado() {
+        TextView textViewNoEncontrado = findViewById(R.id.textView_no_encontrado);
+        textViewNoEncontrado.setVisibility(View.GONE); // Ocultar el mensaje
+    }
+
+    private boolean isSintomaSelected(int codSintoma) {
+        CheckBox checkBox = checkBoxMap.get(codSintoma);
+        if (checkBox != null) {
+            return checkBox.isChecked();
+        }
+        return false;
+    }
+
+
 
 
     private void mostrarError() {
@@ -241,76 +313,249 @@ public class AnadirSintomaActivity extends AppCompatActivity {
     }
 
 
-    private void guardarSintomasSeleccionados() {
-        List<String> sintomasSeleccionados = obtenerSintomasSeleccionados();
-        LocalDate fechaAltaSintoma = obtenerFechaActual();
 
-        for (String nombreSintoma : sintomasSeleccionados) {
-            int nuevoCodigoSintoma = generarNuevoCodigoSintoma(); // Generar un nuevo código único
+    private void popupCambiarFechaHora() {
+        View popupView = getLayoutInflater().inflate(R.layout.n76_1_pop_up_cambiar_fecha, null);
 
-            Sintoma sintoma = new Sintoma();
-            sintoma.setCodSintoma(nuevoCodigoSintoma);
-            sintoma.setNombreSintoma(nombreSintoma);
-            sintoma.setFechaAltaSintoma(fechaAltaSintoma);
+        // Acceder al TextView con id "titulo"
+        TextView tituloTextView = popupView.findViewById(R.id.titulo);
 
-            Call<Sintoma> call = sintomaApi.saveSintoma(sintoma);
-            call.enqueue(new Callback<Sintoma>() {
-                @Override
-                public void onResponse(Call<Sintoma> call, Response<Sintoma> response) {
-                    if (response.isSuccessful()) {
-                        // Síntoma guardado exitosamente
-                        mostrarMensajeExitoso("Síntoma guardado exitosamente");
+        // Actualizar el texto del TextView
+        tituloTextView.setText("¿Qué día y hora presentó los síntomas seleccionados?");
+
+        // Accede al TextView con id "aceptar"
+        TextView aceptarTextView = popupView.findViewById(R.id.aceptar);
+
+        // Actualiza el texto del TextView
+        aceptarTextView.setText("GUARDAR");
+
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setElevation(10.0f); // Agrega elevación para el efecto de sombra
+
+        // Hacer que el popup sea enfocable
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Configurar la animación de entrada del popup
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        TimePicker timePicker = popupView.findViewById(R.id.timePicker);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+
+
+        // Obtener las referencias a las vistas dentro del popup
+        TextView textFecha = popupView.findViewById(R.id.textFecha);
+        ImageView imageMayor = popupView.findViewById(R.id.imageMayor);
+        ImageView imageMenor = popupView.findViewById(R.id.imageMenor);
+
+        // Configurar la fecha seleccionada como la fecha actual
+        selectedDate = Calendar.getInstance();
+        updateDateTextView(textFecha);
+
+        // Obtener la fecha actual
+        Calendar currentDate = Calendar.getInstance();
+
+        // Comparar con la fecha seleccionada
+        if (selectedDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                selectedDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                selectedDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) {
+            // Si es la fecha actual, ajustar la opacidad de la flecha
+            imageMayor.setAlpha(0.5f); // Cambiar alpha según sea necesario
+        } else {
+            // Si no es la fecha actual, dejar la opacidad por defecto
+            imageMayor.setAlpha(1.0f);
+        }
+
+        // Cambiar la opacidad de la imagenMayor si la fecha seleccionada no es la fecha actual
+        if (!selectedDate.equals(currentDate)) {
+            imageMayor.setAlpha(0.5f); // Cambiar alpha según sea necesario
+        }
+
+        // Configurar la lógica para retroceder y avanzar en las fechas
+        imageMenor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Restar un día a la fecha seleccionada
+                selectedDate.add(Calendar.DAY_OF_MONTH, -1);
+                updateDateTextView(textFecha);
+            }
+        });
+
+        imageMayor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Obtener la fecha actual
+                Calendar currentDate = Calendar.getInstance();
+
+                // Comparar con la fecha seleccionada
+                if (selectedDate.before(currentDate) ||
+                        (selectedDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                                selectedDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                                selectedDate.get(Calendar.DAY_OF_MONTH) < currentDate.get(Calendar.DAY_OF_MONTH))) {
+
+                    selectedDate.add(Calendar.DAY_OF_MONTH, 1); // Avanzar un día
+                    updateDateTextView(textFecha);
+
+                    if (selectedDate.after(currentDate)) {
+                        // Si la fecha seleccionada es después de la fecha actual,
+                        // ajustarla a la fecha actual
+                        selectedDate = (Calendar) currentDate.clone();
+                        updateDateTextView(textFecha);
+                    }
+
+                    // Cambiar la opacidad de la imagenMayor si la fecha seleccionada es igual a la fecha actual
+                    if (selectedDate.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR) &&
+                            selectedDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH) &&
+                            selectedDate.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) {
+                        imageMayor.setAlpha(0.5f); // Cambiar alpha según sea necesario
                     } else {
-                        // Manejar error de la API
-                        mostrarError();
+                        imageMayor.setAlpha(1.0f); // Restaurar la opacidad por defecto
                     }
                 }
-
-                @Override
-                public void onFailure(Call<Sintoma> call, Throwable t) {
-                    // Manejar error de conexión
-                    mostrarError();
-                    t.printStackTrace(); // Agregar esta línea para imprimir la traza de excepción en el registro
-                }
-
-            });
-        }
-    }
-
-
-    private void mostrarMensajeExitoso(String mensaje) {
-        Toast.makeText(AnadirSintomaActivity.this, mensaje, Toast.LENGTH_SHORT).show();
-
-    }
-
-    private int generarNuevoCodigoSintoma() {
-        while (codigosSintomasExistentes.contains(codigoSintomaCounter)) {
-            codigoSintomaCounter++; // Incrementar el contador hasta encontrar un código único
-        }
-        return codigoSintomaCounter;
-    }
-
-    private List<String> obtenerSintomasSeleccionados() {
-        List<String> sintomas = new ArrayList<>();
-
-        for (int i = 0; i < lineargrande.getChildCount(); i++) {
-            View view = lineargrande.getChildAt(i);
-            if (view instanceof LinearLayout) {
-                LinearLayout linearLayout = (LinearLayout) view;
-                CheckBox checkBox = linearLayout.findViewById(checkBoxIds.get(i));
-
-                if (checkBox.isChecked()) {
-                    TextView textView = linearLayout.findViewById(textViewIds.get(i));
-                    sintomas.add(textView.getText().toString());
-                }
             }
-        }
+        });
 
-        return sintomas;
+
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        aceptarTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Obtener los valores de fecha y hora seleccionados
+                int hour = timePicker.getCurrentHour();
+                int minute = timePicker.getCurrentMinute();
+
+                int year = selectedDate.get(Calendar.YEAR);
+                int month = selectedDate.get(Calendar.MONTH) + 1; // Sumar 1 porque los meses en la base de datos empiezan en 1
+                int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+
+                // Formatear la fecha para asegurarse de que el mes tenga dos dígitos
+                String formattedDate = String.format("%04d-%02d-%02d", year, month, day);
+                // Ahora puedes analizar la fecha
+                LocalDate selectedLocalDate = LocalDate.parse(formattedDate);
+
+                Log.d("MiApp", "Tamaño de la lista de síntomas seleccionados: " + sintomasSeleccionados.size());
+
+
+                // Crear una lista para almacenar los objetos CalendarioSintoma
+                List<CalendarioSintoma> calendarioSintomas = new ArrayList<>();
+
+                // Obtener el calendario específico por su código
+                Call<Calendario> call2 = calendarioApi.getByCodCalendario(codCalendario);
+
+                call2.enqueue(new Callback<Calendario>() {
+                    @Override
+                    public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                        if (response.isSuccessful()) {
+                            Calendario calendarioSeleccionado = response.body();
+                            if (calendarioSeleccionado != null) {
+                                Log.d("MiApp", "Calendario seleccionado encontrado: " + calendarioSeleccionado.getCodCalendario());
+
+                                // Iterar sobre los síntomas seleccionados y crear objetos CalendarioSintoma
+                                for (Sintoma sintoma : sintomasSeleccionados) {
+                                    if (isSintomaSelected(sintoma.getCodSintoma())) {
+                                        Log.d("MiApp", "Creando CalendarioSintoma para síntoma " + sintoma.getCodSintoma());
+                                        CalendarioSintoma nuevoCalendarioSintoma = new CalendarioSintoma();
+
+                                        // Establecer los valores para el nuevo CalendarioSintoma
+                                        nuevoCalendarioSintoma.setFechaCalendarioSintoma(selectedLocalDate);
+                                        nuevoCalendarioSintoma.setFechaFinVigenciaCS(null);
+                                        nuevoCalendarioSintoma.setCodCalendarioSintoma(lastCalendarioSintomaCode + 1);
+                                        nuevoCalendarioSintoma.setSintoma(sintoma);
+                                        nuevoCalendarioSintoma.setCalendario(calendarioSeleccionado); // Aquí se establece el Calendario
+
+                                        // Agregar el nuevo CalendarioSintoma a la lista
+                                        calendarioSintomas.add(nuevoCalendarioSintoma);
+                                    } else {
+                                        Log.d("MiApp", "Síntoma " + sintoma.getCodSintoma() + " no está seleccionado.");
+                                    }
+                                }
+                            } else {
+                                Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
+                            }
+                        } else {
+                            Log.d("MiApp", "Error en la solicitud: " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Calendario> call, Throwable t) {
+                        Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+                    }
+                });
+
+
+                // Llamada a la API para guardar los nuevos CalendarioSintoma
+                for (CalendarioSintoma nuevoCalendarioSintoma : calendarioSintomas) {
+                    Call<CalendarioSintoma> call = calendarioSintomaApi.saveCalendarioSintoma(nuevoCalendarioSintoma);
+
+                    call.enqueue(new Callback<CalendarioSintoma>() {
+                        @Override
+                        public void onResponse(Call<CalendarioSintoma> call, Response<CalendarioSintoma> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                // Éxito: Manejar el éxito de la creación del CalendarioSintoma
+                            } else {
+                                // Fallo: Manejar la respuesta no exitosa de la API
+                                Toast.makeText(AnadirSintomaActivity.this, "Error al crear los CalendarioSintoma. Por favor, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CalendarioSintoma> call, Throwable t) {
+                            // Fallo: Manejar el fallo de la llamada API
+                            Toast.makeText(AnadirSintomaActivity.this, "Error al crear los CalendarioSintoma. Por favor, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                // Crear un Intent y pasar datos
+                Intent intent = new Intent(AnadirSintomaActivity.this, AgregarSeguimientoActivity.class);
+                intent.putExtra("selectedDate", formattedDate);
+                intent.putExtra("selectedTime", hour + ":" + minute);
+                startActivity(intent);
+
+                // Cerrar el popup y ocultar el fondo oscurecido
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
-    private LocalDate obtenerFechaActual() {
-        return LocalDate.now();
+
+    private void updateDateTextView(TextView textFecha) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM", Locale.getDefault());
+        String formattedDate = dateFormat.format(selectedDate.getTime());
+        textFecha.setText(formattedDate);
+    }
+    private String getMonthName(int month) {
+        String[] months = getResources().getStringArray(R.array.months_array);
+        return months[month];
     }
 
 }
