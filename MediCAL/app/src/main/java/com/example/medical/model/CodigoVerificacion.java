@@ -1,6 +1,7 @@
 package com.example.medical.model;
 
 
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

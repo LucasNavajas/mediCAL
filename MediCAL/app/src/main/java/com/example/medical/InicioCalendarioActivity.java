@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -103,6 +104,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         usuario = FirebaseAuth.getInstance().getCurrentUser();
         if (usuario==null){
@@ -212,6 +214,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onClick(View view) {
                 Intent intent = new Intent(InicioCalendarioActivity.this, MasActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", calendarioSeleccionado.getCodCalendario());
                 startActivity(intent);
             }
         });
@@ -221,6 +224,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onClick(View view) {
                 Intent intent = new Intent(InicioCalendarioActivity.this, MasActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", calendarioSeleccionado.getCodCalendario());
                 startActivity(intent);
             }
         });
@@ -234,7 +238,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
             }
         });
-
 
 
     }
@@ -252,6 +255,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 public void onResponse(Call<Calendario> call, Response<Calendario> response) {
                     calendarioSeleccionado = response.body();
                     nombreCalendario.setText(calendarioSeleccionado.getNombreCalendario());
+
+
                 }
 
                 @Override
@@ -266,6 +271,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             startActivity(intent);
             finish();
         }
+
+
     }
 
 
