@@ -9,7 +9,10 @@ public class Consejo {
     private boolean likeConsejo;
     private String descConsejo;
     private LocalDate fechaAltaConsejo;
+
     //private Image fotoConsejo;
+
+    private TipoConsejo tipoconsejo;
 
 
     public int getNroConsejo() {
@@ -69,6 +72,15 @@ public class Consejo {
 
     public void setFechaAltaConsejo(LocalDate fechaAltaConsejo) {
         this.fechaAltaConsejo = fechaAltaConsejo;
+    }
+
+    public TipoConsejo getTipoConsejo() {
+        return tipoconsejo;
+    }
+
+
+    public void setTipoConsejo(TipoConsejo tipoconsejo) {
+        this.tipoconsejo = tipoconsejo;
     }
 
 

@@ -20,6 +20,7 @@ public class Consejo {
 	private int nroConsejo;
 	private String nombreConsejo;
 	private String linkConsejo;
+	private String auspiciante;
 	private boolean likeConsejo;
 	private String descConsejo;
 	private LocalDate fechaAltaConsejo;
@@ -103,7 +104,8 @@ public class Consejo {
 	public String toString() {
 		return "Consejo [ nroConsejo=" +  nroConsejo + ", nombreConsejo=" + nombreConsejo + 
 				", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo + 
-				", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +"]";
+				", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +
+				", auspiciante=" + auspiciante + "]";
 	}
 
 
@@ -114,6 +116,16 @@ public class Consejo {
 
 	public void setTipoConsejo(TipoConsejo tipoconsejo) {
 		this.tipoconsejo = tipoconsejo;
+	}
+
+
+	public String getAuspiciante() {
+		return auspiciante;
+	}
+
+
+	public void setAuspiciante(String auspiciante) {
+		this.auspiciante = auspiciante;
 	}
 
 

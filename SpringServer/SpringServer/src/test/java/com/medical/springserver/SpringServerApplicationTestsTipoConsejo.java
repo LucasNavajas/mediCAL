@@ -56,9 +56,12 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo2.setLikeConsejo(false);
 		consejo2.setLinkConsejo("www.youtube.com");
 		consejo2.setFechaAltaConsejo(fechaHoy);
+		consejo2.setAuspiciante("Bagó");
 		consejo2.setDescConsejo("7 Cuidados básicos para personas con hipertensión.");
 		consejo2.setTipoConsejo(tipoConsejo);
 		consejoDao.save(consejo2);
+		
+		
 		
 		//System.out.println(tipoConsejo.getVarconsejo());
 		

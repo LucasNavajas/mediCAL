@@ -33,6 +33,7 @@ class SpringServerApplicationTestsConsejo {
 		consejo.setLikeConsejo(false);
 		consejo.setLinkConsejo("www.youtube.com");
 		consejo.setFechaAltaConsejo(fechaHoy);
+		consejo.setAuspiciante("MediCAL");
 		consejo.setDescConsejo("¡Es fácil añadir un medicamento! " + " Pulse en “Leer más” para obtener más información. ");
 		
 		

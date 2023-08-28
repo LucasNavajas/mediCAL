@@ -215,6 +215,7 @@ public class ConsejosActivity extends AppCompatActivity {
                 Log.d("ConsejoActivity", "la populo en la list");
                 ConsejoAdapter consejoAdapter = new ConsejoAdapter (consejoList);
                 recyclerView.setAdapter(consejoAdapter);
+
             } else {
                 Log.d("ConsejoActivity", "no la populo en la list");
                 Toast.makeText(ConsejosActivity.this, "La lista de Consejos está vacía o es nula", Toast.LENGTH_SHORT).show();

@@ -18,17 +18,21 @@ public class ConsejoHolder extends RecyclerView.ViewHolder {
     // 2: Consejos sobre Salud y Bienestar (Sin Video)
     // 3: Consejos Médicos (Con Vídeo)
 
+    ImageView iconoConsejo;
     TextView nombreConsejo;
     TextView descripcionConsejo;
     ImageView fotoConsejo;
-    ImageView likeConsejo;
+    //ImageView likeConsejo;
+    TextView auspiciante;
 
     public ConsejoHolder(@NonNull View itemView) {
         super(itemView);
+        iconoConsejo = itemView.findViewById(R.id.icono_consejo);
         nombreConsejo = itemView.findViewById(R.id.texto_titulo_consejo);
         descripcionConsejo = itemView.findViewById(R.id.texto_consejo);
         fotoConsejo = itemView.findViewById(R.id.videoImageView);
-        likeConsejo = itemView.findViewById(R.id.imagen_consejo_like);
+        //likeConsejo = itemView.findViewById(R.id.imagen_consejo_like);
+        auspiciante = itemView.findViewById(R.id.texto_Auspiciante);
 
     }
 }
