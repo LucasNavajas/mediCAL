@@ -3,8 +3,8 @@ package com.medical.springserver.model.consejo;
 //import java.awt.Image;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.tipoconsejo.TipoConsejo;
-import com.medical.springserver.model.usuario.Usuario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,13 +21,13 @@ public class Consejo {
 	private String nombreConsejo;
 	private String linkConsejo;
 	private String auspiciante;
-	private boolean likeConsejo;
 	private String descConsejo;
 	private LocalDate fechaAltaConsejo;
 	//private Image fotoConsejo;
 	
 	@ManyToOne
 	@JoinColumn(name = "nroTipoConsejo")
+	@JsonIgnore
 	private TipoConsejo tipoconsejo;
 	
 	public int getNroConsejo() {
@@ -59,15 +59,6 @@ public class Consejo {
 		this.linkConsejo = linkConsejo;
 	}
 
-
-	public boolean isLikeConsejo() {
-		return likeConsejo;
-	}
-
-
-	public void setLikeConsejo(boolean likeConsejo) {
-		this.likeConsejo = likeConsejo;
-	}
 
 
 	public String getDescConsejo() {
@@ -104,7 +95,7 @@ public class Consejo {
 	public String toString() {
 		return "Consejo [ nroConsejo=" +  nroConsejo + ", nombreConsejo=" + nombreConsejo + 
 				", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo + 
-				", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +
+				", fechaAltaConsejo=" + fechaAltaConsejo +
 				", auspiciante=" + auspiciante + "]";
 	}
 
