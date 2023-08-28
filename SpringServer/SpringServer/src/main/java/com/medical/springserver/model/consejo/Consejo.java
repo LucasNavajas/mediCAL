@@ -27,7 +27,6 @@ public class Consejo {
 	
 	@ManyToOne
 	@JoinColumn(name = "nroTipoConsejo")
-	@JsonIgnore
 	private TipoConsejo tipoconsejo;
 	
 	public int getNroConsejo() {
@@ -96,7 +95,7 @@ public class Consejo {
 		return "Consejo [ nroConsejo=" +  nroConsejo + ", nombreConsejo=" + nombreConsejo + 
 				", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo + 
 				", fechaAltaConsejo=" + fechaAltaConsejo +
-				", auspiciante=" + auspiciante + "]";
+				", auspiciante=" + auspiciante + " TipoConsejo="+tipoconsejo+"]";
 	}
 
 

@@ -1,13 +1,13 @@
 package com.example.medical.model;
 
+
 import java.util.List;
 
 public class TipoConsejo {
-
     private int nroTipoConsejo;
     private String nombreTipoConsejo;
-    private List<Consejo> varconsejo;
 
+    private List<Consejo> varconsejo;
 
     public int getNroTipoConsejo() {
         return nroTipoConsejo;
@@ -25,18 +25,11 @@ public class TipoConsejo {
         this.nombreTipoConsejo = nombreTipoConsejo;
     }
 
-    public List<Consejo> getVarConsejo() {
+    public List<Consejo> getVarconsejo() {
         return varconsejo;
     }
 
-    public void setVarConsejo(List<Consejo> varconsejo) {
+    public void setVarconsejo(List<Consejo> varconsejo) {
         this.varconsejo = varconsejo;
     }
-
-
-    @Override
-    public String toString() {
-        return "TipoConsejo [ nroTipoConsejo=" +  nroTipoConsejo + ", nombreTipoConsejo=" + nombreTipoConsejo + "]";
-    }
 }
-

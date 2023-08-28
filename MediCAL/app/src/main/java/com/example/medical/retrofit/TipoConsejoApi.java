@@ -11,11 +11,11 @@ import retrofit2.http.POST;
 
 public interface TipoConsejoApi {
 
-    @GET("/tipo_consejo/get-all")
+    @GET("/tipoConsejo/get-all")
     Call<List<TipoConsejo>> getAllTipoConsejos();
 
     // Se puede hacer POST de un TipoConsejo desde la app??
-    // @POST("/tipo_consejo/save")
-    // Call<TipoConsejo> save(@Body TipoConsejo tipoConsejo);
+    @POST("/tipoConsejo/save")
+    Call<TipoConsejo> save(@Body TipoConsejo tipoConsejo);
 
 }

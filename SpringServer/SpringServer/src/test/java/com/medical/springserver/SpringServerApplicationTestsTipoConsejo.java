@@ -42,17 +42,16 @@ class SpringServerApplicationTestsTipoConsejo {
 		
 		Consejo consejo = new Consejo();
 		consejo.setNombreConsejo("Su consejo diario de MediCAL!");
-		consejo.setLikeConsejo(false);
 		consejo.setLinkConsejo("www.youtube.com");
 		consejo.setFechaAltaConsejo(fechaHoy);
 		consejo.setAuspiciante("MediCAL");
 		consejo.setDescConsejo("¡Es fácil añadir un medicamento! " + " Pulse en “Leer más” para obtener más información. ");
+		consejo.setTipoConsejo(tipoConsejo3);
 		consejoDao.save(consejo);
 		
 		
 		Consejo consejo1 = new Consejo();
-		consejo1.setNombreConsejo("Consejo Diario de Bienestar y Salud");
-		consejo1.setLikeConsejo(false);
+		consejo1.setNombreConsejo("Consejo Diario de Bienestar y Salud");;
 		consejo1.setLinkConsejo("www.youtube.com");
 		consejo1.setFechaAltaConsejo(fechaHoy);
 		consejo1.setDescConsejo("Dormir bien es muy importante. No dormir lo suficiente puede afectar tus hormonas, así como tu salud física y mental.");
@@ -62,7 +61,6 @@ class SpringServerApplicationTestsTipoConsejo {
 		
 		Consejo consejo2 = new Consejo();
 		consejo2.setNombreConsejo("Consejo Médico Auspiciado");
-		consejo2.setLikeConsejo(false);
 		consejo2.setLinkConsejo("www.youtube.com");
 		consejo2.setFechaAltaConsejo(fechaHoy);
 		consejo2.setAuspiciante("Bagó");
