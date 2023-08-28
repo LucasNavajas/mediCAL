@@ -1,5 +1,7 @@
 package com.example.medical.model;
 
+import android.media.Image;
+
 import java.time.LocalDate;
 
 public class Consejo {
@@ -10,7 +12,8 @@ public class Consejo {
     private String descConsejo;
     private LocalDate fechaAltaConsejo;
 
-    //private Image fotoConsejo;
+    private Image fotoConsejo;
+    private String auspiciante;
 
     private TipoConsejo tipoconsejo;
 
@@ -84,7 +87,17 @@ public class Consejo {
     }
 
 
-	/*public Image getFotoConsejo() {
+    public String getAuspiciante() {
+        return auspiciante;
+    }
+
+
+    public void setAuspiciante(String auspiciante) {
+        this.auspiciante = auspiciante;
+    }
+
+
+	public Image getFotoConsejo() {
 		return fotoConsejo;
 	}
 
@@ -92,13 +105,13 @@ public class Consejo {
 	public void setFotoConsejo(Image fotoConsejo) {
 		this.fotoConsejo = fotoConsejo;
 	}
-*/
 
     @Override
     public String toString() {
         return "Consejo [ nroConsejo=" +  nroConsejo + ", nombreConsejo=" + nombreConsejo +
                 ", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo +
-                ", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +"]";
+                ", fechaAltaConsejo=" + fechaAltaConsejo + ", likeConsejo=" + likeConsejo +
+                ", auspiciante=" + auspiciante + "]";
     }
 
 }

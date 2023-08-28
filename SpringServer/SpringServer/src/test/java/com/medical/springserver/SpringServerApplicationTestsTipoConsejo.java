@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.medical.springserver.model.consejo.Consejo;
 import com.medical.springserver.model.consejo.ConsejoDao;
-import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
 import com.medical.springserver.model.tipoconsejo.TipoConsejo;
 import com.medical.springserver.model.tipoconsejo.TipoConsejoDao;
 
@@ -42,13 +41,23 @@ class SpringServerApplicationTestsTipoConsejo {
 		LocalDate fechaHoy = LocalDate.now();
 		
 		Consejo consejo = new Consejo();
-		consejo.setNombreConsejo("Consejo Diario de Bienestar y Salud");
+		consejo.setNombreConsejo("Su consejo diario de MediCAL!");
 		consejo.setLikeConsejo(false);
 		consejo.setLinkConsejo("www.youtube.com");
 		consejo.setFechaAltaConsejo(fechaHoy);
-		consejo.setDescConsejo("Dormir bien es muy importante. No dormir lo suficiente puede afectar tus hormonas, así como tu salud física y mental.");
-		consejo.setTipoConsejo(tipoConsejo2);
+		consejo.setAuspiciante("MediCAL");
+		consejo.setDescConsejo("¡Es fácil añadir un medicamento! " + " Pulse en “Leer más” para obtener más información. ");
 		consejoDao.save(consejo);
+		
+		
+		Consejo consejo1 = new Consejo();
+		consejo1.setNombreConsejo("Consejo Diario de Bienestar y Salud");
+		consejo1.setLikeConsejo(false);
+		consejo1.setLinkConsejo("www.youtube.com");
+		consejo1.setFechaAltaConsejo(fechaHoy);
+		consejo1.setDescConsejo("Dormir bien es muy importante. No dormir lo suficiente puede afectar tus hormonas, así como tu salud física y mental.");
+		consejo1.setTipoConsejo(tipoConsejo2);
+		consejoDao.save(consejo1);
 		
 		
 		Consejo consejo2 = new Consejo();
