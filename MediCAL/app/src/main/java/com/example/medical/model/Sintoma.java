@@ -1,7 +1,6 @@
 package com.example.medical.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 
 public class Sintoma {
@@ -10,16 +9,6 @@ public class Sintoma {
     private LocalDate fechaAltaSintoma;
     private LocalDate fechaFinVigenciaS;
     private String nombreSintoma;
-
-    private boolean isSelected;
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
 
     public int getCodSintoma() {
         return codSintoma;
@@ -56,16 +45,6 @@ public class Sintoma {
                 + fechaFinVigenciaS + ", nombreSintoma=" + nombreSintoma + "]";
     }
 
-    //Relaciones
-    private List<CalendarioSintoma> varcalendariosintoma;
-
-    public List<CalendarioSintoma> getVarcalendariosintoma() {
-        return varcalendariosintoma;
-    }
-    public void setVarcalendariosintoma(List<CalendarioSintoma> varcalendariosintoma) {
-        this.varcalendariosintoma = varcalendariosintoma;
-    }
-
-
+    //faltan relaciones
 }
 

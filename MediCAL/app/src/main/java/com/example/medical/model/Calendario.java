@@ -3,7 +3,6 @@ package com.example.medical.model;
 
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -80,16 +79,6 @@ public class Calendario {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
-    private List<CalendarioSintoma> varcalendariosintoma;
-    public List<CalendarioSintoma> getVarcalendariosintoma() {
-        List<CalendarioSintoma> varcalendariosintoma = null;
-        return null;
-    }
-    public void setVarcalendariosintoma(List<CalendarioSintoma> varcalendariosintoma) {
-        this.varcalendariosintoma = varcalendariosintoma;
-    }
-
    /* public List<Recordatorio> getRecordatorio() {
         return recordatorio;
     }
@@ -102,6 +91,11 @@ public class Calendario {
     public void setVarcalendariomedicion(List<CalendarioMedicion> varcalendariomedicion) {
         this.varcalendariomedicion = varcalendariomedicion;
     }
-
+    public List<CalendarioSintoma> getVarcalendariosintoma() {
+        return varcalendariosintoma;
+    }
+    public void setVarcalendariosintoma(List<CalendarioSintoma> varcalendariosintoma) {
+        this.varcalendariosintoma = varcalendariosintoma;
+    }
 */
 }

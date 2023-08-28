@@ -1,14 +1,17 @@
 package com.example.medical.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medical.ConsejosActivity;
 import com.example.medical.R;
 import com.example.medical.model.Consejo;
 import com.example.medical.model.TipoConsejo;
@@ -33,7 +36,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
     @Override
     public void onBindViewHolder(@NonNull ConsejoViewHolder holder, int position) {
         Consejo consejo = consejoList.get(position);
-
+        Log.d("ConsejoActivity", "Consejo: " +consejo.toString());
         ImageView iconoConsejo = holder.iconoConsejo;;
         TextView nombreConsejo;
         TextView descripcionConsejo;
@@ -51,17 +54,18 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         // ERROR ??
         String nombreTipoConsejo = tipoConsejo.getNombreTipoConsejo();
 
+        holder.nombreConsejo.setText(consejo.getNombreConsejo());
         // Configurar el ícono según el tipo de consejo
-        if (nombreTipoConsejo == "Sobre la App") {
+        if (tipoConsejo.getNroTipoConsejo() == 3) {
             iconoConsejo.setImageResource(R.drawable.foco_consejo);
             //fotoConsejo.setVisibility(View.GONE);
-        } else if (nombreTipoConsejo == "Bienestar y Salud") {
+        } else if (tipoConsejo.getNroTipoConsejo() == 2) {
             iconoConsejo.setImageResource(R.drawable.foto_salud);
             //fotoConsejo.setVisibility(View.GONE);
             // Los consejos de Bienestar y Salud no tienen un auspiciante pago, y tampoco son propios de MediCAL
             // Podrían estar relacionados al link de una noticia
             auspiciante.setVisibility(View.GONE);
-        } else if (nombreTipoConsejo == "Medico") {
+        } else if (tipoConsejo.getNroTipoConsejo() == 1) {
             iconoConsejo.setImageResource(R.drawable.foto_doctor);
             // Cuando subamos una foto, se cambia esto, ya que los Médicos si tienen foto
             // La foto sería usada como botón para el link del video
