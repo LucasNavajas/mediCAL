@@ -28,4 +28,8 @@ public class RecordatorioDao {
 		repository.delete(recordatorio);
 	}
 
+	public Recordatorio getByCodRecordatorio(int codRecordatorio) {
+		return repository.findByCodRecordatorio(codRecordatorio);
+	}
+
 }

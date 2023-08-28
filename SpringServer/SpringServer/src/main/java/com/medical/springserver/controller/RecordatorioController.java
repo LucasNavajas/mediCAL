@@ -24,5 +24,9 @@ public class RecordatorioController {
 	public Recordatorio save(@RequestBody Recordatorio recordatorio) {
 		return recordatorioDao.save(recordatorio);
 	}
+	@GetMapping("/recordatorio/{codRecordatorio}")
+	public Recordatorio getByCodRecordatorio(@PathVariable int codRecordatorio) {
+		return recordatorioDao.getByCodRecordatorio(codRecordatorio);
+	}
 
 }

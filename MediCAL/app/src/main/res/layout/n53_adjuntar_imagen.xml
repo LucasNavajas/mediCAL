@@ -89,7 +89,10 @@
             <ImageView
                 android:id="@+id/imagen"
                 android:layout_width="wrap_content"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="250dp"
+                android:maxWidth="350dp"
+                android:adjustViewBounds="true"
                 android:src="@drawable/foto_remedio"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="20dp"
@@ -99,8 +102,11 @@
             <!--boton de eliminar-->
             <ImageView
                 android:id="@+id/icono_eliminar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="40dp"
+                android:maxWidth="40dp"
+                android:adjustViewBounds="true"
                 android:src="@drawable/cancelar"
                 android:layout_gravity="top|end"
                 android:layout_marginEnd="30dp"
@@ -127,6 +133,7 @@
 
                 <!--icono galeria y texto-->
                 <LinearLayout
+                    android:id="@+id/galeria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -152,6 +159,7 @@
 
                 <!--icono camara y texto-->
                 <LinearLayout
+                    android:id="@+id/camara"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

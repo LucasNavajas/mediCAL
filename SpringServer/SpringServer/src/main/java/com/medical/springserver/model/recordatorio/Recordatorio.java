@@ -11,11 +11,13 @@ import com.medical.springserver.model.medicamento.Medicamento;
 import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorio;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -31,7 +33,9 @@ public class Recordatorio {
 	private LocalDate fechaFinVigenciaR;
 	private LocalDate fechaInicioRecordatorio;
 	private int horarioRecordatorio;
-	
+	@Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private String imagen;
 	// Relacion con Calendario
 	@ManyToOne
 	@JoinColumn (name = "codCalendario")
@@ -163,6 +167,12 @@ public class Recordatorio {
 	}
 	public void setCalendario(Calendario calendario) {
 		this.calendario = calendario;
+	}
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}	
 	
 }

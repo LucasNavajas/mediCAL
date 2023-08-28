@@ -18,10 +18,16 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -34,7 +40,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.medical.model.Medicamento;
+import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.MedicamentoApi;
+import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
 import java.io.ByteArrayOutputStream;
@@ -49,6 +57,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
 
     private RetrofitService retrofitService = new RetrofitService();
     private MedicamentoApi medicamentoApi = retrofitService.getRetrofit().create(MedicamentoApi.class);
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private static final int REQUEST_IMAGE_PICK = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private ImageView botonVolver;
@@ -74,7 +83,6 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
             Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
             String nombreMedicamentoString = nombreMedicamento.getText().toString();
             String marcaMedicamentoString = marcaMedicamento.getText().toString();
-            medicamento.setImagen(bitmapToBase64(imagenBitmap));
             medicamento.setMarcaMedicamento(marcaMedicamentoString);
             medicamento.setNombreMedicamento(nombreMedicamentoString);
             medicamento.setEsParticular(true);
@@ -82,7 +90,24 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
             medicamentoApi.saveMedicamento(medicamento).enqueue(new Callback<Medicamento>() {
                 @Override
                 public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
-                    Toast.makeText(NuevoMedicamentoActivity.this, "Medicamento creado", Toast.LENGTH_SHORT).show();
+                    Recordatorio recordatorio = new Recordatorio();
+                    recordatorio.setImagen(bitmapToBase64(imagenBitmap));
+                    recordatorio.setMedicamento(response.body());
+                    recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
+                        @Override
+                        public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                            Toast.makeText(NuevoMedicamentoActivity.this, "Recordatorio y medicamento creados", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(NuevoMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
+                            intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Recordatorio> call, Throwable t) {
+                            Toast.makeText(NuevoMedicamentoActivity.this, "Error de recordatorio creado", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
 
                 @Override
@@ -171,5 +196,50 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
 
 // Codifica el arreglo de bytes en una cadena Base64.
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    @Override
+    public void onBackPressed(){
+            View popupView = getLayoutInflater().inflate(R.layout.n32_1_popup_salepantalla_agregar_medicina, null);
+
+
+            // Crear la instancia de PopupWindow
+            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            // Hacer que el popup sea enfocable (opcional)
+            popupWindow.setFocusable(true);
+
+            // Configurar animación para oscurecer el fondo
+            View rootView = findViewById(android.R.id.content);
+
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.VISIBLE);
+
+            Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+            popupView.startAnimation(scaleAnimation);
+
+            // Mostrar el popup en la ubicación deseada
+            popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+            Button seguirEditando = popupView.findViewById(R.id.button_seguir_editando);
+            Button salir = popupView.findViewById(R.id.button_salir);
+            seguirEditando.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Ocultar el PopupWindow
+                    popupWindow.dismiss();
+
+                    // Ocultar el fondo oscurecido
+                    dimView.setVisibility(View.GONE);
+                }
+            });
+            salir.setOnClickListener(view ->{super.onBackPressed();});
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    dimView.setVisibility(View.GONE);
+                }
+            });
+
     }
 }

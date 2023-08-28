@@ -10,7 +10,6 @@ public class Medicamento {
     private LocalDate fechaFinVigenciaMed;
     private String marcaMedicamento;
     private String nombreMedicamento;
-    private String imagen;
 
     // Relacion con Recordatorio
     /*private List<Recordatorio> recordatorio;*/
@@ -51,13 +50,6 @@ public class Medicamento {
     }
     public void setNombreMedicamento(String nombreMedicamento) {
         this.nombreMedicamento = nombreMedicamento;
-    }
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
     }
 
     @Override

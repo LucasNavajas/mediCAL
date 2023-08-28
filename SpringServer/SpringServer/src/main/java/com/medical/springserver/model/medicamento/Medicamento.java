@@ -2,6 +2,7 @@ package com.medical.springserver.model.medicamento;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.administracionmed.AdministracionMed;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
@@ -28,11 +29,10 @@ public class Medicamento {
 	private String marcaMedicamento;
 	private String nombreMedicamento;
 	
-	@Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private String imagen;
+
 	// Relacion con Recordatorio
 	@OneToMany (mappedBy = "medicamento", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Recordatorio> recordatorio;
 	
 	public int getCodMedicamento() {
@@ -89,12 +89,5 @@ public class Medicamento {
 		this.recordatorio = recordatorio;
 	}
 	
-	  public String getImagen() {
-	        return imagen;
-	    }
-
-	    public void setImagen(String imagen) {
-	        this.imagen = imagen;
-	    }
 
 }
