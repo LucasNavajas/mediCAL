@@ -1,6 +1,7 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ class SpringServerApplicationTestsCalendario {
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
 		
+		// Obtener la fecha de hoy
+		LocalDateTime fechaHoyTime = LocalDateTime.now();
+		
 		Calendario calendario = new Calendario();
 		calendario.setFechaAltaCalendario(fechaHoy);
 		calendario.setFechaFinVigenciaC(null);
@@ -46,7 +50,7 @@ class SpringServerApplicationTestsCalendario {
 		
 		// instancia de CalendarioSintoma
 		CalendarioSintoma calendariosintoma = new CalendarioSintoma();
-		calendariosintoma.setFechaCalendarioSintoma(fechaHoy);
+		calendariosintoma.setFechaCalendarioSintoma(fechaHoyTime);
 		calendariosintoma.setFechaFinVigenciaCS(null);
 		
 		// instancia de CalendarioMedicion

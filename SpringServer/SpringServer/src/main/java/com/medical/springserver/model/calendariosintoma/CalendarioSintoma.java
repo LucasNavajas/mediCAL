@@ -1,5 +1,6 @@
 package com.medical.springserver.model.calendariosintoma;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.sintoma.Sintoma;
@@ -16,7 +17,7 @@ public class CalendarioSintoma {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codCalendarioSintoma;
-	private LocalDate fechaCalendarioSintoma;
+	private LocalDateTime fechaCalendarioSintoma;
 	private LocalDate fechaFinVigenciaCS;
 	
 	// Relacion con Calendario
@@ -37,11 +38,11 @@ public class CalendarioSintoma {
 		this.codCalendarioSintoma = codCalendarioSintoma;
 	}
 
-	public LocalDate getFechaCalendarioSintoma() {
+	public LocalDateTime getFechaCalendarioSintoma() {
 		return fechaCalendarioSintoma;
 	}
 
-	public void setFechaCalendarioSintoma(LocalDate fechaCalendarioSintoma) {
+	public void setFechaCalendarioSintoma(LocalDateTime fechaCalendarioSintoma) {
 		this.fechaCalendarioSintoma = fechaCalendarioSintoma;
 	}
 

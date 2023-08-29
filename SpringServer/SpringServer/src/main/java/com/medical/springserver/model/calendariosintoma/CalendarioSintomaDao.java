@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.calendario.Calendario;
+
 @Service
 
 public class CalendarioSintomaDao {
@@ -15,6 +17,10 @@ public class CalendarioSintomaDao {
 	
 	public CalendarioSintoma save(CalendarioSintoma calendariosintoma) {
 		return repository.save(calendariosintoma);
+	}
+	
+	public CalendarioSintoma findByCalendario(Calendario calendario) {
+		return repository.findByCalendario(calendario);
 	}
 	
 	public List<CalendarioSintoma> getAllCalendarioSintomas(){
