@@ -1,11 +1,12 @@
 package com.example.medical.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public class CalendarioSintoma {
-    private LocalDate fechaCalendarioSintoma;
+    private LocalDateTime fechaCalendarioSintoma;
     private LocalDate fechaFinVigenciaCS;
     private int codCalendarioSintoma;
 
@@ -17,11 +18,11 @@ public class CalendarioSintoma {
         this.codCalendarioSintoma = codCalendarioSintoma;
     }
 
-    public LocalDate getFechaCalendarioSintoma() {
+    public LocalDateTime getFechaCalendarioSintoma() {
         return fechaCalendarioSintoma;
     }
 
-    public void setFechaCalendarioSintoma(LocalDate fechaCalendarioSintoma) {
+    public void setFechaCalendarioSintoma(LocalDateTime fechaCalendarioSintoma) {
         this.fechaCalendarioSintoma = fechaCalendarioSintoma;
     }
 

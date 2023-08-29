@@ -89,228 +89,42 @@
                         android:orientation="vertical">
 
                         <RelativeLayout
+                            android:id="@+id/parasacar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginStart="0dp">
+                            android:layout_alignParentStart="false"
+                            android:layout_marginStart="0dp"
+                            android:gravity="center"
+                            android:visibility="gone">
 
-                            <!-- Medicion 1 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_medicion1"
-                                android:layout_width="match_parent"
+
+                            <ImageView
+                                android:id="@+id/imagen_mediciones"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="50dp"
+                                android:layout_marginStart="90dp"
+                                android:src="@drawable/mediciones"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:background="@drawable/background_rounded_blanco">
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion1"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/mano_corazon" />
-
-                                <TextView
-                                    android:id="@+id/texto_titulo_medicion1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="15dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_toRightOf="@id/imagen_medicion1"
-                                    android:text="Pulso"
-                                    android:textSize="25dp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/texto_medicion1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_titulo_medicion1"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_toRightOf="@id/imagen_medicion1"
-                                    android:text="Último seguimiento: hoy 25 de may, 08:00 "
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <Button
-                                    android:id="@+id/button_mas_info1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_medicion1"
-                                    android:layout_toRightOf="@id/imagen_medicion1"
-                                    android:layout_marginBottom="15dp"
-                                    android:background="@drawable/boton_redondo_verde_oscuro"
-                                    android:focusable="false"
-                                    android:fontFamily="@font/inter_bold"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
-                                    android:text="Más información"
-                                    android:textAllCaps="false"
-                                    android:textAppearance="@style/CustomButtonText"
-                                    android:textColor="@color/white"
-                                    android:textSize="20sp" />
-
-                            </RelativeLayout>
-
-                            <!-- Medicion 2 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_medicion2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/rectangle_medicion1"
-                                android:background="@drawable/background_rounded_blanco">
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion2"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/mano_corazon" />
-
-                                <TextView
-                                    android:id="@+id/texto_titulo_medicion2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="15dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_toRightOf="@id/imagen_medicion2"
-                                    android:text="Calcio"
-                                    android:textSize="25dp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/texto_medicion2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_titulo_medicion2"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_toRightOf="@id/imagen_medicion2"
-                                    android:text="Último seguimiento: 23 de may, 23:23 "
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <Button
-                                    android:id="@+id/button_mas_info2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_medicion2"
-                                    android:layout_toRightOf="@id/imagen_medicion2"
-                                    android:layout_marginBottom="15dp"
-                                    android:background="@drawable/boton_redondo_verde_oscuro"
-                                    android:focusable="false"
-                                    android:fontFamily="@font/inter_bold"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
-                                    android:text="Más información"
-                                    android:textAllCaps="false"
-                                    android:textAppearance="@style/CustomButtonText"
-                                    android:textColor="@color/white"
-                                    android:textSize="20sp" />
-
-                            </RelativeLayout>
-
-                            <!-- Sintoma 1 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_sintoma1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/rectangle_medicion2"
-                                android:background="@drawable/background_rounded_blanco">
-
-                                <ImageView
-                                    android:id="@+id/imagen_sintoma1"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/persona_sintoma" />
-
-                                <TextView
-                                    android:id="@+id/texto_titulo_sintoma1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="15dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:layout_toRightOf="@id/imagen_sintoma1"
-                                    android:text="Cansancio"
-                                    android:textSize="25dp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/texto_sintoma1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_titulo_sintoma1"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_toRightOf="@id/imagen_sintoma1"
-                                    android:text="Último seguimiento: 18 de abr, 19:18 "
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <Button
-                                    android:id="@+id/button_mas_info3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_sintoma1"
-                                    android:layout_toRightOf="@id/imagen_sintoma1"
-                                    android:layout_marginBottom="15dp"
-                                    android:background="@drawable/boton_redondo_verde_oscuro"
-                                    android:focusable="false"
-                                    android:fontFamily="@font/inter_bold"
-                                    android:paddingStart="20dp"
-                                    android:paddingEnd="20dp"
-                                    android:text="Más información"
-                                    android:textAllCaps="false"
-                                    android:textAppearance="@style/CustomButtonText"
-                                    android:textColor="@color/white"
-                                    android:textSize="20sp" />
-
-                            </RelativeLayout>
+                                android:layout_below="@id/imagen_mediciones"
+                                android:text="Registre mediciones y síntomas"
+                                android:textColor="@color/black"
+                                android:textSize="26sp"
+                                android:fontFamily="@font/inter_medium"
+                                android:textAlignment="center"/>
 
                         </RelativeLayout>
 
                         <Button
-                            android:id="@+id/button_mas_info2"
+                            android:id="@+id/button_agregarseguimiento"
                             android:layout_width="300dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/contenido"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="550dp"
                             android:layout_marginStart="35dp"
                             android:layout_marginBottom="15dp"
                             android:background="@drawable/boton_redondo_verde"

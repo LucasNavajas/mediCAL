@@ -76,8 +76,9 @@ public class AnadirSintomaActivity extends AppCompatActivity {
     private Set<Sintoma> sintomasSeleccionados = new HashSet<>(); // Síntomas seleccionados
 
     private Calendario calendarioSeleccionado;
+    private List<Integer> calendarioSintomaIds = new ArrayList<>();
+
     private int codCalendario ;
-    private List<Calendario> listaCalendarios;
 
 
     @Override
@@ -101,6 +102,31 @@ public class AnadirSintomaActivity extends AppCompatActivity {
 
         // Crear una instancia de la interfaz de la API utilizando Retrofit
         calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
+
+
+        // Hacer la llamada a la API para obtener el calendario seleccionado
+        Call<Calendario> call2 = calendarioApi.getByCodCalendario(codCalendario);
+
+        call2.enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call2, Response<Calendario> response) {
+                if (response.isSuccessful()) {
+                    calendarioSeleccionado = response.body();
+                    if (calendarioSeleccionado != null) {
+                        Log.d("MiApp", "Calendario seleccionado encontrado: " + calendarioSeleccionado.getCodCalendario());
+                    } else {
+                        Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call2, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
 
         obtenerSintomasDesdeApi();
 
@@ -131,6 +157,14 @@ public class AnadirSintomaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 popupCambiarFechaHora();
+            }
+        });
+
+        findViewById(R.id.boton_volver).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Vuelve a la pantalla anterior
+                onBackPressed();
             }
         });
 
@@ -439,102 +473,82 @@ public class AnadirSintomaActivity extends AppCompatActivity {
         aceptarTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Obtener los valores de fecha y hora seleccionados
-                int hour = timePicker.getCurrentHour();
-                int minute = timePicker.getCurrentMinute();
+                if (calendarioSeleccionado != null) {
+                    // Obtener los valores de fecha y hora seleccionados
+                    int hour = timePicker.getCurrentHour();
+                    int minute = timePicker.getCurrentMinute();
 
-                int year = selectedDate.get(Calendar.YEAR);
-                int month = selectedDate.get(Calendar.MONTH) + 1; // Sumar 1 porque los meses en la base de datos empiezan en 1
-                int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+                    int year = selectedDate.get(Calendar.YEAR);
+                    int month = selectedDate.get(Calendar.MONTH) + 1;
+                    int day = selectedDate.get(Calendar.DAY_OF_MONTH);
 
-                // Formatear la fecha para asegurarse de que el mes tenga dos dígitos
-                String formattedDate = String.format("%04d-%02d-%02d", year, month, day);
-                // Ahora puedes analizar la fecha
-                LocalDate selectedLocalDate = LocalDate.parse(formattedDate);
+                    // Crear un objeto LocalDateTime
+                    LocalDateTime selectedLocalDateTime = LocalDateTime.of(year, month, day, hour, minute);
 
-                Log.d("MiApp", "Tamaño de la lista de síntomas seleccionados: " + sintomasSeleccionados.size());
+                    Log.d("MiApp", "Tamaño de la lista de síntomas seleccionados: " + sintomasSeleccionados.size());
+
+                    // Crear una lista para almacenar los objetos CalendarioSintoma
+                    List<CalendarioSintoma> calendarioSintomas = new ArrayList<>();
+
+                    // Iterar sobre los síntomas seleccionados y crear objetos CalendarioSintoma
+                    for (Sintoma sintoma : sintomasSeleccionados) {
+                        if (isSintomaSelected(sintoma.getCodSintoma())) {
+                            Log.d("MiApp", "Creando CalendarioSintoma para síntoma " + sintoma.getCodSintoma());
+                            CalendarioSintoma nuevoCalendarioSintoma = new CalendarioSintoma();
 
 
-                // Crear una lista para almacenar los objetos CalendarioSintoma
-                List<CalendarioSintoma> calendarioSintomas = new ArrayList<>();
+                            // Establecer los valores para el nuevo CalendarioSintoma
+                            nuevoCalendarioSintoma.setFechaCalendarioSintoma(selectedLocalDateTime);
+                            nuevoCalendarioSintoma.setFechaFinVigenciaCS(null);
+                            nuevoCalendarioSintoma.setCodCalendarioSintoma(lastCalendarioSintomaCode + 1);
+                            nuevoCalendarioSintoma.setSintoma(sintoma);
+                            nuevoCalendarioSintoma.setCalendario(calendarioSeleccionado);
 
-                // Obtener el calendario específico por su código
-                Call<Calendario> call2 = calendarioApi.getByCodCalendario(codCalendario);
+                            // Agregar el ID a la lista
+                            calendarioSintomaIds.add(nuevoCalendarioSintoma.getCodCalendarioSintoma());
 
-                call2.enqueue(new Callback<Calendario>() {
-                    @Override
-                    public void onResponse(Call<Calendario> call, Response<Calendario> response) {
-                        if (response.isSuccessful()) {
-                            Calendario calendarioSeleccionado = response.body();
-                            if (calendarioSeleccionado != null) {
-                                Log.d("MiApp", "Calendario seleccionado encontrado: " + calendarioSeleccionado.getCodCalendario());
-
-                                // Iterar sobre los síntomas seleccionados y crear objetos CalendarioSintoma
-                                for (Sintoma sintoma : sintomasSeleccionados) {
-                                    if (isSintomaSelected(sintoma.getCodSintoma())) {
-                                        Log.d("MiApp", "Creando CalendarioSintoma para síntoma " + sintoma.getCodSintoma());
-                                        CalendarioSintoma nuevoCalendarioSintoma = new CalendarioSintoma();
-
-                                        // Establecer los valores para el nuevo CalendarioSintoma
-                                        nuevoCalendarioSintoma.setFechaCalendarioSintoma(selectedLocalDate);
-                                        nuevoCalendarioSintoma.setFechaFinVigenciaCS(null);
-                                        nuevoCalendarioSintoma.setCodCalendarioSintoma(lastCalendarioSintomaCode + 1);
-                                        nuevoCalendarioSintoma.setSintoma(sintoma);
-                                        nuevoCalendarioSintoma.setCalendario(calendarioSeleccionado); // Aquí se establece el Calendario
-
-                                        // Agregar el nuevo CalendarioSintoma a la lista
-                                        calendarioSintomas.add(nuevoCalendarioSintoma);
-                                    } else {
-                                        Log.d("MiApp", "Síntoma " + sintoma.getCodSintoma() + " no está seleccionado.");
-                                    }
-                                }
-                            } else {
-                                Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
-                            }
+                            // Agregar el nuevo CalendarioSintoma a la lista
+                            calendarioSintomas.add(nuevoCalendarioSintoma);
                         } else {
-                            Log.d("MiApp", "Error en la solicitud: " + response.message());
+                            Log.d("MiApp", "Síntoma " + sintoma.getCodSintoma() + " no está seleccionado.");
                         }
                     }
 
-                    @Override
-                    public void onFailure(Call<Calendario> call, Throwable t) {
-                        Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
-                    }
-                });
+                    // Llamada a la API para guardar los nuevos CalendarioSintoma
+                    for (CalendarioSintoma nuevoCalendarioSintoma : calendarioSintomas) {
+                        Call<CalendarioSintoma> call1 = calendarioSintomaApi.saveCalendarioSintoma(nuevoCalendarioSintoma);
 
+                        call1.enqueue(new Callback<CalendarioSintoma>() {
+                            @Override
+                            public void onResponse(Call<CalendarioSintoma> call1, Response<CalendarioSintoma> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    // Éxito: Manejar el éxito de la creación del CalendarioSintoma
+                                } else {
+                                    // Fallo: Manejar la respuesta no exitosa de la API
+                                    Toast.makeText(AnadirSintomaActivity.this, "Error al crear los CalendarioSintoma. Por favor, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                // Llamada a la API para guardar los nuevos CalendarioSintoma
-                for (CalendarioSintoma nuevoCalendarioSintoma : calendarioSintomas) {
-                    Call<CalendarioSintoma> call = calendarioSintomaApi.saveCalendarioSintoma(nuevoCalendarioSintoma);
-
-                    call.enqueue(new Callback<CalendarioSintoma>() {
-                        @Override
-                        public void onResponse(Call<CalendarioSintoma> call, Response<CalendarioSintoma> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                // Éxito: Manejar el éxito de la creación del CalendarioSintoma
-                            } else {
-                                // Fallo: Manejar la respuesta no exitosa de la API
+                            @Override
+                            public void onFailure(Call<CalendarioSintoma> call1, Throwable t) {
+                                // Fallo: Manejar el fallo de la llamada API
                                 Toast.makeText(AnadirSintomaActivity.this, "Error al crear los CalendarioSintoma. Por favor, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
                             }
-                        }
+                        });
+                    }
 
-                        @Override
-                        public void onFailure(Call<CalendarioSintoma> call, Throwable t) {
-                            // Fallo: Manejar el fallo de la llamada API
-                            Toast.makeText(AnadirSintomaActivity.this, "Error al crear los CalendarioSintoma. Por favor, inténtalo nuevamente.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    // Crear un Intent y pasar datos
+                    Intent intent = new Intent(AnadirSintomaActivity.this, AgregarSeguimientoActivity.class);
+                    intent.putExtra("selectedDateTime", selectedLocalDateTime);
+                    intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                    startActivity(intent);
+
+                    // Cerrar el popup y ocultar el fondo oscurecido
+                    popupWindow.dismiss();
+                    dimView.setVisibility(View.GONE);
+                } else {
+                    Log.d("MiApp", "Calendario seleccionado es nulo.");
                 }
-
-                // Crear un Intent y pasar datos
-                Intent intent = new Intent(AnadirSintomaActivity.this, AgregarSeguimientoActivity.class);
-                intent.putExtra("selectedDate", formattedDate);
-                intent.putExtra("selectedTime", hour + ":" + minute);
-                startActivity(intent);
-
-                // Cerrar el popup y ocultar el fondo oscurecido
-                popupWindow.dismiss();
-                dimView.setVisibility(View.GONE);
             }
         });
 
