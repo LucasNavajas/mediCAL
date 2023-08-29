@@ -12,7 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-//Comentario de prueba github
+
 @Entity
 public class TipoConsejo {
 	@Id
@@ -23,7 +23,6 @@ public class TipoConsejo {
 	@OneToMany (mappedBy = "tipoconsejo", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Consejo> varconsejo;
-
 	
 
 	public int getNroTipoConsejo() {
@@ -31,17 +30,14 @@ public class TipoConsejo {
 	}
 
 
-
 	public void setNroTipoConsejo(int nroTipoConsejo) {
 		this.nroTipoConsejo = nroTipoConsejo;
 	}
 
 
-
 	public String getNombreTipoConsejo() {
 		return nombreTipoConsejo;
 	}
-
 
 
 	public void setNombreTipoConsejo(String nombreTipoConsejo) {
@@ -52,7 +48,6 @@ public class TipoConsejo {
 	@Override
 	public String toString() {
 		return "TipoConsejo [ nroTipoConsejo=" +  nroTipoConsejo + ", nombreTipoConsejo=" + nombreTipoConsejo + "]";
-	}
-	
+	}	
 	
 }

@@ -14,16 +14,14 @@ public class ConsejoHolder extends RecyclerView.ViewHolder {
 
     // Traer objetos ?
 
-    // 1: Consejos sobre la App (Sin Video, Con Auspiciante MediCAL)
-    // 2: Consejos sobre Salud y Bienestar (Sin Video, Sin Auspiciante)
-    // 3: Consejos Médicos (Con Vídeo, Con Auspiciante)
+    // 1: Consejos sobre la App (Sin Imagen, Con Auspiciante MediCAL, Con Link a Manual)
+    // 2: Consejos sobre Salud y Bienestar (Sin Imagen, Sin Auspiciante, Con Link a Noticia)
+    // 3: Consejos Médicos (Con Imagen, Con Auspiciante, Con Link a Video)
 
     ImageView iconoConsejo;
     TextView nombreConsejo;
     TextView descripcionConsejo;
-    //ImageView fotoConsejo;
-
-    //ImageView likeConsejo;
+    ImageView foto;
     TextView auspiciante;
 
     public ConsejoHolder(@NonNull View itemView) {
@@ -31,8 +29,7 @@ public class ConsejoHolder extends RecyclerView.ViewHolder {
         iconoConsejo = itemView.findViewById(R.id.icono_consejo);
         nombreConsejo = itemView.findViewById(R.id.texto_titulo_consejo);
         descripcionConsejo = itemView.findViewById(R.id.texto_consejo);
-        //fotoConsejo = itemView.findViewById(R.id.videoImageView);
-        //likeConsejo = itemView.findViewById(R.id.imagen_consejo_like);
+        foto = itemView.findViewById(R.id.videoImageView);
         auspiciante = itemView.findViewById(R.id.texto_Auspiciante);
 
     }

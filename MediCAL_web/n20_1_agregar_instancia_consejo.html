@@ -314,10 +314,20 @@ textarea {
                     <label for="campo_foto">Foto</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_foto" placeholder="Link de archivo de foto" style="width: 100%;">
+                    <input type="text" id="campo_foto" placeholder="URL de archivo de foto" style="width: 100%;">
                     <div id="foto-alert" class="alert"></div>
                 </td>
-            </tr>           
+            </tr>  
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre2">Nombre Auspiciante</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre2" placeholder="Nombre del auspiciante" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
           
         </table>
 <!--boton guardar-->

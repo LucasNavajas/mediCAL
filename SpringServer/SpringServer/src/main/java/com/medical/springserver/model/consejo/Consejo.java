@@ -1,6 +1,6 @@
 package com.medical.springserver.model.consejo;
 
-//import java.awt.Image;
+import java.awt.Image;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,7 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-//Comentario de prueba github
+
 @Entity
 public class Consejo {
 	@Id
@@ -23,7 +23,8 @@ public class Consejo {
 	private String auspiciante;
 	private String descConsejo;
 	private LocalDate fechaAltaConsejo;
-	//private Image fotoConsejo;
+	// foto antes era tipo Image
+	private String fotoConsejo;
 	
 	@ManyToOne
 	@JoinColumn(name = "nroTipoConsejo")
@@ -80,22 +81,21 @@ public class Consejo {
 	}
 
 
-	/*public Image getFotoConsejo() {
+	public String getFotoConsejo() {
 		return fotoConsejo;
 	}
 
 
-	public void setFotoConsejo(Image fotoConsejo) {
+	public void setFotoConsejo(String fotoConsejo) {
 		this.fotoConsejo = fotoConsejo;
 	}
-*/
+
 
 	@Override
 	public String toString() {
-		return "Consejo [ nroConsejo=" +  nroConsejo + ", nombreConsejo=" + nombreConsejo + 
-				", linkConsejo=" + linkConsejo + ", descConsejo=" + descConsejo + 
-				", fechaAltaConsejo=" + fechaAltaConsejo +
-				", auspiciante=" + auspiciante + " TipoConsejo="+tipoconsejo+"]";
+		return "Consejo [nroConsejo=" + nroConsejo + ", nombreConsejo=" + nombreConsejo + ", linkConsejo=" + linkConsejo
+				+ ", auspiciante=" + auspiciante + ", descConsejo=" + descConsejo + ", fechaAltaConsejo="
+				+ fechaAltaConsejo + ", fotoConsejo=" + fotoConsejo + ", tipoconsejo=" + tipoconsejo + "]";
 	}
 
 

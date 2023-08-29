@@ -215,7 +215,7 @@ public class ConsejosActivity extends AppCompatActivity {
         private void populateListView(List<Consejo> consejoList) {
             if (consejoList != null && !consejoList.isEmpty()) {
                 Log.d("ConsejoActivity", "la populo en la list");
-                ConsejoAdapter consejoAdapter = new ConsejoAdapter (consejoList);
+                ConsejoAdapter consejoAdapter = new ConsejoAdapter (consejoList, this);
                 recyclerView.setAdapter(consejoAdapter);
 
             } else {

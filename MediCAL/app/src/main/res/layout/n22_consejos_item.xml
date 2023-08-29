@@ -15,6 +15,15 @@
             android:background="@drawable/background_blanco_recto"
             tools:ignore="MissingConstraints">
 
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="wrap_content"
+                android:layout_height="1.5dp"
+                android:background="#808080"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                />
+
             <ImageView
                 android:id="@+id/icono_consejo"
                 android:layout_width="60dp"
@@ -47,7 +56,7 @@
                 android:layout_below="@id/texto_titulo_consejo"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="2dp"
                 android:text="Descripción Consejo"
@@ -55,32 +64,37 @@
 
             <TextView
                 android:id="@+id/text_Leer_mas"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/texto_consejo"
-                android:layout_marginStart="250dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="0dp"
+                android:layout_marginRight="15dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/inter_regular"
-                android:text="Leer más"
+                android:text=" Leer Más  "
                 android:textColor="@color/verdeClaro"
-                android:textSize="22sp" />
+                android:textSize="21sp"
+                android:gravity="end"/>
             <View
-                android:layout_width="100dp"
+                android:id="@+id/linea_leer_mas"
+                android:layout_width="110dp"
                 android:layout_below="@id/text_Leer_mas"
                 android:layout_height="1dp"
-                android:layout_alignParentStart="@id/text_Leer_mas"
-                android:layout_marginStart="250dp"
-                android:background="@color/verdeClaro" />
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/verdeClaro"
+                />
 
             <ImageView
                 android:id="@+id/videoImageView"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="155dp"
                 android:scaleType="fitCenter"
                 android:layout_below="@id/text_Leer_mas"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="1dp"
                 />
 
             <ImageView
@@ -88,21 +102,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/videoImageView"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/consejo_compartir" />
-
-            <ImageView
-                android:id="@+id/imagen_consejo_like"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/videoImageView"
-                android:layout_toRightOf="@id/imagen_consejo_compartir"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/consejo_like" />
 
             <TextView
                 android:id="@+id/texto_Auspiciante"
@@ -110,9 +113,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/videoImageView"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
-                android:layout_alignParentStart="@id/imagen_consejo_like"
+                android:layout_alignParentStart="@id/imagen_consejo_compartir"
                 android:text="Auspiciante: "
                 android:textSize="20dp"
                 android:gravity="end"
@@ -123,8 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1.5dp"
                 android:background="#808080"
-                android:layout_below="@+id/texto_Auspiciante"
-                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/imagen_consejo_compartir"
+                android:layout_marginBottom="0dp"
                 android:layout_marginTop="10dp"
                 />
 

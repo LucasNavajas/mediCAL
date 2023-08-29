@@ -7,6 +7,7 @@ public class Consejo {
     private int nroConsejo;
     private String nombreConsejo;
     private String linkConsejo;
+    private String fotoConsejo;
     private String auspiciante;
     private String descConsejo;
     private LocalDate fechaAltaConsejo;
@@ -59,6 +60,14 @@ public class Consejo {
 
     public void setFechaAltaConsejo(LocalDate fechaAltaConsejo) {
         this.fechaAltaConsejo = fechaAltaConsejo;
+    }
+
+    public String getFotoConsejo() {
+        return fotoConsejo;
+    }
+
+    public void setFotoConsejo(String fotoConsejo) {
+        this.fotoConsejo = fotoConsejo;
     }
 
     public TipoConsejo getTipoConsejo() {
