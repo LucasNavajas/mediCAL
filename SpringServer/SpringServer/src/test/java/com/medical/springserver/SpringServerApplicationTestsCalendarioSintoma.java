@@ -1,6 +1,7 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class SpringServerApplicationTestsCalendarioSintoma {
 	void addCalendarioSintomaTest() {
 		
 		// Obtener la fecha de hoy
-		LocalDate fechaHoy = LocalDate.now();
+		LocalDateTime fechaHoy = LocalDateTime.now();
 		
 		CalendarioSintoma calendariosintoma = new CalendarioSintoma();
 		calendariosintoma.setFechaCalendarioSintoma(fechaHoy);
