@@ -44,8 +44,12 @@ class SpringServerApplicationTestsEstadoSolicitud {
 		estadoSolicitudDao.save(estadoSolicitud6);
 		
 		EstadoSolicitud estadoSolicitud7 = new EstadoSolicitud();
-	    estadoSolicitud7.setNombreEstadoSolicitud("Desvinculado sin visualizar");
+	    estadoSolicitud7.setNombreEstadoSolicitud("Desvinculado sin visualizar Supervisor");
 		estadoSolicitudDao.save(estadoSolicitud7);
+		
+		EstadoSolicitud estadoSolicitud8 = new EstadoSolicitud();
+	    estadoSolicitud8.setNombreEstadoSolicitud("Desvinculado sin visualizar Supervisado");
+		estadoSolicitudDao.save(estadoSolicitud8);
 		
 	}
 	

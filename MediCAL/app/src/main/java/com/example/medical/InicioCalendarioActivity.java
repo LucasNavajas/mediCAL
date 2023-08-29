@@ -699,9 +699,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private void popupRespuesta(Solicitud solicitud, int codEstadoSolicitud) {
         int layoutPopupSolicitud = 0;
         boolean aceptada = true;//Si es falso, se muestra el popup rechazado y se cambia su estado
-        if (codEstadoSolicitud == 7) {
+        if (codEstadoSolicitud == 7 && solicitud.getUsuarioControlador().getCodUsuario()==codUsuarioLogeado || codEstadoSolicitud == 8 && solicitud.getUsuarioControlado().getCodUsuario()==codUsuarioLogeado) {
             popUpDesvinculacion(solicitud, codEstadoSolicitud);
-        } else {
+        } else if(codEstadoSolicitud==5 || codEstadoSolicitud==6){
             if (codEstadoSolicitud == 5) {
                 layoutPopupSolicitud = R.layout.n26_2_solicitud_aceptada;
                 aceptada = true;

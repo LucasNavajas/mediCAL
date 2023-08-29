@@ -28,6 +28,7 @@ import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.SolicitudApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,7 +40,7 @@ public class GestionarContactosActivity extends AppCompatActivity {
     private TextView textoSupervisados;
     private ImageView botonVolver;
     private Button nuevoContacto;
-    private EstadoSolicitud desvinculado;
+    private List<EstadoSolicitud> desvinculado = new ArrayList<>();
     private RetrofitService retrofitService = new RetrofitService();
     private int codUsuarioLogeado;
     private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
@@ -73,7 +74,18 @@ public class GestionarContactosActivity extends AppCompatActivity {
         estadoSolicitudApi.findByCodEstadoSolicitud(7).enqueue(new Callback<EstadoSolicitud>() {
             @Override
             public void onResponse(Call<EstadoSolicitud> call, Response<EstadoSolicitud> response) {
-                desvinculado = response.body();
+                desvinculado.add(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<EstadoSolicitud> call, Throwable t) {
+                Toast.makeText(GestionarContactosActivity.this, "Error al cargar el estado de la solicitud, cierre la aplicación y vuelva a abrirla", Toast.LENGTH_SHORT).show();
+            }
+        });
+        estadoSolicitudApi.findByCodEstadoSolicitud(8).enqueue(new Callback<EstadoSolicitud>() {
+            @Override
+            public void onResponse(Call<EstadoSolicitud> call, Response<EstadoSolicitud> response) {
+                desvinculado.add(response.body());
             }
 
             @Override
@@ -370,8 +382,15 @@ public class GestionarContactosActivity extends AppCompatActivity {
             textViewAceptar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    EstadoSolicitud desvinculadoEstado;
+                    if(solicitud.getUsuarioControlador().getCodUsuario()==codUsuarioLogeado){
+                        desvinculadoEstado = desvinculado.get(1);
+                    }
+                    else{
+                        desvinculadoEstado = desvinculado.get(0);
+                    }
                     popupWindow.dismiss();
-                    solicitudApi.actualizarEstadoSolicitud(solicitud.getCodSolicitud(), desvinculado).enqueue(new Callback<Solicitud>() {
+                    solicitudApi.actualizarEstadoSolicitud(solicitud.getCodSolicitud(), desvinculadoEstado).enqueue(new Callback<Solicitud>() {
                         @Override
                         public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
                             popUpDesvinculacion(usuario);
