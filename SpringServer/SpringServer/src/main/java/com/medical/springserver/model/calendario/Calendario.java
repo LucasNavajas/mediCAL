@@ -3,6 +3,7 @@ package com.medical.springserver.model.calendario;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 import com.medical.springserver.model.recordatorio.Recordatorio;
@@ -35,14 +36,17 @@ public class Calendario {
 	
 	// Relacion con Recordatorio
 	@OneToMany (mappedBy = "calendario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Recordatorio> recordatorio;
 	
 	// Relacion con CalendarioMedicion
 	@OneToMany (mappedBy = "calendario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<CalendarioMedicion> varcalendariomedicion;
 	
 	// Relacion con CalendarioSintoma
 	@OneToMany (mappedBy = "calendario", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<CalendarioSintoma> varcalendariosintoma;
 	
 	public int getCodCalendario() {

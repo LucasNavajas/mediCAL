@@ -116,7 +116,7 @@
             <ScrollView
                 android:id="@+id/scroll"
                 android:layout_width="330dp"
-                android:layout_height="565dp">
+                android:layout_height="500dp">
 
                 <LinearLayout
                     android:id="@+id/lineargrande"
@@ -144,16 +144,13 @@
                 android:layout_width="300dp"
                 android:layout_below="@id/scroll"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="605dp"
-                android:layout_marginBottom="60dp"
                 android:layout_alignParentBottom="false"
                 android:background="@drawable/boton_redondo_verde"
                 android:focusable="false"
                 android:fontFamily="@font/inter_bold"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="20dp"
                 android:text="Guardar"
                 android:textAllCaps="false"
                 android:textAppearance="@style/CustomButtonText"
