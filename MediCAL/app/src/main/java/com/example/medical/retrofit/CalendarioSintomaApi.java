@@ -17,8 +17,8 @@ public interface CalendarioSintomaApi {
     @GET("/calendariosintoma/get-all")
     Call<List<CalendarioSintoma>> getAllCalendarioSintomas();
 
-    @GET("/calendariosintoma/{calendario}")
-    Call<CalendarioSintoma> getCalendario(@Path("Calendario") Calendario calendario);
+    @GET("/calendariosintoma/calendario/{codCalendario}")
+    Call<List<CalendarioSintoma>> getByCodCalendarioSintoma(@Path("codCalendario") int codCalendario);
 
 
     @POST("/calendariosintoma/save")

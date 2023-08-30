@@ -60,17 +60,5 @@ public class CalendarioSintoma {
                 + ", fechaFinVigenciaCS=" + fechaFinVigenciaCS + "]";
     }
 
-    //relaciones
-
-    private Sintoma sintomas;
-
-    public Sintoma getSintomas() {
-        return sintomas;
-    }
-
-    public void setSintomas(Sintoma sintomas) {
-        this.sintomas = sintomas;
-    }
-
 
 }

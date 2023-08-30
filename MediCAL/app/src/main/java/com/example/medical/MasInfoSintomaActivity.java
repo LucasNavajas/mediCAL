@@ -3,7 +3,6 @@ package com.example.medical;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,13 +10,13 @@ import android.widget.Button;
 
 import java.util.List;
 
-public class SeguimientoCreadoActivity extends AppCompatActivity {
+public class MasInfoSintomaActivity extends AppCompatActivity {
     private int codCalendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n78_seguimiento);
+        setContentView(R.layout.n80_0_mas_info_sintoma);
 
 
         // Recuperar el objeto calendarioSeleccionado del Intent
@@ -25,19 +24,6 @@ public class SeguimientoCreadoActivity extends AppCompatActivity {
         codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         Log.d("MiApp", "codCalendario en AgregarSeguimientoActivity: " + codCalendario); // Agregar este log
 
-        List<Integer> calendarioSintomaIds = getIntent().getIntegerArrayListExtra("calendarioSintomaIds");
-
-
-        Button agregarSeguimientoButton = findViewById(R.id.button_agregarseguimiento);
-        agregarSeguimientoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Abrir la nueva pantalla de Agregar Seguimiento
-                Intent intent = new Intent(SeguimientoCreadoActivity.this, ElegirSeguimientoActivity.class);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                startActivity(intent);
-            }
-        });
 
         findViewById(R.id.boton_volver).setOnClickListener(new View.OnClickListener() {
             @Override
