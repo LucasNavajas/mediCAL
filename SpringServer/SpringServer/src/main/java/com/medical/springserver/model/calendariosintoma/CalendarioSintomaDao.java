@@ -19,8 +19,8 @@ public class CalendarioSintomaDao {
 		return repository.save(calendariosintoma);
 	}
 	
-	public CalendarioSintoma findByCalendario(Calendario calendario) {
-		return repository.findByCalendario(calendario);
+	public List<CalendarioSintoma> findByCodCalendario(int codCalendario){
+		return repository.findByCodCalendario(codCalendario);
 	}
 	
 	public List<CalendarioSintoma> getAllCalendarioSintomas(){

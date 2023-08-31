@@ -1,6 +1,5 @@
 package com.medical.springserver.controller;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintomaDao;
 
@@ -19,6 +18,12 @@ public class CalendarioSintomaController {
 	public List<CalendarioSintoma> getAllCalendarioSintomas(){
 		return calendariosintomaDao.getAllCalendarioSintomas();
 	}
+	
+	@GetMapping("/calendariosintoma/calendario/{codCalendario}")
+	public List<CalendarioSintoma> getByCodCalendarioSintoma(@PathVariable int codCalendario){
+		return calendariosintomaDao.findByCodCalendario(codCalendario);
+	}
+
 	
 	@PostMapping("/calendariosintoma/save")
 	public CalendarioSintoma save(@RequestBody CalendarioSintoma calendariosintoma) {
