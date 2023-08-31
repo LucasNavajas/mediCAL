@@ -61,9 +61,9 @@ public class Usuario {
 	@JsonIgnore
 	private List<Solicitud> solicitudControlador;
 	
-	@OneToOne(mappedBy = "usuarioControlado", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "usuarioControlado", cascade = CascadeType.MERGE)
 	@JsonIgnore
-    private Solicitud solicitudControlado;
+    private List<Solicitud> solicitudControlado;
 	
 	// relacion con CodVerificacion
 	@OneToOne(cascade = CascadeType.ALL)
@@ -76,12 +76,6 @@ public class Usuario {
 	}
 	public void setSolicitudControlador(List<Solicitud> solicitudControlador) {
 		this.solicitudControlador = solicitudControlador;
-	}
-	public Solicitud getSolicitudControlado() {
-		return solicitudControlado;
-	}
-	public void setSolicitudControlado(Solicitud solicitudControlado) {
-		this.solicitudControlado = solicitudControlado;
 	}
 	public CodigoVerificacion getCodigoVerificacion() {
 		return codigoVerificacion;
@@ -189,6 +183,12 @@ public class Usuario {
 	}
 	public void setReportes(List<Reporte> reportes) {
 		this.reportes = reportes;
+	}
+	public List<Solicitud> getSolicitudControlado() {
+		return solicitudControlado;
+	}
+	public void setSolicitudControlado(List<Solicitud> solicitudControlado) {
+		this.solicitudControlado = solicitudControlado;
 	}
 	
 	

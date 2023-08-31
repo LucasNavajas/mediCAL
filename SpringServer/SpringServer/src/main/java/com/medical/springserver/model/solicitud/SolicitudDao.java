@@ -50,4 +50,8 @@ public class SolicitudDao {
 	public List<Solicitud> obtenerTodasSolicitudesUsuario(int codUsuario){
 		return repository.obtenerTodasSolicitudesUsuario(codUsuario);
 	}
+
+	public List<Solicitud> obtenerSolicitudesActivas() {
+		return repository.obtenerSolicitudesActivas();
+	}
 }

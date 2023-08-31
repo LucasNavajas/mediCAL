@@ -32,4 +32,7 @@ public interface SolicitudApi {
 
     @GET("/solicitud/supervisor/{codUsuario}")
     Call <List<Solicitud>> obtenerSupervisor(@Path("codUsuario") int codUsuario);
+
+    @GET("/solicitud/get-solicitudes-activas")
+    Call <List<Solicitud>> obtenerSolicitudesActivas();
 }

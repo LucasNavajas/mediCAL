@@ -92,6 +92,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private ImageButton masimagen;
     private ImageButton imagenconsejos;
     private LinearLayout contenedorCalendariosContactos;
+    private Button agregarRecordatorio;
     private RelativeLayout eliminarCuenta;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -192,6 +193,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         gestionarContactos.setOnClickListener(view ->{
             Intent intent = new Intent(InicioCalendarioActivity.this, GestionarContactosActivity.class);
             intent.putExtra("codUsuario",codUsuarioLogeado);
+            startActivity(intent);
+        });
+
+        agregarRecordatorio.setOnClickListener(view ->{
+            Intent intent = new Intent(InicioCalendarioActivity.this, ElegirMedicamentoActivity.class);
+            intent.putExtra("codUsuario",codUsuarioLogeado);
+            intent.putExtra("codCalendario", calendarioSeleccionado.getCodCalendario());
             startActivity(intent);
         });
 
@@ -300,6 +308,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         contenedorCalendariosContactos = findViewById(R.id.contenedor_calendarios_contactos);
         eliminarCuenta = findViewById(R.id.eliminar_cuenta);
         gestionarContactos = findViewById(R.id.gestionar_contactos);
+        agregarRecordatorio = findViewById(R.id.agregar_recordatorio);
         llenarListaCalendarios();
         llenarEstadosSolicitud();
     }

@@ -31,7 +31,7 @@ public class Usuario {
 
 	private CodigoVerificacion codigoVerificacion;
 
-	private Solicitud solicitudControlado;
+	private List<Solicitud> solicitudControlado;
 
 	public List<Solicitud> getSolicitudControlador() {
 		return solicitudControlador;
@@ -39,10 +39,10 @@ public class Usuario {
 	public void setSolicitudControlador(List<Solicitud> solicitudControlador) {
 		this.solicitudControlador = solicitudControlador;
 	}
-	public Solicitud getSolicitudControlado() {
+	public List<Solicitud> getSolicitudControlado() {
 		return solicitudControlado;
 	}
-	public void setSolicitudControlado(Solicitud solicitudControlado) {
+	public void setSolicitudControlado(List<Solicitud> solicitudControlado) {
 		this.solicitudControlado = solicitudControlado;
 	}
 	public CodigoVerificacion getCodigoVerificacion() {

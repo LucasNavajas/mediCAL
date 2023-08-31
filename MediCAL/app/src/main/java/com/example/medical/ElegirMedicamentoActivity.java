@@ -20,7 +20,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medical.adapter.MedicamentoAdapter;
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Medicamento;
+import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.MedicamentoApi;
 import com.example.medical.retrofit.RetrofitService;
 
@@ -34,6 +36,7 @@ import retrofit2.Response;
 public class ElegirMedicamentoActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private MedicamentoApi medicamentoApi = retrofitService.getRetrofit().create(MedicamentoApi.class);
+    private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
     private EditText buscar;
     private List<Medicamento> medicamentosEntidades;
     private List<String> medicamentos = new ArrayList<>();
@@ -41,6 +44,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
     private TextView sugerenciaBuscar;
     private ImageView botonCerrar;
     private TextView nuevoMedicamento;
+    private Calendario calendarioSeleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
         botonCerrar.setOnClickListener(view ->{onBackPressed();});
         nuevoMedicamento.setOnClickListener(view ->{
             Intent intent = new Intent(ElegirMedicamentoActivity.this, NuevoMedicamentoActivity.class);
+            intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+            intent.putExtra("codCalendario", getIntent().getIntExtra("codCalendario",0));
             startActivity(intent);
         });
         buscar.addTextChangedListener(new TextWatcher() {
@@ -115,10 +121,22 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
     private void inicializarVariables() {
         buscar = findViewById(R.id.buscar);
         sugerenciaBuscar = findViewById(R.id.text_buscar_medicamento);
-        buscarMedicamentos(this);
         listViewMedicamentos = findViewById(R.id.listViewMedicamentos);
         botonCerrar = findViewById(R.id.boton_cerrar);
         nuevoMedicamento = findViewById(R.id.text_agregar_medicamento);
+
+        calendarioApi.getByCodCalendario(getIntent().getIntExtra("codCalendario",0)).enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                calendarioSeleccionado = response.body();
+                buscarMedicamentos(ElegirMedicamentoActivity.this);
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+                Toast.makeText(ElegirMedicamentoActivity.this, "Error al cargar el calendario seleccionado, reinicie la app", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -130,7 +148,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                 for(Medicamento medicamento : medicamentosEntidades){
                     medicamentos.add(medicamento.getNombreMedicamento());
                 }
-                ArrayAdapter<String> adapter = new MedicamentoAdapter(elegirMedicamentoActivity, medicamentos, medicamentosEntidades);
+                ArrayAdapter<String> adapter = new MedicamentoAdapter(elegirMedicamentoActivity, medicamentos, medicamentosEntidades, calendarioSeleccionado);
                 listViewMedicamentos.setAdapter(adapter);
                 listViewMedicamentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

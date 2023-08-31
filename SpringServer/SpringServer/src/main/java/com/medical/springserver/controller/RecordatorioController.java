@@ -28,5 +28,11 @@ public class RecordatorioController {
 	public Recordatorio getByCodRecordatorio(@PathVariable int codRecordatorio) {
 		return recordatorioDao.getByCodRecordatorio(codRecordatorio);
 	}
+	
+	@DeleteMapping("/recordatorio/eliminar/{codRecordatorio}")
+	public void eliminarRecordatorio(@PathVariable int codRecordatorio) {
+		Recordatorio r = recordatorioDao.getByCodRecordatorio(codRecordatorio);
+		recordatorioDao.delete(r);
+	}
 
 }

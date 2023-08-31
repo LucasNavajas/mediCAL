@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medical.adapter.AdministracionMedAdapter;
 import com.example.medical.model.AdministracionMed;
 import com.example.medical.retrofit.AdministracionMedApi;
+import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +27,8 @@ import retrofit2.Response;
 public class ElegirAdministracionMedActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private RetrofitService retrofitService = new RetrofitService();
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,4 +71,36 @@ public class ElegirAdministracionMedActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(administracionMedAdapter);
     }
+
+    @Override
+    public void onDestroy(){
+        recordatorioApi.eliminarRecordatorio(getIntent().getIntExtra("codRecordatorio",0)).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                ElegirAdministracionMedActivity.super.onDestroy();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                ElegirAdministracionMedActivity.super.onDestroy();
+            }
+        });
+    }
+    @Override
+    public void onBackPressed(){
+        recordatorioApi.eliminarRecordatorio(getIntent().getIntExtra("codRecordatorio",0)).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                ElegirAdministracionMedActivity.super.onBackPressed();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ElegirAdministracionMedActivity.this, "Fallo en base de datos al eliminar el recordatorio intermedio", Toast.LENGTH_SHORT).show();
+                ElegirAdministracionMedActivity.super.onBackPressed();
+            }
+        });
+    }
+
+
 }

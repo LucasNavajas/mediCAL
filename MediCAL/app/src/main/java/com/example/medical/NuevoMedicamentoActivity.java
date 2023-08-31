@@ -39,8 +39,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Medicamento;
 import com.example.medical.model.Recordatorio;
+import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.MedicamentoApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -58,6 +60,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private MedicamentoApi medicamentoApi = retrofitService.getRetrofit().create(MedicamentoApi.class);
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
+    private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
     private static final int REQUEST_IMAGE_PICK = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private ImageView botonVolver;
@@ -66,6 +69,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
     private EditText marcaMedicamento;
     private Button siguiente;
     private Medicamento medicamento = new Medicamento();
+    private Calendario calendarioSeleccionado;
 
     private File capturedPhotoFile;  // Declare the File object
     private ActivityResultLauncher<Intent> galleryLauncher;
@@ -92,6 +96,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
                 public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
                     Recordatorio recordatorio = new Recordatorio();
                     recordatorio.setImagen(bitmapToBase64(imagenBitmap));
+                    recordatorio.setCalendario(calendarioSeleccionado);
                     recordatorio.setMedicamento(response.body());
                     recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
                         @Override
@@ -167,6 +172,18 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 abrirSelectorImagen();
+            }
+        });
+
+        calendarioApi.getByCodCalendario(getIntent().getIntExtra("codCalendario",0)).enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                calendarioSeleccionado = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+                Toast.makeText(NuevoMedicamentoActivity.this, "Error al cargar el calendario seleccionado, reinicie la app", Toast.LENGTH_SHORT).show();
             }
         });
     }

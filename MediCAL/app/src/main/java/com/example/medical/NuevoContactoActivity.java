@@ -26,6 +26,8 @@ import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.SolicitudApi;
 import com.example.medical.retrofit.UsuarioApi;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,15 +36,17 @@ public class NuevoContactoActivity extends AppCompatActivity {
     private ImageView botonCerrar;
     private EditText textoContacto;
     private ImageView tick;
+    private TextView errorContacto;
     private Usuario usuarioContacto;
     private Usuario usuarioLogeado;
     private Button nuevoContacto;
     private boolean usuarioExistente;
+    private boolean usuarioNoControlado;
     private RetrofitService retrofitService = new RetrofitService();
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
     private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
     private EstadoSolicitudApi estadoSolicitudApi = retrofitService.getRetrofit().create(EstadoSolicitudApi.class);
-
+    private List<Solicitud> todasSolicitudesActivas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +103,14 @@ public class NuevoContactoActivity extends AppCompatActivity {
             }
         });
         nuevoContacto.setOnClickListener(view -> {
-            if(usuarioExistente == true){
+            usuarioNoControlado = true;
+            errorContacto.setVisibility(View.GONE);
+            for(Solicitud solicitudActiva : todasSolicitudesActivas){
+                if(solicitudActiva.getUsuarioControlado().getCodUsuario() == usuarioContacto.getCodUsuario()){
+                    usuarioNoControlado = false;
+                }
+            }
+            if(usuarioExistente == true && usuarioNoControlado ==true){
                 Solicitud solicitud = new Solicitud();
                 solicitud.setUsuarioControlado(usuarioContacto);
                 solicitud.setUsuarioControlador(usuarioLogeado);
@@ -127,7 +138,12 @@ public class NuevoContactoActivity extends AppCompatActivity {
                 });
             }
             else{
-                popupInvalido(R.layout.n02_1_popup_usuario_inexistente);
+                if(usuarioNoControlado==true) {
+                    popupInvalido(R.layout.n02_1_popup_usuario_inexistente);
+                }
+                else{
+                    errorContacto.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -192,6 +208,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
         textoContacto = findViewById(R.id.textEdit_contacto);
         tick = findViewById(R.id.tick);
         nuevoContacto = findViewById(R.id.button_enviar_solicitud);
+        errorContacto = findViewById(R.id.error_contacto);
         usuarioExistente = false;
         usuarioApi.getByCodUsuario(getIntent().getIntExtra("codUsuario", 0)).enqueue(new Callback<Usuario>() {
             @Override
@@ -202,6 +219,17 @@ public class NuevoContactoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
                 Toast.makeText(NuevoContactoActivity.this, "Error con el servidor, no se puede obtener el usuario logeado", Toast.LENGTH_SHORT).show();
+            }
+        });
+        solicitudApi.obtenerSolicitudesActivas().enqueue(new Callback<List<Solicitud>>() {
+            @Override
+            public void onResponse(Call<List<Solicitud>> call, Response<List<Solicitud>> response) {
+                todasSolicitudesActivas = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<Solicitud>> call, Throwable t) {
+                Toast.makeText(NuevoContactoActivity.this, "Error con el servidor, no se pueden obtener las solicitudes activas", Toast.LENGTH_SHORT).show();
             }
         });
     }

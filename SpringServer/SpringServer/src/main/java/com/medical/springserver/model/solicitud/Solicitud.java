@@ -31,8 +31,8 @@ public class Solicitud {
 	private Usuario usuarioControlador;
 	
     //relacion con usuario controlado
-	@OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "codUsuarioControlado", unique = false)
+	@ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "codUsuarioControlado")
     private Usuario usuarioControlado;
 	
 	public Usuario getUsuarioControlador() {

@@ -64,4 +64,9 @@ public class SolicitudController {
 	public List<Solicitud> obtenerSupervisor(@PathVariable int codUsuario){
 		return solicitudDao.obtenerSupervisor(codUsuario);
 	}
+	
+	@GetMapping("/solicitud/get-solicitudes-activas")
+	public List<Solicitud> obtenerSolicitudesActivas(){
+		return solicitudDao.obtenerSolicitudesActivas();
+	}
 }
