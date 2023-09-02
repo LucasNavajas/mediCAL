@@ -74,6 +74,9 @@ public class MasActivity extends AppCompatActivity {
     private int codUsuarioLogeado;
 
     private RelativeLayout rectangleMedYSintomas;
+    private RelativeLayout rectangleInformes;
+    private RelativeLayout rectangleInventario;
+    private RelativeLayout rectangleSobreNosotros;
     private Calendario calendarioSeleccionado;
     private int codCalendario;
 
@@ -94,6 +97,9 @@ public class MasActivity extends AppCompatActivity {
 
         // Obtén la referencia al RelativeLayout
         rectangleMedYSintomas = findViewById(R.id.rectangle_med_y_sintomas);
+        rectangleInformes = findViewById(R.id.rectangle_informes);
+        rectangleInventario = findViewById(R.id.rectangle_inventario);
+        rectangleSobreNosotros = findViewById(R.id.rectangle_sobre_nosotros);
 
         // Configura el OnClickListener para el RelativeLayout
         rectangleMedYSintomas.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +108,36 @@ public class MasActivity extends AppCompatActivity {
                 // Aquí maneja la acción de navegación a AgregarSeguimientoActivity
                 Intent intent = new Intent(MasActivity.this, AgregarSeguimientoActivity.class);
                 intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                startActivity(intent);
+            }
+        });
+
+        rectangleInformes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí maneja la acción de navegación a SobreNosotrosActivity
+                Intent intent = new Intent(MasActivity.this, InformesActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+            }
+        });
+
+        rectangleInventario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí maneja la acción de navegación a SobreNosotrosActivity
+                Intent intent = new Intent(MasActivity.this, InventarioMedicamentosActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                startActivity(intent);
+            }
+        });
+
+        rectangleSobreNosotros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí maneja la acción de navegación a SobreNosotrosActivity
+                Intent intent = new Intent(MasActivity.this, SobreNosotrosActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
                 startActivity(intent);
             }
         });

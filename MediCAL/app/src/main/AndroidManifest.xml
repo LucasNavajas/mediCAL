@@ -106,6 +106,9 @@
         <activity android:name=".ElegirDiasActivity"></activity>
         <activity android:name=".DatosObligatoriosRecordatorioActivity"></activity>
         <activity android:name=".AgregarImagenRecordatorioActivity"></activity>
+        <activity android:name=".SobreNosotrosActivity"></activity>
+        <activity android:name=".InformesActivity"></activity>
+        <activity android:name=".InventarioMedicamentosActivity"></activity>
     </application>
 
 </manifest>

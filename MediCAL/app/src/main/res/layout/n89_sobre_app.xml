@@ -74,7 +74,6 @@
             android:layout_marginTop="45dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_mujer"
             android:background="#808080" />
 
         <TextView
@@ -96,7 +95,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_mujer"
             android:background="#808080" />
 
         <TextView
@@ -118,7 +116,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_mujer"
             android:background="#808080" />
 
         <TextView
@@ -140,7 +137,27 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_mujer"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/text_video_tutorial"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/inter_regular"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            android:textSize="21sp"
+            android:text="Video Tutorial"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:background="#808080" />
 
         <TextView
@@ -162,7 +179,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@id/text_mujer"
             android:background="#808080" />
 
     </LinearLayout>
