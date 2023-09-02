@@ -1,5 +1,7 @@
 package com.example.medical.adapter;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.medical.ConsejosActivity;
 import com.squareup.picasso.Picasso;
@@ -19,16 +22,39 @@ import com.example.medical.R;
 import com.example.medical.model.Consejo;
 import com.example.medical.model.TipoConsejo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoViewHolder> {
 
     private final Context context;
-    private List<Consejo> consejoList;
+    private Map<Integer, List<Consejo>> consejoPorTipo = new HashMap<>();
+    private List<Consejo> consejoAleatorioPorTipo = new ArrayList<>();
 
     public ConsejoAdapter(List<Consejo> consejoList, Context context) {
-        this.consejoList = consejoList;
         this.context = context;
+        //this.consejoList = consejoList;
+
+        // Agrupar consejos por tipo
+        for (Consejo consejo : consejoList) {
+            int tipoConsejo = consejo.getTipoConsejo().getNroTipoConsejo();
+            if (!consejoPorTipo.containsKey(tipoConsejo)) {
+                consejoPorTipo.put(tipoConsejo, new ArrayList<>());
+            }
+            consejoPorTipo.get(tipoConsejo).add(consejo);
+        }
+
+        // Seleccionar un consejo aleatorio de cada tipo
+        for (List<Consejo> consejosDelTipo : consejoPorTipo.values()) {
+            Consejo consejoAleatorio = obtenerConsejoAleatorio(consejosDelTipo);
+            if (consejoAleatorio != null) {
+                consejoAleatorioPorTipo.add(consejoAleatorio);
+            }
+        }
+
     }
 
     @NonNull
@@ -40,28 +66,29 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
 
     @Override
     public void onBindViewHolder(@NonNull ConsejoViewHolder holder, int position) {
-        Consejo consejo = consejoList.get(position);
+
+        Consejo consejoAleatorio = consejoAleatorioPorTipo.get(position);
+
+        // Obtener un consejo aleatorio de ese tipo
+        //List<Consejo> consejosDelTipo = consejoPorTipo.get(tipoConsejo);
+        //Consejo consejoAleatorio = obtenerConsejoAleatorio(consejosDelTipo);
 
         ImageView iconoConsejo = holder.iconoConsejo;;
-        TextView nombreConsejo;
-        TextView descripcionConsejo;
         TextView leerMas = holder.leerMas;
         View lineaLeerMas = holder.lineaLeerMas;
-
-        // fotoConsejo sería poner la foto del consejo, que sería un botón que lleva al link del video
+        ImageView compartir = holder.compartir;
         ImageView foto = holder.foto;
         TextView auspiciante = holder.auspiciante;
 
-        // Obtener el TipoConsejo
-        TipoConsejo tipoConsejo = consejo.getTipoConsejo();
-        String nombreTipoConsejo = tipoConsejo.getNombreTipoConsejo();
+        holder.nombreConsejo.setText(consejoAleatorio.getNombreConsejo());
+        holder.descripcionConsejo.setText(consejoAleatorio.getDescConsejo());
+        holder.auspiciante.setText(consejoAleatorio.getAuspiciante());
 
-        holder.nombreConsejo.setText(consejo.getNombreConsejo());
-        holder.descripcionConsejo.setText(consejo.getDescConsejo());
-        holder.auspiciante.setText(consejo.getAuspiciante());
+        // Obtener el TipoConsejo del consejoAleatorio actual
+        TipoConsejo tipo = consejoAleatorio.getTipoConsejo();
 
         // Configurar el ícono según el tipo de consejo
-        if (tipoConsejo.getNroTipoConsejo() == 3) {
+        if (tipo.getNroTipoConsejo() == 3) {
             iconoConsejo.setImageResource(R.drawable.foco_consejo);
             foto.setVisibility(View.GONE);
             leerMas.setText("Ver Manual");
@@ -77,8 +104,14 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                 }
             });
             */
+            compartir.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
+                }
+            });
 
-        } else if (tipoConsejo.getNroTipoConsejo() == 2) {
+        } else if (tipo.getNroTipoConsejo() == 2) {
             iconoConsejo.setImageResource(R.drawable.foto_salud);
             foto.setVisibility(View.GONE);
             // Los consejos de Bienestar y Salud no tienen un auspiciante pago, y tampoco son propios de MediCAL
@@ -88,40 +121,88 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             leerMas.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String link = consejo.getLinkConsejo();
+                    String link = consejoAleatorio.getLinkConsejo();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                     context.startActivity(intent);
                 }
             });
+            compartir.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
+                }
+            });
 
-        } else if (tipoConsejo.getNroTipoConsejo() == 1) {
+        } else if (tipo.getNroTipoConsejo() == 1) {
             iconoConsejo.setImageResource(R.drawable.foto_doctor);
-            // Cuando subamos una foto, se cambia esto, ya que los Médicos si tienen foto
-            // La foto sería usada como botón para el link del video
-            //foto.setVisibility(View.GONE);
             leerMas.setVisibility(View.GONE);
             lineaLeerMas.setVisibility(View.GONE);
 
             // Cargar la imagen del url utilizando Picasso
-            Picasso.get().load(consejo.getFotoConsejo()).into(foto);
+            Picasso.get().load(consejoAleatorio.getFotoConsejo()).into(foto);
 
             foto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String videoLink = consejo.getLinkConsejo();
+                    String videoLink = consejoAleatorio.getLinkConsejo();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoLink));
                     context.startActivity(intent);
                 }
             });
+            compartir.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
+                }
+            });
 
         }
+    }
 
+    public void compartirConsejo(Consejo consejo) {
+        String link = consejo.getLinkConsejo().trim();
+        String nombreTipoConsejo = consejo.getTipoConsejo().getNombreTipoConsejo().trim();
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+
+        if (consejo.getTipoConsejo().getNroTipoConsejo() == 1) {
+            intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
+                    "\n" + "Estoy usando MediCAL. Te comparto este consejo " + nombreTipoConsejo + " por si te es de utilidad! \n" +
+                    "\n" + consejo.getNombreConsejo() + "\n" +
+                    "\n" + consejo.getDescConsejo() + "\n" +
+                    "\n Auspiciado por: " + consejo.getAuspiciante() + "\n" +
+                    "\n" + link);
+        } else if (consejo.getTipoConsejo().getNroTipoConsejo() == 2){
+            intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
+                    "\n" + "Estoy usando MediCAL. Te comparto este consejo sobre '" + nombreTipoConsejo + "' por si te es de utilidad! \n" +
+                    "\n" + consejo.getNombreConsejo() + "\n" +
+                    "\n" + consejo.getDescConsejo() + "\n" +
+                    "\n" + link);
+        } else if (consejo.getTipoConsejo().getNroTipoConsejo() == 3){
+            intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
+                    "\n" + "Estoy usando MediCAL. Te comparto este consejo sobre el uso de la App por si te es de utilidad! \n" +
+                    "\n" + consejo.getNombreConsejo() + "\n" +
+                    "\n" + consejo.getDescConsejo() + "\n" +
+                    "\n" + link);
+        }
+        context.startActivity(Intent.createChooser(intent, "Compartir vía"));
     }
 
 
+    // Método para obtener un consejo aleatorio de una lista de consejos
+    private Consejo obtenerConsejoAleatorio(List<Consejo> consejos) {
+        if (consejos == null || consejos.isEmpty()) {
+            return null;
+        }
+        Random random = new Random();
+        int indiceAleatorio = random.nextInt(consejos.size());
+        return consejos.get(indiceAleatorio);
+    }
+
     @Override
     public int getItemCount() {
-        return consejoList.size();
+        return consejoAleatorioPorTipo.size(); // Solo mostrar un consejo aleatorio por tipo
     }
 
     static class ConsejoViewHolder extends RecyclerView.ViewHolder {
@@ -134,6 +215,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         // fotoConsejo sería poner la foto del consejo, que sería un botón que lleva al link del video
         ImageView foto;
         TextView auspiciante;
+        ImageView compartir;
 
         public ConsejoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,6 +227,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             lineaLeerMas = itemView.findViewById(R.id.linea_leer_mas);
             foto = itemView.findViewById(R.id.videoImageView);
             auspiciante = itemView.findViewById(R.id.texto_Auspiciante);
+            compartir = itemView.findViewById(R.id.imagen_consejo_compartir);
 
         }
     }

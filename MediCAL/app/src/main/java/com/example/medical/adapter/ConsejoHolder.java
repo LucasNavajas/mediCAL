@@ -23,6 +23,7 @@ public class ConsejoHolder extends RecyclerView.ViewHolder {
     TextView descripcionConsejo;
     ImageView foto;
     TextView auspiciante;
+    ImageView compartir;
 
     public ConsejoHolder(@NonNull View itemView) {
         super(itemView);
@@ -31,6 +32,7 @@ public class ConsejoHolder extends RecyclerView.ViewHolder {
         descripcionConsejo = itemView.findViewById(R.id.texto_consejo);
         foto = itemView.findViewById(R.id.videoImageView);
         auspiciante = itemView.findViewById(R.id.texto_Auspiciante);
+        compartir = itemView.findViewById(R.id.imagen_consejo_compartir);
 
     }
 }
