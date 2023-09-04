@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imagen_inyectable_con_pastillas"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="13dp"
         android:fontFamily="@font/inter_regular"
         android:text="Establecer intervalo horario"

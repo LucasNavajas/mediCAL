@@ -68,6 +68,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar una nueva actividad para la opción "Cada X horas"
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxhorasActivity.class);
+                intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("presentacionMedId", codPresen);
                 startActivity(intent);
             }
         });
@@ -77,6 +79,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar una nueva actividad para la opción "Cada X días"
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxdiasActivity.class);
+                intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("presentacionMedId", codPresen);
                 startActivity(intent);
             }
         });
@@ -86,6 +90,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar una nueva actividad para la opción "Cada X semanas"
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxsemanasActivity.class);
+                intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("presentacionMedId", codPresen);
                 startActivity(intent);
             }
         });
@@ -95,6 +101,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar una nueva actividad para la opción "Cada X meses"
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxmesesActivity.class);
+                intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("presentacionMedId", codPresen);
                 startActivity(intent);
             }
         });
@@ -104,6 +112,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar una nueva actividad para la opción "Ciclo recurrente"
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxciclosActivity.class);
+                intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("presentacionMedId", codPresen);
                 startActivity(intent);
             }
         });
@@ -112,7 +122,9 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Iniciar una nueva actividad para la opción "Según sea necesario"
-                Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxnecesidadActivity.class);
+                Intent intent = new Intent(ElegirFrecuenciaActivity.this, SeleccionarHorarioRecordatorioActivity.class);
+                intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("presentacionMedId", codPresen);
                 startActivity(intent);
             }
         });

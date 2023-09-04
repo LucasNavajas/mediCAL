@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                     redirigirUsuario(usuario.getEmail());
                 }
                 else {
-                    Intent intent = new Intent(MainActivity.this, BienvenidoActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
+                    Intent intent = new Intent(MainActivity.this, ElegirAdministracionMedActivity.class); //cambiar el segundo parametro por el nombre de la actividad a probar
                     startActivity(intent);
                     finish();
                 }
