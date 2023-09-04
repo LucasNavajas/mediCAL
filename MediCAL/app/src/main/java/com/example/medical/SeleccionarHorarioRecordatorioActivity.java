@@ -50,19 +50,19 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
                     // Mostrar el nombre de la presentación en el elemento de texto
                     if (nombrePresentacion != null) {
                         textoPresentacionMed.setText(nombrePresentacion);
-                    } else {
-                        textoPresentacionMed.setText("Código de presentación no encontrado");
+                    } else { //"Código de presentación no encontrado"
+                        textoPresentacionMed.setText("");
                     }
                 } else {
-                    // Manejar error de la llamada a la API
-                    textoPresentacionMed.setText("Error al obtener datos de la API");
+                    // Manejar error de la llamada a la API "Error al obtener datos de la API"
+                    textoPresentacionMed.setText("");
                 }
             }
 
             @Override
             public void onFailure(Call<List<PresentacionMed>> call, Throwable t) {
-                // Manejar error de la llamada a la API
-                textoPresentacionMed.setText("Error de conexión");
+                // Manejar error de la llamada a la API "Error de conexión"
+                textoPresentacionMed.setText("");
             }
         });
 
