@@ -1,5 +1,6 @@
 package com.example.medical.retrofit;
 
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Recordatorio;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface RecordatorioApi {
 
     @GET("/recordatorio/{codRecordatorio}")
     Call<Recordatorio> getByCodRecordatorio(@Path("codRecordatorio") int codRecordatorio);
+
+    @GET("/recordatorio/calendario/{codCalendario}")
+    Call<List<Recordatorio>> getByCodCalendario(@Path("codCalendario") int codCalendario);
 
     @DELETE("/recordatorio/eliminar/{codRecordatorio}")
     Call<Void> eliminarRecordatorio(@Path("codRecordatorio") int codRecordatorio);

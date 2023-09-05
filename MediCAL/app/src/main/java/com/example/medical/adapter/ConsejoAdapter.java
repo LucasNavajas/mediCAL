@@ -36,7 +36,6 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
 
     public ConsejoAdapter(List<Consejo> consejoList, Context context) {
         this.context = context;
-        //this.consejoList = consejoList;
 
         // Agrupar consejos por tipo
         for (Consejo consejo : consejoList) {
@@ -160,8 +159,28 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
     }
 
     public void compartirConsejo(Consejo consejo) {
-        String link = consejo.getLinkConsejo().trim();
-        String nombreTipoConsejo = consejo.getTipoConsejo().getNombreTipoConsejo().trim();
+        String link = consejo.getLinkConsejo();
+        String nombreTipoConsejo = consejo.getTipoConsejo().getNombreTipoConsejo();
+        String nombreConsejo = consejo.getNombreConsejo();
+        String descripcionConsejo = consejo.getDescConsejo();
+        String auspiciante = consejo.getAuspiciante();
+
+        // Verificar si los atributos son nulos y proporciona valores predeterminados o omitirlos
+        if (link == null || "null".equalsIgnoreCase(link)) {
+            link = "";
+        }
+        if (nombreTipoConsejo == null || "null".equalsIgnoreCase(nombreTipoConsejo)) {
+            nombreTipoConsejo = "";
+        }
+        if (nombreConsejo == null || "null".equalsIgnoreCase(nombreConsejo)) {
+            nombreConsejo = "";
+        }
+        if (descripcionConsejo == null || "null".equalsIgnoreCase(descripcionConsejo)) {
+            descripcionConsejo = "";
+        }
+        if (auspiciante == null || "null".equalsIgnoreCase(auspiciante)) {
+            auspiciante = "";
+        }
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -169,21 +188,21 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         if (consejo.getTipoConsejo().getNroTipoConsejo() == 1) {
             intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
                     "\n" + "Estoy usando MediCAL. Te comparto este consejo " + nombreTipoConsejo + " por si te es de utilidad! \n" +
-                    "\n" + consejo.getNombreConsejo() + "\n" +
-                    "\n" + consejo.getDescConsejo() + "\n" +
-                    "\n Auspiciado por: " + consejo.getAuspiciante() + "\n" +
+                    "\n" + nombreConsejo + "\n" +
+                    "\n" + descripcionConsejo + "\n" +
+                    "\n Auspiciado por: " + auspiciante + "\n" +
                     "\n" + link);
         } else if (consejo.getTipoConsejo().getNroTipoConsejo() == 2){
             intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
                     "\n" + "Estoy usando MediCAL. Te comparto este consejo sobre '" + nombreTipoConsejo + "' por si te es de utilidad! \n" +
-                    "\n" + consejo.getNombreConsejo() + "\n" +
-                    "\n" + consejo.getDescConsejo() + "\n" +
+                    "\n" + nombreConsejo + "\n" +
+                    "\n" + descripcionConsejo + "\n" +
                     "\n" + link);
         } else if (consejo.getTipoConsejo().getNroTipoConsejo() == 3){
             intent.putExtra(Intent.EXTRA_TEXT, "¡Hola!\n" +
                     "\n" + "Estoy usando MediCAL. Te comparto este consejo sobre el uso de la App por si te es de utilidad! \n" +
-                    "\n" + consejo.getNombreConsejo() + "\n" +
-                    "\n" + consejo.getDescConsejo() + "\n" +
+                    "\n" + nombreConsejo + "\n" +
+                    "\n" + descripcionConsejo + "\n" +
                     "\n" + link);
         }
         context.startActivity(Intent.createChooser(intent, "Compartir vía"));

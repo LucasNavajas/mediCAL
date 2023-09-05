@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.calendario.Calendario;
+
 @Service
 
 public class RecordatorioDao {
@@ -27,6 +29,10 @@ public class RecordatorioDao {
 	
 	public void delete(Recordatorio recordatorio) {
 		repository.delete(recordatorio);
+	}
+	
+	public List<Recordatorio> findByCodCalendario(int codCalendario){
+		return repository.findByCodCalendario(codCalendario);
 	}
 
 	public Recordatorio getByCodRecordatorio(int codRecordatorio) {

@@ -1,6 +1,5 @@
 package com.medical.springserver.controller;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 import com.medical.springserver.model.recordatorio.RecordatorioDao;
 
@@ -24,6 +23,12 @@ public class RecordatorioController {
 	public Recordatorio save(@RequestBody Recordatorio recordatorio) {
 		return recordatorioDao.save(recordatorio);
 	}
+	
+	@GetMapping("/recordatorio/calendario/{codCalendario}")
+	public List<Recordatorio> getByCodCalendario(@PathVariable int codCalendario){
+		return recordatorioDao.findByCodCalendario(codCalendario);
+	}
+	
 	@GetMapping("/recordatorio/{codRecordatorio}")
 	public Recordatorio getByCodRecordatorio(@PathVariable int codRecordatorio) {
 		return recordatorioDao.getByCodRecordatorio(codRecordatorio);
