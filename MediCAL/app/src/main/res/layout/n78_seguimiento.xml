@@ -103,21 +103,28 @@
                                 android:layout_marginStart="100dp"
                                 android:layout_marginTop="50dp"
                                 android:src="@drawable/mediciones"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                />
 
                             <TextView
                                 android:id="@+id/parasacar2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter_medium"
+                                android:layout_below="@id/parasacar1"
+                                android:layout_marginTop="20dp"
                                 android:text="Registre mediciones y síntomas"
                                 android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="26sp"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                />
 
 
                         </RelativeLayout>
+
+
+
 
 
                     </LinearLayout>
@@ -127,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/contenido"
                         android:layout_marginStart="45dp"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="250dp"
                         android:layout_marginBottom="15dp"
                         android:background="@drawable/boton_redondo_verde"
                         android:focusable="false"

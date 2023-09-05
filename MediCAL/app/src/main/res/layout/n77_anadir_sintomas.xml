@@ -115,8 +115,8 @@
             <!-- Agregar un ScrollView para permitir desplazamiento si hay muchos elementos -->
             <ScrollView
                 android:id="@+id/scroll"
-                android:layout_width="330dp"
-                android:layout_height="500dp">
+                android:layout_width="355dp"
+                android:layout_height="588dp">
 
                 <LinearLayout
                     android:id="@+id/lineargrande"
@@ -150,12 +150,15 @@
                 android:fontFamily="@font/inter_bold"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginStart="20dp"
                 android:text="Guardar"
                 android:textAllCaps="false"
                 android:textAppearance="@style/CustomButtonText"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+
+
 
 
         </RelativeLayout>

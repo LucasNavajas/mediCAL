@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.calendario.Calendario;
+
 @Service
 public class MedicionDao {
 	@Autowired
@@ -14,6 +16,10 @@ public class MedicionDao {
 	
 	public Medicion save(Medicion medicion) {
 		return repository.save(medicion);
+	}
+	
+	public Medicion findByCodMedicion(int codMedicion) {
+		return repository.findByCodMedicion(codMedicion);
 	}
 	
 	public List<Medicion> getAllMediciones(){

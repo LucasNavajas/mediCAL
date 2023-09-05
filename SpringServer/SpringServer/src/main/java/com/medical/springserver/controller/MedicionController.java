@@ -1,6 +1,5 @@
 package com.medical.springserver.controller;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.medicion.Medicion;
 import com.medical.springserver.model.medicion.MedicionDao;
 
@@ -18,6 +17,11 @@ public class MedicionController {
 	@GetMapping("/medicion/get-all")
 	public List<Medicion> getAllMediciones(){
 		return medicionDao.getAllMediciones();
+	}
+	
+	@GetMapping("/medicion/{codMedicion}")
+	public Medicion getByCodMedicion(@PathVariable int codMedicion) {
+		return medicionDao.findByCodMedicion(codMedicion);
 	}
 	
 	@PostMapping("/medicion/save")

@@ -10,17 +10,23 @@ import android.widget.TextView;
 
 import com.example.medical.EstablecerMedicionActivity;
 import com.example.medical.R;
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Medicion;
+import com.example.medical.retrofit.CalendarioApi;
 
 import java.util.List;
 
 public class TodasMedicionesAdapter extends ArrayAdapter<Medicion> {
 
     private LayoutInflater inflater;
+    private Calendario calendarioSeleccionado;
+    private CalendarioApi calendarioApi;
+    private int codCalendario;
 
-    public TodasMedicionesAdapter(Context context, List<Medicion> mediciones) {
+    public TodasMedicionesAdapter(Context context, List<Medicion> mediciones, int codCalendario) {
         super(context, 0, mediciones);
         inflater = LayoutInflater.from(context);
+        this.codCalendario = codCalendario;
     }
 
     @Override
@@ -40,6 +46,8 @@ public class TodasMedicionesAdapter extends ArrayAdapter<Medicion> {
                 Intent intent = new Intent(getContext(), EstablecerMedicionActivity.class);
                 intent.putExtra("nombreMedicion", medicion.getNombreMedicion());
                 intent.putExtra("unidadMedida", medicion.getUnidadMedidaMedicion());
+                intent.putExtra("codMedicion",medicion.getCodMedicion());
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 getContext().startActivity(intent);
             }
         });

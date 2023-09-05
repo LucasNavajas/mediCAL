@@ -1,22 +1,19 @@
 package com.example.medical;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MasInfoSintomaActivity extends AppCompatActivity {
+public class MasInfoMedicionActivity extends AppCompatActivity {
     private int codCalendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n80_0_mas_info_sintoma);
+        setContentView(R.layout.n79_0_mas_info_medicion);
 
 
         // Recuperar el objeto calendarioSeleccionado del Intent

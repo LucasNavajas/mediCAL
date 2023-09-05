@@ -10,14 +10,17 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.medical.model.Calendario;
+import com.example.medical.model.CalendarioMedicion;
 import com.example.medical.model.CalendarioSintoma;
 import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.CalendarioMedicionApi;
 import com.example.medical.retrofit.CalendarioSintomaApi;
 import com.example.medical.retrofit.RetrofitService;
 
@@ -25,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +50,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
     private int codCalendario;
     private CalendarioApi calendarioApi;
     private CalendarioSintomaApi calendarioSintomaApi;
+    private CalendarioMedicionApi calendarioMedicionApi;
+    private RelativeLayout ultimaRelativeLayoutSintoma=null;
 
 
 
@@ -87,16 +94,20 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                     List<CalendarioSintoma> calendarioSintomas = response.body();
                                     Log.d("MiApp", "Tamaño de la lista calendarioSintomas: " + calendarioSintomas.size());
 
+                                    // Ordenar calendarioSintomas por fecha de seguimiento (más reciente primero)
+                                    Collections.sort(calendarioSintomas, new Comparator<CalendarioSintoma>() {
+                                        @Override
+                                        public int compare(CalendarioSintoma cs1, CalendarioSintoma cs2) {
+                                            return cs2.getFechaCalendarioSintoma().compareTo(cs1.getFechaCalendarioSintoma());
+                                        }
+                                    });
 
                                     ImageView paraSacar1 = findViewById(R.id.parasacar1);
                                     TextView paraSacar2 = findViewById(R.id.parasacar2);
 
-
-
                                     // Después de obtener la lista de calendarioSintomas
                                     if (calendarioSintomas != null && !calendarioSintomas.isEmpty()) {
                                         Set<Integer> codigosSintomasProcesados = new HashSet<>();
-
                                         paraSacar1.setVisibility(View.GONE);
                                         paraSacar2.setVisibility(View.GONE);
 
@@ -106,8 +117,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                             if (!codigosSintomasProcesados.contains(codSintoma)) {
                                                 Log.d("MiApp", "Creando RelativeLayout para el Sintoma: " + codSintoma);
                                                 createRelativeLayoutForSintoma(calendarioSintomas); // Pasar la lista completa
-
-                                                // Agregar el código del síntoma a la lista de códigos procesados
                                                 codigosSintomasProcesados.add(codSintoma);
                                             }
                                         }
@@ -128,6 +137,64 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                 Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
                             }
                         });
+
+                        // Crear una instancia de la interfaz de la API utilizando Retrofit
+                        calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
+
+                        // Llamada para obtener todos los CalendarioMedicion que corresponden al codCalendario
+                        Call<List<CalendarioMedicion>> call3 = calendarioMedicionApi.getByCodCalendarioMedicion(codCalendario);
+
+                        call3.enqueue(new Callback<List<CalendarioMedicion>>() {
+                            @Override
+                            public void onResponse(Call<List<CalendarioMedicion>> call3, Response<List<CalendarioMedicion>> response) {
+                                if (response.isSuccessful()) {
+                                    List<CalendarioMedicion> calendarioMediciones = response.body();
+                                    Log.d("MiApp", "Tamaño de la lista calendarioMediciones: " + calendarioMediciones.size());
+
+                                    // Ordenar calendarioMediciones por fecha de seguimiento (más reciente primero)
+                                    Collections.sort(calendarioMediciones, new Comparator<CalendarioMedicion>() {
+                                        @Override
+                                        public int compare(CalendarioMedicion cm1, CalendarioMedicion cm2) {
+                                            return cm2.getFechaCalendarioMedicion().compareTo(cm1.getFechaCalendarioMedicion());
+                                        }
+                                    });
+
+                                    ImageView paraSacar1 = findViewById(R.id.parasacar1);
+                                    TextView paraSacar2 = findViewById(R.id.parasacar2);
+
+                                    // Después de obtener la lista de calendarioMediciones
+                                    if (calendarioMediciones != null && !calendarioMediciones.isEmpty()) {
+                                        Set<Integer> codigosMedicionesProcesadas = new HashSet<>();
+                                        paraSacar1.setVisibility(View.GONE);
+                                        paraSacar2.setVisibility(View.GONE);
+
+                                        for (CalendarioMedicion unaCalMedicion : calendarioMediciones) {
+                                            int codMedicion = unaCalMedicion.getMedicion().getCodMedicion();
+
+                                            if (!codigosMedicionesProcesadas.contains(codMedicion)) {
+                                                Log.d("MiApp", "Creando RelativeLayout para la Medición: " + codMedicion);
+                                                createRelativeLayoutForMedicion(calendarioMediciones); // Pasar la lista completa
+                                                codigosMedicionesProcesadas.add(codMedicion);
+                                            }
+                                        }
+                                    } else {
+                                        Log.d("MiApp", "No se encontraron CalendarioMediciones");
+                                        paraSacar1.setVisibility(View.VISIBLE);
+                                        paraSacar2.setVisibility(View.VISIBLE);
+                                    }
+
+                                } else {
+                                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<CalendarioMedicion>> call3, Throwable t) {
+                                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+                            }
+                        });
+
+
 
                     } else {
                         Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
@@ -186,6 +253,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
             editor.apply();
         }
 
+
+
     }
 
     // Método para crear el RelativeLayout para un Sintoma único
@@ -215,8 +284,9 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                         RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 ));
-                newSintomaLayout.setPadding(10, 15, 10, 10);
+                newSintomaLayout.setPadding(20, 15, 20, 10);
                 newSintomaLayout.setBackgroundResource(R.drawable.background_rounded_blanco);
+
 
                 // Actualiza la variable "ultimoRelativeLayout" con la referencia al último RelativeLayout creado
                 ultimoRelativeLayout = newSintomaLayout;
@@ -224,10 +294,19 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                 ImageView imagenSintoma = new ImageView(this);
                 imagenSintoma.setId(View.generateViewId()); // Asignar un ID único a la ImageView
                 imagenSintoma.setImageResource(R.drawable.persona_sintoma);
-                RelativeLayout.LayoutParams imagenParams = new RelativeLayout.LayoutParams(60, 60);
-                imagenParams.setMargins(20, 20, 20, 20);
+                RelativeLayout.LayoutParams imagenParams = new RelativeLayout.LayoutParams(
+                        getResources().getDimensionPixelSize(R.dimen.imagen_sintoma_width),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_sintoma_height)
+                );
+                imagenParams.setMargins(
+                        getResources().getDimensionPixelSize(R.dimen.imagen_sintoma_margin_start),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_sintoma_margin_top),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_sintoma_margin_end),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_sintoma_margin_bottom)
+                );
                 imagenParams.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
                 imagenSintoma.setLayoutParams(imagenParams);
+
 
                 TextView textoTituloSintoma = new TextView(this);
                 textoTituloSintoma.setId(View.generateViewId()); // Asignar un ID único al TextView
@@ -261,6 +340,7 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                 Button buttonMasInfo = new Button(this);
                 buttonMasInfo.setId(View.generateViewId()); // Asignar un ID único al Button
                 buttonMasInfo.setText("Más información");
+                buttonMasInfo.setAllCaps(false);
                 RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -272,7 +352,10 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                 buttonMasInfo.setBackgroundResource(R.drawable.boton_redondo_verde_oscuro);
                 buttonMasInfo.setFocusable(false);
                 buttonMasInfo.setTypeface(Typeface.DEFAULT_BOLD);
-                buttonMasInfo.setPadding(20, 0, 20, 0);
+                buttonMasInfo.setPadding(getResources().getDimensionPixelSize(R.dimen.button_padding_start),
+                        0,
+                        getResources().getDimensionPixelSize(R.dimen.button_padding_end),
+                        0);
                 buttonMasInfo.setTextColor(Color.WHITE);
                 buttonMasInfo.setTextSize(20);
 
@@ -315,14 +398,18 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                 prevLayout = newSintomaLayout;
 
 
-
                 // Después de crear todos los RelativeLayouts
                 Button buttonAgregarSeguimiento = findViewById(R.id.button_agregarseguimiento);
                 if (ultimoRelativeLayout != null) {
                     RelativeLayout.LayoutParams buttonParamss = (RelativeLayout.LayoutParams) buttonAgregarSeguimiento.getLayoutParams();
                     buttonParamss.addRule(RelativeLayout.BELOW, ultimoRelativeLayout.getId());
                     buttonAgregarSeguimiento.setLayoutParams(buttonParamss);
+
+
+                    ultimaRelativeLayoutSintoma = ultimoRelativeLayout;
                 }
+
+
             }
 
 
@@ -356,7 +443,173 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                 .collect(Collectors.toList());
     }
 
+    private void createRelativeLayoutForMedicion(List<CalendarioMedicion> calendarioMediciones) {
 
+        RelativeLayout mainLayout = findViewById(R.id.seguimientos); // Cambiar por el ID correcto
+        RelativeLayout prevLayout = ultimaRelativeLayoutSintoma;
+        Set<String> nombresMedicionesProcesados = new HashSet<>();
+        RelativeLayout ultimoRelativeLayout = ultimaRelativeLayoutSintoma;
+
+        for (CalendarioMedicion unaCalMedicion : calendarioMediciones) {
+            String nombreMedicion = unaCalMedicion.getMedicion().getNombreMedicion();
+
+            if (!nombresMedicionesProcesados.contains(nombreMedicion)) {
+                nombresMedicionesProcesados.add(nombreMedicion);
+
+                RelativeLayout newMedicionLayout = new RelativeLayout(this);
+                newMedicionLayout.setId(View.generateViewId());
+                newMedicionLayout.setLayoutParams(new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                ));
+                newMedicionLayout.setPadding(20, 15, 20, 10);
+                newMedicionLayout.setBackgroundResource(R.drawable.background_rounded_blanco);
+
+                ultimoRelativeLayout = newMedicionLayout;
+
+                ImageView imagenMedicion = new ImageView(this);
+                imagenMedicion.setId(View.generateViewId());
+                imagenMedicion.setImageResource(R.drawable.mano_corazon); // Aquí cambia a la imagen que quieras
+                RelativeLayout.LayoutParams imagenParams = new RelativeLayout.LayoutParams(
+                        getResources().getDimensionPixelSize(R.dimen.imagen_medicion_width),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_medicion_height)
+                );
+                imagenParams.setMargins(
+                        getResources().getDimensionPixelSize(R.dimen.imagen_medicion_margin_start),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_medicion_margin_top),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_medicion_margin_end),
+                        getResources().getDimensionPixelSize(R.dimen.imagen_medicion_margin_bottom)
+                );
+                imagenParams.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
+                imagenMedicion.setLayoutParams(imagenParams);
+
+
+                TextView textoTituloMedicion = new TextView(this);
+                textoTituloMedicion.setId(View.generateViewId()); // Asignar un ID único al TextView
+                textoTituloMedicion.setText(unaCalMedicion.getMedicion().getNombreMedicion());
+                RelativeLayout.LayoutParams tituloParams = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                tituloParams.setMargins(10, 15, 10, 10);
+                tituloParams.addRule(RelativeLayout.END_OF, imagenMedicion.getId());
+                textoTituloMedicion.setLayoutParams(tituloParams);
+                textoTituloMedicion.setTextSize(25);
+                textoTituloMedicion.setTypeface(null, Typeface.BOLD);
+
+                TextView textoMedicion = new TextView(this);
+                textoMedicion.setId(View.generateViewId());
+                List<CalendarioMedicion> mismasMediciones = obtenerCalendarioMedicionesMismaMedicion(calendarioMediciones, unaCalMedicion);
+                String ultimaFechaMedicion = obtenerUltimaFechaSeguimientoMedicion(mismasMediciones);
+                textoMedicion.setText("Último seguimiento: " + ultimaFechaMedicion);
+                RelativeLayout.LayoutParams medicionParams = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                medicionParams.addRule(RelativeLayout.BELOW, textoTituloMedicion.getId());
+                medicionParams.addRule(RelativeLayout.END_OF, imagenMedicion.getId());
+                medicionParams.setMargins(20, 1, 20, 20);
+                textoMedicion.setLayoutParams(medicionParams); // Aplicar los parámetros al TextView
+                textoMedicion.setTextColor(Color.BLACK);
+                textoMedicion.setTextSize(21);
+
+                Button buttonMasInfo = new Button(this);
+                buttonMasInfo.setId(View.generateViewId()); // Asignar un ID único al Button
+                buttonMasInfo.setText("Más información");
+                buttonMasInfo.setAllCaps(false);
+                RelativeLayout.LayoutParams buttonParamsm = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                buttonParamsm.addRule(RelativeLayout.BELOW, textoMedicion.getId());
+                buttonParamsm.addRule(RelativeLayout.END_OF, imagenMedicion.getId());
+                buttonParamsm.setMargins(0, 0, 0, 15);
+                buttonMasInfo.setLayoutParams(buttonParamsm);
+                buttonMasInfo.setBackgroundResource(R.drawable.boton_redondo_verde_oscuro);
+                buttonMasInfo.setFocusable(false);
+                buttonMasInfo.setTypeface(Typeface.DEFAULT_BOLD);
+                buttonMasInfo.setPadding(getResources().getDimensionPixelSize(R.dimen.button_padding_start),
+                        0,
+                        getResources().getDimensionPixelSize(R.dimen.button_padding_end),
+                        0);
+                buttonMasInfo.setTextColor(Color.WHITE);
+                buttonMasInfo.setTextSize(20);
+
+                // Agregar las vistas al RelativeLayout
+                newMedicionLayout.addView(imagenMedicion);
+                newMedicionLayout.addView(textoTituloMedicion);
+                newMedicionLayout.addView(textoMedicion);
+                newMedicionLayout.addView(buttonMasInfo);
+
+                // Configurar el OnClickListener para el botón "Más información"
+                buttonMasInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Crear un Intent para abrir la actividad MasInfoSintomaActivity
+                        Intent intent = new Intent(AgregarSeguimientoActivity.this, MasInfoMedicionActivity.class);
+
+
+                        // Iniciar la actividad MasInfoSintomaActivity
+                        startActivity(intent);
+                    }
+                });
+
+                // Configurar reglas de posicionamiento para el nuevo layout
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(0, 0, 0, 20); // Agregar margen inferior entre los layouts
+
+                if (prevLayout != null) {
+                    layoutParams.addRule(RelativeLayout.BELOW, prevLayout.getId());
+                }
+
+                newMedicionLayout.setLayoutParams(layoutParams);
+
+                // Agregar el nuevo RelativeLayout al layout principal
+                mainLayout.addView(newMedicionLayout);
+
+                // Mantén el nuevo layout como el anterior para la siguiente iteración
+                prevLayout = newMedicionLayout;
+
+                // Después de crear todos los RelativeLayouts
+                Button buttonAgregarSeguimiento = findViewById(R.id.button_agregarseguimiento);
+                if (ultimoRelativeLayout != null) {
+                    RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) buttonAgregarSeguimiento.getLayoutParams();
+                    buttonParams.addRule(RelativeLayout.BELOW, ultimoRelativeLayout.getId());
+                    buttonAgregarSeguimiento.setLayoutParams(buttonParams);
+                }
+            }
+        }
+    }
+
+    private String obtenerUltimaFechaSeguimientoMedicion(List<CalendarioMedicion> calendarioMediciones) {
+        String ultimaFecha = "";
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd 'de' MMM, HH:mm", Locale.getDefault());
+
+        for (CalendarioMedicion cm : calendarioMediciones) {
+            LocalDateTime fechaSeguimiento = cm.getFechaCalendarioMedicion();
+            if (fechaSeguimiento != null) {
+                if (ultimaFecha.isEmpty()) {
+                    ultimaFecha = fechaSeguimiento.format(dateFormat);
+                } else {
+                    LocalDateTime ultimaFechaDate = LocalDateTime.parse(ultimaFecha, dateFormat);
+                    if (fechaSeguimiento.isAfter(ultimaFechaDate)) {
+                        ultimaFecha = fechaSeguimiento.format(dateFormat);
+                    }
+                }
+            }
+        }
+
+        return ultimaFecha;
+    }
+
+    private List<CalendarioMedicion> obtenerCalendarioMedicionesMismaMedicion(List<CalendarioMedicion> calendarioMediciones, CalendarioMedicion medicion) {
+        return calendarioMediciones.stream()
+                .filter(cm -> cm != null && medicion != null && cm.getMedicion() != null && cm.getMedicion().equals(medicion.getMedicion()))
+                .collect(Collectors.toList());
+    }
 
 
 }

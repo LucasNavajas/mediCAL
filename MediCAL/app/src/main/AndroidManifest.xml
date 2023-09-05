@@ -98,6 +98,7 @@
         <activity android:name=".ElegirMedicamentoActivity"></activity>
         <activity android:name=".MasActivity"></activity>
         <activity android:name=".MasInfoSintomaActivity"></activity>
+        <activity android:name=".MasInfoMedicionActivity"></activity>
         <activity android:name=".InicioMedicionesSintomasActivity"></activity>
         <activity android:name=".NuevoMedicamentoActivity"></activity>
         <activity android:name=".GestionarContactosActivity"></activity>

@@ -55,7 +55,7 @@ class SpringServerApplicationTestsCalendario {
 		
 		// instancia de CalendarioMedicion
 		CalendarioMedicion calendariomedicion = new CalendarioMedicion();
-		calendariomedicion.setFechaCalendarioMedicion(fechaHoy);
+		calendariomedicion.setFechaCalendarioMedicion(fechaHoyTime);
 		calendariomedicion.setFechaFinVigenciaCM(null);
 		calendariomedicion.setValorCalendarioMedicion(0.6f); // Agrega la letra 'f' para indicar que es un float
 		

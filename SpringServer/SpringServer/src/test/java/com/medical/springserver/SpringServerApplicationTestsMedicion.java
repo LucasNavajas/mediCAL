@@ -1,6 +1,7 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ class SpringServerApplicationTestsMedicion {
 	@Test
 	void addMedicionTest() {
 	    LocalDate fechaHoy = LocalDate.now();
+	    LocalDateTime fechaHoyTime = LocalDateTime.now();
 
 	    List<String> nombresMediciones = new ArrayList<>();
 	    nombresMediciones.add("Peso");
@@ -61,7 +63,7 @@ class SpringServerApplicationTestsMedicion {
 	        }
 
 	        CalendarioMedicion calendariomedicion = new CalendarioMedicion();
-	        calendariomedicion.setFechaCalendarioMedicion(fechaHoy);
+	        calendariomedicion.setFechaCalendarioMedicion(fechaHoyTime);
 	        calendariomedicion.setFechaFinVigenciaCM(null);
 
 	        calendariomedicion.setMedicion(medicion);

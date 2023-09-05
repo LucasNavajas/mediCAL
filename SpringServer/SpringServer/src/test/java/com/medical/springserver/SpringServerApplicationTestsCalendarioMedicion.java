@@ -1,6 +1,7 @@
 package com.medical.springserver;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,10 @@ class SpringServerApplicationTestsCalendarioMedicion {
 		
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
+		LocalDateTime fechaHoyTime = LocalDateTime.now();
 		
 		CalendarioMedicion calendariomedicion = new CalendarioMedicion();
-		calendariomedicion.setFechaCalendarioMedicion(fechaHoy);
+		calendariomedicion.setFechaCalendarioMedicion(fechaHoyTime);
 		calendariomedicion.setFechaFinVigenciaCM(null);
 		
 		calendariomedicionDao.save(calendariomedicion);

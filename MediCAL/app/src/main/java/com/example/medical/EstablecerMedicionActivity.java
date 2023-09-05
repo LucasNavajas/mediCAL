@@ -2,6 +2,11 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,21 +22,87 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.model.Calendario;
+import com.example.medical.model.CalendarioMedicion;
+import com.example.medical.model.Medicion;
+import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.CalendarioMedicionApi;
+import com.example.medical.retrofit.MedicionApi;
+import com.example.medical.retrofit.RetrofitService;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class EstablecerMedicionActivity extends AppCompatActivity {
 
     private Calendar selectedDate = Calendar.getInstance();
+    private int lastCalendarioMedicionCode = 0;
+
+    private LocalDateTime fechaSeleccionada; // Declarar la variable a nivel de clase
+
+    private int codCalendario;
+    private CalendarioApi calendarioApi;
+    private MedicionApi medicionApi;
+    private CalendarioMedicionApi calendarioMedicionApi;
+    private Calendario calendarioSeleccionado;
+    private Medicion medicionSeleccionada;
+    private int codMedicion;
+    private boolean isFormatting = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n76_0_establecer_medicion);
 
-        EditText textoLineaEditText = findViewById(R.id.texto_linea);
+
+        RetrofitService retrofitService = new RetrofitService();
+
+        // Crear una instancia de la interfaz de la API utilizando Retrofit
+        calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
+
+        Intent intent1 = getIntent();
+        codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
+        Log.d("MiApp", "codCalendario en EstablecerMedicionActivity: " + codCalendario);
+
+        // Crear una instancia de la interfaz de la API utilizando Retrofit
+        calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
+
+        // Hacer la llamada a la API para obtener el calendario seleccionado
+        Call<Calendario> call2 = calendarioApi.getByCodCalendario(codCalendario);
+
+        call2.enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call2, Response<Calendario> response) {
+                if (response.isSuccessful()) {
+                    calendarioSeleccionado = response.body();
+                    if (calendarioSeleccionado != null) {
+                        Log.d("MiApp", "Calendario seleccionado encontrado: " + calendarioSeleccionado.getCodCalendario());
+                    } else {
+                        Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Calendario> call2, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
 
         LinearLayout layoutHora = findViewById(R.id.layout_hora);
         layoutHora.setOnClickListener(new View.OnClickListener() {
@@ -50,11 +121,64 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
             }
         });
 
+        EditText textoLineaEditText = findViewById(R.id.texto_linea);
+        textoLineaEditText.addTextChangedListener(new TextWatcher() {
+            private boolean isFormatting = false;
+            private DecimalFormat decimalFormat = new DecimalFormat("000.00");
+            private DecimalFormatSymbols symbols = decimalFormat.getDecimalFormatSymbols();
+            private char zeroDigit = symbols.getZeroDigit();
+            private char decimalSeparator = symbols.getDecimalSeparator();
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+                // No action needed before text changed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                // No action needed as the text is changing
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (isFormatting) {
+                    return;
+                }
+
+                isFormatting = true;
+
+                String inputText = editable.toString();
+                if (!inputText.isEmpty()) {
+                    String strippedText = inputText.replaceAll("[^0-9]", "");
+
+                    if (strippedText.isEmpty()) {
+                        textoLineaEditText.setText("");
+                        textoLineaEditText.setSelection(0);
+                    } else {
+                        int intValue = Integer.parseInt(strippedText);
+                        double doubleValue = intValue / 100.0;
+
+                        String formattedText = decimalFormat.format(doubleValue);
+                        char zeroDigitFormatted = decimalFormat.format(0).charAt(0);
+                        formattedText = formattedText.replace(zeroDigitFormatted, zeroDigit);
+
+                        textoLineaEditText.setText(formattedText);
+                        textoLineaEditText.setSelection(formattedText.length());
+                    }
+                }
+
+                isFormatting = false;
+            }
+        });
+
+
+
         // Obtener los datos pasados desde la actividad anterior
         Intent intent = getIntent();
         if (intent != null) {
             String nombreMedicion = intent.getStringExtra("nombreMedicion");
             String unidadMedida = intent.getStringExtra("unidadMedida");
+
 
             // Actualizar el nombre de la medición en el TextView correspondiente
             TextView nombreMedicionTextView = findViewById(R.id.texto_editar);
@@ -64,7 +188,40 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
             TextView unidadMedidaTextView = findViewById(R.id.texto_unidad);
             // Actualizar la unidad de medida en el TextView correspondiente
             unidadMedidaTextView.setText("(" + unidadMedida + ")");
+
+            // Crear una instancia de la interfaz de la API utilizando Retrofit
+            medicionApi = retrofitService.getRetrofit().create(MedicionApi.class);
+
+            // Obtener el código de la medición desde el Intent o donde sea necesario
+            codMedicion = getIntent().getIntExtra("codMedicion", 0);
+
+            // Hacer la llamada a la API para obtener la medición seleccionada
+            Call<Medicion> call3 = medicionApi.getByCodMedicion(codMedicion);
+
+            call3.enqueue(new Callback<Medicion>() {
+                @Override
+                public void onResponse(Call<Medicion> call3, Response<Medicion> response) {
+                    if (response.isSuccessful()) {
+                        medicionSeleccionada = response.body();
+                        if (medicionSeleccionada != null) {
+                            Log.d("MiApp", "Medición seleccionada encontrada: " + medicionSeleccionada.getCodMedicion());
+                            // Aquí puedes hacer lo que necesites con la medición seleccionada
+                        } else {
+                            Log.d("MiApp", "No se encontró la Medición con codMedicion: " + codMedicion);
+                        }
+                    } else {
+                        Log.d("MiApp", "Error en la solicitud: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Medicion> call3, Throwable t) {
+                    Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+                }
+            });
         }
+
+
 
         // Obtener la fecha y hora actual
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
@@ -77,29 +234,85 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
 
         TextView horaTextView = findViewById(R.id.texto_hora);
         horaTextView.setText(timeFormat.format(currentDate));
+
+
         Button buttonAgregar = findViewById(R.id.button_siguiente);
 
         buttonAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Obtener el valor ingresado en el EditText
                 EditText textoLineaEditText = findViewById(R.id.texto_linea);
                 String inputText = textoLineaEditText.getText().toString();
 
+                String formattedNumber = formatNumberWithZeros(inputText);
+
                 try {
-                    double inputValue = Double.parseDouble(inputText);
-                    // Aquí puedes realizar acciones con el valor numérico ingresado
-                    // Por ejemplo, agregar la medición a la base de datos o realizar algún cálculo
+                    float inputValue = Float.parseFloat(formattedNumber);
+
+                    if (inputValue == 0) {
+                        Toast.makeText(EstablecerMedicionActivity.this, "Ingrese un valor mayor a 0", Toast.LENGTH_SHORT).show();
+                    } else {
+                        CalendarioMedicion nuevaMedicion = new CalendarioMedicion();
+
+                        if (fechaSeleccionada == null) {
+                            fechaSeleccionada = LocalDateTime.now();
+                        }
+                        nuevaMedicion.setFechaCalendarioMedicion(fechaSeleccionada);
+                        nuevaMedicion.setFechaFinVigenciaCM(null);
+                        nuevaMedicion.setCodCalendarioMedicion(lastCalendarioMedicionCode + 1);
+                        nuevaMedicion.setValorCalendarioMedicion(inputValue);
+
+                        nuevaMedicion.setMedicion(medicionSeleccionada);
+                        nuevaMedicion.setCalendario(calendarioSeleccionado);
+
+                        Call<CalendarioMedicion> call = calendarioMedicionApi.saveCalendarioMedicion(nuevaMedicion);
+                        call.enqueue(new Callback<CalendarioMedicion>() {
+                            @Override
+                            public void onResponse(Call<CalendarioMedicion> call, Response<CalendarioMedicion> response) {
+                                if (response.isSuccessful()) {
+                                    Log.d("MiApp", "CalendarioMedicion guardado exitosamente");
+                                } else {
+                                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<CalendarioMedicion> call, Throwable t) {
+                                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+                            }
+                        });
+
+                        Intent intent = new Intent(EstablecerMedicionActivity.this, AgregarSeguimientoActivity.class);
+                        intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                        startActivity(intent);
+                    }
                 } catch (NumberFormatException e) {
-                    // El valor ingresado no es un número válido
-                    // Puedes mostrar un mensaje de error o realizar otras acciones apropiadas
                     Toast.makeText(EstablecerMedicionActivity.this, "Ingrese un número válido", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
 
+
     }
+
+    private String formatNumberWithZeros(String input) {
+        String[] parts = input.split("[,.]");
+        String wholePart = parts[0];
+        String decimalPart = parts.length > 1 ? parts[1] : "";
+
+        while (wholePart.length() < 3) {
+            wholePart = "0" + wholePart;
+        }
+
+        while (decimalPart.length() < 2) {
+            decimalPart += "0";
+        }
+
+        return wholePart + "." + decimalPart;
+    }
+
+
 
     // Dentro de EstablecerMedicionActivity
     @Override
@@ -110,12 +323,34 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
             String selectedDate = data.getStringExtra("selectedDate");
             String selectedTime = data.getStringExtra("selectedTime");
 
+            Log.d("MiApp", "selectedDate: " + selectedDate);
+            Log.d("MiApp", "selectedTime: " + selectedTime);
+
             // Actualizar los TextView con la fecha y hora seleccionadas
             TextView fechaTextView = findViewById(R.id.texto_fecha);
             fechaTextView.setText(selectedDate);
 
             TextView horaTextView = findViewById(R.id.texto_hora);
             horaTextView.setText(selectedTime);
+
+            // Parsear la fecha y la hora seleccionadas
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            try {
+                Date parsedDate = dateFormat.parse(selectedDate);
+                Date parsedTime = timeFormat.parse(selectedTime);
+
+                // Crear una instancia de LocalDateTime usando la fecha y hora seleccionadas
+                LocalDateTime dateTime = LocalDateTime.ofInstant(parsedDate.toInstant(), ZoneId.systemDefault())
+                        .withHour(parsedTime.getHours())
+                        .withMinute(parsedTime.getMinutes());
+
+                fechaSeleccionada = dateTime;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -239,6 +474,9 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
                 int year = selectedDate.get(Calendar.YEAR);
                 int month = selectedDate.get(Calendar.MONTH);
                 int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+
+                // Crear una instancia de LocalDateTime usando la fecha y hora seleccionadas
+                fechaSeleccionada = LocalDateTime.of(year, month + 1, day, hour, minute); // Aquí asignamos el valor
 
                 // Formatear la fecha y la hora como cadenas
                 String formattedDate = day + " " + getMonthName(month) + ", " + year;

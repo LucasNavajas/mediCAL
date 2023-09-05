@@ -1,5 +1,6 @@
 package com.medical.springserver.model.calendariomedicion;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.medicion.Medicion;
@@ -16,7 +17,7 @@ public class CalendarioMedicion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codCalendarioMedicion;
-	private LocalDate fechaCalendarioMedicion;
+	private LocalDateTime fechaCalendarioMedicion;
 	private LocalDate fechaFinVigenciaCM;
 	private Float valorCalendarioMedicion;
 	
@@ -36,10 +37,10 @@ public class CalendarioMedicion {
 	public void setCodCalendarioMedicion(int codCalendarioMedicion) {
 		this.codCalendarioMedicion = codCalendarioMedicion;
 	}
-	public LocalDate getFechaCalendarioMedicion() {
+	public LocalDateTime getFechaCalendarioMedicion() {
 		return fechaCalendarioMedicion;
 	}
-	public void setFechaCalendarioMedicion(LocalDate fechaCalendarioMedicion) {
+	public void setFechaCalendarioMedicion(LocalDateTime fechaCalendarioMedicion) {
 		this.fechaCalendarioMedicion = fechaCalendarioMedicion;
 	}
 	public LocalDate getFechaFinVigenciaCM() {
@@ -76,5 +77,6 @@ public class CalendarioMedicion {
 	public void setCalendario(Calendario calendario) {
 		this.calendario = calendario;
 	}
+
 
 }
