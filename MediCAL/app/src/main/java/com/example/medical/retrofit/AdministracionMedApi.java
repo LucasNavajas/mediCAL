@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface AdministracionMedApi {
 
@@ -16,4 +17,7 @@ public interface AdministracionMedApi {
 
     @POST("/administracionmed/save")
     Call<AdministracionMed> save(@Body AdministracionMed administracionMed);
+
+    @GET("/administracionmed/{codAdministracionMed}")
+    Call <AdministracionMed> getByCodAdministracionMed(@Path("codAdministracionMed") int codAdministracionMed);
 }

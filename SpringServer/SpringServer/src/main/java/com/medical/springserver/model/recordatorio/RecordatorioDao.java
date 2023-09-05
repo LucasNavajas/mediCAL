@@ -3,6 +3,7 @@ package com.medical.springserver.model.recordatorio;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,17 @@ public class RecordatorioDao {
 	public Recordatorio getByCodRecordatorio(int codRecordatorio) {
 		return repository.findByCodRecordatorio(codRecordatorio);
 	}
+
+	   public Recordatorio modificarRecordatorio(int codRecordatorio, Recordatorio recordatorioModificado) {
+	        // Paso 1: Recuperar el registro existente por su ID
+	        Recordatorio registroExistente = repository.findByCodRecordatorio(codRecordatorio);
+	        
+
+	        // Paso 2: Actualizar los campos necesarios del registro existente con los datos del recordatorio modificado
+	        BeanUtils.copyProperties(recordatorioModificado, registroExistente, "codRecordatorio");
+
+	        // Paso 3: Guardar la instancia actualizada
+	        return repository.save(registroExistente);
+	    }
 
 }

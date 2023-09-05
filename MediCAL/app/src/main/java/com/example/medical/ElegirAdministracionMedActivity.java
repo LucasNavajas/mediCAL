@@ -66,6 +66,7 @@ public class ElegirAdministracionMedActivity extends AppCompatActivity {
             public void onItemClick(AdministracionMed item) {
                 Intent intent = new Intent(ElegirAdministracionMedActivity.this, ElegirPresentacionMedActivity.class);
                 intent.putExtra("administracionMedId", item.getCodAdministracionMed());
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio",0));
                 startActivity(intent);
             }
         });
@@ -77,29 +78,13 @@ public class ElegirAdministracionMedActivity extends AppCompatActivity {
         recordatorioApi.eliminarRecordatorio(getIntent().getIntExtra("codRecordatorio",0)).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                ElegirAdministracionMedActivity.super.onDestroy();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                ElegirAdministracionMedActivity.super.onDestroy();
             }
         });
-    }
-    @Override
-    public void onBackPressed(){
-        recordatorioApi.eliminarRecordatorio(getIntent().getIntExtra("codRecordatorio",0)).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                ElegirAdministracionMedActivity.super.onBackPressed();
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ElegirAdministracionMedActivity.this, "Fallo en base de datos al eliminar el recordatorio intermedio", Toast.LENGTH_SHORT).show();
-                ElegirAdministracionMedActivity.super.onBackPressed();
-            }
-        });
+        super.onDestroy();
     }
 
 

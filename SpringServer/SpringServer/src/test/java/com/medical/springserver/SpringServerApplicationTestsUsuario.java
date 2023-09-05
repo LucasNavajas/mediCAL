@@ -110,11 +110,6 @@ class SpringServerApplicationTestsUsuario {
 		varcalendario.add(calendario);
 		usuario.setVarcalendario(varcalendario);
 		
-		perfil.setUsuario(usuario);
-		List<Perfil> varperfil = new ArrayList<>();
-		varperfil.add(perfil);
-		usuario.setPerfil(varperfil);
-		
 		solicitudControlador.setUsuarioControlador(usuario);
 		List<Solicitud> varsolicitud = new ArrayList<>();
 		varsolicitud.add(solicitudControlador);

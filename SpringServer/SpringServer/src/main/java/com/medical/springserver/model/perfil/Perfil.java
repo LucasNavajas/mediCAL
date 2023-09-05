@@ -1,16 +1,20 @@
 package com.medical.springserver.model.perfil;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.perfilpermiso.PerfilPermiso;
 import com.medical.springserver.model.usuario.Usuario;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Perfil {
@@ -24,35 +28,23 @@ public class Perfil {
 	private String nombrePerfil;
 	
 	//relacion con PerfilPermiso
-	@ManyToOne
-	@JoinColumn(name = "idPerfilPermiso")
-	private PerfilPermiso perfilPermiso;
+	@OneToMany (mappedBy = "perfil", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<PerfilPermiso> perfilPermiso;
 
 	// relacion con Usuario
-	@ManyToOne
-	@JoinColumn(name = "codUsuario")
-	private Usuario usuario;
+	@OneToMany (mappedBy = "perfil", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Usuario> usuario;
 
-	public Usuario getUsuario() {
+	public List<Usuario> getUsuario() {
 		return usuario;
 	}
 
 
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(List<Usuario> usuario) {
 		this.usuario = usuario;
-	}
-
-
-
-	public PerfilPermiso getPerfilPermiso() {
-		return perfilPermiso;
-	}
-
-
-
-	public void setPerfilPermiso(PerfilPermiso perfilPermiso) {
-		this.perfilPermiso = perfilPermiso;
 	}
 
 

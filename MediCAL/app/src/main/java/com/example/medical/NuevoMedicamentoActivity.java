@@ -98,10 +98,10 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
                     recordatorio.setImagen(bitmapToBase64(imagenBitmap));
                     recordatorio.setCalendario(calendarioSeleccionado);
                     recordatorio.setMedicamento(response.body());
+                    recordatorio.setFechaAltaRecordatorio(LocalDate.now());
                     recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
                         @Override
                         public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
-                            Toast.makeText(NuevoMedicamentoActivity.this, "Recordatorio y medicamento creados", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(NuevoMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
                             startActivity(intent);

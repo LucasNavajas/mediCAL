@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.medicamento.Medicamento;
 import com.medical.springserver.model.presentacionMed.PresentacionMed;
-
+import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -30,6 +30,10 @@ public class AdministracionMed {
 	@OneToMany(mappedBy = "administracionMed", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<PresentacionMed> presentacionmed;
+	
+	@OneToMany(mappedBy = "administracionMed", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Recordatorio> recordatorios;
 	
 	public int getCodAdministracionMed() {
 		return codAdministracionMed;

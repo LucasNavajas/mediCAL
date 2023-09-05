@@ -2,12 +2,14 @@ package com.medical.springserver.model.recordatorio;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.medical.springserver.model.administracionmed.AdministracionMed;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.dosis.Dosis;
 import com.medical.springserver.model.frecuencia.Frecuencia;
 import com.medical.springserver.model.instruccion.Instruccion;
 import com.medical.springserver.model.inventario.Inventario;
 import com.medical.springserver.model.medicamento.Medicamento;
+import com.medical.springserver.model.presentacionMed.PresentacionMed;
 import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorio;
 
 import jakarta.persistence.CascadeType;
@@ -69,6 +71,14 @@ public class Recordatorio {
 	@ManyToOne
 	@JoinColumn (name = "codFrecuencia")
 	private Frecuencia frecuencia;
+	
+	@ManyToOne
+	@JoinColumn (name ="codAdministracionMed")
+	private AdministracionMed administracionMed;
+	
+	@ManyToOne
+	@JoinColumn (name = "codPresentacionMed")
+	private PresentacionMed presentacionMed;
 	
 	public int getCodRecordatorio() {
 		return codRecordatorio;
@@ -173,6 +183,18 @@ public class Recordatorio {
 	}
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+	public AdministracionMed getAdministracionMed() {
+		return administracionMed;
+	}
+	public void setAdministracionMed(AdministracionMed administracionMed) {
+		this.administracionMed = administracionMed;
+	}
+	public PresentacionMed getPresentacionMed() {
+		return presentacionMed;
+	}
+	public void setPresentacionMed(PresentacionMed presentacionMed) {
+		this.presentacionMed = presentacionMed;
 	}	
 	
 }

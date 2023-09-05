@@ -25,6 +25,7 @@ import com.example.medical.retrofit.MedicamentoApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import retrofit2.Call;
@@ -68,12 +69,14 @@ public class MedicamentoAdapter extends ArrayAdapter<String> {
                 Recordatorio recordatorio = new Recordatorio();
                 recordatorio.setMedicamento(medicamentoSeleccionado);
                 recordatorio.setCalendario(cCalendario);
+                recordatorio.setFechaAltaRecordatorio(LocalDate.now());
                 recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
                     @Override
                     public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                         Intent intent = new Intent(mContext, ElegirAdministracionMedActivity.class);
                         intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
                         mContext.startActivity(intent);
+
                     }
 
                     @Override

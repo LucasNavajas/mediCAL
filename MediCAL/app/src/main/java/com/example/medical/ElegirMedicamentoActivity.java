@@ -22,10 +22,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.medical.adapter.MedicamentoAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Medicamento;
+import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.MedicamentoApi;
+import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private MedicamentoApi medicamentoApi = retrofitService.getRetrofit().create(MedicamentoApi.class);
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private EditText buscar;
     private List<Medicamento> medicamentosEntidades;
     private List<String> medicamentos = new ArrayList<>();
@@ -154,9 +158,24 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Medicamento medicamentoSeleccionado = medicamentosEntidades.get(position);
-                        Intent intent = new Intent(ElegirMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
-                        intent.putExtra("codMedicamento", medicamentoSeleccionado.getCodMedicamento());
-                        startActivity(intent);
+                        Recordatorio recordatorio = new Recordatorio();
+                        recordatorio.setMedicamento(medicamentoSeleccionado);
+                        recordatorio.setCalendario(calendarioSeleccionado);
+                        recordatorio.setFechaAltaRecordatorio(LocalDate.now());
+                        recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
+                            @Override
+                            public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                                Intent intent = new Intent(ElegirMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
+                                intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Recordatorio> call, Throwable t) {
+
+                            }
+                        });
+
                     }
                 });
             }

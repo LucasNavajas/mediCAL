@@ -38,11 +38,6 @@ class SpringServerApplicationTestsPerfilPermiso {
 		perfil.setNombrePerfil("particular");
 		
 		
-		perfil.setPerfilPermiso(perfilpermiso);
-		List<Perfil> varperfil = new ArrayList<>();
-		varperfil.add(perfil);
-		perfilpermiso.setPerfil(varperfil);
-		
 		System.out.println(perfilpermiso.getPerfil());
 		
 		

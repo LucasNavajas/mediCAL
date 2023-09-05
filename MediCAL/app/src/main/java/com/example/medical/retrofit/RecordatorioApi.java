@@ -23,4 +23,7 @@ public interface RecordatorioApi {
 
     @DELETE("/recordatorio/eliminar/{codRecordatorio}")
     Call<Void> eliminarRecordatorio(@Path("codRecordatorio") int codRecordatorio);
+
+    @POST("/recordatorio/modificar")
+    Call <Recordatorio> modificarRecordatorio(@Body Recordatorio recordatorio);
 }

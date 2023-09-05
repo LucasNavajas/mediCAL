@@ -2,8 +2,9 @@ package com.medical.springserver.model.presentacionMed;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.administracionmed.AdministracionMed;
-
+import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -28,6 +29,10 @@ public class PresentacionMed {
 	@ManyToOne
 	@JoinColumn(name = "codAdministracionMed")
 	private AdministracionMed administracionMed;
+	
+	@OneToMany(mappedBy = "presentacionMed", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Recordatorio> recordatorios;
 	
 	public int getCodPresentacionMed() {
 		return codPresentacionMed;

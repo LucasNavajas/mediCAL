@@ -14,6 +14,10 @@ public class Recordatorio {
     // Relacion con Calendario
     private Calendario calendario;
 
+    private AdministracionMed administracionMed;
+
+    private PresentacionMed presentacionMed;
+
     // Relacion con RegistroRecordatorio
    // private List<RegistroRecordatorio> registrorecordatorio;
 
@@ -135,6 +139,19 @@ public class Recordatorio {
     }
     public void setCalendario(Calendario calendario) {
         this.calendario = calendario;
+    }
+
+    public AdministracionMed getAdministracionMed() {
+        return administracionMed;
+    }
+    public void setAdministracionMed(AdministracionMed administracionMed) {
+        this.administracionMed = administracionMed;
+    }
+    public PresentacionMed getPresentacionMed() {
+        return presentacionMed;
+    }
+    public void setPresentacionMed(PresentacionMed presentacionMed) {
+        this.presentacionMed = presentacionMed;
     }
 
 }

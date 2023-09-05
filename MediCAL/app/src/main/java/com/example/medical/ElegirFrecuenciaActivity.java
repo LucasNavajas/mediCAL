@@ -2,6 +2,7 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,8 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medical.adapter.PresentacionMedAdapter;
+import com.example.medical.model.AdministracionMed;
 import com.example.medical.model.PresentacionMed;
+import com.example.medical.model.Recordatorio;
+import com.example.medical.retrofit.AdministracionMedApi;
 import com.example.medical.retrofit.PresentacionMedApi;
+import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 import java.util.List;
 import retrofit2.Call;
@@ -21,6 +26,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ElegirFrecuenciaActivity extends AppCompatActivity {
+    private RetrofitService retrofitService = new RetrofitService();
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
+    private AdministracionMedApi administracionMedApi = retrofitService.getRetrofit().create(AdministracionMedApi.class);
+    private PresentacionMedApi presentacionMedApi = retrofitService.getRetrofit().create(PresentacionMedApi.class);
+    private AdministracionMed adminRecordatorio;
+    private PresentacionMed presentacionRecordatorio;
 
     private ImageView botonVolver;
 
@@ -32,6 +43,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n38_seleccionar_frecuencia);
+        modificarRecordatorio();
+
 
         botonVolver = findViewById(R.id.boton_volver);
 
@@ -134,6 +147,54 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed(); // Volver a la actividad anterior
+    }
+    private void modificarRecordatorio() {
+        administracionMedApi.getByCodAdministracionMed(getIntent().getIntExtra("administracionMedId",0)).enqueue(new Callback<AdministracionMed>() {
+            @Override
+            public void onResponse(Call<AdministracionMed> call, Response<AdministracionMed> response) {
+                adminRecordatorio = response.body();
+                presentacionMedApi.getPresentacionMedByCod(getIntent().getIntExtra("presentacionMedId", 0)).enqueue(new Callback<PresentacionMed>() {
+                    @Override
+                    public void onResponse(Call<PresentacionMed> call, Response<PresentacionMed> response) {
+                        presentacionRecordatorio = response.body();
+                        recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio", 0)).enqueue(new Callback<Recordatorio>() {
+                            @Override
+                            public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                                Recordatorio recordatorio = response.body();
+                                recordatorio.setAdministracionMed(adminRecordatorio);
+                                recordatorio.setPresentacionMed(presentacionRecordatorio);
+                                recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
+                                    @Override
+                                    public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                                        Log.d("Recordatorio Modificado", "Se agregaron la administracion y presentacion");
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Recordatorio> call, Throwable t) {
+                                        Toast.makeText(ElegirFrecuenciaActivity.this, "Error al fijar administración y presentación al recordatorio al modificarlo " , Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(Call<Recordatorio> call, Throwable t) {
+                                Toast.makeText(ElegirFrecuenciaActivity.this, "Error al fijar administración y presentación al recordatorio al obtenerlo " , Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<PresentacionMed> call, Throwable t) {
+                        Toast.makeText(ElegirFrecuenciaActivity.this, "Error al fijar administración y presentación al recordatorio al obtener la presentacion " , Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<AdministracionMed> call, Throwable t) {
+                Toast.makeText(ElegirFrecuenciaActivity.this, "Error al fijar administración y presentación al recordatorio al obtener la administración" , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

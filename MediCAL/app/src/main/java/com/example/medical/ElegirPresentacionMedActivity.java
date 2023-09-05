@@ -15,6 +15,7 @@ import com.example.medical.adapter.PresentacionMedAdapter;
 import com.example.medical.model.AdministracionMed;
 import com.example.medical.model.PresentacionMed;
 import com.example.medical.retrofit.PresentacionMedApi;
+import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 import java.util.List;
 import retrofit2.Call;
@@ -25,6 +26,8 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ImageView botonVolver;
+    private RetrofitService retrofitService = new RetrofitService();
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private int codAdmin;
 
     @Override
@@ -32,7 +35,6 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent1 = getIntent();
         codAdmin = intent1.getIntExtra("administracionMedId",0);
-        Toast.makeText(ElegirPresentacionMedActivity.this, "Codigo administracion pasado: "+ codAdmin, Toast.LENGTH_SHORT).show();
         setContentView(R.layout.n34_35_36_37_presentacion_medica);
 
         recyclerView = findViewById(R.id.listapresentacionmed_recyclerview);
@@ -83,6 +85,7 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirPresentacionMedActivity.this, ElegirFrecuenciaActivity.class);
                 intent.putExtra("presentacionMedId", item.getCodPresentacionMed());
                 intent.putExtra("administracionMedId", codAdmin);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });
@@ -96,4 +99,5 @@ public class ElegirPresentacionMedActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed(); // Volver a la actividad anterior
     }
+
 }

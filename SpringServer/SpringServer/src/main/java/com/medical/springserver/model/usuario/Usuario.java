@@ -17,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -52,9 +53,9 @@ public class Usuario {
 	private List<Reporte> reportes;
 	
 	// relacion con Perfil
-	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<Perfil> perfil;
+	@ManyToOne 
+	@JoinColumn(name = "codPerfil")
+	private Perfil perfil;
 	
 	// relacion con Solicitud Controlador
 	@OneToMany (mappedBy = "usuarioControlador", cascade = CascadeType.MERGE)
@@ -83,10 +84,10 @@ public class Usuario {
 	public void setCodigoVerificacion(CodigoVerificacion codigoVerificacion) {
 		this.codigoVerificacion = codigoVerificacion;
 	}
-	public List<Perfil> getPerfil() {
+	public Perfil getPerfil() {
 		return perfil;
 	}
-	public void setPerfil(List<Perfil> perfil) {
+	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
 	public int getCodUsuario() {

@@ -15,7 +15,7 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Integer>{
 	@Query("SELECT s FROM Solicitud s WHERE (s.estadoSolicitud.codEstadoSolicitud = 1 OR s.estadoSolicitud.codEstadoSolicitud = 5) AND s.usuarioControlador.codUsuario = :codUsuarioControlador")
     List<Solicitud> obtenerContactos(int codUsuarioControlador);
 	
-	@Query("SELECT s FROM Solicitud s WHERE s.estadoSolicitud.codEstadoSolicitud = 1 AND s.usuarioControlado.codUsuario = :codUsuarioParam")
+	@Query("SELECT s FROM Solicitud s WHERE (s.estadoSolicitud.codEstadoSolicitud = 1 OR s.estadoSolicitud.codEstadoSolicitud = 5) AND s.usuarioControlado.codUsuario = :codUsuarioParam")
     List<Solicitud> obtenerSupervisor(int codUsuarioParam);
 	
 	@Query("SELECT s FROM Solicitud s WHERE s.usuarioControlador.codUsuario = :codUsuarioParam OR s.usuarioControlado.codUsuario = :codUsuarioParam")

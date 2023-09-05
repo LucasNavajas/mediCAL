@@ -26,17 +26,18 @@ public class PerfilPermiso {
 	private Permiso permiso;
 	
 	//Relacion con Perfil
-	@OneToMany (mappedBy = "perfilPermiso", cascade = CascadeType.ALL)
-	private List<Perfil> perfil;
+	@ManyToOne
+	@JoinColumn(name = "codPerfil")
+	private Perfil perfil;
 	
 
-	public List<Perfil> getPerfil() {
+	public Perfil getPerfil() {
 		return perfil;
 	}
 
 
 
-	public void setPerfil(List<Perfil> perfil) {
+	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
 

@@ -34,5 +34,10 @@ public class RecordatorioController {
 		Recordatorio r = recordatorioDao.getByCodRecordatorio(codRecordatorio);
 		recordatorioDao.delete(r);
 	}
+	
+	@PostMapping("/recordatorio/modificar")
+	public Recordatorio modificarRecordatorio(@RequestBody Recordatorio recordatorio) {
+		return recordatorioDao.modificarRecordatorio(recordatorio.getCodRecordatorio(), recordatorio);
+	}
 
 }
