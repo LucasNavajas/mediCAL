@@ -1,5 +1,6 @@
 package com.medical.springserver.model.recordatorio;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.medical.springserver.model.administracionmed.AdministracionMed;
@@ -33,7 +34,7 @@ public class Recordatorio {
 	private LocalDate fechaAltaRecordatorio;
 	private LocalDate fechaFinRecordatorio;
 	private LocalDate fechaFinVigenciaR;
-	private LocalDate fechaInicioRecordatorio;
+	private LocalDateTime fechaInicioRecordatorio;
 	private int horarioRecordatorio;
 	@Lob
     @Column(columnDefinition = "LONGBLOB")
@@ -68,7 +69,7 @@ public class Recordatorio {
 	private Dosis dosis;
 	
 	// Relacion con Frecuencia
-	@ManyToOne
+	@OneToOne
 	@JoinColumn (name = "codFrecuencia")
 	private Frecuencia frecuencia;
 	
@@ -110,10 +111,10 @@ public class Recordatorio {
 	public void setFechaFinVigenciaR(LocalDate fechaFinVigenciaR) {
 		this.fechaFinVigenciaR = fechaFinVigenciaR;
 	}
-	public LocalDate getFechaInicioRecordatorio() {
+	public LocalDateTime getFechaInicioRecordatorio() {
 		return fechaInicioRecordatorio;
 	}
-	public void setFechaInicioRecordatorio(LocalDate fechaInicioRecordatorio) {
+	public void setFechaInicioRecordatorio(LocalDateTime fechaInicioRecordatorio) {
 		this.fechaInicioRecordatorio = fechaInicioRecordatorio;
 	}
 	public int getHorarioRecordatorio() {

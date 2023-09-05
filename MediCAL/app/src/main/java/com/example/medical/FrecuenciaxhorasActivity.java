@@ -9,7 +9,22 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.model.Frecuencia;
+import com.example.medical.model.Recordatorio;
+import com.example.medical.retrofit.FrecuenciaApi;
+import com.example.medical.retrofit.RecordatorioApi;
+import com.example.medical.retrofit.RetrofitService;
+
+import java.util.concurrent.CompletableFuture;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FrecuenciaxhorasActivity extends AppCompatActivity {
+    private RetrofitService retrofitService = new RetrofitService();
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
+    private FrecuenciaApi frecuenciaApi = retrofitService.getRetrofit().create(FrecuenciaApi.class);
 
     private ImageView botonVolver;
     private NumberPicker numberPicker;
@@ -29,10 +44,12 @@ public class FrecuenciaxhorasActivity extends AppCompatActivity {
         // Recibir los valores codAdmin y codPresen de la actividad anterior
         int codAdmin = getIntent().getIntExtra("administracionMedId", 0);
         int codPresen = getIntent().getIntExtra("presentacionMedId", 0);
+        int codRecordatorio = getIntent().getIntExtra("codRecordatorio", 0);
 
         // Mostrar los valores recibidos en un Toast
-        String mensaje = "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen;
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+        /*String mensaje = "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen;
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();*/
+
 
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,12 +65,51 @@ public class FrecuenciaxhorasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar la actividad SeleccionarHorarioRecordatorioActivity
                 Intent intent = new Intent(FrecuenciaxhorasActivity.this, SeleccionarHorarioRecordatorioActivity.class);
-                intent.putExtra("administracionMedId", codAdmin);
-                intent.putExtra("presentacionMedId", codPresen);
-                startActivity(intent);
+                Frecuencia frecuencia = new Frecuencia();
+                frecuencia.setNombreFrecuencia("Cada "+ numberPicker.getValue() + " horas");
+                frecuencia.setCantidadFrecuencia(numberPicker.getValue());
+                recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio", 0)).enqueue(new Callback<Recordatorio>() {
+                    @Override
+                    public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                        Recordatorio recordatorio = response.body();
+                        frecuenciaApi.save(frecuencia).enqueue(new Callback<Frecuencia>() {
+                            @Override
+                            public void onResponse(Call<Frecuencia> call, Response<Frecuencia> response) {
+                                recordatorio.setFrecuencia(response.body());
+                                recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
+                                    @Override
+                                    public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                                        intent.putExtra("administracionMedId", codAdmin);
+                                        intent.putExtra("presentacionMedId", codPresen);
+                                        intent.putExtra("codRecordatorio", recordatorio.getCodRecordatorio());
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Recordatorio> call, Throwable t) {
+                                        Toast.makeText(FrecuenciaxhorasActivity.this, "Error al agregar frecuencia al recordatorio", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(Call<Frecuencia> call, Throwable t) {
+                                Toast.makeText(FrecuenciaxhorasActivity.this, "Error al crear frecuencia", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Recordatorio> call, Throwable t) {
+                        Toast.makeText(FrecuenciaxhorasActivity.this, "Error al obtener el recordatorio", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

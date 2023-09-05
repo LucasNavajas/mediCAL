@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Frecuencia {
@@ -19,8 +20,8 @@ public class Frecuencia {
 	private int diasTomaF;
 	private String nombreFrecuencia;
 	
-	@OneToMany(mappedBy = "frecuencia")
-	private List<Recordatorio> recordatorios;
+	@OneToOne(mappedBy = "frecuencia")
+	private Recordatorio recordatorio;
 	public int getCantidadFrecuencia() {
 		return cantidadFrecuencia;
 	}
@@ -57,11 +58,11 @@ public class Frecuencia {
 	public void setCodFrecuencia(int codFrecuencia) {
 		this.codFrecuencia = codFrecuencia;
 	}
-	public List<Recordatorio> getRecordatorios() {
-		return recordatorios;
+	public Recordatorio getRecordatorio() {
+		return recordatorio;
 	}
-	public void setRecordatorios(List<Recordatorio> recordatorios) {
-		this.recordatorios = recordatorios;
+	public void setRecordatorio(Recordatorio recordatorio) {
+		this.recordatorio = recordatorio;
 	}
 	
 }

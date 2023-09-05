@@ -54,7 +54,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
         codPresen = intent.getIntExtra("presentacionMedId", 0);
 
         // Mostrando los valores recibidos
-        Toast.makeText(ElegirFrecuenciaActivity.this, "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ElegirFrecuenciaActivity.this, "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen, Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.n38_seleccionar_frecuencia);
 
@@ -83,6 +83,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxhorasActivity.class);
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });
@@ -94,6 +95,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxdiasActivity.class);
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });
@@ -105,6 +107,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxsemanasActivity.class);
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });
@@ -116,6 +119,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxmesesActivity.class);
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });
@@ -127,6 +131,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, FrecuenciaxciclosActivity.class);
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });
@@ -138,6 +143,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirFrecuenciaActivity.this, SeleccionarHorarioRecordatorioActivity.class);
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
+                intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 startActivity(intent);
             }
         });

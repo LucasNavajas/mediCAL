@@ -1,6 +1,7 @@
 package com.example.medical.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Recordatorio {
     private int codRecordatorio;
@@ -8,7 +9,7 @@ public class Recordatorio {
     private LocalDate fechaAltaRecordatorio;
     private LocalDate fechaFinRecordatorio;
     private LocalDate fechaFinVigenciaR;
-    private LocalDate fechaInicioRecordatorio;
+    private LocalDateTime fechaInicioRecordatorio;
     private int horarioRecordatorio;
     private String imagen;
     // Relacion con Calendario
@@ -34,7 +35,7 @@ public class Recordatorio {
     //private Dosis dosis;
 
     // Relacion con Frecuencia
-    //private Frecuencia frecuencia;
+    private Frecuencia frecuencia;
 
     public int getCodRecordatorio() {
         return codRecordatorio;
@@ -66,10 +67,10 @@ public class Recordatorio {
     public void setFechaFinVigenciaR(LocalDate fechaFinVigenciaR) {
         this.fechaFinVigenciaR = fechaFinVigenciaR;
     }
-    public LocalDate getFechaInicioRecordatorio() {
+    public LocalDateTime getFechaInicioRecordatorio() {
         return fechaInicioRecordatorio;
     }
-    public void setFechaInicioRecordatorio(LocalDate fechaInicioRecordatorio) {
+    public void setFechaInicioRecordatorio(LocalDateTime fechaInicioRecordatorio) {
         this.fechaInicioRecordatorio = fechaInicioRecordatorio;
     }
     public int getHorarioRecordatorio() {
@@ -109,14 +110,14 @@ public class Recordatorio {
     }
     public void setDosis(Dosis dosis) {
         this.dosis = dosis;
-    }
+    }*/
     public Frecuencia getFrecuencia() {
         return frecuencia;
     }
     public void setFrecuencia(Frecuencia frecuencia) {
         this.frecuencia = frecuencia;
     }
-    public Inventario getInventario() {
+    /*public Inventario getInventario() {
         return inventario;
     }
     public void setInventario(Inventario inventario) {
