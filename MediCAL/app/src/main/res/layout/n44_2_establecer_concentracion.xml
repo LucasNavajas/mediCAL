@@ -104,43 +104,11 @@
         android:background="@drawable/rounded_background"
         android:gravity="center">
 
-        <LinearLayout
-            android:layout_width="300dp"
+        <Spinner
+            android:id="@+id/concentracion_spinner"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="-10dp"
-            android:gravity="center_horizontal">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_centerHorizontal="true">
-
-                <TextView
-                    android:id="@+id/texto_medida_concentracion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:text=" g "
-                    android:textSize="25sp"
-                    android:gravity="center_horizontal" />
-
-            <ImageView
-                    android:id="@+id/imagen_desplegable"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_toRightOf="@id/texto_medida_concentracion"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/boton_desplegable" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
+            android:gravity="center_horizontal"/>
 
     </RelativeLayout>
 
@@ -154,32 +122,33 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="35dp"
         android:layout_marginBottom="35dp"
+        android:orientation="horizontal"
         android:layout_below="@+id/rectangle_2"
         >
 
         <!--boton cancelar-->
         <TextView
             android:id="@+id/cancelar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CANCELAR"
             android:gravity="center"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginEnd="65dp"
+            android:layout_weight="1"
             />
         <!--boton aceptar-->
         <TextView
             android:id="@+id/aceptar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="ACEPTAR"
             android:gravity="center"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginStart="65dp"
+            android:layout_weight="1"
             />
     </LinearLayout>
 

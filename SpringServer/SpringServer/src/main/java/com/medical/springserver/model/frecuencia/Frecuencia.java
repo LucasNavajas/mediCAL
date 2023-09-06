@@ -1,6 +1,7 @@
 package com.medical.springserver.model.frecuencia;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ public class Frecuencia {
 	private String nombreFrecuencia;
 	
 	@OneToOne(mappedBy = "frecuencia")
+	@JsonIgnore
 	private Recordatorio recordatorio;
 	public int getCantidadFrecuencia() {
 		return cantidadFrecuencia;

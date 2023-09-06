@@ -5,10 +5,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.model.Recordatorio;
+import com.example.medical.retrofit.PresentacionMedApi;
+import com.example.medical.retrofit.RecordatorioApi;
+import com.example.medical.retrofit.RetrofitService;
+
+import java.time.LocalDateTime;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
+    private RetrofitService retrofitService = new RetrofitService();
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private TextView cincoDias;
     private TextView sieteDias;
     private TextView diezDias;
@@ -19,6 +33,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
     private TextView elegirDias;
     private TextView tratamientoContinuo;
     private ImageView botonVolver;
+    private Recordatorio recordatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +55,28 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
         veinticuatroMeses = findViewById(R.id.text_veinticuatro_meses);
         botonVolver = findViewById(R.id.boton_volver);
 
+        recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio",0)).enqueue(new Callback<Recordatorio>() {
+            @Override
+            public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                recordatorio = response.body();
+                cincoDias.setOnClickListener(onClickListener);
+                sieteDias.setOnClickListener(onClickListener);
+                diezDias.setOnClickListener(onClickListener);
+                treintaDias.setOnClickListener(onClickListener);
+                seisMeses.setOnClickListener(onClickListener);
+                doceMeses.setOnClickListener(onClickListener);
+                veinticuatroMeses.setOnClickListener(onClickListener);
+                elegirDias.setOnClickListener(onClickListener);
+                tratamientoContinuo.setOnClickListener(onClickListener);
+            }
+
+            @Override
+            public void onFailure(Call<Recordatorio> call, Throwable t) {
+                Toast.makeText(AgregarDuracionRecordatorioActivity.this, "Error al cargar recordatorio", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -54,9 +91,34 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                     intent.putExtra("day", getIntent().getIntExtra("day", 0));
                     startActivity(intent);
                     break;
+
+                case R.id.text_continuo:
+                    int duracionContinua = 9999999;
+                    recordatorio.setDuracionRecordatorio(duracionContinua);
+                    LocalDateTime fechaInicio= LocalDateTime.of(getIntent().getIntExtra("year", 0),
+                                                                getIntent().getIntExtra("month", 0),
+                                                                getIntent().getIntExtra("day", 0),
+                                                                recordatorio.getFechaInicioRecordatorio().getHour(),
+                                                                recordatorio.getFechaInicioRecordatorio().getMinute());
+                    recordatorio.setFechaInicioRecordatorio(fechaInicio);
+                    recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
+                        @Override
+                        public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                            Intent intent = new Intent (AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
+                            intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Recordatorio> call, Throwable t) {
+                            Toast.makeText(AgregarDuracionRecordatorioActivity.this, "Error al agregar duracion al recordatorio", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
                 default:
                     int duracion = obtenerEnteroDuracion(view.getId());
-                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, DatosObligatoriosRecordatorioActivity.class);
+                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                     intent2.putExtra("year", getIntent().getIntExtra("year", 0));
                     intent2.putExtra("month", getIntent().getIntExtra("month", 0));
                     intent2.putExtra("day", getIntent().getIntExtra("day", 0));

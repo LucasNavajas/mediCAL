@@ -2,6 +2,7 @@ package com.medical.springserver.model.dosis;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.concentracion.Concentracion;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
@@ -26,6 +27,7 @@ public class Dosis {
 	private Concentracion concentracion;
 	
 	@OneToOne (mappedBy = "dosis")
+	@JsonIgnore
 	private Recordatorio recordatorio;
 	
 	 

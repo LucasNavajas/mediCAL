@@ -8,7 +8,7 @@ public class Inventario {
     private int cantRealInventario;
 
     // Relacion con Recordatorio
-    private List<Recordatorio> recordatorio;
+    private Recordatorio recordatorio;
 
     public int getCantAvisoInventario() {
         return cantAvisoInventario;
@@ -34,11 +34,11 @@ public class Inventario {
 
     // Relaciones
 
-    public List<Recordatorio> getRecordatorio() {
+    public Recordatorio getRecordatorio() {
         return recordatorio;
     }
 
-    public void setRecordatorio(List<Recordatorio> recordatorio) {
+    public void setRecordatorio(Recordatorio recordatorio) {
         this.recordatorio = recordatorio;
     }
 

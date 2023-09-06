@@ -54,7 +54,7 @@ public class Recordatorio {
 	private Inventario inventario;
 	
 	// Relacion con Instruccion
-	@ManyToOne
+	@OneToOne
 	@JoinColumn (name = "codInstruccion")
 	private Instruccion instruccion;
 	

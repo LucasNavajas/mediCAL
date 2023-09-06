@@ -1,6 +1,7 @@
 package com.medical.springserver.model.instruccion;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.CascadeType;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Instruccion {
@@ -19,8 +21,9 @@ public class Instruccion {
 	private String nombreInstruccion;
 	
 	// Relacion con Recordatorio
-	@OneToMany (mappedBy = "instruccion", cascade = CascadeType.ALL)
-	private List<Recordatorio> recordatorio;
+	@OneToOne (mappedBy = "instruccion", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Recordatorio recordatorio;
 	
 	public int getCodInstruccion() {
 		return codInstruccion;
@@ -49,10 +52,10 @@ public class Instruccion {
 	
 	// Relacion
 	
-	public List<Recordatorio> getRecordatorio() {
+	public Recordatorio getRecordatorio() {
 		return recordatorio;
 	}
-	public void setRecordatorio(List<Recordatorio> recordatorio) {
+	public void setRecordatorio(Recordatorio recordatorio) {
 		this.recordatorio = recordatorio;
 	}
 

@@ -4,6 +4,7 @@ package com.medical.springserver.model.concentracion;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.dosis.Dosis;
 
 import jakarta.persistence.CascadeType;
@@ -22,6 +23,7 @@ public class Concentracion {
 
 	
 	@OneToMany (mappedBy = "concentracion", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Dosis> dosis;
 
 

@@ -22,7 +22,7 @@ public class ElegirDiasActivity extends AppCompatActivity {
 
         siguiente.setOnClickListener(view ->{
             int duracion = numberPicker.getValue()*24;
-            Intent intent2 = new Intent(ElegirDiasActivity.this, DatosObligatoriosRecordatorioActivity.class);
+            Intent intent2 = new Intent(ElegirDiasActivity.this, AgregarDatosObligatoriosActivity.class);
             intent2.putExtra("year", getIntent().getIntExtra("year", 0));
             intent2.putExtra("month", getIntent().getIntExtra("month", 0));
             intent2.putExtra("day", getIntent().getIntExtra("day", 0));

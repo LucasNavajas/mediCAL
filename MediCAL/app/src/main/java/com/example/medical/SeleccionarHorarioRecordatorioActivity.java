@@ -1,5 +1,6 @@
 package com.example.medical;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.medical.model.Concentracion;
 import com.example.medical.model.Dosis;
 import com.example.medical.model.PresentacionMed;
+import com.example.medical.model.Recordatorio;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.ConcentracionApi;
 import com.example.medical.retrofit.DosisApi;
@@ -29,6 +31,8 @@ import com.example.medical.retrofit.PresentacionMedApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -52,9 +56,11 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
     private TimePicker timePicker;
     private String nombrePresentacion;
     private Dosis dosis= new Dosis();
-    private String concentracionSeleccionada;
+    private String selectedConcentracion;
     private Concentracion concentracion = new Concentracion();
     private List<Concentracion> concentracionList;
+    private List<String> concentraciones = new ArrayList<String>() {};
+    private Recordatorio recordatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +107,24 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
             }
         });
 
+        recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio", 0)).enqueue(new Callback<Recordatorio>() {
+            @Override
+            public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                recordatorio = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Recordatorio> call, Throwable t) {
+                Toast.makeText(SeleccionarHorarioRecordatorioActivity.this, "Error al cargar el recordatorio", Toast.LENGTH_SHORT).show();
+            }
+        });
         concentracionApi.getAllConcentracion().enqueue(new Callback<List<Concentracion>>() {
             @Override
             public void onResponse(Call<List<Concentracion>> call, Response<List<Concentracion>> response) {
                 concentracionList=response.body();
+                for(Concentracion concentracion : concentracionList){
+                    concentraciones.add(concentracion.getUnidadMedidaC());
+                }
                 siguiente.setOnClickListener(view ->{
                     popupEstablecerConcentracion();
                 });
@@ -152,7 +172,57 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
         TextView cancelar = popupView.findViewById(R.id.cancelar);
         TextView aceptar = popupView.findViewById(R.id.aceptar);
-        TextView textoMedida = popupView.findViewById(R.id.texto_medida_concentracion);
+        Spinner concentracionSpinner = popupView.findViewById(R.id.concentracion_spinner);
+        ImageView botonMenos = popupView.findViewById(R.id.imagen_boton_menos);
+        ImageView botonMas = popupView.findViewById(R.id.imagen_boton_mas);
+        EditText valorConcentracion = popupView.findViewById(R.id.textEdit_Concentracion);
+        ArrayAdapter<String> concentracionAdapter;
+        // Suponiendo que tienes una lista de concentraciones en un array llamado concentracionesList
+        // Supongamos que tienes una lista de concentraciones en un array llamado concentracionesList
+        String[] concentracionesArray = concentraciones.toArray(new String[0]);
+        concentracionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, concentracionesArray);
+        concentracionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Configura el adaptador para el Spinner
+        concentracionSpinner.setAdapter(concentracionAdapter);
+
+        botonMas.setOnClickListener(view ->{
+            if(valorConcentracion.getText().toString().equals("")){
+                valorConcentracion.setText("1.00");
+            }
+            else{
+                float valorC = Float.parseFloat(valorConcentracion.getText().toString())+1;
+                valorConcentracion.setText(Float.toString(valorC));
+            }
+        });
+
+        botonMenos.setOnClickListener(view ->{
+            if(valorConcentracion.getText().toString().equals("")){
+                valorConcentracion.setText("0.00");
+            }
+            else{
+                if(Float.parseFloat(valorConcentracion.getText().toString())<=1) {
+                    valorConcentracion.setText("0.00");
+                }
+                else{
+                    float valorC = Float.parseFloat(valorConcentracion.getText().toString()) - 1;
+                    valorConcentracion.setText(Float.toString(valorC));
+                }
+            }
+        });
+
+        // Maneja el evento de selección del Spinner
+        concentracionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Obtiene la concentración seleccionada
+                selectedConcentracion = concentracionAdapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // No se seleccionó nada
+            }
+        });
 
         cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +235,46 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
             }
         });
 
+        aceptar.setOnClickListener(view -> {
+            float valorConcentracionIngresado;
+            if(valorConcentracion.getText().toString().equals("")){
+                valorConcentracionIngresado = 1;
+            }
+            else {
+                valorConcentracionIngresado = Float.parseFloat(valorConcentracion.getText().toString());
+            }
+            dosis.setValorConcentracion(valorConcentracionIngresado);
+            concentracion = buscarConcentracionPorUnidad(selectedConcentracion);
+            dosis.setConcentracion(concentracion);
+            dosisApi.save(dosis).enqueue(new Callback<Dosis>() {
+                @Override
+                public void onResponse(Call<Dosis> call, Response<Dosis> response) {
+                    recordatorio.setDosis(response.body());
+                    int hour = timePicker.getHour();
+                    int minute = timePicker.getMinute();
+
+                    recordatorio.setFechaInicioRecordatorio(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),LocalDateTime.now().getDayOfMonth() , hour, minute));
+                    recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
+                        @Override
+                        public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                            Intent intent = new Intent(SeleccionarHorarioRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
+                            intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Recordatorio> call, Throwable t) {
+                            Toast.makeText(SeleccionarHorarioRecordatorioActivity.this, "Error al modificar el recordatorio", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Dosis> call, Throwable t) {
+                    Toast.makeText(SeleccionarHorarioRecordatorioActivity.this, "Error al crear la dosis", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -173,13 +283,16 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
             }
         });
     }
-    private List<String> obtenerUnidadesMedida(List<Concentracion> concentracionList) {
-        List<String> unidadesMedida = new ArrayList<>();
-        for (Concentracion concentracion : concentracionList) {
-            unidadesMedida.add(concentracion.getUnidadMedidaC());
+
+    private Concentracion buscarConcentracionPorUnidad(String selectedConcentracion) {
+        for(Concentracion concentracion : concentracionList){
+            if(concentracion.getUnidadMedidaC().equals(selectedConcentracion)){
+                return concentracion;
+            }
         }
-        return unidadesMedida;
+        return null;
     }
+
     private void popUpEstablecerDosis() {
             View popupView = getLayoutInflater().inflate(R.layout.n44_1_establecer_dosis, null);
 

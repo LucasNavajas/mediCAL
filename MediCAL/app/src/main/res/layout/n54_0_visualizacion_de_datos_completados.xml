@@ -134,7 +134,8 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitEnd"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
             </RelativeLayout>
             <!--divider-->
             <View
@@ -190,7 +191,8 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitEnd"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
             </RelativeLayout>
             <!--divider-->
             <View
@@ -260,7 +262,8 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitEnd"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
             </RelativeLayout>
             <!--divider-->
             <View
@@ -316,7 +319,8 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitEnd"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
             </RelativeLayout>
             <!--divider-->
             <View
@@ -352,6 +356,7 @@
                     android:textSize="20sp"
                     android:layout_gravity="center"
                     android:drawableRight="@drawable/check"
+                    android:visibility="gone"
                     />
 
 

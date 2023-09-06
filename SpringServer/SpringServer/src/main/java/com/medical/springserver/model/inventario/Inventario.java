@@ -2,6 +2,7 @@ package com.medical.springserver.model.inventario;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.CascadeType;
@@ -10,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Inventario {
@@ -19,8 +21,9 @@ public class Inventario {
 	private int cantRealInventario;
 	
 	// Relacion con Recordatorio
-	@OneToMany (mappedBy = "inventario", cascade = CascadeType.ALL)
-	private List<Recordatorio> recordatorio;
+	@OneToOne (mappedBy = "inventario", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Recordatorio recordatorio;
 		
 	public int getCantAvisoInventario() {
 		return cantAvisoInventario;
@@ -46,11 +49,11 @@ public class Inventario {
 
 	// Relaciones
 	
-	public List<Recordatorio> getRecordatorio() {
+	public Recordatorio getRecordatorio() {
 		return recordatorio;
 	}
 
-	public void setRecordatorio(List<Recordatorio> recordatorio) {
+	public void setRecordatorio(Recordatorio recordatorio) {
 		this.recordatorio = recordatorio;
 	}
 	

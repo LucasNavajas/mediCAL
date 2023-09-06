@@ -41,4 +41,11 @@ public class Dosis {
         this.recordatorio = recordatorios;
     }
 
+    public float getValorConcentracion() {
+        return valorConcentracion;
+    }
+
+    public void setValorConcentracion(float valorConcentracion) {
+        this.valorConcentracion = valorConcentracion;
+    }
 }

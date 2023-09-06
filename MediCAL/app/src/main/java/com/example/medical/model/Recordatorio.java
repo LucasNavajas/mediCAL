@@ -20,19 +20,19 @@ public class Recordatorio {
     private PresentacionMed presentacionMed;
 
     // Relacion con RegistroRecordatorio
-   // private List<RegistroRecordatorio> registrorecordatorio;
+   //private List<RegistroRecordatorio> registrorecordatorio;
 
     // Relacion con Inventario
-    //private Inventario inventario;
+    private Inventario inventario;
 
     // Relacion con Instruccion
-    //private Instruccion instruccion;
+    private Instruccion instruccion;
 
     // Relacion con Medicamento
     private Medicamento medicamento;
 
     // Relacion con Dosis
-    //private Dosis dosis;
+    private Dosis dosis;
 
     // Relacion con Frecuencia
     private Frecuencia frecuencia;
@@ -104,20 +104,20 @@ public class Recordatorio {
     }
     public void setRegistroRecordatorio(List<RegistroRecordatorio> registrorecordatorio) {
         this.registrorecordatorio = registrorecordatorio;
-    }
+    }*/
     public Dosis getDosis() {
         return dosis;
     }
     public void setDosis(Dosis dosis) {
         this.dosis = dosis;
-    }*/
+    }
     public Frecuencia getFrecuencia() {
         return frecuencia;
     }
     public void setFrecuencia(Frecuencia frecuencia) {
         this.frecuencia = frecuencia;
     }
-    /*public Inventario getInventario() {
+    public Inventario getInventario() {
         return inventario;
     }
     public void setInventario(Inventario inventario) {
@@ -128,7 +128,7 @@ public class Recordatorio {
     }
     public void setInstruccion(Instruccion instruccion) {
         this.instruccion = instruccion;
-    }*/
+    }
     public Medicamento getMedicamento() {
         return medicamento;
     }
