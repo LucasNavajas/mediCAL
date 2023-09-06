@@ -64,7 +64,7 @@ public class Recordatorio {
 	private Medicamento medicamento;
 	
 	// Relacion con Dosis
-	@ManyToOne
+	@OneToOne
 	@JoinColumn (name = "codDosis")
 	private Dosis dosis;
 	

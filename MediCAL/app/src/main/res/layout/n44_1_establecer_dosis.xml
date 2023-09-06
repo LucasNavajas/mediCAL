@@ -9,9 +9,9 @@
     android:background="@drawable/background_rounded_blanco" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="30dp"
         android:orientation="horizontal">
 
@@ -24,17 +24,17 @@
             android:fontFamily="@font/inter_regular"
             android:text="Establecer Dosis"
             android:textColor="@color/verdeClaro"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:layout_weight="1"/>
 
         <ImageView
             android:id="@+id/cerrar_cruz"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="25dp"
-            android:layout_marginStart="110dp"
-            android:layout_toRightOf="@id/text_establecer_dosis"
             android:src="@drawable/cerrar_cruz_delgada"
-            android:gravity="end"/>
+            android:gravity="end"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
@@ -50,50 +50,41 @@
         android:gravity="center">
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_alignParentTop="true"
             android:layout_marginTop="-10dp"
-            android:gravity="center_horizontal">
+            android:layout_marginEnd="20dp">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+
+            <EditText
+                android:layout_marginStart="110dp"
+                android:id="@+id/valor_dosis"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_centerHorizontal="true">
-
-                <FrameLayout
-                    android:id="@+id/rectangulo_buscador"
-                    android:layout_width="54dp"
-                    android:layout_height="44dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="55dp"
-                    android:background="@drawable/rectangulo_buscador">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="X"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="20sp" />
-
-                </FrameLayout>
+                android:hint="X"
+                android:textAlignment="center"
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/black"
+                android:textSize="21sp"
+                />
 
                 <TextView
+                    android:id="@+id/presentacion_med"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/rectangulo_buscador"
+                    android:layout_toRightOf="@+id/valor_dosis"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="40dp"
                     android:fontFamily="@font/inter_regular"
-                    android:text="presentacion
-                    med"
+                    android:layout_centerVertical="true"
+                    android:text="pastilla"
                     android:textSize="21sp"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"/>
 
-            </RelativeLayout>
 
         </LinearLayout>
 
@@ -102,7 +93,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp">
 
         <Button
             android:id="@+id/button_establecer"

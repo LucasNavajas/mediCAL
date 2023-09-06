@@ -72,6 +72,8 @@
                     android:fontFamily="@font/inter_regular"
                     android:hint="00.00"
                     android:textColorHint="#000000"
+                    android:textColor="@color/black"
+                    android:inputType="numberDecimal"
                     android:textSize="28sp"
                     android:gravity="center_horizontal"/>
 
@@ -126,7 +128,7 @@
                     android:textSize="25sp"
                     android:gravity="center_horizontal" />
 
-                <ImageView
+            <ImageView
                     android:id="@+id/imagen_desplegable"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -157,6 +159,7 @@
 
         <!--boton cancelar-->
         <TextView
+            android:id="@+id/cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CANCELAR"
@@ -168,6 +171,7 @@
             />
         <!--boton aceptar-->
         <TextView
+            android:id="@+id/aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ACEPTAR"

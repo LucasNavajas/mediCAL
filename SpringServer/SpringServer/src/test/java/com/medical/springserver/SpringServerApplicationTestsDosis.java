@@ -28,7 +28,6 @@ class SpringServerApplicationTestsDosis{
 		
 		Concentracion concentracion = new Concentracion();
         concentracion.setUnidadMedidaC("g");
-        concentracion.setValorConcentracion(0.6f); // Agrega la letra 'f' para indicar que es un float
 
         concentracionDao.save(concentracion);
         

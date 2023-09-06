@@ -19,7 +19,7 @@ public class Concentracion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codConcentracion;
 	private String unidadMedidaC;
-	private Float valorConcentracion;
+
 	
 	@OneToMany (mappedBy = "concentracion", cascade = CascadeType.ALL)
 	private List<Dosis> dosis;
@@ -45,19 +45,11 @@ public class Concentracion {
 	}
 
 
-	public Float getValorConcentracion() {
-		return valorConcentracion;
-	}
-
-
-	public void setValorConcentracion(Float valorConcentracion) {
-		this.valorConcentracion = valorConcentracion;
-	}
 
 
 	@Override
 	public String toString() {
-		return "Concentracion [codConcentracion=" + codConcentracion + ", unidadMedidaC=" +  unidadMedidaC + ",  valorConcentracion=" + valorConcentracion + "]";
+		return "Concentracion [codConcentracion=" + codConcentracion + ", unidadMedidaC=" +  unidadMedidaC + "]";
 	}
 
 
