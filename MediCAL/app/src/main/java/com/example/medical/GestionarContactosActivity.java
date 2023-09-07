@@ -335,11 +335,36 @@ public class GestionarContactosActivity extends AppCompatActivity {
                 eliminarSolicitud(solicitud, solicitud.getUsuarioControlado());
             }
         });
+        View lineaView = new View(this);
+        lineaView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, // Ancho a juego con el padre
+                (int) TypedValue.applyDimension( // Altura en píxeles (por ejemplo, 5dp)
+                        TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics()
+                )
+        ));
+        int marginInDp = 30;
+        int marginInPixels = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics()
+        );
+        lineaView.setBackgroundColor(ContextCompat.getColor(this, R.color.gris_medical)); // Establece el color de fondo de la línea
+
+
+        // Configura las reglas de diseño para que esté debajo del nombreApellidoTextView
+        RelativeLayout.LayoutParams lineaParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                (int) TypedValue.applyDimension( // Altura en píxeles (por ejemplo, 5dp)
+                        TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()
+                )
+        );
+        lineaParams.addRule(RelativeLayout.BELOW, nombreApellidoTextView.getId());
+        lineaParams.setMarginStart(marginInPixels);
+        lineaParams.setMarginEnd(marginInPixels);
 
         // Agrega los TextViews y la ImageView al RelativeLayout
         relativeLayout.addView(usuarioTextView);
         relativeLayout.addView(nombreApellidoTextView);
         relativeLayout.addView(iconImageView);
+        relativeLayout.addView(lineaView, lineaParams);
 
         return relativeLayout;
     }
