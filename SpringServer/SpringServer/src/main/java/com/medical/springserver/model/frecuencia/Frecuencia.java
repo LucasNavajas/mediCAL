@@ -60,11 +60,5 @@ public class Frecuencia {
 	public void setCodFrecuencia(int codFrecuencia) {
 		this.codFrecuencia = codFrecuencia;
 	}
-	public Recordatorio getRecordatorio() {
-		return recordatorio;
-	}
-	public void setRecordatorio(Recordatorio recordatorio) {
-		this.recordatorio = recordatorio;
-	}
 	
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Instruccion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codInstruccion;
+	@Column(length = 301)
 	private String descInstruccion;
 	private String nombreInstruccion;
 	

@@ -259,6 +259,7 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
                         public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                             Intent intent = new Intent(SeleccionarHorarioRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
                             startActivity(intent);
                         }
 

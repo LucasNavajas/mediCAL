@@ -34,6 +34,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
     private TextView tratamientoContinuo;
     private ImageView botonVolver;
     private Recordatorio recordatorio;
+    private LocalDateTime fechaInicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +89,27 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                     Intent intent = new Intent(AgregarDuracionRecordatorioActivity.this, ElegirDiasActivity.class);
                     intent.putExtra("year", getIntent().getIntExtra("year", 0));
                     intent.putExtra("month", getIntent().getIntExtra("month", 0));
-                    intent.putExtra("day", getIntent().getIntExtra("day", 0));
+                    intent.putExtra("dayOfMonth", getIntent().getIntExtra("dayOfMonth", 0));
+                    intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
                     startActivity(intent);
                     break;
 
                 case R.id.text_continuo:
                     int duracionContinua = 9999999;
                     recordatorio.setDuracionRecordatorio(duracionContinua);
-                    LocalDateTime fechaInicio= LocalDateTime.of(getIntent().getIntExtra("year", 0),
+                    fechaInicio= LocalDateTime.of(getIntent().getIntExtra("year", 0),
                                                                 getIntent().getIntExtra("month", 0),
-                                                                getIntent().getIntExtra("day", 0),
+                                                                getIntent().getIntExtra("dayOfMonth", 0),
                                                                 recordatorio.getFechaInicioRecordatorio().getHour(),
                                                                 recordatorio.getFechaInicioRecordatorio().getMinute());
                     recordatorio.setFechaInicioRecordatorio(fechaInicio);
+                    recordatorio.setFechaFinRecordatorio(fechaInicio.plusDays(duracionContinua));
                     recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
                         @Override
                         public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                             Intent intent = new Intent (AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
                             startActivity(intent);
                         }
 
@@ -118,12 +122,28 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
 
                 default:
                     int duracion = obtenerEnteroDuracion(view.getId());
-                    Intent intent2 = new Intent(AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
-                    intent2.putExtra("year", getIntent().getIntExtra("year", 0));
-                    intent2.putExtra("month", getIntent().getIntExtra("month", 0));
-                    intent2.putExtra("day", getIntent().getIntExtra("day", 0));
-                    intent2.putExtra("duracion", duracion);
-                    startActivity(intent2);
+                    recordatorio.setDuracionRecordatorio(duracion);
+                    fechaInicio= LocalDateTime.of(getIntent().getIntExtra("year", 0),
+                            getIntent().getIntExtra("month", 0),
+                            getIntent().getIntExtra("dayOfMonth", 0),
+                            recordatorio.getFechaInicioRecordatorio().getHour(),
+                            recordatorio.getFechaInicioRecordatorio().getMinute());
+                    recordatorio.setFechaInicioRecordatorio(fechaInicio);
+                    recordatorio.setFechaFinRecordatorio(fechaInicio.plusDays(duracion));
+                    recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
+                        @Override
+                        public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                            Intent intent = new Intent (AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
+                            intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Recordatorio> call, Throwable t) {
+                            Toast.makeText(AgregarDuracionRecordatorioActivity.this, "Error al agregar duracion al recordatorio", Toast.LENGTH_SHORT).show();
+                        }
+                    });
             }
         }
     };

@@ -34,6 +34,7 @@ public class AgregarFechaInicioRecordatorioActivity extends AppCompatActivity {
             intent.putExtra("month", month);
             intent.putExtra("dayOfMonth", dayOfMonth);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+            intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
             startActivity(intent);
 
         });

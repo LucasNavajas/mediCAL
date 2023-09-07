@@ -7,7 +7,7 @@ public class Recordatorio {
     private int codRecordatorio;
     private int duracionRecordatorio;
     private LocalDate fechaAltaRecordatorio;
-    private LocalDate fechaFinRecordatorio;
+    private LocalDateTime fechaFinRecordatorio;
     private LocalDate fechaFinVigenciaR;
     private LocalDateTime fechaInicioRecordatorio;
     private int horarioRecordatorio;
@@ -55,10 +55,10 @@ public class Recordatorio {
     public void setFechaAltaRecordatorio(LocalDate fechaAltaRecordatorio) {
         this.fechaAltaRecordatorio = fechaAltaRecordatorio;
     }
-    public LocalDate getFechaFinRecordatorio() {
+    public LocalDateTime getFechaFinRecordatorio() {
         return fechaFinRecordatorio;
     }
-    public void setFechaFinRecordatorio(LocalDate fechaFinRecordatorio) {
+    public void setFechaFinRecordatorio(LocalDateTime fechaFinRecordatorio) {
         this.fechaFinRecordatorio = fechaFinRecordatorio;
     }
     public LocalDate getFechaFinVigenciaR() {

@@ -110,6 +110,10 @@
         <activity android:name=".InformesActivity"></activity>
         <activity android:name=".InventarioMedicamentosActivity"></activity>
         <activity android:name=".AgregarDatosObligatoriosActivity"></activity>
+        <activity android:name=".AgregarInstruccionesActivity"></activity>
+        <activity android:name=".AgregarIndicacionesActivity"></activity>
+        <activity android:name=".AgregarInventarioActivity"></activity>
+        <activity android:name=".AgregarAlertaInventarioActivity"></activity>
     </application>
 
 </manifest>

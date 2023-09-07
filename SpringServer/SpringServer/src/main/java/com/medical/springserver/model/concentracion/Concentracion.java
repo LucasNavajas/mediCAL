@@ -55,14 +55,6 @@ public class Concentracion {
 	}
 
 
-	public List<Dosis> getDosis() {
-		return dosis;
-	}
-
-
-	public void setDosis(List<Dosis> dosis) {
-		this.dosis = dosis;
-	}
 }
 	
 	

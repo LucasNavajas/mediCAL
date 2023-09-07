@@ -100,12 +100,14 @@
                     android:background="@drawable/rectangulo_buscador"
                     android:layout_centerHorizontal="true">
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/inventarioReal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="X"
-                        android:textColor="@android:color/darker_gray"
+                        android:hint="X"
+                        android:inputType="number"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
                 </FrameLayout>

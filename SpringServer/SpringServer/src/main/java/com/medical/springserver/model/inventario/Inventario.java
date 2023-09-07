@@ -21,9 +21,6 @@ public class Inventario {
 	private int cantRealInventario;
 	
 	// Relacion con Recordatorio
-	@OneToOne (mappedBy = "inventario", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Recordatorio recordatorio;
 		
 	public int getCantAvisoInventario() {
 		return cantAvisoInventario;
@@ -44,17 +41,9 @@ public class Inventario {
 	@Override
 	public String toString() {
 		return "Inventario [cantAvisoInventario=" + cantAvisoInventario + ", cantRealInventario=" + cantRealInventario
-				+ ", recordatorio=" + recordatorio + "]";
+				+  "]";
 	}
 
-	// Relaciones
-	
-	public Recordatorio getRecordatorio() {
-		return recordatorio;
-	}
 
-	public void setRecordatorio(Recordatorio recordatorio) {
-		this.recordatorio = recordatorio;
-	}
 	
 }
