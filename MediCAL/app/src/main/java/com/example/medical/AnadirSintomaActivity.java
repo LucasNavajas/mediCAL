@@ -500,7 +500,6 @@ public class AnadirSintomaActivity extends AppCompatActivity {
                             // Establecer los valores para el nuevo CalendarioSintoma
                             nuevoCalendarioSintoma.setFechaCalendarioSintoma(selectedLocalDateTime);
                             nuevoCalendarioSintoma.setFechaFinVigenciaCS(null);
-                            nuevoCalendarioSintoma.setCodCalendarioSintoma(lastCalendarioSintomaCode + 1);
                             nuevoCalendarioSintoma.setSintoma(sintoma);
                             nuevoCalendarioSintoma.setCalendario(calendarioSeleccionado);
 

@@ -121,6 +121,7 @@ public class MasActivity extends AppCompatActivity {
                 // Aquí maneja la acción de navegación a SobreNosotrosActivity
                 Intent intent = new Intent(MasActivity.this, InformesActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }
         });
@@ -131,6 +132,7 @@ public class MasActivity extends AppCompatActivity {
                 // Aquí maneja la acción de navegación a SobreNosotrosActivity
                 Intent intent = new Intent(MasActivity.this, InventarioMedicamentosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }
         });
@@ -141,6 +143,7 @@ public class MasActivity extends AppCompatActivity {
                 // Aquí maneja la acción de navegación a SobreNosotrosActivity
                 Intent intent = new Intent(MasActivity.this, SobreNosotrosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }
         });

@@ -259,7 +259,6 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
                         }
                         nuevaMedicion.setFechaCalendarioMedicion(fechaSeleccionada);
                         nuevaMedicion.setFechaFinVigenciaCM(null);
-                        nuevaMedicion.setCodCalendarioMedicion(lastCalendarioMedicionCode + 1);
                         nuevaMedicion.setValorCalendarioMedicion(inputValue);
 
                         nuevaMedicion.setMedicion(medicionSeleccionada);

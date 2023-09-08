@@ -146,6 +146,7 @@ public class ConsejosActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(ConsejosActivity.this, MasActivity.class);
                     intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
                     startActivity(intent);
                 }
             });
@@ -155,6 +156,7 @@ public class ConsejosActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(ConsejosActivity.this, MasActivity.class);
                     intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
                     startActivity(intent);
                 }
             });

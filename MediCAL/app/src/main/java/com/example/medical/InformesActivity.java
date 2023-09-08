@@ -26,7 +26,7 @@ public class InformesActivity extends AppCompatActivity {
         botonVolver = findViewById(R.id.boton_volver);
 
 
-
+        //Pasar intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0)) por todas las actividades hacia adelante y cuando se vuelve a mas tambien
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

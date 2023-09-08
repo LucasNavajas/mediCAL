@@ -116,7 +116,7 @@
             <ScrollView
                 android:id="@+id/scroll"
                 android:layout_width="355dp"
-                android:layout_height="588dp">
+                android:layout_height="470dp">
 
                 <LinearLayout
                     android:id="@+id/lineargrande"

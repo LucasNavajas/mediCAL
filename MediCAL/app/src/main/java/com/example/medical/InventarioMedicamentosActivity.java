@@ -64,6 +64,7 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
         obtenerUsuarioLogeado(codUsuarioLogeado); // Llama a este método para verificar existencia de inventarios
 
         setContentView(R.layout.n88_0_inventario_cargado); // Establece la pantalla 88 como predeterminada en caso que no hayan inventarios
+        //Pasar intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0)) por todas las actividades hacia adelante y cuando se vuelve a mas tambien
         /*
         if (existenInventarios) {
             setContentView(R.layout.n88_0_inventario_cargado); // Mostrar layout n88 si existen inventarios
