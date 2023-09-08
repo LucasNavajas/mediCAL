@@ -38,8 +38,11 @@ import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.adapter.ConsejoAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Consejo;
+import com.example.medical.model.Usuario;
+import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.ConsejoApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -50,9 +53,12 @@ import java.util.List;
 
 
 public class MasActivity extends AppCompatActivity {
+    private RetrofitService retrofitService = new RetrofitService();
+    private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
 
     private ImageView menuButton;
     private TextView nombreUsuario;
+    private TextView nombre;
     private LinearLayout casa_inicio;
     private ImageView menuButtonUsuario;
     private RelativeLayout editarPerfil;
@@ -65,8 +71,6 @@ public class MasActivity extends AppCompatActivity {
     private ImageButton imagenconsejos;
 
 
-    private RetrofitService retrofitService;
-
     private RecyclerView recyclerView;
     private PopupWindow popupWindow;
 
@@ -78,6 +82,7 @@ public class MasActivity extends AppCompatActivity {
     private RelativeLayout rectangleInventario;
     private RelativeLayout rectangleSobreNosotros;
     private Calendario calendarioSeleccionado;
+    private Usuario usuarioInstance;
     private int codCalendario;
 
 
@@ -86,16 +91,13 @@ public class MasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n24_mas);
-        inicializarVariables();
-
-
-        // Recuperar el objeto calendarioSeleccionado del Intent
         Intent intent1 = getIntent();
         codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         Log.d("MiApp", "codCalendario en MasActivity: " + codCalendario); // Agregar este log
 
-        codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
+        codUsuarioLogeado = getIntent().getIntExtra("codUsuario", 0);
         Log.d("MiApp", "codUsuario en MasActivity: " + codUsuarioLogeado);
+        inicializarVariables();
 
 
         // Obtén la referencia al RelativeLayout
@@ -239,6 +241,7 @@ public class MasActivity extends AppCompatActivity {
     @SuppressLint("WrongViewCast")
     private void inicializarVariables() {
         nombreUsuario = findViewById(R.id.nombre_usuario);
+        nombre = findViewById(R.id.nombre);
         editarPerfil = findViewById(R.id.editar_perfil);
         restablecerContrasenia = findViewById(R.id.restablecer_contrasenia);
         cerrarSesion = findViewById(R.id.cerrar_sesion);
@@ -248,7 +251,19 @@ public class MasActivity extends AppCompatActivity {
         imagenconsejos =findViewById(R.id.imagenconsejos);
         menuButton = findViewById(R.id.menu_button);
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
-        retrofitService = new RetrofitService();
+        usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                usuarioInstance=response.body();
+                nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
+                nombre.setText(usuarioInstance.getUsuarioUnico());
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Toast.makeText(MasActivity.this, "Error al cargar el usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

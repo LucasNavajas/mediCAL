@@ -38,9 +38,11 @@ import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.adapter.ConsejoAdapter;
 import com.example.medical.model.Consejo;
 import com.example.medical.model.TipoConsejo;
+import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.ConsejoApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.TipoConsejoApi;
+import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -51,9 +53,12 @@ import java.util.List;
 
 
 public class ConsejosActivity extends AppCompatActivity {
+        private RetrofitService retrofitService = new RetrofitService();
+        private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
 
         private ImageView menuButton;
         private TextView nombreUsuario;
+        private TextView nombre;
         private LinearLayout casa_inicio;
         private ImageView menuButtonUsuario;
         private LinearLayout mas;
@@ -65,10 +70,7 @@ public class ConsejosActivity extends AppCompatActivity {
         private RelativeLayout soporte;
 
         private FirebaseUser usuario;
-
-
-        private RetrofitService retrofitService;
-
+        private Usuario usuarioInstance;
         private RecyclerView recyclerView;
         private PopupWindow popupWindow;
 
@@ -81,7 +83,7 @@ public class ConsejosActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.n22_consejos);
-            Intent intent1 = getIntent();
+            codUsuarioLogeado = getIntent().getIntExtra("codUsuario", 0);
             inicializarVariables();
 
             recyclerView = findViewById(R.id.listaconsejos_recyclerview);
@@ -232,7 +234,7 @@ public class ConsejosActivity extends AppCompatActivity {
         private void inicializarVariables () {
 
             nombreUsuario = findViewById(R.id.nombre_usuario);
-
+            nombre = findViewById(R.id.nombre);
             editarPerfil = findViewById(R.id.editar_perfil);
             restablecerContrasenia = findViewById(R.id.restablecer_contrasenia);
 
@@ -245,7 +247,19 @@ public class ConsejosActivity extends AppCompatActivity {
             menuButton = findViewById(R.id.menu_button);
             menuButtonUsuario = findViewById(R.id.menu_button_nav);
 
-            retrofitService = new RetrofitService();
+            usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    usuarioInstance = response.body();
+                    nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
+                    nombre.setText(usuarioInstance.getUsuarioUnico());
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+
+                }
+            });
 
         }
 
