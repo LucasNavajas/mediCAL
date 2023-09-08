@@ -250,7 +250,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
 
         // Salto de Popup en caso de que el calendario seleccionado tenga algún recordatorio con inventarios con cantReal = cantAviso
-        obtenerRecordatoriosPorCalendario(calendarioSeleccionado);
+        // obtenerRecordatoriosPorCalendario(calendarioSeleccionado);
 
     }
 
@@ -964,7 +964,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     }
 
-
+    /*
     // Método para obtener las clases "Recordatorio" asociadas al calendario seleccionado
     private void obtenerRecordatoriosPorCalendario(Calendario calendario) {
         // Crear una instancia de la interfaz de la API de RecordatorioApi utilizando Retrofit
@@ -1123,6 +1123,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
 
     }
-
+    */
 
 }
