@@ -43,11 +43,11 @@ public class InventarioAdapter extends RecyclerView.Adapter<InventarioAdapter.In
         Inventario inventario = inventarioList.get(position);
 
         // Obtener el nombre del medicamento desde el recordatorio asociado al inventario
-        //String nombreMedicamento = inventario.getRecordatorio().getMedicamento().getNombreMedicamento();
-        //String marcaMedicamento = inventario.getRecordatorio().getMedicamento().getMarcaMedicamento();
+        String nombreMedicamento = inventario.getRecordatorio().getMedicamento().getNombreMedicamento();
+        String marcaMedicamento = inventario.getRecordatorio().getMedicamento().getMarcaMedicamento();
 
         // Establecer el nombre del medicamento en el TextView tituloInventario
-        //holder.tituloInventario.setText(nombreMedicamento + " - " + marcaMedicamento);
+        holder.tituloInventario.setText(nombreMedicamento + " - " + marcaMedicamento);
 
         holder.cant_real.setText("Cantidad Real: "+ String.valueOf(inventario.getCantRealInventario()));
         holder.cant_aviso.setText("Cantidad Aviso: " + String.valueOf(inventario.getCantAvisoInventario()));

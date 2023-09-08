@@ -6,70 +6,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
-    <!-- Inventario Genérico -->
-
-    <RelativeLayout
-        android:id="@+id/rectangle_inventario"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/imagen_inventario"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/remedio" />
-
-
-        <TextView
-            android:id="@+id/texto_titulo_inventario"
+    <!-- Inventario Genérico -->
+        <RelativeLayout
+            android:id="@+id/rectangle_inventario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_toRightOf="@id/imagen_inventario"
-            android:text="NombreMedicamento"
-            android:textSize="23dp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="10dp"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/imagen_inventario"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/remedio" />
 
 
-        <TextView
-            android:id="@+id/texto_cant_real"
+            <TextView
+                android:id="@+id/texto_titulo_inventario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toRightOf="@id/imagen_inventario"
+                android:text="NombreMedicamento"
+                android:textSize="23dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/texto_cant_real"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_titulo_inventario"
+                android:layout_alignLeft="@+id/texto_titulo_inventario"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:text="CantidadReal"
+                android:textColor="@color/black"
+                android:textSize="21dp" />
+
+
+            <TextView
+                android:id="@+id/texto2_cant_aviso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_cant_real"
+                android:layout_alignLeft="@+id/texto_titulo_inventario"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="CantidadAviso"
+                android:textColor="@color/black"
+                android:textSize="21dp" />
+
+        </RelativeLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/texto_titulo_inventario"
-            android:layout_alignLeft="@+id/texto_titulo_inventario"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:text="CantidadReal"
-            android:textColor="@color/black"
-            android:textSize="21dp" />
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/gris_medical" />
 
-
-        <TextView
-            android:id="@+id/texto2_cant_aviso"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/texto_cant_real"
-            android:layout_alignLeft="@+id/texto_titulo_inventario"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="CantidadAviso"
-            android:textColor="@color/black"
-            android:textSize="21dp" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -208,6 +208,11 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
             listaTotalInventarios.add(inventarioAsociado);
             Log.d("MiApp", "Inventario encontrado con cantReal: " + inventarioAsociado.getCantRealInventario() + ", y cantAviso: " + inventarioAsociado.getCantAvisoInventario());
 
+            inventarioAsociado.setRecordatorio(recordatorio);
+
+            Log.d("MiApp", "El inventario asociado tiene: " + inventarioAsociado);
+            Log.d("MiApp", "El recordatorio del inventarioAsociado es: " + inventarioAsociado.getRecordatorio());
+
             // Agrego a la lista de opciones del menú desplegable el nombre de los medicamentos con recordatorio
             opciones.add(recordatorio.getMedicamento().getNombreMedicamento());
 
