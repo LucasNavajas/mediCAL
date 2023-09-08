@@ -42,7 +42,7 @@
     restante del medicamento seleccionado -->
     <TextView
         android:layout_below="@+id/text_CPC"
-        android:id="@+id/text_instrucciones"
+        android:id="@+id/text_restantes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"

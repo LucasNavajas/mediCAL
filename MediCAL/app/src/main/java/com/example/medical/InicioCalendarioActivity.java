@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -33,11 +34,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medical.model.Calendario;
 import com.example.medical.model.EstadoSolicitud;
+import com.example.medical.model.Inventario;
+import com.example.medical.model.Recordatorio;
 import com.example.medical.model.Solicitud;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.CodigoVerificacionApi;
 import com.example.medical.retrofit.EstadoSolicitudApi;
+import com.example.medical.retrofit.InventarioApi;
+import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.SolicitudApi;
 import com.example.medical.retrofit.UsuarioApi;
@@ -80,6 +85,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RetrofitService retrofitService = new RetrofitService();
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+    private InventarioApi inventarioApi = retrofitService.getRetrofit().create(InventarioApi.class);
     private EstadoSolicitudApi estadoSolicitudApi = retrofitService.getRetrofit().create(EstadoSolicitudApi.class);
     private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
     private List<Calendario> listaCalendarios;
@@ -204,8 +210,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
 
         // Botones de la Barra Inferior
-
-
         consejos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,7 +249,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
-
+        // Salto de Popup en caso de que el calendario seleccionado tenga algún recordatorio con inventarios con cantReal = cantAviso
+        obtenerRecordatoriosPorCalendario(calendarioSeleccionado);
 
     }
 
@@ -901,15 +906,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                     startActivity(intent);
                     finish();
                 }
-
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(InicioCalendarioActivity.this, "Error al eliminar la cuenta, intente nuevamente", Toast.LENGTH_SHORT).show();
                 }
             });
-
-
         });
+
         cancelar.setOnClickListener(view ->{
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
@@ -960,5 +963,166 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
 
     }
+
+
+    // Método para obtener las clases "Recordatorio" asociadas al calendario seleccionado
+    private void obtenerRecordatoriosPorCalendario(Calendario calendario) {
+        // Crear una instancia de la interfaz de la API de RecordatorioApi utilizando Retrofit
+        RetrofitService retrofitService = new RetrofitService();
+        RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
+
+        // Hacer la llamada a la API para obtener las clases "Recordatorio" asociadas a un calendario
+        Call<List<Recordatorio>> recordatoriosCall = recordatorioApi.getByCodCalendario(calendario.getCodCalendario());
+
+        recordatoriosCall.enqueue(new Callback<List<Recordatorio>>() {
+            @Override
+            public void onResponse(Call<List<Recordatorio>> call, Response<List<Recordatorio>> response) {
+                if (response.isSuccessful()) {
+                    List<Recordatorio> recordatoriosAsociados = response.body();
+                    if (recordatoriosAsociados != null && !recordatoriosAsociados.isEmpty()) {
+                        // Aquí puedes manejar los recordatorios obtenidos
+                        Log.d("MiApp", "Recordatorios Asociados Encontrados: ");
+                        for (Recordatorio recordatorio : recordatoriosAsociados) {
+                            // Para cada recordatorio, obtén las clases "Inventario"
+                            Log.d("MiApp", "codRecordatorio encontrado: " + recordatorio.getCodRecordatorio());
+                            obtenerInventarioPorRecordatorio(recordatorio);
+                        }
+                    } else {
+                        Log.d("MiApp", "No se encontraron clases 'Recordatorio' asociadas al calendario " + calendario.getNombreCalendario());
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud de clases 'Recordatorio': " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Recordatorio>> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud de clases 'Recordatorio': " + t.getMessage());
+            }
+        });
+    }
+
+    private void obtenerInventarioPorRecordatorio(Recordatorio recordatorio) {
+
+        Inventario inventarioAsociado = recordatorio.getInventario();
+
+        if (inventarioAsociado != null) {
+            Log.d("MiApp", "Inventario Asociado Encontrado: ");
+            Log.d("MiApp", "Inventario encontrado con cantReal: " + inventarioAsociado.getCantRealInventario() + ", y cantAviso: " + inventarioAsociado.getCantAvisoInventario());
+
+            // Revisar si del inventario la cantReal es igual a la cantAviso y llamar al popup
+            if (inventarioAsociado.getCantRealInventario() == inventarioAsociado.getCantAvisoInventario()){
+                popupInventarioAlerta(inventarioAsociado);
+            }
+
+        } else {
+            Log.d("MiApp", "No se encontraron clases 'Inventario' asociadas al codRecordatorio: " + recordatorio.getCodRecordatorio());
+        }
+    }
+
+    private void popupInventarioAlerta(Inventario inventario) {
+        View popupView = getLayoutInflater().inflate(R.layout.n88_1_popup_recordatorio_existencias, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text);
+        TextView textoCantReal = popupView.findViewById(R.id.text_restantes);
+
+        texto.setText("Pocas existencias de: " + inventario.getRecordatorio().getMedicamento().getNombreMedicamento());
+        textoCantReal.setText(inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + " restantes");
+
+        Button recargar = popupView.findViewById(R.id.button_recargar);
+        Button omitir = popupView.findViewById(R.id.button_omitir);
+
+        recargar.setOnClickListener(view ->{
+            popupRecargarInventario(inventario);
+        });
+
+        omitir.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+
+    }
+
+    private void popupRecargarInventario(Inventario inventario) {
+        View popupView = getLayoutInflater().inflate(R.layout.n88_2_popup_recarga, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text);
+        EditText cantidad = popupView.findViewById(R.id.textEditCantidad);
+        TextView textoPresentacion = popupView.findViewById(R.id.text_presentacion);
+
+        texto.setText("Te quedan " + inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed());
+
+        textoPresentacion.setText(inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed());
+
+        Button aceptar = popupView.findViewById(R.id.aceptar);
+        Button cancelar = popupView.findViewById(R.id.cancelar);
+
+        aceptar.setOnClickListener(view ->{
+            String textoCantidad = cantidad.getText().toString();
+            int textCantidad = Integer.parseInt(textoCantidad);
+            inventarioApi.actualizarInventario(inventario.getCodInventario(), textCantidad).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // La llamada a la API fue exitosa, ahora puedes cerrar el Popup
+                        popupWindow.dismiss();
+                        dimView.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(InicioCalendarioActivity.this, "Error al actualizar el inventario, intente nuevamente", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(InicioCalendarioActivity.this, "Error en la solicitud a la API, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+
+    }
+
 
 }

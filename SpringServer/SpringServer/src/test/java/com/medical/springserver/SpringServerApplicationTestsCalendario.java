@@ -43,7 +43,7 @@ class SpringServerApplicationTestsCalendario {
 		Recordatorio recordatorio = new Recordatorio();
 		recordatorio.setDuracionRecordatorio(15);
 		recordatorio.setFechaAltaRecordatorio(LocalDate.now());
-		recordatorio.setFechaFinRecordatorio(LocalDate.of(2023, 7, 21));
+		recordatorio.setFechaFinRecordatorio(LocalDateTime.of(2023, 7, 21, 12, 30)); // 12:30 PM el 21 de julio de 2023
 		recordatorio.setFechaInicioRecordatorio(LocalDateTime.now());
 		recordatorio.setFechaFinVigenciaR(null);
 		recordatorio.setHorarioRecordatorio(8);

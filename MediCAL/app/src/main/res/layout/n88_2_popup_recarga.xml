@@ -52,7 +52,7 @@
         />
 
     <EditText
-        android:id="@+id/textEdit_motivo"
+        android:id="@+id/textEditCantidad"
         android:layout_width="match_parent"
         android:fontFamily="@font/inter_regular"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
 
     <TextView
         android:layout_below="@+id/text_CPC"
-        android:id="@+id/text_instrucciones"
+        android:id="@+id/text_presentacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"

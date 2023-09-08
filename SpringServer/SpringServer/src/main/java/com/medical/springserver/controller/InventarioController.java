@@ -2,8 +2,11 @@ package com.medical.springserver.controller;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.inventario.Inventario;
 import com.medical.springserver.model.inventario.InventarioDao;
+import com.medical.springserver.model.usuario.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -24,9 +27,26 @@ public class InventarioController {
 		return inventarioDao.save(inventario);
 	}
 	
-	@GetMapping("/inventario/recordatorio/{codRecordatorio}")
+	/*@GetMapping("/inventario/recordatorio/{codRecordatorio}")
 	public List<Inventario> getByCodRecordatorio(@PathVariable int codRecordatorio){
 		return inventarioDao.findByCodRecordatorio(codRecordatorio);
+	}*/
+	
+	@GetMapping("/inventario/recordatorio/{codRecordatorio}")
+	public Inventario getByCodRecordatorio(@PathVariable int codRecordatorio) {
+	    return inventarioDao.findByCodRecordatorio(codRecordatorio);
+	}	
+	
+	@PostMapping("inventario/actualizarInventario/{codInventario}")
+	public ResponseEntity<String> actualizarInventario(@PathVariable int codInventario, @RequestBody int nuevaCantidadReal){
+		try {
+            Inventario inventario = inventarioDao.actualizarInventario(codInventario, nuevaCantidadReal);
+            return new ResponseEntity<>("Inventario actualizado correctamente.", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("El inventario no existe.", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al actualizar el inventario.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 	}
 
 }

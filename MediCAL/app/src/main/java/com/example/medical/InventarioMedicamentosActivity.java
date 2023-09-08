@@ -4,14 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medical.adapter.ConsejoAdapter;
 import com.example.medical.adapter.InventarioAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Inventario;
@@ -33,8 +37,6 @@ import retrofit2.Response;
 
 public class InventarioMedicamentosActivity extends AppCompatActivity {
 
-    // Falta
-
     private ImageView botonVolver;
     private Object context;
     private RetrofitService retrofitService;
@@ -45,7 +47,11 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
     private boolean existenInventarios = false; // Variable global para verificar existencia de inventarios
-    private List<Inventario> listaTotalInventarios = new ArrayList<>(); // Variable global para almacenar todos los inventarios de un usuario
+    private List<Inventario> listaTotalInventarios = new ArrayList<>(); // Lista global para almacenar todos los inventarios de un usuario
+
+    private ImageView botonDesplegable;
+    private List<String> opciones = new ArrayList<>(); // Lista para las opciones del menú desplegable
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -57,11 +63,22 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
         codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
         obtenerUsuarioLogeado(codUsuarioLogeado); // Llama a este método para verificar existencia de inventarios
 
+        setContentView(R.layout.n88_0_inventario_cargado); // Establece la pantalla 88 como predeterminada en caso que no hayan inventarios
+        /*
         if (existenInventarios) {
             setContentView(R.layout.n88_0_inventario_cargado); // Mostrar layout n88 si existen inventarios
+            Log.d("MiApp", "Se muestra pantalla 88 con inventarios cargados, porque existenInventarios es: " + existenInventarios);
+
+            recyclerView = findViewById(R.id.listainventarios_recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            loadInventarios();
+
         } else {
             setContentView(R.layout.n87_inventario_sin_cargar); // Mostrar layout n87 si no existen inventarios
+            Log.d("MiApp", "Se muestra pantalla 87 sin inventarios cargados, porque existenInventarios es: " + existenInventarios);
         }
+        */
 
         botonVolver = findViewById(R.id.boton_volver);
 
@@ -73,11 +90,6 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
         });
 
         inicializarVariables();
-
-        recyclerView = findViewById(R.id.listainventarios_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // loadInventarios();           Llamar después de tener una lista de inventarios a mostrar?
 
     }
 
@@ -99,6 +111,10 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
 
                         // Realizar llamada para obtener Calendarios del usuario
                         obtenerCalendariosDelUsuario(usuarioSeleccionado);
+                        Log.d("MiApp", "Llamo al método loadInventarios si existen inventarios: " + existenInventarios);
+                        if (existenInventarios) {
+                            loadInventarios(); // Prueba de llamada a loadInventarios cuando ya haya recorrido lo asociado al usuario
+                        }
                     } else {
                         Log.d("MiApp", "No se encontró el usuario con codUsuario: " + codUsuarioLogeado);
                     }
@@ -129,9 +145,11 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
                     List<Calendario> calendariosAsociados = response.body();
                     if (calendariosAsociados != null && !calendariosAsociados.isEmpty()) {
                         // Aquí puedes manejar los calendarios obtenidos
+                        Log.d("MiApp", "Calendarios Asociados Encontrados");
                         for (Calendario calendario : calendariosAsociados) {
                             // Para cada calendario, obtén las clases "Recordatorio"
                             obtenerRecordatoriosPorCalendario(calendario);
+                            Log.d("MiApp", "codCalendario encontrado: " + calendario.getCodCalendario());
                         }
                     } else {
                         Log.d("MiApp", "No se encontraron calendarios asociados al usuario");
@@ -164,8 +182,10 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
                     List<Recordatorio> recordatoriosAsociados = response.body();
                     if (recordatoriosAsociados != null && !recordatoriosAsociados.isEmpty()) {
                         // Aquí puedes manejar los recordatorios obtenidos
+                        Log.d("MiApp", "Recordatorios Asociados Encontrados: ");
                         for (Recordatorio recordatorio : recordatoriosAsociados) {
-                            // Para cada calendario, obtén las clases "Recordatorio"
+                            // Para cada recordatorio, obtén las clases "Inventario"
+                            Log.d("MiApp", "codRecordatorio encontrado: " + recordatorio.getCodRecordatorio());
                             obtenerInventarioPorRecordatorio(recordatorio);
                         }
                     } else {
@@ -183,84 +203,92 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
     }
 
     private void obtenerInventarioPorRecordatorio(Recordatorio recordatorio) {
-        // Crear una instancia de la interfaz de la API de InventarioApi utilizando Retrofit
-        RetrofitService retrofitService = new RetrofitService();
-        InventarioApi inventarioApi = retrofitService.getRetrofit().create(InventarioApi.class);
 
-        // Hacer la llamada a la API para obtener las clases "Inventario" asociadas a un recordatorio
-        Call<List<Inventario>> inventarioCall = inventarioApi.getByCodRecordatorio(recordatorio.getCodRecordatorio());
+        Inventario inventarioAsociado = recordatorio.getInventario();
 
-        inventarioCall.enqueue(new Callback<List<Inventario>>() {
-            @Override
-            public void onResponse(Call<List<Inventario>> call, Response<List<Inventario>> response) {
-                if (response.isSuccessful()) {
-                    List<Inventario> inventarioAsociado = response.body();
-                    if (inventarioAsociado != null && !inventarioAsociado.isEmpty()) {
-                        // Aquí puedes manejar las clases de inventario obtenidas para el recordatorio actual
-                        existenInventarios = true; // Actualiza la variable global
-                        listaTotalInventarios.addAll(inventarioAsociado);
-                        // Aca quiza luego leer los datos de cada inventario o cargarlos?
-                    } else {
-                        Log.d("MiApp", "No se encontraron clases 'Inventario' asociadas al recordatorio " + recordatorio.getCodRecordatorio());
-                    }
-                    // Llamar a loadInventarios después de agregar todos los inventarios
-                    loadInventarios();
-                } else {
-                    Log.d("MiApp", "Error en la solicitud de clases 'Inventario': " + response.message());
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Inventario>> call, Throwable t) {
-                Log.e("MiApp", "Error en la solicitud de clases 'Inventario': " + t.getMessage());
-            }
-        });
+        if (inventarioAsociado != null) {
+            Log.d("MiApp", "Inventario Asociado Encontrado: ");
+            existenInventarios = true;
+            Log.d("MiApp", "existen inventarios: " + existenInventarios);
+            listaTotalInventarios.add(inventarioAsociado);
+            Log.d("MiApp", "Inventario encontrado con cantReal: " + inventarioAsociado.getCantRealInventario() + ", y cantAviso: " + inventarioAsociado.getCantAvisoInventario());
+
+            // Agrego a la lista de opciones del menú desplegable el nombre de los medicamentos con recordatorio
+            opciones.add(recordatorio.getMedicamento().getNombreMedicamento());
+
+        } else {
+            Log.d("MiApp", "No se encontraron clases 'Inventario' asociadas al codRecordatorio: " + recordatorio.getCodRecordatorio());
+        }
     }
 
 
     private void loadInventarios() {
-        InventarioAdapter inventarioAdapter = new InventarioAdapter(listaTotalInventarios);
-        recyclerView.setAdapter(inventarioAdapter);
+        if (existenInventarios) {
+            Log.d("MiApp", "Defino pantalla con inventarios cargados");
+            setContentView(R.layout.n88_0_inventario_cargado); // Muestra layout n88 si existen inventarios
 
-        /*
-        inventarioApi.getAllInventarios()
-                .enqueue(new Callback<List<Inventario>>() {
-                    @Override
-                    public void onResponse(Call<List<Inventario>> call, Response<List<Inventario>> response) {
-                        Log.d("InventarioMedicamentosActivity", "llamo el método on response");
-                        int statusCode = response.code();
-                        Log.d("InventarioMedicamentosActivity", "Status code: " + statusCode);
-                        if (response.isSuccessful() && response.body() != null) {
-                            Log.d("InventarioMedicamentosActivity", "la populo");
-                            populateListView(response.body());
-                        } else {
-                            Log.d("InventarioMedicamentosActivity", "no anda");
-                            Log.d("InventarioMedicamentosActivity", "Response code: " + response.code());
-                            Log.d("InventarioMedicamentosActivity", "Error body: " + response.errorBody());
-                            Toast.makeText(InventarioMedicamentosActivity.this, "Respuesta vacía o incorrecta del servidor", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<List<Inventario>> call, Throwable t) {
-                        Log.d("InventarioMedicamentosActivity", "no carga");
-                        Toast.makeText(InventarioMedicamentosActivity.this, "Fallo en la base de datos", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            botonDesplegable = findViewById(R.id.desplegable);
+            opciones.add("Todos los medicamentos"); // Primer elemento sería por defecto que muestre todos
 
-         */
+            recyclerView = findViewById(R.id.listainventarios_recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            if (listaTotalInventarios != null) {
+                // Imprimir el contenido de listaTotalInventarios
+                for (Inventario inventario : listaTotalInventarios) {
+                    Log.d("MiApp", "Inventario en ListaTotalInventarios: " + inventario.toString());
+                }
+
+                populateListView(listaTotalInventarios);
+                Log.d("InventarioMedicamentosActivity", "mando a popular la list");
+                //InventarioAdapter inventarioAdapter = new InventarioAdapter(listaTotalInventarios);
+                //recyclerView.setAdapter(inventarioAdapter);
+            } else {
+                Log.d("InventarioMedicamentosActivity", "no mando a popular la list");
+                Toast.makeText(InventarioMedicamentosActivity.this, "La lista de Inventarios está vacía o es nula", Toast.LENGTH_SHORT).show();
+            }
+
+            botonDesplegable.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    mostrarMenu(view); // Llama al método para mostrar menú desplegable
+                }
+            });
+
+        }
     }
 
-    /*
+
     private void populateListView(List<Inventario> inventarioList) {
-        if (inventarioList != null && !inventarioList.isEmpty()) {
-            Log.d("InventarioMedicamentosActivity", "la populo en la list");
-            InventarioAdapter inventarioAdapter = new InventarioAdapter (inventarioList);
+        if (listaTotalInventarios != null) {
+            Log.d("InventarioMedicamentosActivity", "populo en la list");
+            InventarioAdapter inventarioAdapter = new InventarioAdapter(listaTotalInventarios);
             recyclerView.setAdapter(inventarioAdapter);
         } else {
-            Log.d("InventarioMedicamentosActivity", "no la populo en la list");
+            Log.d("InventarioMedicamentosActivity", "no populo en la list");
             Toast.makeText(InventarioMedicamentosActivity.this, "La lista de Inventarios está vacía o es nula", Toast.LENGTH_SHORT).show();
         }
     }
-     */
+
+
+    public void mostrarMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, botonDesplegable);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String opcionSeleccionada = item.getTitle().toString();
+                // Realiza acciones según la opción seleccionada
+                showToast("Opción seleccionada: " + opcionSeleccionada);
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
 
     @SuppressLint("WrongViewCast")

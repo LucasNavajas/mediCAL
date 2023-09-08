@@ -1,8 +1,6 @@
 package com.example.medical.retrofit;
 
-import com.example.medical.model.Calendario;
 import com.example.medical.model.Inventario;
-import com.example.medical.model.Recordatorio;
 
 import java.util.List;
 
@@ -21,6 +19,9 @@ public interface InventarioApi {
     Call<Inventario> save(@Body Inventario inventario);
 
     @GET("/inventario/recordatorio/{codRecordatorio}")
-    Call<List<Inventario>> getByCodRecordatorio(@Path("codRecordatorio") int codRecordatorio);
+    Call<Inventario>getByCodRecordatorio(@Path("codRecordatorio") int codRecordatorio);
+
+    @POST("inventario/actualizarInventario/{codInventario}")
+    Call<Void>actualizarInventario(@Path("codInventario") int codInventario, @Path("nuevaCantidadReal") int cantReal);
 
 }

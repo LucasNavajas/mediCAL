@@ -12,6 +12,8 @@ import com.example.medical.R;
 
 import com.example.medical.model.Inventario;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 
@@ -34,10 +36,14 @@ public class InventarioAdapter extends RecyclerView.Adapter<InventarioAdapter.In
     public void onBindViewHolder(@NonNull InventarioViewHolder holder, int position) {
         Inventario inventario = inventarioList.get(position);
 
-        // Se debe obtener nombre medicamento desde el recordatorio asociado al inventario
-        //holder.tituloInventario.setText();
-        holder.cant_real.setText(inventario.getCantRealInventario());
-        holder.cant_aviso.setText(inventario.getCantAvisoInventario());
+        // Obtener el nombre del medicamento desde el recordatorio asociado al inventario
+        String nombreMedicamento = inventario.getRecordatorio().getMedicamento().getNombreMedicamento();
+
+        // Establecer el nombre del medicamento en el TextView tituloInventario
+        holder.tituloInventario.setText(nombreMedicamento);
+
+        holder.cant_real.setText(String.valueOf(inventario.getCantRealInventario()));
+        holder.cant_aviso.setText(String.valueOf(inventario.getCantAvisoInventario()));
     }
 
     @Override
@@ -46,13 +52,13 @@ public class InventarioAdapter extends RecyclerView.Adapter<InventarioAdapter.In
     }
 
     static class InventarioViewHolder extends RecyclerView.ViewHolder {
-        //TextView tituloInventario;
+        TextView tituloInventario;
         TextView cant_real;
         TextView cant_aviso;
 
         public InventarioViewHolder(@NonNull View itemView) {
             super(itemView);
-            //tituloInventario = itemView.findViewById(R.id.texto_titulo_inventario);
+            tituloInventario = itemView.findViewById(R.id.texto_titulo_inventario);
             cant_real = itemView.findViewById(R.id.texto_cant_real);
             cant_aviso = itemView.findViewById(R.id.texto2_cant_aviso);
         }

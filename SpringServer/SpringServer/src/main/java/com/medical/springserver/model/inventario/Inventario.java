@@ -17,11 +17,17 @@ import jakarta.persistence.OneToOne;
 public class Inventario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int codInventario;
 	private int cantAvisoInventario;
 	private int cantRealInventario;
 	
 	// Relacion con Recordatorio
 		
+	
+	public int getCodInventario() {
+		return codInventario;
+	}
+	
 	public int getCantAvisoInventario() {
 		return cantAvisoInventario;
 	}

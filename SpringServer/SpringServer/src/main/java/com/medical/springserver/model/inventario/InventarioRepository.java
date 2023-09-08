@@ -10,12 +10,11 @@ import org.springframework.stereotype.Repository;
 public interface InventarioRepository extends CrudRepository<Inventario, Integer>{
 	
 	// Método para buscar todas las instancias de Inventario con un codrecordatorio específico
-    //@Query("SELECT i FROM Inventario i WHERE i.recordatorio.codRecordatorio = :codRecordatorio")
-    //List<Inventario> findByCodRecordatorio(@Param("codRecordatorio") Integer codRecordatorio);
- 
+	@Query("SELECT i FROM Inventario i WHERE EXISTS (SELECT r FROM Recordatorio r WHERE r.codRecordatorio = :codRecordatorio AND r.inventario = i)")
+	Inventario findByCodRecordatorio(@Param("codRecordatorio") Integer codRecordatorio);
     
-    @Query("SELECT i FROM Inventario i WHERE EXISTS (SELECT r FROM Recordatorio r WHERE r.codRecordatorio = :codRecordatorio AND r.inventario = i)")
-    List<Inventario> findByCodRecordatorio(@Param("codRecordatorio") Integer codRecordatorio);
-
+    //@Query("SELECT i FROM Inventario i WHERE EXISTS (SELECT r FROM Recordatorio r WHERE r.codRecordatorio = :codRecordatorio AND r.inventario = i)")
+    //List<Inventario> findByCodRecordatorio(@Param("codRecordatorio") Integer codRecordatorio);
+	
 }
 

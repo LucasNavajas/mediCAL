@@ -94,6 +94,9 @@ public class MasActivity extends AppCompatActivity {
         codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         Log.d("MiApp", "codCalendario en MasActivity: " + codCalendario); // Agregar este log
 
+        codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
+        Log.d("MiApp", "codUsuario en MasActivity: " + codUsuarioLogeado);
+
 
         // Obtén la referencia al RelativeLayout
         rectangleMedYSintomas = findViewById(R.id.rectangle_med_y_sintomas);

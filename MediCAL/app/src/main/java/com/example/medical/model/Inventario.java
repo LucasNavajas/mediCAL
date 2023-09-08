@@ -4,11 +4,14 @@ import java.util.List;
 
 public class Inventario {
 
+    private int codInventario;
     private int cantAvisoInventario;
     private int cantRealInventario;
 
     // Relacion con Recordatorio
     private Recordatorio recordatorio;
+
+    public int getCodInventario() { return codInventario;     }
 
     public int getCantAvisoInventario() {
         return cantAvisoInventario;

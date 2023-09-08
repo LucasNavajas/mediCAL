@@ -2,6 +2,8 @@ package com.medical.springserver.model.inventario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
@@ -26,12 +28,28 @@ public class InventarioDao {
 		return inventarios;
 	}
 	
-	public List<Inventario> findByCodRecordatorio(int codRecordatorio){
+	/*public List<Inventario> findByCodRecordatorio(int codRecordatorio){
 		return repository.findByCodRecordatorio(codRecordatorio);
-	}
+	}*/
+	
+	public Inventario findByCodRecordatorio(int codRecordatorio) {
+		return repository.findByCodRecordatorio(codRecordatorio);
+	}	
 	
 	public void delete(Inventario inventario) {
 		repository.delete(inventario);
+	}
+	
+	public Inventario actualizarInventario(int codInventario, int nuevaCantidadReal) {
+		Optional<Inventario> optionalInventario = repository.findById(codInventario);
+		Inventario inventario;
+		if (optionalInventario.isPresent()) {
+            inventario = optionalInventario.get();
+            inventario.setCantRealInventario(nuevaCantidadReal);;
+        } else {
+            throw new NoSuchElementException("El inventario no existe.");
+        }
+		return repository.save(inventario);
 	}
 
 }

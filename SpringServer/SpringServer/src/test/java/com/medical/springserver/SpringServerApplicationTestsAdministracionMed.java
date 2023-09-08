@@ -33,13 +33,14 @@ class SpringServerApplicationTestsAdministracionMed {
 		medicamento.setMarcaMedicamento("Bayer");
 		medicamento.setNombreMedicamento("Ibuprofeno");
 		
+		/* Esta ya se hace en presentacionMed		 
 		AdministracionMed administracionmed = new AdministracionMed();
 		administracionmed.setDescAdministracionMed("Incluye presentaciones: pastilla, comprimido, cápsula, etc.");
 		administracionmed.setFechaAltaAdministracionMed(fechaHoy);
 		administracionmed.setFechaFinVigenciaAM(null);
 		administracionmed.setNombreAdministracionMed("De Forma Oral");
 		
-		administracionmedDao.save(administracionmed);
+		administracionmedDao.save(administracionmed);*/
 	
 	}
 	
