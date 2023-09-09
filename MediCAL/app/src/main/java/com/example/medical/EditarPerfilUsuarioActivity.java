@@ -275,7 +275,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         View popupView = getLayoutInflater().inflate(R.layout.n15_3_popup_fecha_nacimiento, null);
 
         // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, 1000, 1500);
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT );
 
         // Hacer que el popup sea enfocable (opcional)
         popupWindow.setFocusable(true);

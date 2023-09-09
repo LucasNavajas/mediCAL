@@ -67,7 +67,7 @@
                     android:id="@+id/imagen_medicion"
                     android:layout_width="395dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/background_rounded_blanco" />
@@ -123,7 +123,7 @@
                     android:id="@+id/imagen_Sintoma"
                     android:layout_width="395dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/background_rounded_blanco" />

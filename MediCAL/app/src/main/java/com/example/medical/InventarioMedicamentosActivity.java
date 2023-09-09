@@ -76,7 +76,7 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
 
         obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener); // Llama a este método para verificar existencia de inventarios
 
-        setContentView(R.layout.n88_0_inventario_cargado); // Establece la pantalla 88 como predeterminada en caso que no hayan inventarios
+        setContentView(R.layout.n87_inventario_sin_cargar); // Establece la pantalla 88 como predeterminada en caso que no hayan inventarios
 
         botonVolver = findViewById(R.id.boton_volver);
 
