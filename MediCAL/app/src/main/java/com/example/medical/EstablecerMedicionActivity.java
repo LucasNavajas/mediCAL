@@ -281,9 +281,11 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
                             }
                         });
 
-                        Intent intent = new Intent(EstablecerMedicionActivity.this, AgregarSeguimientoActivity.class);
-                        intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                        startActivity(intent);
+                        Intent intent2 = new Intent(EstablecerMedicionActivity.this, AgregarSeguimientoActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent2.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                        intent2.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
+                        startActivity(intent2);
                     }
                 } catch (NumberFormatException e) {
                     Toast.makeText(EstablecerMedicionActivity.this, "Ingrese un número válido", Toast.LENGTH_SHORT).show();
@@ -349,7 +351,6 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
     }
 

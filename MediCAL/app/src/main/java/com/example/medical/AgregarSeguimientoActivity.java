@@ -217,7 +217,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Abrir la nueva pantalla de Agregar Seguimiento
                 Intent intent = new Intent(AgregarSeguimientoActivity.this, ElegirSeguimientoActivity.class);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
                 startActivity(intent);
             }
         });
@@ -226,9 +227,7 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Iniciar la actividad principal (o la actividad deseada)
-                Intent intent = new Intent(AgregarSeguimientoActivity.this, MasActivity.class);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -243,6 +242,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
         if (isFirstTime) {
             // Redirigir a la actividad n72_inicio_mediciones_sintomas
             Intent intent = new Intent(AgregarSeguimientoActivity.this, InicioMedicionesSintomasActivity.class);
+            intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+            intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
             startActivity(intent);
 
             // Marcar que ya no es la primera vez
@@ -369,7 +370,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         // Crear un Intent para abrir la actividad MasInfoSintomaActivity
                         Intent intent = new Intent(AgregarSeguimientoActivity.this, MasInfoSintomaActivity.class);
-
+                        intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                        intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
 
                         // Iniciar la actividad MasInfoSintomaActivity
                         startActivity(intent);
@@ -545,7 +547,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         // Crear un Intent para abrir la actividad MasInfoSintomaActivity
                         Intent intent = new Intent(AgregarSeguimientoActivity.this, MasInfoMedicionActivity.class);
-
+                        intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                        intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
 
                         // Iniciar la actividad MasInfoSintomaActivity
                         startActivity(intent);
@@ -610,6 +613,14 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AgregarSeguimientoActivity.this, MasActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+        intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
+        startActivity(intent);
+    }
 }
 
 

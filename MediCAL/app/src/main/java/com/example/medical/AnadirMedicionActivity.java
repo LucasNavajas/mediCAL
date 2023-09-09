@@ -77,7 +77,8 @@ public class AnadirMedicionActivity extends AppCompatActivity {
                 intent.putExtra("nombreMedicion", medicionSeleccionada.getNombreMedicion());
                 intent.putExtra("codMedicion",medicionSeleccionada.getCodMedicion());
                 intent.putExtra("unidadMedida", medicionSeleccionada.getUnidadMedidaMedicion());
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
                 startActivity(intent);
             }
         });
@@ -122,7 +123,8 @@ public class AnadirMedicionActivity extends AppCompatActivity {
                 intent.putExtra("nombreMedicion", selectedMedicionName);
                 intent.putExtra("unidadMedida", unidadMedida);
                 intent.putExtra("codMedicion",selectedMedicion.getCodMedicion());
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
                 startActivity(intent);
             }
         });

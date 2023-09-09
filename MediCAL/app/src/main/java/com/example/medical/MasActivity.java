@@ -112,6 +112,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Aquí maneja la acción de navegación a AgregarSeguimientoActivity
                 Intent intent = new Intent(MasActivity.this, AgregarSeguimientoActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
                 intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }

@@ -539,7 +539,9 @@ public class AnadirSintomaActivity extends AppCompatActivity {
                     // Crear un Intent y pasar datos
                     Intent intent = new Intent(AnadirSintomaActivity.this, AgregarSeguimientoActivity.class);
                     intent.putExtra("selectedDateTime", selectedLocalDateTime);
-                    intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                    intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
                     // Cerrar el popup y ocultar el fondo oscurecido

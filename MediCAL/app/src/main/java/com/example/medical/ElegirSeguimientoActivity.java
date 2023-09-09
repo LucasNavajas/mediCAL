@@ -37,7 +37,8 @@ public class ElegirSeguimientoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar la actividad AnadirMedicionActivity
                 Intent intent = new Intent(ElegirSeguimientoActivity.this, AnadirMedicionActivity.class);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
                 startActivity(intent);
             }
         });
@@ -48,7 +49,8 @@ public class ElegirSeguimientoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Iniciar la actividad AnadirSintomaActivity
                 Intent intent = new Intent(ElegirSeguimientoActivity.this, AnadirSintomaActivity.class);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
                 startActivity(intent);
             }
         });
