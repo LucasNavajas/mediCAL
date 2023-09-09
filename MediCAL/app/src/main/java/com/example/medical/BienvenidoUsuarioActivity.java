@@ -31,12 +31,9 @@ public class BienvenidoUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Intent intent1 = getIntent();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null) {
-            login(intent1.getStringExtra("mail"), intent1.getStringExtra("contrasenia"));
-        }
+        login(intent1.getStringExtra("mail"), intent1.getStringExtra("contrasenia"));
         setContentView(R.layout.n09_bienvenido_usuario);
         botonCerrar = findViewById(R.id.boton_cerrar);
         crearCalendario = findViewById(R.id.button_agregarCalendario);
