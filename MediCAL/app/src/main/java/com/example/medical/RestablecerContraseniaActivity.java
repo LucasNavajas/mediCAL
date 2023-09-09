@@ -52,6 +52,7 @@ public class RestablecerContraseniaActivity extends AppCompatActivity {
     private TextView errorMismaContraseniaActual;
     private FirebaseUser user;
     private TextView olvidoContrasenia;
+    private TextView nombreUsuario;
     private RetrofitService retrofitService = new RetrofitService();
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
 
@@ -129,7 +130,7 @@ public class RestablecerContraseniaActivity extends AppCompatActivity {
                     contraseniaNueva.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     ojoContraseniaNueva.setImageResource(R.drawable.ojocontrasenia);
                 }
-                contraseniaActual.setSelection(contraseniaNueva.getText().length());
+                contraseniaNueva.setSelection(contraseniaNueva.getText().length());
             }
         });
 
@@ -192,8 +193,21 @@ public class RestablecerContraseniaActivity extends AppCompatActivity {
         olvidoContrasenia = findViewById(R.id.text_OlvidoContraseña);
         mostrarContraseniaActual = false;
         mostrarContraseniaNueva = false;
+        nombreUsuario = findViewById(R.id.nombreUsuario);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        usuarioApi.getByCodUsuario(getIntent().getIntExtra("codUsuario", 0)).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                nombreUsuario.setText(response.body().getUsuarioUnico());
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Toast.makeText(RestablecerContraseniaActivity.this, "No se pudo cargar el usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void popupRestablecido() {

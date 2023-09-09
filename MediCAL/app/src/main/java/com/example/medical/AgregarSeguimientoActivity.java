@@ -48,6 +48,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
     private static final String FIRST_TIME_KEY = "isFirstTime"; // Clave para indicar si es la primera vez
     private Calendario calendarioSeleccionado;
     private int codCalendario;
+    private ImageView paraSacar1;
+    private TextView paraSacar2;
     private CalendarioApi calendarioApi;
     private CalendarioSintomaApi calendarioSintomaApi;
     private CalendarioMedicionApi calendarioMedicionApi;
@@ -59,6 +61,10 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n78_seguimiento);
+        paraSacar1 = findViewById(R.id.parasacar1);
+        paraSacar2 = findViewById(R.id.parasacar2);
+        paraSacar1.setVisibility(View.VISIBLE);
+        paraSacar2.setVisibility(View.VISIBLE);
 
 
         RetrofitService retrofitService = new RetrofitService();
@@ -102,8 +108,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                         }
                                     });
 
-                                    ImageView paraSacar1 = findViewById(R.id.parasacar1);
-                                    TextView paraSacar2 = findViewById(R.id.parasacar2);
 
                                     // Después de obtener la lista de calendarioSintomas
                                     if (calendarioSintomas != null && !calendarioSintomas.isEmpty()) {
@@ -122,8 +126,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         Log.d("MiApp", "No se encontraron CalendarioSintomas");
-                                        paraSacar1.setVisibility(View.VISIBLE);
-                                        paraSacar2.setVisibility(View.VISIBLE);
                                     }
 
 
@@ -159,8 +161,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                         }
                                     });
 
-                                    ImageView paraSacar1 = findViewById(R.id.parasacar1);
-                                    TextView paraSacar2 = findViewById(R.id.parasacar2);
 
                                     // Después de obtener la lista de calendarioMediciones
                                     if (calendarioMediciones != null && !calendarioMediciones.isEmpty()) {
@@ -179,8 +179,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         Log.d("MiApp", "No se encontraron CalendarioMediciones");
-                                        paraSacar1.setVisibility(View.VISIBLE);
-                                        paraSacar2.setVisibility(View.VISIBLE);
                                     }
 
                                 } else {

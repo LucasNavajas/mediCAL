@@ -31,7 +31,7 @@
                 app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/texto_editar"
+                android:id="@+id/nombreUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/boton_atras"
