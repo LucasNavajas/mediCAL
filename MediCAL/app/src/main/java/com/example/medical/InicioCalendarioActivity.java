@@ -106,6 +106,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private Intent intent1;
     private List<EstadoSolicitud> estadosSolicitud;
 
+    private EditText textEditCantidad;    // cantidad de recarga de inventario
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,9 +253,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
 
-        // Salto de Popup en caso de que el calendario seleccionado tenga algún recordatorio con inventarios con cantReal = cantAviso
-        // obtenerRecordatoriosPorCalendario(calendarioSeleccionado);
-
     }
 
 
@@ -269,6 +268,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 public void onResponse(Call<Calendario> call, Response<Calendario> response) {
                     calendarioSeleccionado = response.body();
                     nombreCalendario.setText(calendarioSeleccionado.getNombreCalendario());
+
+                    // Salto de Popup en caso de que el calendario seleccionado tenga algún recordatorio con inventarios con cantReal <= cantAviso
+                    Log.d("MiApp", "Se buscarán recordatorios asociados al calendario: " + calendarioSeleccionado);
+                    obtenerRecordatoriosPorCalendario(calendarioSeleccionado);
                 }
 
                 @Override
@@ -283,6 +286,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             startActivity(intent);
             finish();
         }
+
     }
 
 
@@ -966,7 +970,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     }
 
-    /*
+
     // Método para obtener las clases "Recordatorio" asociadas al calendario seleccionado
     private void obtenerRecordatoriosPorCalendario(Calendario calendario) {
         // Crear una instancia de la interfaz de la API de RecordatorioApi utilizando Retrofit
@@ -1011,8 +1015,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             Log.d("MiApp", "Inventario Asociado Encontrado: ");
             Log.d("MiApp", "Inventario encontrado con cantReal: " + inventarioAsociado.getCantRealInventario() + ", y cantAviso: " + inventarioAsociado.getCantAvisoInventario());
 
+            inventarioAsociado.setRecordatorio(recordatorio);
+
             // Revisar si del inventario la cantReal es igual a la cantAviso y llamar al popup
-            if (inventarioAsociado.getCantRealInventario() == inventarioAsociado.getCantAvisoInventario()){
+            if (inventarioAsociado.getCantRealInventario() <= inventarioAsociado.getCantAvisoInventario() ){
                 popupInventarioAlerta(inventarioAsociado);
             }
 
@@ -1047,13 +1053,21 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         TextView texto = popupView.findViewById(R.id.text);
         TextView textoCantReal = popupView.findViewById(R.id.text_restantes);
 
+        Log.d("MiApp", "El nombre del medicamento con pocas existencias es: " + inventario.getRecordatorio().getMedicamento().getNombreMedicamento());
+        Log.d("MiApp", "El nombre de la presentación del medicamento con pocas existencias es: " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed());
+
         texto.setText("Pocas existencias de: " + inventario.getRecordatorio().getMedicamento().getNombreMedicamento());
-        textoCantReal.setText(inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + " restantes");
+        textoCantReal.setText(inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + "(s) restantes");
 
         Button recargar = popupView.findViewById(R.id.button_recargar);
         Button omitir = popupView.findViewById(R.id.button_omitir);
 
+        Log.d("MiApp", "Se envía el inventario: " + inventario);
+
         recargar.setOnClickListener(view ->{
+            Log.d("MiApp", "Se hizo clic en el botón recargar");
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
             popupRecargarInventario(inventario);
         });
 
@@ -1062,9 +1076,17 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             dimView.setVisibility(View.GONE);
         });
 
+        // Configurar el OnTouchListener para la vista oscura
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void popupRecargarInventario(Inventario inventario) {
+        Log.d("MiApp","Se llamó a popupRecargarInventario");
         View popupView = getLayoutInflater().inflate(R.layout.n88_2_popup_recarga, null);
 
         // Crear la instancia de PopupWindow
@@ -1088,26 +1110,35 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         TextView texto = popupView.findViewById(R.id.text);
-        EditText cantidad = popupView.findViewById(R.id.textEditCantidad);
+        EditText textEditCantidad = popupView.findViewById(R.id.textEditCantidad);
         TextView textoPresentacion = popupView.findViewById(R.id.text_presentacion);
 
-        texto.setText("Te quedan " + inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed());
+        texto.setText("Te quedan " + inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + "(s)");
 
-        textoPresentacion.setText(inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed());
+        textoPresentacion.setText(inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + "(s)");
 
-        Button aceptar = popupView.findViewById(R.id.aceptar);
-        Button cancelar = popupView.findViewById(R.id.cancelar);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
 
         aceptar.setOnClickListener(view ->{
-            String textoCantidad = cantidad.getText().toString();
-            int textCantidad = Integer.parseInt(textoCantidad);
-            inventarioApi.actualizarInventario(inventario.getCodInventario(), textCantidad).enqueue(new Callback<Void>() {
+            Log.d("MiApp", "Se hizo clic en el botón aceptar");
+            String textoCantidad = textEditCantidad.getText().toString();
+            int cantidadRecarga = Integer.parseInt(textoCantidad);
+
+            Log.d("MiApp","Se lee la cantidad de recarga y se llama a actualizarInventario");
+            // Se actualiza el inventario guardando como cantReal = cantidad ingresada + cantReal (anterior)
+
+
+            inventarioApi.actualizarInventario(inventario.getCodInventario(), cantidadRecarga+inventario.getCantRealInventario()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         // La llamada a la API fue exitosa, ahora puedes cerrar el Popup
                         popupWindow.dismiss();
                         dimView.setVisibility(View.GONE);
+                        Log.d("MiApp", "El inventario tiene actualmente una cantReal: " + inventario.getCantRealInventario());
+                        Log.d("MiApp", "Se ingresa para agregar una cantidad de: " + cantidadRecarga);
+                        Log.d("MiApp", "Se actualiza el inventario a una nueva cantReal: " + (cantidadRecarga+inventario.getCantRealInventario()));
                     } else {
                         Toast.makeText(InicioCalendarioActivity.this, "Error al actualizar el inventario, intente nuevamente", Toast.LENGTH_SHORT).show();
                     }
@@ -1124,7 +1155,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             dimView.setVisibility(View.GONE);
         });
 
+        // Configurar el OnTouchListener para la vista oscura
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
-    */
 
 }

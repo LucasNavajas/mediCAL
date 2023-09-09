@@ -22,6 +22,6 @@ public interface InventarioApi {
     Call<Inventario>getByCodRecordatorio(@Path("codRecordatorio") int codRecordatorio);
 
     @POST("inventario/actualizarInventario/{codInventario}")
-    Call<Void>actualizarInventario(@Path("codInventario") int codInventario, @Path("nuevaCantidadReal") int cantReal);
+    Call<Void>actualizarInventario(@Path("codInventario") int codInventario, @Body int nuevaCantidadReal);
 
 }
