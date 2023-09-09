@@ -89,7 +89,8 @@
             android:hint="Usuario"
             android:textColorHint="#888888"
             android:textSize="21sp"
-            android:inputType="text"/>
+            android:autofillHints="false"
+            android:inputType="textNoSuggestions"/>
 
         <View
             android:id="@+id/linea_inferior_usuario"
