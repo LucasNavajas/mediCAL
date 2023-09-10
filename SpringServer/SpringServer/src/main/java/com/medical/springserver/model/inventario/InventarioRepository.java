@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface InventarioRepository extends CrudRepository<Inventario, Integer>{
 	
 	// Método para buscar todas las instancias de Inventario con un codrecordatorio específico
