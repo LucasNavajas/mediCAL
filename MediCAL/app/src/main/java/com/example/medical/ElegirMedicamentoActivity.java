@@ -47,8 +47,10 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
     private ListView listViewMedicamentos;
     private TextView sugerenciaBuscar;
     private ImageView botonCerrar;
+    private List<String> filteredMedicamentos = new ArrayList<>();
     private TextView nuevoMedicamento;
     private Calendario calendarioSeleccionado;
+    private Medicamento medicamentoSeleccionado = new Medicamento();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 sugerenciaBuscar.setVisibility(View.GONE);
                 String searchText = charSequence.toString().toLowerCase();
-                List<String> filteredMedicamentos = new ArrayList<>();
+                filteredMedicamentos = new ArrayList<>();
 
                 for (String medicamento : medicamentos) {
                     if (medicamento.toLowerCase().contains(searchText)) {
@@ -157,7 +159,13 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                 listViewMedicamentos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Medicamento medicamentoSeleccionado = medicamentosEntidades.get(position);
+                        String medicamentoSeleccionadoString = filteredMedicamentos.get(position);
+                        for (Medicamento medicamento : medicamentosEntidades) {
+                            if (medicamento.getNombreMedicamento().equalsIgnoreCase(medicamentoSeleccionadoString)) {
+                                medicamentoSeleccionado = medicamento;
+                            }
+                        }
+
                         Recordatorio recordatorio = new Recordatorio();
                         recordatorio.setMedicamento(medicamentoSeleccionado);
                         recordatorio.setCalendario(calendarioSeleccionado);
@@ -167,6 +175,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                             public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                                 Intent intent = new Intent(ElegirMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
                                 intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                                intent.putExtra("nombreMedicamento", medicamentoSeleccionado.getNombreMedicamento());
                                 startActivity(intent);
                             }
 

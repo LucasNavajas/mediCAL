@@ -51,6 +51,8 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n54_0_visualizacion_de_datos_completados);//cambiar esta linea por el nombre del layout a probar
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         inicializarVariables();
 
         botonVolver.setOnClickListener(view ->{
@@ -61,12 +63,14 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarFechaInicioRecordatorioActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
         textDuracion.setOnClickListener(view ->{
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarFechaInicioRecordatorioActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
 
@@ -74,6 +78,7 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarInstruccionesActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
 
@@ -81,6 +86,7 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarInstruccionesActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
 
@@ -88,24 +94,28 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarImagenRecordatorioActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
         textImagenes.setOnClickListener(view ->{
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarImagenRecordatorioActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
         inventario.setOnClickListener(view ->{
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarInventarioActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
         textInventario.setOnClickListener(view ->{
             Intent intent = new Intent(AgregarDatosObligatoriosActivity.this, AgregarInventarioActivity.class);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
         });
         hecho.setOnClickListener(view ->{

@@ -40,6 +40,8 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n47_establecer_duracion);//cambiar esta linea por el nombre del layout a probar
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         inicializarVariables();
         botonVolver.setOnClickListener(view ->{onBackPressed();});
     }
@@ -91,6 +93,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                     intent.putExtra("month", getIntent().getIntExtra("month", 0));
                     intent.putExtra("dayOfMonth", getIntent().getIntExtra("dayOfMonth", 0));
                     intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                    intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                     startActivity(intent);
                     break;
 
@@ -110,6 +113,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                             Intent intent = new Intent (AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
                             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                             startActivity(intent);
                         }
 
@@ -136,6 +140,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                             Intent intent = new Intent (AgregarDuracionRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
                             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                             startActivity(intent);
                         }
 

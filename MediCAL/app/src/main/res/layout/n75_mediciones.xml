@@ -73,6 +73,7 @@
                     android:hint="Buscar"
                     android:maxLength="20"
                     android:textColor="#000"
+                    android:inputType="text"
                     android:imeOptions="actionSearch"
                     android:textSize="22sp" />
 

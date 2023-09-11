@@ -13,7 +13,6 @@ import java.util.Calendar;
 
 public class AgregarFechaInicioRecordatorioActivity extends AppCompatActivity {
     private ImageView botonVolver;
-    private TextView nombreMedicamento;
     private DatePicker datePicker;
     private Button siguiente;
 
@@ -21,6 +20,8 @@ public class AgregarFechaInicioRecordatorioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n46_agregar_duracion);//cambiar esta linea por el nombre del layout a probar
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         inicializarVariables();
 
         botonVolver.setOnClickListener(view ->{onBackPressed();});
@@ -35,6 +36,7 @@ public class AgregarFechaInicioRecordatorioActivity extends AppCompatActivity {
             intent.putExtra("dayOfMonth", dayOfMonth);
             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
             startActivity(intent);
 
         });
@@ -42,7 +44,6 @@ public class AgregarFechaInicioRecordatorioActivity extends AppCompatActivity {
 
     private void inicializarVariables() {
         botonVolver = findViewById(R.id.boton_volver);
-        nombreMedicamento = findViewById(R.id.texto_nombremed);
         datePicker = findViewById(R.id.datePicker);
         siguiente = findViewById(R.id.button_siguiente);
 

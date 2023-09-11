@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +34,8 @@ public class FrecuenciaxhorasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n39_cada_x_horas);
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
 
         botonVolver = findViewById(R.id.boton_volver);
         numberPicker = findViewById(R.id.number_picker);
@@ -82,6 +85,7 @@ public class FrecuenciaxhorasActivity extends AppCompatActivity {
                                         intent.putExtra("administracionMedId", codAdmin);
                                         intent.putExtra("presentacionMedId", codPresen);
                                         intent.putExtra("codRecordatorio", recordatorio.getCodRecordatorio());
+                                        intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                                         startActivity(intent);
                                     }
 

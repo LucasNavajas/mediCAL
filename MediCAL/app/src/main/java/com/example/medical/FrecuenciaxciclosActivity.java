@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class FrecuenciaxciclosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n41_ciclo_recurrente);
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
 
         botonVolver = findViewById(R.id.boton_volver);
         numberPickerToma = findViewById(R.id.number_pickertoma);
@@ -50,8 +53,8 @@ public class FrecuenciaxciclosActivity extends AppCompatActivity {
         int codPresen = getIntent().getIntExtra("presentacionMedId", 0);
 
         // Mostrar los valores recibidos en un Toast
-        String mensaje = "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen;
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+       /* String mensaje = "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen;
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();*/
 
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +87,7 @@ public class FrecuenciaxciclosActivity extends AppCompatActivity {
                                         intent.putExtra("administracionMedId", codAdmin);
                                         intent.putExtra("presentacionMedId", codPresen);
                                         intent.putExtra("codRecordatorio", recordatorio.getCodRecordatorio());
+                                        intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                                         startActivity(intent);
                                     }
 

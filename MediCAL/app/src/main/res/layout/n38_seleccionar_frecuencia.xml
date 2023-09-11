@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/layout_frecuencia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/texto_anadir_medicina"
+            android:id="@+id/nombreMedicamento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_regular"
@@ -37,10 +37,10 @@
             app:layout_constraintStart_toEndOf="@id/boton_volver"
             app:layout_constraintTop_toTopOf="@id/boton_volver"
             app:layout_constraintBottom_toBottomOf="@id/boton_volver"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="40dp"
             android:layout_marginBottom="-4dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 
     <ImageView

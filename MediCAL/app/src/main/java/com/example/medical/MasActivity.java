@@ -63,6 +63,7 @@ public class MasActivity extends AppCompatActivity {
     private ImageView menuButtonUsuario;
     private RelativeLayout editarPerfil;
     private RelativeLayout restablecerContrasenia;
+    private RelativeLayout eliminarCuenta;
     private RelativeLayout cerrarSesion;
     private RelativeLayout soporte;
 
@@ -202,6 +203,9 @@ public class MasActivity extends AppCompatActivity {
 
             }
         });
+        eliminarCuenta.setOnClickListener(view ->{
+            popupEliminarCuenta();
+        });
 
         casa_inicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,6 +256,7 @@ public class MasActivity extends AppCompatActivity {
         imagenconsejos =findViewById(R.id.imagenconsejos);
         menuButton = findViewById(R.id.menu_button);
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
+        eliminarCuenta = findViewById(R.id.eliminar_cuenta);
         usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -304,6 +309,95 @@ public class MasActivity extends AppCompatActivity {
                 // Ocultar el fondo oscurecido
                 dimView.setVisibility(View.GONE);
             }
+        });
+    }
+
+    public void popupEliminarCuenta(){
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        View popupView = getLayoutInflater().inflate(R.layout.n14_1_popup_eliminar_cuenta, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+
+        aceptar.setOnClickListener(view ->{
+            popupMotivoEliminacion();
+            popupWindow.dismiss();
+        });
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+    }
+
+    private void popupMotivoEliminacion() {
+        View popupView = getLayoutInflater().inflate(R.layout.n14_2_popup_motivo_finvigencia, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        EditText motivo = popupView.findViewById(R.id.textEdit_motivo);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+
+        aceptar.setOnClickListener(view ->{
+            String textMotivo = motivo.getText().toString();
+            usuarioApi.eliminarUsuario(codUsuarioLogeado, textMotivo).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(MasActivity.this, BienvenidoActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(MasActivity.this, "Error al eliminar la cuenta, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
         });
     }
 

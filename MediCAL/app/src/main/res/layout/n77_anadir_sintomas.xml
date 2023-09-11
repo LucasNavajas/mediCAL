@@ -72,6 +72,7 @@
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/inter_regular"
                     android:hint="Buscar"
+                    android:inputType="text"
                     android:maxLength="20"
                     android:textColor="#000"
                     android:imeOptions="actionSearch"

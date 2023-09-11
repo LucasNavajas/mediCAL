@@ -47,7 +47,8 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
 
 
         botonVolver = findViewById(R.id.boton_volver);
-
+        TextView nombreMedicamento1 = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento1.setText(getIntent().getStringExtra("nombreMedicamento"));
         // Recibiendo los valores codAdmin y codPresen de la actividad anterior
         Intent intent = getIntent();
         codAdmin = intent.getIntExtra("administracionMedId", 0);
@@ -55,8 +56,6 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
 
         // Mostrando los valores recibidos
         //Toast.makeText(ElegirFrecuenciaActivity.this, "Codigo adm: " + codAdmin + " Codigo presen: " + codPresen, Toast.LENGTH_SHORT).show();
-
-        setContentView(R.layout.n38_seleccionar_frecuencia);
 
         botonVolver = findViewById(R.id.boton_volver);
 
@@ -84,6 +83,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });
@@ -96,6 +96,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });
@@ -108,6 +109,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });
@@ -120,6 +122,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });
@@ -132,6 +135,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });
@@ -144,6 +148,7 @@ public class ElegirFrecuenciaActivity extends AppCompatActivity {
                 intent.putExtra("administracionMedId", codAdmin);
                 intent.putExtra("presentacionMedId", codPresen);
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });

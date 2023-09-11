@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class ElegirDiasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n48_indicar_n_dias);//cambiar esta linea por el nombre del layout a probar
         inicializarVariables();
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         botonVolver.setOnClickListener(view ->{onBackPressed();});
 
         siguiente.setOnClickListener(view ->{
@@ -51,6 +54,7 @@ public class ElegirDiasActivity extends AppCompatActivity {
                     Intent intent = new Intent (ElegirDiasActivity.this, AgregarDatosObligatoriosActivity.class);
                     intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
                     intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                    intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                     startActivity(intent);
                 }
 
