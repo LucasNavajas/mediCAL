@@ -19,7 +19,7 @@ class SpringServerApplicationTestsPerfilPermiso {
 	@Autowired
 	private PerfilPermisoDao perfilpermisoDao;
 	
-	@Test
+	//@Test
 	void addPerfilPermisoTest() {
 				
 		

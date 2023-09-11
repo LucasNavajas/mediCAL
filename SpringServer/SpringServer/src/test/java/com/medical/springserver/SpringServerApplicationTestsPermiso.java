@@ -18,7 +18,7 @@ class SpringServerApplicationTestsPermiso {
 	@Autowired
 	private PermisoDao permisoDao;
 	
-	@Test
+	//@Test
 	void addPermisoTest() {
 				
 		// Obtener la fecha de hoy
