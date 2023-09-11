@@ -114,6 +114,7 @@
         <activity android:name=".AgregarIndicacionesActivity"></activity>
         <activity android:name=".AgregarInventarioActivity"></activity>
         <activity android:name=".AgregarAlertaInventarioActivity"></activity>
+
     </application>
 
 </manifest>

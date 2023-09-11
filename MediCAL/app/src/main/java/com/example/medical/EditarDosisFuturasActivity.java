@@ -1,4 +1,5 @@
 package com.example.medical;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -8,52 +9,50 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.medical.model.Frecuencia;
+import com.example.medical.model.Medicamento;
+import com.example.medical.model.Recordatorio;
+import com.example.medical.retrofit.RecordatorioApi;
+import com.example.medical.retrofit.RetrofitService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class EditarDosisFuturasActivity extends AppCompatActivity {
+    private RetrofitService retrofitService = new RetrofitService();
+    private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
+    private Recordatorio recordatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-
-
-
-
+        obtenerDatos(4); // Cambia el número 4 por el codRecordatorio deseado
     }
 
     private void inicializarBotones() {
-
-        //Frecuencia
         ImageButton desplegableFrecuencia = findViewById(R.id.desplegable_frecuencia);
         TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
-
-        //Duracion
         ImageButton desplegableDuracion = findViewById(R.id.desplegable_duracion);
         RelativeLayout cambiarDuracion = findViewById(R.id.cambiar_duracion);
         TextView duracionActual = findViewById(R.id.duracion_actual);
-
-        //Imagen
         ImageButton desplegableImagen = findViewById(R.id.desplegable_imagen);
         RelativeLayout cambiarImagen = findViewById(R.id.relative_cambiar_imagen);
-
-        //Concentracion
         ImageButton desplegableConcentracion = findViewById(R.id.desplegable_concentracion);
         LinearLayout cambiarConcentracion = findViewById(R.id.cambiar_concentracion);
-
-        //Instrucciones
         ImageButton desplegableInstrucciones = findViewById(R.id.desplegable_instrucciones);
         LinearLayout cambiarInstrucciones = findViewById(R.id.cambiar_instrucciones);
-
-        //Recarga
         ImageButton desplegableRecarga = findViewById(R.id.desplegable_recordatorio_receta);
         LinearLayout cambiarRecarga = findViewById(R.id.cambiar_recordatorio_receta);
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
         LinearLayout agregarInventario = findViewById(R.id.definir_inventario);
-
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,10 +81,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     duracionActual.setText("Según los días de tratamiento");
                     duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this,R.color.gris_medical));
                 }
-
             }
         });
-
 
         desplegableImagen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,10 +146,81 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        }
+    private void obtenerDatos(int codRecordatorio) {
+        recordatorioApi.getByCodRecordatorio(codRecordatorio).enqueue(new Callback<Recordatorio>() {
+            @Override
+            public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                recordatorio = response.body();
+                Medicamento medicamento = recordatorio.getMedicamento();
+                Frecuencia frecuencia = recordatorio.getFrecuencia();
 
+
+                String nombreMedicamento = medicamento.getNombreMedicamento();
+                String nombreFrecuencia = frecuencia.getNombreFrecuencia();
+                int duracionRecordatorio = recordatorio.getDuracionRecordatorio();
+
+                mostrarNombreMedicamento(nombreMedicamento);
+                mostrarNombreFrecuencia(nombreFrecuencia);
+                mostrarDuracion(duracionRecordatorio);
+
+            }
+
+            @Override
+            public void onFailure(Call<Recordatorio> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Error al cargar el recordatorio", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void mostrarNombreFrecuencia(String nombreFrecuencia) {
+        TextView frecuenciaActualTextView = findViewById(R.id.frecuencia_actual); // Cambia el ID según tu diseño
+        frecuenciaActualTextView.setText(nombreFrecuencia);
     }
 
 
+    private void mostrarNombreMedicamento(String nombreMedicamento) {
+        TextView nombreMedicamentoTextView = findViewById(R.id.nombremed); // Cambia el ID según tu diseño
+        nombreMedicamentoTextView.setText(nombreMedicamento);
+    }
+    private void mostrarDuracion(Integer duracionRecordatorio) {
+        TextView duracionActualTextView = findViewById(R.id.duracion_actual); // Cambia el ID según tu diseño
 
+        if (duracionRecordatorio == null) {
+            duracionActualTextView.setText("Tratamiento continuo");
+        } else {
+            switch (duracionRecordatorio) {
+                case 1:
+                    duracionActualTextView.setText("1 día");
+                    break;
+                case 5:
+                    duracionActualTextView.setText("5 días");
+                    break;
+                case 7:
+                    duracionActualTextView.setText("1 semana");
+                    break;
+                case 10:
+                    duracionActualTextView.setText("10 días");
+                    break;
+                case 30:
+                    duracionActualTextView.setText("30 días");
+                    break;
+                case 180:
+                    duracionActualTextView.setText("6 meses");
+                    break;
+                case 360:
+                    duracionActualTextView.setText("12 meses");
+                    break;
+                case 720:
+                    duracionActualTextView.setText("24 meses");
+                    break;
+                default:
+                    duracionActualTextView.setText(duracionRecordatorio +" días");
+                    break;
+            }
+        }
+    }
+
+
+}
