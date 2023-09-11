@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 
 @Service
-
 public class CalendarioMedicionDao {
 	@Autowired
 	private CalendarioMedicionRepository repository;

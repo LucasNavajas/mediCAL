@@ -98,7 +98,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                     break;
 
                 case R.id.text_continuo:
-                    int duracionContinua = 9999999;
+                    int duracionContinua = 99999;
                     recordatorio.setDuracionRecordatorio(duracionContinua);
                     fechaInicio= LocalDateTime.of(getIntent().getIntExtra("year", 0),
                                                                 getIntent().getIntExtra("month", 0),

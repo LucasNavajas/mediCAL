@@ -66,7 +66,7 @@ public class FrecuenciaxmesesActivity extends AppCompatActivity {
                 Intent intent = new Intent(FrecuenciaxmesesActivity.this, SeleccionarHorarioRecordatorioActivity.class);
                 Frecuencia frecuencia = new Frecuencia();
                 frecuencia.setNombreFrecuencia("Cada "+ numberPicker.getValue() + " meses");
-                frecuencia.setCantidadFrecuencia(numberPicker.getValue()*24*7*4);
+                frecuencia.setCantidadFrecuencia(numberPicker.getValue()*24*30);
                 recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio", 0)).enqueue(new Callback<Recordatorio>() {
                     @Override
                     public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
