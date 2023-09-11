@@ -104,6 +104,7 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
                         public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                             Intent intent = new Intent(NuevoMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            intent.putExtra("nombreMedicamento", medicamento.getNombreMedicamento());
                             startActivity(intent);
                         }
 

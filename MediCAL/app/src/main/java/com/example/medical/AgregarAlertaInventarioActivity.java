@@ -39,6 +39,8 @@ public class AgregarAlertaInventarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n50_indica_n_medicinas);//cambiar esta linea por el nombre del layout a probar
         inicializarVariables();
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
     }
 
     private void inicializarVariables() {
@@ -77,6 +79,7 @@ public class AgregarAlertaInventarioActivity extends AppCompatActivity {
                                             Intent intent = new Intent(AgregarAlertaInventarioActivity.this, AgregarDatosObligatoriosActivity.class);
                                             intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio",0));
                                             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                                            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                                             startActivity(intent);
                                         }
 

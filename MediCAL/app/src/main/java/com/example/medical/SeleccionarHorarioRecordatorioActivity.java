@@ -73,6 +73,8 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
         textoDosis = findViewById(R.id.texto_dosis);
         siguiente = findViewById(R.id.button_siguiente);
         dosis.setCantidadDosis(1);
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
 
         // Recibir el valor codPresen de la actividad anterior
         int codPresen = getIntent().getIntExtra("presentacionMedId", 0);
@@ -259,6 +261,7 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
                         public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                             Intent intent = new Intent(SeleccionarHorarioRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                             intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                            intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                             intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
                             startActivity(intent);
                         }

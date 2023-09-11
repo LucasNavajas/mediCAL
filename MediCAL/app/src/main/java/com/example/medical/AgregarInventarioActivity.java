@@ -33,6 +33,8 @@ public class AgregarInventarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n49_establecer_recarga);//cambiar esta linea por el nombre del layout a probar
         inicializarVariables();
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         botonVolver.setOnClickListener(view ->{onBackPressed();});
         siguiente.setOnClickListener(view ->{
             if(!inventarioReal.getText().toString().equals("")){
@@ -42,6 +44,7 @@ public class AgregarInventarioActivity extends AppCompatActivity {
                     intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio",0));
                     intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
                     intent.putExtra("valorInventarioReal", valorInventarioReal);
+                    intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                     startActivity(intent);
                 }
             }

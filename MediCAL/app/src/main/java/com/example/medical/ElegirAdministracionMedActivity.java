@@ -6,6 +6,7 @@ package com.example.medical;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class ElegirAdministracionMedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n33_administracion_medica);
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
 
         recyclerView = findViewById(R.id.listaadministracionmed_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,6 +70,7 @@ public class ElegirAdministracionMedActivity extends AppCompatActivity {
                 Intent intent = new Intent(ElegirAdministracionMedActivity.this, ElegirPresentacionMedActivity.class);
                 intent.putExtra("administracionMedId", item.getCodAdministracionMed());
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio",0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         });

@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -58,6 +59,8 @@ public class AgregarImagenRecordatorioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n53_adjuntar_imagen);//cambiar esta linea por el nombre del layout a probar
         inicializarVariables();
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         botonVolver.setOnClickListener(view ->{onBackPressed();});
         botonEliminarFoto.setOnClickListener(view -> {
             fotoRecordatorio.setImageResource(R.drawable.foto_remedio);
@@ -125,6 +128,7 @@ public class AgregarImagenRecordatorioActivity extends AppCompatActivity {
                         Intent intent = new Intent(AgregarImagenRecordatorioActivity.this, AgregarDatosObligatoriosActivity.class);
                         intent.putExtra("codRecordatorio",getIntent().getIntExtra("codRecordatorio", 0));
                         intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                        intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                         startActivity(intent);
                     }
 

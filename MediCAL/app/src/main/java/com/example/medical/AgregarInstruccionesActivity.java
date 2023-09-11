@@ -19,6 +19,8 @@ public class AgregarInstruccionesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n51_establecer_instrucciones);//cambiar esta linea por el nombre del layout a probar
+        TextView nombreMedicamento = findViewById(R.id.nombreMedicamento);
+        nombreMedicamento.setText(getIntent().getStringExtra("nombreMedicamento"));
         inicializarVariables();
 
         botonVolver.setOnClickListener(view ->{onBackPressed();});
@@ -31,6 +33,7 @@ public class AgregarInstruccionesActivity extends AppCompatActivity {
                 intent.putExtra("instrucciones", textView.getText().toString());
                 intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio", 0));
                 intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                 startActivity(intent);
             }
         };

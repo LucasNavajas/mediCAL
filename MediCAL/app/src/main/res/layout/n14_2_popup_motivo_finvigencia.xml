@@ -62,11 +62,11 @@
             android:text="CANCELAR"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginEnd="95dp"
             android:clickable="true"
+            android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:layout_marginBottom="15dp"
-            android:gravity="end"/>
+            android:gravity="start"/>
 
         <TextView
             android:id="@+id/aceptar"
@@ -76,7 +76,7 @@
             android:text="ACEPTAR"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:clickable="true"
             android:layout_weight="1"
             android:layout_marginBottom="15dp"
