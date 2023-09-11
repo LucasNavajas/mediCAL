@@ -96,18 +96,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="Antes de comer"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/text_antes"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="#808080" />
             <!--Opcion Durante la comida-->
             <TextView
@@ -116,18 +120,22 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_antes"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="Con la comida"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/text_durante"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="#808080" />
             <!--Opcion Despues de la comida-->
             <TextView
@@ -136,18 +144,22 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_durante"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="Después de comer"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/text_despues"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="#808080" />
             <!--Opcion no importa-->
             <TextView
@@ -156,18 +168,22 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_despues"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="No importa"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/text_noimporta"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="#808080" />
 
 

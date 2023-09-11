@@ -96,12 +96,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="5 Días"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -116,12 +118,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_cinco_dias"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="1 Semana"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -136,12 +140,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_una_semana"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="10 Días"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -156,12 +162,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_diez_dias"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="30 Días"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -181,7 +189,8 @@
                 android:background="@android:color/transparent"
                 android:text="6 Meses"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -196,12 +205,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_seis_meses"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="12 Meses"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -216,12 +227,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_doce_meses"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="24 Meses"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -236,12 +249,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_veinticuatro_meses"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="Elige el número de días"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -256,12 +271,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_elegir"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="Tratamiento continuo"
                 android:textColor="@color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:fontFamily="@font/inter_regular"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
