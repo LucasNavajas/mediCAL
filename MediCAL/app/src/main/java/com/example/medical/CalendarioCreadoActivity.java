@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ public class CalendarioCreadoActivity extends AppCompatActivity {
     private TextView mensajeCreado;
     private ImageView botonCerrar;
     private Intent intent1;
+    private Button agregarRecordatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,12 @@ public class CalendarioCreadoActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        agregarRecordatorio.setOnClickListener(view ->{
+            Intent intent = new Intent(CalendarioCreadoActivity.this, ElegirMedicamentoActivity.class);
+            intent.putExtra("codCalendario", getIntent().getIntExtra("codCalendario",0));
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
 
     }
 
@@ -51,6 +59,7 @@ public class CalendarioCreadoActivity extends AppCompatActivity {
         gifImageView = findViewById(R.id.gif_calendario);
         mensajeCreado = findViewById(R.id.text_calendarioagregado);
         botonCerrar = findViewById(R.id.boton_cerrar);
+        agregarRecordatorio = findViewById(R.id.button_agregarMedicamento);
         intent1 = getIntent();
 
     }

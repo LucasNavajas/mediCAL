@@ -74,6 +74,7 @@ public class CrearCalendario2Activity extends AppCompatActivity {
                                 Intent intent = new Intent(CrearCalendario2Activity.this, CalendarioCreadoActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("nombreCalendario", nombreCalendarioString);
+                                intent.putExtra("codCalendario", response.body().getCodCalendario());
                                 startActivity(intent);
                                 finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
                             }

@@ -73,7 +73,7 @@
                 android:fontFamily="@font/inter_regular"
                 android:textSize="20sp"
                 android:textColor="@color/verdeTextos"
-                android:text="Ingrese el nombre de usuario, correo electrónico o teléfono del usuario a conectar"/>
+                android:text="Ingrese el nombre de usuario o correo electrónico  del usuario a conectar"/>
 
             <EditText
                 android:id="@+id/textEdit_contacto"
@@ -84,7 +84,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="Usuario, correo o teléfono"
+                android:hint="Usuario o correo"
                 android:textColorHint="@color/gris_medical"
                 android:textSize="24sp"
                 android:inputType="text"/>

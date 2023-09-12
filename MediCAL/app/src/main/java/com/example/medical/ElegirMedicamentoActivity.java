@@ -62,7 +62,6 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
         botonCerrar.setOnClickListener(view ->{onBackPressed();});
         nuevoMedicamento.setOnClickListener(view ->{
             Intent intent = new Intent(ElegirMedicamentoActivity.this, NuevoMedicamentoActivity.class);
-            intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
             intent.putExtra("codCalendario", getIntent().getIntExtra("codCalendario",0));
             startActivity(intent);
         });
@@ -194,6 +193,13 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                 Toast.makeText(ElegirMedicamentoActivity.this, "Error al cargar los medicamentos desde la base de datos, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(ElegirMedicamentoActivity.this, InicioCalendarioActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
 }

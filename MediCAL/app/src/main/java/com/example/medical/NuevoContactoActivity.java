@@ -73,7 +73,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
                         public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                             if (response.isSuccessful()) {
                                 usuarioContacto = response.body();
-                                if (usuarioContacto != null) {
+                                if (usuarioContacto != null && usuarioContacto.getCodUsuario() != usuarioLogeado.getCodUsuario()) {
                                     // Usuario encontrado (tick)
                                     usuarioExistente = true;
                                     tick.setImageResource(R.drawable.tick);
