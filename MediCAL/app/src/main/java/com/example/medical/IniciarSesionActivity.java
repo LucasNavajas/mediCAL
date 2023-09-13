@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
     private ImageView botonCerrar;
     private TextView olvidoContrasenia;
     private boolean mostrarContrasenia = false;
+    private LinearLayout progressBar;
     public List<String> mailsUnicos;
     private FirebaseAuth mAuth;
     private RetrofitService retrofitService = new RetrofitService();
@@ -129,10 +131,15 @@ public class IniciarSesionActivity extends AppCompatActivity {
         ojoContrasenia = findViewById(R.id.ojoContrasenia);
         botonCerrar = findViewById(R.id.boton_cerrar);
         olvidoContrasenia = findViewById(R.id.text_OlvidoContraseña);
+        progressBar = findViewById(R.id.progressBar);
 
     }
 
     public void loginUsuario(String mail, String contrasenia){
+        progressBar.setVisibility(View.VISIBLE);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+        inhabilitarBotones();
         mAuth.signInWithEmailAndPassword(mail, contrasenia)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -160,6 +167,10 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 calendarioApi.getByCodUsuario(usuarioLogeado.getCodUsuario()).enqueue(new Callback<List<Calendario>>() {
                     @Override
                     public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
+                        progressBar.setVisibility(View.GONE);
+                        View dimView = findViewById(R.id.dim_view);
+                        dimView.setVisibility(View.GONE);
+                        habilitarBotones();
                         List<Calendario> calendarios = response.body();
                         if(calendarios.isEmpty()){
                             Intent intent = new Intent(IniciarSesionActivity.this, BienvenidoUsuarioActivity.class);
@@ -171,6 +182,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
                             intent2.putExtra("codCalendario", calendarios.get(0).getCodCalendario());
                             startActivity(intent2);
                         }
+
 
                     }
 
@@ -319,5 +331,40 @@ public class IniciarSesionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static void setAllViewsEnabled(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+
+            // Deshabilitar vista si es interactuable (Button, EditText, CheckBox, RadioButton)
+            if (view instanceof Button || view instanceof EditText) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ImageView, también puedes deshabilitarlo si es necesario
+            if (view instanceof ImageView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un TextView, también puedes deshabilitarlo si es necesario
+            if (view instanceof TextView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ViewGroup (por ejemplo, LinearLayout, RelativeLayout, etc.), llama de forma recursiva
+            if (view instanceof ViewGroup) {
+                setAllViewsEnabled((ViewGroup) view, enabled);
+            }
+        }
+    }
+    public void habilitarBotones(){
+        ViewGroup layout = findViewById(R.id.layout_entero);
+        setAllViewsEnabled(layout, true); // Deshabilita todas las vistas
+    }
+    public void inhabilitarBotones(){
+        ViewGroup layout = findViewById(R.id.layout_entero);
+        setAllViewsEnabled(layout, false); // Deshabilita todas las vistas
     }
 }
