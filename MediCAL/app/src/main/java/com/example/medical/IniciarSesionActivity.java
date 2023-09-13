@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,8 +59,8 @@ public class IniciarSesionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        obtenerMails();
         setContentView(R.layout.n02_0_inicio_sesion);//cambiar esta linea por el nombre del layout a probar
+        obtenerMails();
         inicializarVariables();
         ingresar.setOnClickListener(new View.OnClickListener() {
             @Override

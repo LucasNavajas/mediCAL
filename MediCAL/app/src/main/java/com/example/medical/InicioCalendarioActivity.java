@@ -2,6 +2,7 @@ package com.example.medical;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,7 +102,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private LinearLayout contenedorCalendariosContactos;
     private Button agregarRecordatorio;
     private RelativeLayout eliminarCuenta;
-
+    private LinearLayout progressBar;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
     private Intent intent1;
@@ -120,6 +122,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             finish();
         }
         setContentView(R.layout.n13y14_calendario_y_menu);
+        progressBar = findViewById(R.id.progressBar);
         selectedDate = LocalDate.now();
         intent1 = getIntent();
         initWidgets();
@@ -321,14 +324,30 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         gestionarContactos = findViewById(R.id.gestionar_contactos);
         agregarRecordatorio = findViewById(R.id.agregar_recordatorio);
         llenarListaCalendarios();
-        llenarEstadosSolicitud();
-    }
 
+    }
+   /* Handler handler = new Handler();
+
+    // Define un Runnable que se ejecutará después de 5 segundos
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            progressBar.setVisibility(View.GONE);
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.GONE);
+            habilitarBotones();
+        }
+    };*/
     private void llenarEstadosSolicitud() {
         estadoSolicitudApi.getAllEstadoSolicitud().enqueue(new Callback<List<EstadoSolicitud>>() {
             @Override
             public void onResponse(Call<List<EstadoSolicitud>> call, Response<List<EstadoSolicitud>> response) {
+               // handler.postDelayed(runnable, 5000); Para probar como funciona en caso de que llegue rápido la consulta
                 estadosSolicitud = response.body();
+                progressBar.setVisibility(View.GONE);
+                View dimView = findViewById(R.id.dim_view);
+                dimView.setVisibility(View.GONE);
+                habilitarBotones();
             }
 
             @Override
@@ -338,6 +357,40 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
     }
 
+    public static void setAllViewsEnabled(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+
+            // Deshabilitar vista si es interactuable (Button, EditText, CheckBox, RadioButton)
+            if (view instanceof Button || view instanceof EditText) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ImageView, también puedes deshabilitarlo si es necesario
+            if (view instanceof ImageView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un TextView, también puedes deshabilitarlo si es necesario
+            if (view instanceof TextView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ViewGroup (por ejemplo, LinearLayout, RelativeLayout, etc.), llama de forma recursiva
+            if (view instanceof ViewGroup) {
+                setAllViewsEnabled((ViewGroup) view, enabled);
+            }
+        }
+    }
+    public void habilitarBotones(){
+        ViewGroup layout = findViewById(R.id.drawer_layout);
+        setAllViewsEnabled(layout, true); // Deshabilita todas las vistas
+    }
+    public void inhabilitarBotones(){
+        ViewGroup layout = findViewById(R.id.drawer_layout);
+        setAllViewsEnabled(layout, false); // Deshabilita todas las vistas
+    }
     private void llenarContenedorCalendarios() {
         LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(
                 dpToPx(50),
@@ -398,6 +451,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void llenarListaCalendarios() {
+        progressBar.setVisibility(View.VISIBLE);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+        inhabilitarBotones();
         String mail = usuario.getEmail();
         usuarioApi.getByMailUsuario(mail).enqueue(new Callback<Usuario>() {
             @Override
@@ -405,6 +462,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 Usuario usuarioLogeado = response.body();
                 nombreUsuario.setText(usuarioLogeado.getUsuarioUnico());
                 codUsuarioLogeado = usuarioLogeado.getCodUsuario();
+                llenarEstadosSolicitud();
                 buscarSolicitudPendiente();
                 buscarRespuestasSolicitudes();
                 buscarContactosVinculados();

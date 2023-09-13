@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".InicioCalendarioActivity"
     android:background="@drawable/background"
-    tools:openDrawer="start">
+    >
 
 
     <!-- Contenido principal -->
@@ -199,12 +199,15 @@
 
             </LinearLayout>
 
+
             <RelativeLayout
+
                 android:id="@+id/recordatorios"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/calendario"
-                android:background="@color/gris"/>
+                android:layout_below="@+id/calendario"
+                android:layout_marginTop="-3dp"
+                android:background="@color/gris" />
 
             <ImageView
                 android:id="@+id/imagen_sin_recordatorios"
@@ -213,6 +216,7 @@
                 android:src="@drawable/sin_recordatorios"
                 android:layout_below="@+id/calendario"
                 android:layout_marginTop="30dp"/>
+
 
             <TextView
                 android:id="@+id/texto_sin_recordatorios"
@@ -226,27 +230,38 @@
                 android:textSize="25sp"
                 />
 
+
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/agregar_recordatorio"
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_above="@+id/botones"
-            android:text="Agregar recordatorio"
-            android:background="@drawable/boton_redondo_verde"
-            android:focusable="false"
-            android:fontFamily="@font/inter_bold"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:textAllCaps="false"
-            android:textAppearance="@style/CustomButtonText"
-            android:textColor="@color/white"
-            android:textSize="17sp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            />
+>
+            <Button
+                android:id="@+id/agregar_recordatorio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:text="Agregar recordatorio"
+                android:background="@drawable/boton_redondo_verde"
+                android:focusable="false"
+                android:fontFamily="@font/inter_bold"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:textAllCaps="false"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+
+                android:layout_marginBottom="30dp"
+                />
+        </RelativeLayout>
+
+
         <LinearLayout
             android:id="@+id/botones"
             android:layout_width="match_parent"
@@ -332,6 +347,7 @@
                     android:textSize="13sp"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/inter_regular"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -362,15 +378,44 @@
             </LinearLayout>
 
         </LinearLayout>
+        <View
+            android:id="@+id/dim_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99000000"
+            android:visibility="gone"/>
+        <LinearLayout
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:background="@drawable/boton_redondo_blanco"
+            android:orientation="vertical">
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="Cargando, espere por favor"
+                android:textAlignment="center"
+                android:textColor="@color/verdeTextos"
+                android:textSize="20dp" />
+
+        </LinearLayout>
 
     </RelativeLayout>
-    <View
-        android:id="@+id/dim_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#99000000"
-        android:visibility="gone"/>
+
+
 
     <!-- Menú hamburguesa -->
     <com.google.android.material.navigation.NavigationView
