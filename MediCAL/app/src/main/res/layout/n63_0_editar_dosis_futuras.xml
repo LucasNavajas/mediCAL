@@ -380,6 +380,7 @@
                             android:layout_marginStart="10dp">
 
                             <EditText
+                                android:id="@+id/editdosis"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.4"
@@ -394,7 +395,7 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Establecer Dosis"
+                                android:text="Cambiar Dosis"
                                 android:layout_weight="1"
                                 android:textColor="@color/verdeTextos"
                                 android:textSize="19sp"
@@ -403,6 +404,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/concentracion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Concentración de la medicación: 00.00 g"
@@ -417,7 +419,7 @@
                             android:id="@+id/establecer_concentracion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Establecer Concentración"
+                            android:text="Cambiar Concentración"
                             android:fontFamily="@font/inter_medium"
                             android:textSize="19sp"
                             android:textColor="@color/verdeTextos"
@@ -532,6 +534,9 @@
                         </RadioGroup>
 
                         <EditText
+                            android:id="@+id/indicaciones"
+                            android:inputType="textMultiLine"
+                            android:maxLength="300"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -595,7 +600,7 @@
                         >
 
                         <TextView
-                            android:id="@+id/descripcion_recordatorio_recetra"
+                            android:id="@+id/descripcion_recordatorio_receta"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"
@@ -613,7 +618,6 @@
 
                     </LinearLayout>
 
-
                     <LinearLayout
                         android:id="@+id/definir_inventario"
                         android:layout_width="match_parent"
@@ -623,6 +627,7 @@
                         android:visibility="gone">
 
                         <EditText
+                            android:id="@+id/cantreal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -636,7 +641,7 @@
                             android:id="@+id/establecer_alerta_inventario"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cuando me queden X medicamentos"
+                            android:text="Establecer cuando me queden X medicamentos"
                             android:fontFamily="@font/inter_medium"
                             android:textSize="19sp"
                             android:textColor="@color/verdeTextos"

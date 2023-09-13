@@ -1,11 +1,16 @@
 package com.example.medical;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -14,7 +19,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.medical.model.Concentracion;
+import com.example.medical.model.Dosis;
 import com.example.medical.model.Frecuencia;
+import com.example.medical.model.Instruccion;
+import com.example.medical.model.Inventario;
 import com.example.medical.model.Medicamento;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.RecordatorioApi;
@@ -34,7 +43,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(4); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
     }
 
     private void inicializarBotones() {
@@ -52,7 +61,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         ImageButton desplegableRecarga = findViewById(R.id.desplegable_recordatorio_receta);
         LinearLayout cambiarRecarga = findViewById(R.id.cambiar_recordatorio_receta);
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
-        LinearLayout agregarInventario = findViewById(R.id.definir_inventario);
+        LinearLayout agregarInventario = findViewById(R.id.definir_inventario); // Cambiado el nombre de la variable
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +82,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 if (cambiarDuracion.getVisibility() == View.GONE) {
                     desplegableDuracion.setImageResource(R.drawable.boton_desplegable_arriba);
                     cambiarDuracion.setVisibility(View.VISIBLE);
-                    duracionActual.setText("Fecha de inicio:");
+                    setDuracionActualText("Fecha de inicio:");
                     duracionActual.setTextColor(Color.BLACK);
                 } else {
                     cambiarDuracion.setVisibility(View.GONE);
                     desplegableDuracion.setImageResource(R.drawable.boton_desplegable);
-                    duracionActual.setText("Según los días de tratamiento");
-                    duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this,R.color.gris_medical));
+                    mostrarDuracion(recordatorio.getDuracionRecordatorio()); // Llama a mostrarDuracion con el valor actual
+                    duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
                 }
             }
         });
@@ -131,7 +140,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     cambiarRecarga.setVisibility(View.VISIBLE);
                 } else {
                     cambiarRecarga.setVisibility(View.GONE);
+                    agregarInventario.setVisibility(View.GONE);
                     desplegableRecarga.setImageResource(R.drawable.boton_desplegable);
+
                 }
             }
         });
@@ -141,8 +152,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     agregarInventario.setVisibility(View.VISIBLE);
+
                 } else {
                     agregarInventario.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -155,16 +168,33 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 recordatorio = response.body();
                 Medicamento medicamento = recordatorio.getMedicamento();
                 Frecuencia frecuencia = recordatorio.getFrecuencia();
-
+                Dosis dosis = recordatorio.getDosis();
+                Concentracion concentracion = dosis.getConcentracion();
+                Instruccion instruccion = recordatorio.getInstruccion();
+                Inventario inventario = recordatorio.getInventario();
 
                 String nombreMedicamento = medicamento.getNombreMedicamento();
                 String nombreFrecuencia = frecuencia.getNombreFrecuencia();
                 int duracionRecordatorio = recordatorio.getDuracionRecordatorio();
+                String imagen = recordatorio.getImagen();
+                float cantdosis = dosis.getCantidadDosis();
+                float valorconcentracion = dosis.getValorConcentracion();
+                String unidadmedidac = concentracion.getUnidadMedidaC();
+                String radioinstruccion = instruccion.getNombreInstruccion();
+                String descindicacion = instruccion.getDescInstruccion();
+                int codinventario = inventario.getCodInventario();
+                int cantreal = inventario.getCantRealInventario();
+                int cantaviso = inventario.getCantAvisoInventario();        
 
                 mostrarNombreMedicamento(nombreMedicamento);
                 mostrarNombreFrecuencia(nombreFrecuencia);
                 mostrarDuracion(duracionRecordatorio);
-
+                mostrarImagen (imagen);
+                mostrarDosis (cantdosis);
+                mostrarConcentracion (valorconcentracion,unidadmedidac);
+                mostrarInstruccion(radioinstruccion);
+                mostrarIndicacion(descindicacion);
+                mostrarInventario(codinventario,cantreal,cantaviso);
             }
 
             @Override
@@ -174,49 +204,121 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
     }
 
+    private void mostrarInventario(int codinventario, int cantreal, int cantaviso) {
+        Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
+        LinearLayout definirInventario = findViewById(R.id.definir_inventario);
+        TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
+        EditText editTextCantreal = findViewById(R.id.cantreal);
+        TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
+
+        if (codinventario != 0) { // Si hay un código de inventario asociado
+            descripcionRecordatorio.setText("Actualmente tiene "+ cantreal +" medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
+            editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
+            textViewCantaviso.setText("Establecer cuando me queden " +cantaviso +" medicamentos"); // Establece el valor de cantaviso
+
+        } else {
+            descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
+            editTextCantreal.setHint("Cantidad de medicamentos:"); // Establece el valor de cantreal
+            textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
+        }
+    }
+
+
+
+    private void mostrarIndicacion(String descindicacion) {
+        EditText indicacionEditText = findViewById(R.id.indicaciones); // Cambia a tu ID real
+        indicacionEditText.setHint(String.valueOf(descindicacion));
+    }
+
+    private void mostrarInstruccion(String radioinstruccion) {
+        RadioButton radioAntesDeComer = findViewById(R.id.radio_antes_de_comer);
+        RadioButton radioConLaComida = findViewById(R.id.radio_con_la_comida);
+        RadioButton radioDespuesDeComer = findViewById(R.id.radio_despues_de_comer);
+        RadioButton radioNoImporta = findViewById(R.id.no_importa);
+
+        if (radioinstruccion.equals("Antes de comer")) {
+            radioAntesDeComer.setChecked(true);
+        } else if (radioinstruccion.equals("Con la comida")) {
+            radioConLaComida.setChecked(true);
+        } else if (radioinstruccion.equals("Después de comer")) {
+            radioDespuesDeComer.setChecked(true);
+        } else {
+            radioNoImporta.setChecked(true);
+        }
+    }
+
+    private void mostrarConcentracion(float valorconcentracion, String unidadmedidac) {
+        TextView concentracionTextView = findViewById(R.id.concentracion); // Cambia el ID según tu diseño
+        concentracionTextView.setText("Concentración de la medicación: "+ valorconcentracion+ " "+ unidadmedidac);
+    }
+
+    private void mostrarDosis(float cantdosis) {
+        EditText dosisEditText = findViewById(R.id.editdosis); // Cambia a tu ID real
+        dosisEditText.setHint(String.valueOf(cantdosis));
+    }
+
+    private void mostrarImagen(String imagen) {
+        if (imagen != null) {
+            int resourceId = getResources().getIdentifier(imagen, "drawable", getPackageName());
+            if (resourceId != 0) {
+                ImageView imagenActualImageView = findViewById(R.id.imagen_actual);
+                imagenActualImageView.setImageResource(resourceId);
+            } else {
+                // Manejar el caso en el que no se encuentra el recurso
+            }
+        } else {
+            // Manejar el caso en el que imagen es nulo
+        }
+    }
+
+
+
     private void mostrarNombreFrecuencia(String nombreFrecuencia) {
         TextView frecuenciaActualTextView = findViewById(R.id.frecuencia_actual); // Cambia el ID según tu diseño
         frecuenciaActualTextView.setText(nombreFrecuencia);
     }
 
-
     private void mostrarNombreMedicamento(String nombreMedicamento) {
         TextView nombreMedicamentoTextView = findViewById(R.id.nombremed); // Cambia el ID según tu diseño
         nombreMedicamentoTextView.setText(nombreMedicamento);
     }
-    private void mostrarDuracion(Integer duracionRecordatorio) {
-        TextView duracionActualTextView = findViewById(R.id.duracion_actual); // Cambia el ID según tu diseño
 
-        if (duracionRecordatorio == null) {
-            duracionActualTextView.setText("Tratamiento continuo");
+    private void setDuracionActualText(String text) {
+        TextView duracionActualTextView = findViewById(R.id.duracion_actual); // Cambia el ID según tu diseño
+        duracionActualTextView.setText(text);
+    }
+
+    private void mostrarDuracion(Integer duracionRecordatorio) {
+        if (duracionRecordatorio == 99999) {
+            setDuracionActualText("Tratamiento continuo");
         } else {
             switch (duracionRecordatorio) {
                 case 1:
-                    duracionActualTextView.setText("1 día");
+                    setDuracionActualText("1 día");
                     break;
                 case 5:
-                    duracionActualTextView.setText("5 días");
+                    setDuracionActualText("5 días");
                     break;
                 case 7:
-                    duracionActualTextView.setText("1 semana");
+                    setDuracionActualText("1 semana");
                     break;
                 case 10:
-                    duracionActualTextView.setText("10 días");
+                    setDuracionActualText("10 días");
                     break;
                 case 30:
-                    duracionActualTextView.setText("30 días");
+                    setDuracionActualText("30 días");
                     break;
                 case 180:
-                    duracionActualTextView.setText("6 meses");
+                    setDuracionActualText("6 meses");
                     break;
                 case 360:
-                    duracionActualTextView.setText("12 meses");
+                    setDuracionActualText("12 meses");
                     break;
                 case 720:
-                    duracionActualTextView.setText("24 meses");
+                    setDuracionActualText("24 meses");
                     break;
                 default:
-                    duracionActualTextView.setText(duracionRecordatorio +" días");
+                    setDuracionActualText(duracionRecordatorio + " días");
                     break;
             }
         }
