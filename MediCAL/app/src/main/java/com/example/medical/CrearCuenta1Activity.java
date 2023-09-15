@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
     private List<String> mailsUnicos;
     private RetrofitService retrofitService = new RetrofitService();
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+    private LinearLayout progressBar;
     private Button buttonIngresar;
     private ImageView buttonVolver;
     private ImageView ojoContrasenia;
@@ -81,7 +83,10 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         usuario.setFilters(new InputFilter[] { new NoSpaceInputFilter() });
         mail.setFilters(new InputFilter[] { new NoSpaceInputFilter() });
         buttonIngresar.setOnClickListener(view -> {
-
+            progressBar.setVisibility(View.VISIBLE);
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.VISIBLE);
+            inhabilitarBotones();
 
 
             String textoUsuario = usuario.getText().toString();
@@ -119,6 +124,10 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                             // Show an error message if the response is not successful
                             Toast.makeText(getApplicationContext(), "Error retrieving existing user details", Toast.LENGTH_SHORT).show();
                         }
+                        progressBar.setVisibility(View.GONE);
+                        View dimView = findViewById(R.id.dim_view);
+                        dimView.setVisibility(View.GONE);
+                        habilitarBotones();
                     }
 
                     @Override
@@ -179,6 +188,10 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                         .enqueue(new Callback<Usuario>() {
                             @Override
                             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                                progressBar.setVisibility(View.GONE);
+                                View dimView = findViewById(R.id.dim_view);
+                                dimView.setVisibility(View.GONE);
+                                habilitarBotones();
                                 Intent intent = new Intent(CrearCuenta1Activity.this, CodigoVerificacionActivity.class);
                                 Usuario usuarioInsertado = response.body();
                                 int idUsuarioGenerado = usuarioInsertado.getCodUsuario();
@@ -241,6 +254,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         lineaInferiorMail = findViewById(R.id.linea_inferior_mail);
         lineaInferiorContrasenia = findViewById(R.id.linea_inferior_contrasenia);
         lineaInferiorUsuario = findViewById(R.id.linea_inferior_usuario);
+        progressBar = findViewById(R.id.progressBar);
 
 
     }
@@ -361,5 +375,40 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public static void setAllViewsEnabled(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+
+            // Deshabilitar vista si es interactuable (Button, EditText, CheckBox, RadioButton)
+            if (view instanceof Button || view instanceof EditText) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ImageView, también puedes deshabilitarlo si es necesario
+            if (view instanceof ImageView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un TextView, también puedes deshabilitarlo si es necesario
+            if (view instanceof TextView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ViewGroup (por ejemplo, LinearLayout, RelativeLayout, etc.), llama de forma recursiva
+            if (view instanceof ViewGroup) {
+                setAllViewsEnabled((ViewGroup) view, enabled);
+            }
+        }
+    }
+    public void habilitarBotones(){
+        ViewGroup layout = findViewById(R.id.layout_entero);
+        setAllViewsEnabled(layout, true); // Deshabilita todas las vistas
+    }
+    public void inhabilitarBotones(){
+        ViewGroup layout = findViewById(R.id.layout_entero);
+        setAllViewsEnabled(layout, false); // Deshabilita todas las vistas
     }
 }

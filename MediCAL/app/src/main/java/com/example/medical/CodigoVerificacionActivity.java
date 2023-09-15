@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
     private Intent intent1;
     private int codUsuario;
     private PopupWindow popupWindow2;
+    private LinearLayout progressBar;
     private PopupWindow popupWindow;
     private Usuario usuario;
     private CodigoVerificacion codverificacion;
@@ -155,15 +157,24 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
         editText3 = findViewById(R.id.editText3);
         editText4 = findViewById(R.id.editText4);
         botonValidar = findViewById(R.id.button_ingresar);
+        progressBar = findViewById(R.id.progressBar);
         intent1 = getIntent();
         codUsuario = intent1.getIntExtra("codusuario", 0);
         // Llamada al método getByCodUsuario de la API en onResponse
         Call<Usuario> call = usuarioApi.getByCodUsuario(codUsuario);
 
+        progressBar.setVisibility(View.VISIBLE);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+        inhabilitarBotones();
         // Realizar la llamada asíncrona
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                progressBar.setVisibility(View.GONE);
+                View dimView = findViewById(R.id.dim_view);
+                dimView.setVisibility(View.GONE);
+                habilitarBotones();
                 if (response.isSuccessful()) {
                     usuario = response.body();
                     codverificacion = usuario.getCodigoVerificacion();
@@ -447,5 +458,38 @@ public class CodigoVerificacionActivity extends AppCompatActivity {
             });
         }
     }
+    public static void setAllViewsEnabled(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
 
+            // Deshabilitar vista si es interactuable (Button, EditText, CheckBox, RadioButton)
+            if (view instanceof Button || view instanceof EditText) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ImageView, también puedes deshabilitarlo si es necesario
+            if (view instanceof ImageView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un TextView, también puedes deshabilitarlo si es necesario
+            if (view instanceof TextView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ViewGroup (por ejemplo, LinearLayout, RelativeLayout, etc.), llama de forma recursiva
+            if (view instanceof ViewGroup) {
+                setAllViewsEnabled((ViewGroup) view, enabled);
+            }
+        }
+    }
+    public void habilitarBotones(){
+        ViewGroup layout = findViewById(R.id.layout_entero);
+        setAllViewsEnabled(layout, true); // Deshabilita todas las vistas
+    }
+    public void inhabilitarBotones(){
+        ViewGroup layout = findViewById(R.id.layout_entero);
+        setAllViewsEnabled(layout, false); // Deshabilita todas las vistas
+    }
 }
