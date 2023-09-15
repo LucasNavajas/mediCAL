@@ -1,16 +1,21 @@
 package com.example.medical;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -37,6 +42,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private Recordatorio recordatorio;
+    private PopupWindow popupWindow;
+
+    @Override
+    public void onBackPressed() {
+        popupSalir();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,26 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
         obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
+
+        ImageView btnCerrar = findViewById(R.id.boton_cerrar);
+        if (btnCerrar != null) {
+            btnCerrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupSalir();
+                }
+            });
+        }
+
+        TextView cambiarfrec = findViewById(R.id.cambiar_frecuencia);
+        if (cambiarfrec != null) {
+            cambiarfrec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupCambiarFrecuencia();
+                }
+            });
+        }
     }
 
     private void inicializarBotones() {
@@ -61,7 +92,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         ImageButton desplegableRecarga = findViewById(R.id.desplegable_recordatorio_receta);
         LinearLayout cambiarRecarga = findViewById(R.id.cambiar_recordatorio_receta);
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
-        LinearLayout agregarInventario = findViewById(R.id.definir_inventario); // Cambiado el nombre de la variable
+        LinearLayout agregarInventario = findViewById(R.id.definir_inventario);
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,17 +215,17 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 String descindicacion = instruccion.getDescInstruccion();
                 int codinventario = inventario.getCodInventario();
                 int cantreal = inventario.getCantRealInventario();
-                int cantaviso = inventario.getCantAvisoInventario();        
+                int cantaviso = inventario.getCantAvisoInventario();
 
                 mostrarNombreMedicamento(nombreMedicamento);
                 mostrarNombreFrecuencia(nombreFrecuencia);
                 mostrarDuracion(duracionRecordatorio);
-                mostrarImagen (imagen);
-                mostrarDosis (cantdosis);
-                mostrarConcentracion (valorconcentracion,unidadmedidac);
+                mostrarImagen(imagen);
+                mostrarDosis(cantdosis);
+                mostrarConcentracion(valorconcentracion, unidadmedidac);
                 mostrarInstruccion(radioinstruccion);
                 mostrarIndicacion(descindicacion);
-                mostrarInventario(codinventario,cantreal,cantaviso);
+                mostrarInventario(codinventario, cantreal, cantaviso);
             }
 
             @Override
@@ -212,9 +243,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
 
         if (codinventario != 0) { // Si hay un código de inventario asociado
-            descripcionRecordatorio.setText("Actualmente tiene "+ cantreal +" medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
+            descripcionRecordatorio.setText("Actualmente tiene " + cantreal + " medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
             editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
-            textViewCantaviso.setText("Establecer cuando me queden " +cantaviso +" medicamentos"); // Establece el valor de cantaviso
+            textViewCantaviso.setText("Establecer cuando me queden " + cantaviso + " medicamentos"); // Establece el valor de cantaviso
 
         } else {
             descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
@@ -222,8 +253,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
         }
     }
-
-
 
     private void mostrarIndicacion(String descindicacion) {
         EditText indicacionEditText = findViewById(R.id.indicaciones); // Cambia a tu ID real
@@ -249,7 +278,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
     private void mostrarConcentracion(float valorconcentracion, String unidadmedidac) {
         TextView concentracionTextView = findViewById(R.id.concentracion); // Cambia el ID según tu diseño
-        concentracionTextView.setText("Concentración de la medicación: "+ valorconcentracion+ " "+ unidadmedidac);
+        concentracionTextView.setText("Concentración de la medicación: " + valorconcentracion + " " + unidadmedidac);
     }
 
     private void mostrarDosis(float cantdosis) {
@@ -270,8 +299,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             // Manejar el caso en el que imagen es nulo
         }
     }
-
-
 
     private void mostrarNombreFrecuencia(String nombreFrecuencia) {
         TextView frecuenciaActualTextView = findViewById(R.id.frecuencia_actual); // Cambia el ID según tu diseño
@@ -321,6 +348,162 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     setDuracionActualText(duracionRecordatorio + " días");
                     break;
             }
+        }
+    }
+
+    private void popupSalir() {
+        View popupView = getLayoutInflater().inflate(R.layout.n63_1_popup_salir_sin_guardar, null);
+
+
+        // Crear la instancia de PopupWindow
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView textViewCancelar = popupView.findViewById(R.id.cancelar);
+
+        textViewCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
+    private void popupCambiarFrecuencia() {
+        View popupView = getLayoutInflater().inflate(R.layout.n63_2_popup_cambiarfrecuencia, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nombreFrecuencia = obtenerNombreFrecuenciaSeleccionada();
+                if (nombreFrecuencia != null) {
+                    mostrarNombreFrecuencia(nombreFrecuencia);
+                }
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Configura OnClickListener para las opciones de frecuencia
+        TextView opcionXHoras = popupView.findViewById(R.id.text_x_horas);
+        TextView opcionXDias = popupView.findViewById(R.id.text_x_dias);
+        TextView opcionXSemanas = popupView.findViewById(R.id.text_x_semanas);
+        TextView opcionXMeses = popupView.findViewById(R.id.text_x_meses);
+        TextView opcionCicloRecurrente = popupView.findViewById(R.id.text_ciclo_recurrente);
+        TextView opcionSegunSeaNecesario = popupView.findViewById(R.id.text_segun_sea_necesario);
+
+        opcionXHoras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarOpcion(opcionXHoras);
+            }
+        });
+
+        opcionXDias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarOpcion(opcionXDias);
+            }
+        });
+
+        opcionXSemanas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarOpcion(opcionXSemanas);
+            }
+        });
+
+        opcionXMeses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarOpcion(opcionXMeses);
+            }
+        });
+
+        opcionCicloRecurrente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarOpcion(opcionCicloRecurrente);
+            }
+        });
+
+        opcionSegunSeaNecesario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seleccionarOpcion(opcionSegunSeaNecesario);
+            }
+        });
+    }
+    private TextView opcionSeleccionada = null;
+
+    private void seleccionarOpcion(TextView opcion) {
+        if (opcionSeleccionada != null) {
+            opcionSeleccionada.setBackgroundResource(android.R.color.transparent);
+        }
+
+        opcion.setBackgroundResource(R.color.verdeSelector);
+        opcionSeleccionada = opcion;
+    }
+
+    private String obtenerNombreFrecuenciaSeleccionada() {
+        if (opcionSeleccionada != null) {
+            return opcionSeleccionada.getText().toString();
+        } else {
+            return null; // Devuelve null si no se ha seleccionado ninguna opción
         }
     }
 
