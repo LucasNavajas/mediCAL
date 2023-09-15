@@ -93,6 +93,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         LinearLayout cambiarRecarga = findViewById(R.id.cambiar_recordatorio_receta);
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
         LinearLayout agregarInventario = findViewById(R.id.definir_inventario);
+        TextView aclaracionDuracion = findViewById(R.id.aclaracion_duracion);
+        View dividerDuracion = findViewById(R.id.divider_duracion);
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,19 +112,29 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         desplegableDuracion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cambiarDuracion.getVisibility() == View.GONE) {
-                    desplegableDuracion.setImageResource(R.drawable.boton_desplegable_arriba);
-                    cambiarDuracion.setVisibility(View.VISIBLE);
-                    setDuracionActualText("Fecha de inicio:");
-                    duracionActual.setTextColor(Color.BLACK);
+                if (recordatorio != null) {
+                    if (cambiarDuracion.getVisibility() == View.GONE) {
+                        desplegableDuracion.setImageResource(R.drawable.boton_desplegable_arriba);
+                        cambiarDuracion.setVisibility(View.VISIBLE);
+                        setDuracionActualText("Fecha de inicio:");
+                        duracionActual.setTextColor(Color.BLACK);
+                        aclaracionDuracion.setVisibility(View.VISIBLE);
+                        dividerDuracion.setVisibility(View.VISIBLE);
+                    } else {
+                        cambiarDuracion.setVisibility(View.GONE);
+                        aclaracionDuracion.setVisibility(View.GONE);
+                        dividerDuracion.setVisibility(View.GONE);
+                        desplegableDuracion.setImageResource(R.drawable.boton_desplegable);
+                        mostrarDuracion(recordatorio.getDuracionRecordatorio());
+                        duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
+                    }
                 } else {
-                    cambiarDuracion.setVisibility(View.GONE);
-                    desplegableDuracion.setImageResource(R.drawable.boton_desplegable);
-                    mostrarDuracion(recordatorio.getDuracionRecordatorio()); // Llama a mostrarDuracion con el valor actual
-                    duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
+                    // Handle the case where recordatorio is null
                 }
             }
         });
+
+
 
         desplegableImagen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,23 +248,27 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     }
 
     private void mostrarInventario(int codinventario, int cantreal, int cantaviso) {
-        Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
-        LinearLayout definirInventario = findViewById(R.id.definir_inventario);
-        TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
-        EditText editTextCantreal = findViewById(R.id.cantreal);
-        TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
+        if (recordatorio != null) {
+            Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
+            LinearLayout definirInventario = findViewById(R.id.definir_inventario);
+            TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
+            EditText editTextCantreal = findViewById(R.id.cantreal);
+            TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
 
-        if (codinventario != 0) { // Si hay un código de inventario asociado
-            descripcionRecordatorio.setText("Actualmente tiene " + cantreal + " medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
-            editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
-            textViewCantaviso.setText("Establecer cuando me queden " + cantaviso + " medicamentos"); // Establece el valor de cantaviso
-
+            if (codinventario != 0) { // Si hay un código de inventario asociado
+                descripcionRecordatorio.setText("Actualmente tiene " + cantreal + " medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
+                editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
+                textViewCantaviso.setText("Establecer cuando me queden " + cantaviso + " medicamentos"); // Establece el valor de cantaviso
+            } else {
+                descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
+                editTextCantreal.setHint("Cantidad de medicamentos:"); // Establece el valor de cantreal
+                textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
+            }
         } else {
-            descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
-            editTextCantreal.setHint("Cantidad de medicamentos:"); // Establece el valor de cantreal
-            textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
+            // Handle the case where recordatorio is null
         }
     }
+
 
     private void mostrarIndicacion(String descindicacion) {
         EditText indicacionEditText = findViewById(R.id.indicaciones); // Cambia a tu ID real
@@ -372,7 +388,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         // Mostrar el popup en la ubicación deseada
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
         TextView textViewCancelar = popupView.findViewById(R.id.cancelar);
 
         textViewCancelar.setOnClickListener(new View.OnClickListener() {
@@ -506,6 +528,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             return null; // Devuelve null si no se ha seleccionado ninguna opción
         }
     }
+
 
 
 }
