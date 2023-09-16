@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,6 +35,12 @@ import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import org.w3c.dom.Text;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +50,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private Recordatorio recordatorio;
     private PopupWindow popupWindow;
+    private String nombrefrecuencia;
 
     @Override
     public void onBackPressed() {
@@ -66,9 +74,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             });
         }
 
-        TextView cambiarfrec = findViewById(R.id.cambiar_frecuencia);
-        if (cambiarfrec != null) {
-            cambiarfrec.setOnClickListener(new View.OnClickListener() {
+        TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
+        if (cambiarFrecuencia != null) {
+            cambiarFrecuencia.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     popupCambiarFrecuencia();
@@ -80,6 +88,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private void inicializarBotones() {
         ImageButton desplegableFrecuencia = findViewById(R.id.desplegable_frecuencia);
         TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
+        ImageButton desplegableHora = findViewById(R.id.desplegable_hora);
+        TextView cambiarHora = findViewById(R.id.cambiar_hora);
         ImageButton desplegableDuracion = findViewById(R.id.desplegable_duracion);
         RelativeLayout cambiarDuracion = findViewById(R.id.cambiar_duracion);
         TextView duracionActual = findViewById(R.id.duracion_actual);
@@ -95,6 +105,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         LinearLayout agregarInventario = findViewById(R.id.definir_inventario);
         TextView aclaracionDuracion = findViewById(R.id.aclaracion_duracion);
         View dividerDuracion = findViewById(R.id.divider_duracion);
+        TextView dias = findViewById(R.id.dias);
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +127,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     if (cambiarDuracion.getVisibility() == View.GONE) {
                         desplegableDuracion.setImageResource(R.drawable.boton_desplegable_arriba);
                         cambiarDuracion.setVisibility(View.VISIBLE);
-                        setDuracionActualText("Fecha de inicio:");
-                        duracionActual.setTextColor(Color.BLACK);
+                        dias.setVisibility(View.VISIBLE);
+                        dias.setTextColor(Color.BLACK);
+                        duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.verdeTextos));
                         aclaracionDuracion.setVisibility(View.VISIBLE);
                         dividerDuracion.setVisibility(View.VISIBLE);
                     } else {
@@ -125,16 +137,14 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                         aclaracionDuracion.setVisibility(View.GONE);
                         dividerDuracion.setVisibility(View.GONE);
                         desplegableDuracion.setImageResource(R.drawable.boton_desplegable);
-                        mostrarDuracion(recordatorio.getDuracionRecordatorio());
                         duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
+                        dias.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
                     }
                 } else {
                     // Handle the case where recordatorio is null
                 }
             }
         });
-
-
 
         desplegableImagen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +155,19 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 } else {
                     cambiarImagen.setVisibility(View.GONE);
                     desplegableImagen.setImageResource(R.drawable.boton_desplegable);
+                }
+            }
+        });
+
+        desplegableHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cambiarHora.getVisibility() == View.GONE) {
+                    desplegableHora.setImageResource(R.drawable.boton_desplegable_arriba);
+                    cambiarHora.setVisibility(View.VISIBLE);
+                } else {
+                    cambiarHora.setVisibility(View.GONE);
+                    desplegableHora.setImageResource(R.drawable.boton_desplegable);
                 }
             }
         });
@@ -218,7 +241,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
                 String nombreMedicamento = medicamento.getNombreMedicamento();
                 String nombreFrecuencia = frecuencia.getNombreFrecuencia();
-                int duracionRecordatorio = recordatorio.getDuracionRecordatorio();
                 String imagen = recordatorio.getImagen();
                 float cantdosis = dosis.getCantidadDosis();
                 float valorconcentracion = dosis.getValorConcentracion();
@@ -228,10 +250,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 int codinventario = inventario.getCodInventario();
                 int cantreal = inventario.getCantRealInventario();
                 int cantaviso = inventario.getCantAvisoInventario();
+                LocalDateTime fechainiciorecordatorio = recordatorio.getFechaInicioRecordatorio();
+                int diasduracion = recordatorio.getDuracionRecordatorio();
 
                 mostrarNombreMedicamento(nombreMedicamento);
                 mostrarNombreFrecuencia(nombreFrecuencia);
-                mostrarDuracion(duracionRecordatorio);
+                mostrarHorario(fechainiciorecordatorio);
+                mostrarDuracion(fechainiciorecordatorio, diasduracion);
                 mostrarImagen(imagen);
                 mostrarDosis(cantdosis);
                 mostrarConcentracion(valorconcentracion, unidadmedidac);
@@ -326,46 +351,36 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         nombreMedicamentoTextView.setText(nombreMedicamento);
     }
 
-    private void setDuracionActualText(String text) {
+    private void mostrarDuracion(LocalDateTime fechainiciorecordatorio, int diasduracion) {
         TextView duracionActualTextView = findViewById(R.id.duracion_actual); // Cambia el ID según tu diseño
-        duracionActualTextView.setText(text);
-    }
+        TextView diasduracionTextView = findViewById(R.id.dias);
 
-    private void mostrarDuracion(Integer duracionRecordatorio) {
-        if (duracionRecordatorio == 99999) {
-            setDuracionActualText("Tratamiento continuo");
+        // Formatear la fecha en el formato deseado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        String fechaFormateada = fechainiciorecordatorio.format(formatter);
+
+        // Establecer la fecha formateada en el TextView
+        duracionActualTextView.setText("Fecha de inicio: " + fechaFormateada);
+
+        if (diasduracion == 99999) {
+            diasduracionTextView.setText("Tratamiento continuo");
         } else {
-            switch (duracionRecordatorio) {
-                case 1:
-                    setDuracionActualText("1 día");
-                    break;
-                case 5:
-                    setDuracionActualText("5 días");
-                    break;
-                case 7:
-                    setDuracionActualText("1 semana");
-                    break;
-                case 10:
-                    setDuracionActualText("10 días");
-                    break;
-                case 30:
-                    setDuracionActualText("30 días");
-                    break;
-                case 180:
-                    setDuracionActualText("6 meses");
-                    break;
-                case 360:
-                    setDuracionActualText("12 meses");
-                    break;
-                case 720:
-                    setDuracionActualText("24 meses");
-                    break;
-                default:
-                    setDuracionActualText(duracionRecordatorio + " días");
-                    break;
-            }
+            diasduracionTextView.setText("Días de tratamiento: " + diasduracion);
         }
     }
+
+    private void mostrarHorario(LocalDateTime fechainiciorecordatorio) {
+        TextView primeratomaTextView = findViewById(R.id.primeratoma); // Cambia el ID según tu diseño
+
+        // Formatear la fecha en el formato deseado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String fechaFormateada = fechainiciorecordatorio.format(formatter);
+
+        // Establecer la fecha formateada en el TextView
+        primeratomaTextView.setText("Primera administración a las:\n" + fechaFormateada);
+
+    }
+
 
     private void popupSalir() {
         View popupView = getLayoutInflater().inflate(R.layout.n63_1_popup_salir_sin_guardar, null);
@@ -443,13 +458,15 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nombreFrecuencia = obtenerNombreFrecuenciaSeleccionada();
-                if (nombreFrecuencia != null) {
-                    mostrarNombreFrecuencia(nombreFrecuencia);
+                if (nombreFrecuencia.equals("Cada X horas")) {
+                    // Llama al método popupCuantos()
+                    popupXhoras();
                 }
                 popupWindow.dismiss();
-                dimView.setVisibility(View.GONE);
+                dimView.setVisibility(View.VISIBLE);
             }
         });
+
 
         // Establece OnClickListener para el botón Cancelar
         botonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -510,6 +527,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             }
         });
     }
+
     private TextView opcionSeleccionada = null;
 
     private void seleccionarOpcion(TextView opcion) {
@@ -529,6 +547,59 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         }
     }
 
+    private void popupXhoras() {
+        View popupView = getLayoutInflater().inflate(R.layout.n64_1_popup_duracionhoras, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        NumberPicker numberPicker = popupView.findViewById(R.id.number_picker); // Asume que tu NumberPicker tiene el ID "numberPicker" en tu diseño XML
+
+        numberPicker.setMinValue(1); // Establece el valor mínimo
+        numberPicker.setMaxValue(24);
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedValue = numberPicker.getValue(); // Obtén el valor seleccionado en el NumberPicker
+                nombrefrecuencia = "Cada " + selectedValue + " horas"; // Establece nombrefrecuencia con el valor seleccionado
+                // Haz algo con el valor seleccionado, si es necesario
+                mostrarNombreFrecuencia(nombrefrecuencia);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                popupCambiarFrecuencia();
+            }
+        });
+    }
 
 
 }

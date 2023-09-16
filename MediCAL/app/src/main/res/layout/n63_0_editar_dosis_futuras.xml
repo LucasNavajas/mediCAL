@@ -165,7 +165,67 @@
                         android:visibility="gone"/>
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rectangle_hora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/background_blanco_recto"
+                    android:animateLayoutChanges="true">
 
+                    <TextView
+                        android:id="@+id/hora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Horario"
+                        android:fontFamily="@font/inter_medium"
+                        android:textSize="25sp"
+                        android:textColor="@color/verdeClaro"
+                        android:paddingStart="10dp"
+                        android:layout_marginTop="10dp" />
+
+                    <ImageButton
+                        android:id="@+id/desplegable_hora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleY="0.7"
+                        android:scaleX="0.7"
+                        android:src="@drawable/boton_desplegable"
+                        android:background="@android:color/transparent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/primeratoma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hora de la primera administración."
+                        android:fontFamily="@font/inter_medium"
+                        android:textSize="19sp"
+                        android:textColor="@color/gris_medical"
+                        android:layout_below="@+id/hora"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:id="@+id/cambiar_hora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cambiar Horario"
+                        android:fontFamily="@font/inter_medium"
+                        android:textSize="19sp"
+                        android:textColor="@color/verdeTextos"
+                        android:layout_below="@+id/primeratoma"
+                        android:paddingStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/rectangle_duracion"
@@ -213,6 +273,17 @@
                         android:paddingStart="10dp"
                         android:layout_marginBottom="10dp"/>
                     <TextView
+                        android:id="@+id/dias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dias de tratamiento:"
+                        android:fontFamily="@font/inter_medium"
+                        android:textSize="19sp"
+                        android:textColor="@color/gris_medical"
+                        android:layout_below="@+id/duracion_actual"
+                        android:paddingStart="10dp"
+                        android:layout_marginBottom="10dp"/>
+                    <TextView
                         android:id="@+id/aclaracion_duracion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -220,7 +291,7 @@
                         android:fontFamily="@font/inter_medium"
                         android:textSize="17sp"
                         android:textColor="@color/rojoError"
-                        android:layout_below="@+id/duracion_actual"
+                        android:layout_below="@+id/dias"
                         android:paddingStart="10dp"
                         android:layout_marginBottom="10dp"
                         android:visibility="gone"/>
