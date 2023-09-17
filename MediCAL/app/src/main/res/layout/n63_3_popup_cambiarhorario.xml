@@ -17,48 +17,22 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/inter_semibold"
-        android:text="Establecer intervalo horario"
+        android:text="¿Cuándo debe tomar la primera dosis?"
         android:textColor="@color/black"
         android:textSize="22sp"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
-        android:gravity="center_vertical|center">
-
-        <TextView
-            android:id="@+id/text_cada"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/inter_medium"
-            android:text="Cada"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/verdeClaro"
-            android:textSize="21sp" />
-
-        <NumberPicker
-            android:id="@+id/number_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_medium"
-            android:textColor="@color/verdeClaro"
-            android:textSize="50sp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_medium"
-            android:text="hora(s)"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/verdeClaro"
-            android:textSize="21sp" />
-
-    </LinearLayout>
+    <TimePicker
+        android:layout_below="@+id/rectangulo_gris"
+        android:id="@+id/timePicker"
+        android:layout_width="300dp"
+        android:layout_height="199dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:format24Hour="true"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:timePickerMode="spinner"
+        style="@style/TimePickerStyle" />
 
     <!--botones aceptar y cancelar-->
 

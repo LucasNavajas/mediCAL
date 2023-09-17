@@ -202,7 +202,7 @@
                         android:id="@+id/primeratoma"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hora de la primera administración."
+                        android:text="Hora de la primera administración"
                         android:fontFamily="@font/inter_medium"
                         android:textSize="19sp"
                         android:textColor="@color/gris_medical"
@@ -271,6 +271,7 @@
                         android:textColor="@color/gris_medical"
                         android:layout_below="@+id/duracion"
                         android:paddingStart="10dp"
+                        android:clickable="true"
                         android:layout_marginBottom="10dp"/>
                     <TextView
                         android:id="@+id/dias"

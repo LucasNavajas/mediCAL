@@ -2,13 +2,15 @@ package com.example.medical;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,10 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,11 +37,11 @@ import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
-import org.w3c.dom.Text;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +64,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(4); // Cambia el número 4 por el codRecordatorio deseado
 
         ImageView btnCerrar = findViewById(R.id.boton_cerrar);
         if (btnCerrar != null) {
@@ -80,6 +82,16 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     popupCambiarFrecuencia();
+                }
+            });
+        }
+
+        TextView cambiarHora = findViewById(R.id.cambiar_hora);
+        if (cambiarHora != null) {
+            cambiarHora.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupCambiarHora();
                 }
             });
         }
@@ -106,6 +118,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         TextView aclaracionDuracion = findViewById(R.id.aclaracion_duracion);
         View dividerDuracion = findViewById(R.id.divider_duracion);
         TextView dias = findViewById(R.id.dias);
+        RadioButton rbdias = findViewById(R.id.radio_x_dias);
+        RadioButton rbtcontinuo = findViewById(R.id.radio_tratamiento_continuo);
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,14 +143,30 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                         cambiarDuracion.setVisibility(View.VISIBLE);
                         dias.setVisibility(View.VISIBLE);
                         dias.setTextColor(Color.BLACK);
+                        duracionActual.setClickable(true);
                         duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.verdeTextos));
                         aclaracionDuracion.setVisibility(View.VISIBLE);
                         dividerDuracion.setVisibility(View.VISIBLE);
+
+                        // Configura el OnClickListener para duracionActual cuando el desplegable esté visible
+                        duracionActual.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popupCambiarFecha();
+                            }
+                        });
+                        rbdias.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popupCambiarDiasTratamiento();
+                            }
+                        });
                     } else {
                         cambiarDuracion.setVisibility(View.GONE);
                         aclaracionDuracion.setVisibility(View.GONE);
                         dividerDuracion.setVisibility(View.GONE);
                         desplegableDuracion.setImageResource(R.drawable.boton_desplegable);
+                        duracionActual.setClickable(false);
                         duracionActual.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
                         dias.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
                     }
@@ -241,6 +271,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
                 String nombreMedicamento = medicamento.getNombreMedicamento();
                 String nombreFrecuencia = frecuencia.getNombreFrecuencia();
+                int diastoma = frecuencia.getDiasTomaF();
+                int diasdescanso = frecuencia.getDiasDescansoF();
                 String imagen = recordatorio.getImagen();
                 float cantdosis = dosis.getCantidadDosis();
                 float valorconcentracion = dosis.getValorConcentracion();
@@ -254,7 +286,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 int diasduracion = recordatorio.getDuracionRecordatorio();
 
                 mostrarNombreMedicamento(nombreMedicamento);
-                mostrarNombreFrecuencia(nombreFrecuencia);
+                mostrarNombreFrecuencia(nombreFrecuencia,diastoma,diasdescanso);
                 mostrarHorario(fechainiciorecordatorio);
                 mostrarDuracion(fechainiciorecordatorio, diasduracion);
                 mostrarImagen(imagen);
@@ -273,27 +305,23 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     }
 
     private void mostrarInventario(int codinventario, int cantreal, int cantaviso) {
-        if (recordatorio != null) {
-            Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
-            LinearLayout definirInventario = findViewById(R.id.definir_inventario);
-            TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
-            EditText editTextCantreal = findViewById(R.id.cantreal);
-            TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
+        Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
+        LinearLayout definirInventario = findViewById(R.id.definir_inventario);
+        TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
+        EditText editTextCantreal = findViewById(R.id.cantreal);
+        TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
 
-            if (codinventario != 0) { // Si hay un código de inventario asociado
-                descripcionRecordatorio.setText("Actualmente tiene " + cantreal + " medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
-                editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
-                textViewCantaviso.setText("Establecer cuando me queden " + cantaviso + " medicamentos"); // Establece el valor de cantaviso
-            } else {
-                descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
-                editTextCantreal.setHint("Cantidad de medicamentos:"); // Establece el valor de cantreal
-                textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
-            }
+        if (codinventario != 0) { // Si hay un código de inventario asociado
+            descripcionRecordatorio.setText("Actualmente tiene " + cantreal + " medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
+            editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
+           textViewCantaviso.setText("Establecer cuando me queden " + cantaviso + " medicamentos"); // Establece el valor de cantaviso
+
         } else {
-            // Handle the case where recordatorio is null
+            descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
+            editTextCantreal.setHint("Cantidad de medicamentos:"); // Establece el valor de cantreal
+            textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
         }
     }
-
 
     private void mostrarIndicacion(String descindicacion) {
         EditText indicacionEditText = findViewById(R.id.indicaciones); // Cambia a tu ID real
@@ -341,9 +369,14 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         }
     }
 
-    private void mostrarNombreFrecuencia(String nombreFrecuencia) {
+    private void mostrarNombreFrecuencia(String nombreFrecuencia, int diastoma, int diasdescanso) {
         TextView frecuenciaActualTextView = findViewById(R.id.frecuencia_actual); // Cambia el ID según tu diseño
-        frecuenciaActualTextView.setText(nombreFrecuencia);
+
+        if (nombreFrecuencia.equals("Ciclo recurrente")) {
+            frecuenciaActualTextView.setText(nombreFrecuencia + " (Toma " + diastoma + " días / Descanso " + diasdescanso + " días)");
+        } else {
+            frecuenciaActualTextView.setText(nombreFrecuencia);
+        }
     }
 
     private void mostrarNombreMedicamento(String nombreMedicamento) {
@@ -380,7 +413,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         primeratomaTextView.setText("Primera administración a las:\n" + fechaFormateada);
 
     }
-
 
     private void popupSalir() {
         View popupView = getLayoutInflater().inflate(R.layout.n63_1_popup_salir_sin_guardar, null);
@@ -458,15 +490,34 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nombreFrecuencia = obtenerNombreFrecuenciaSeleccionada();
-                if (nombreFrecuencia.equals("Cada X horas")) {
-                    // Llama al método popupCuantos()
-                    popupXhoras();
+                switch (nombreFrecuencia) {
+                    case "Cada X horas":
+                        popupXhoras();
+                        break;
+                    case "Cada X días":
+                        popupXdias();
+                        break;
+                    case "Cada X semanas":
+                        popupXsemanas();
+                        break;
+                    case "Cada X meses":
+                        popupXmeses();
+                        break;
+                    case "Ciclo recurrente":
+                        popupCiclos();
+
+                        break;
+                    case "Según sea necesario":
+                        nombrefrecuencia = "Según sea necesario";
+                        mostrarNombreFrecuencia(nombrefrecuencia, 0, 0);
+
+                        break;
                 }
                 popupWindow.dismiss();
                 dimView.setVisibility(View.VISIBLE);
+
             }
         });
-
 
         // Establece OnClickListener para el botón Cancelar
         botonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -585,7 +636,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 int selectedValue = numberPicker.getValue(); // Obtén el valor seleccionado en el NumberPicker
                 nombrefrecuencia = "Cada " + selectedValue + " horas"; // Establece nombrefrecuencia con el valor seleccionado
                 // Haz algo con el valor seleccionado, si es necesario
-                mostrarNombreFrecuencia(nombrefrecuencia);
+                mostrarNombreFrecuencia(nombrefrecuencia,0,0);
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
             }
@@ -597,6 +648,454 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             public void onClick(View v) {
                 popupWindow.dismiss();
                 popupCambiarFrecuencia();
+            }
+        });
+    }
+
+    private void popupXdias() {
+        View popupView = getLayoutInflater().inflate(R.layout.n64_2_popup_duraciondias, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        NumberPicker numberPicker = popupView.findViewById(R.id.number_picker); // Asume que tu NumberPicker tiene el ID "numberPicker" en tu diseño XML
+
+        numberPicker.setMinValue(1); // Valor mínimo
+        numberPicker.setMaxValue(365); // Valor máximo
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedValue = numberPicker.getValue(); // Obtén el valor seleccionado en el NumberPicker
+                nombrefrecuencia = "Cada " + selectedValue + " días"; // Establece nombrefrecuencia con el valor seleccionado
+                // Haz algo con el valor seleccionado, si es necesario
+                mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                popupCambiarFrecuencia();
+            }
+        });
+    }
+
+    private void popupXsemanas() {
+        View popupView = getLayoutInflater().inflate(R.layout.n64_3_popup_duracionsemanas, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        NumberPicker numberPicker = popupView.findViewById(R.id.number_picker); // Asume que tu NumberPicker tiene el ID "numberPicker" en tu diseño XML
+
+        numberPicker.setMinValue(1); // Valor mínimo
+        numberPicker.setMaxValue(52); // Valor máximo
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedValue = numberPicker.getValue(); // Obtén el valor seleccionado en el NumberPicker
+                nombrefrecuencia = "Cada " + selectedValue + " semanas"; // Establece nombrefrecuencia con el valor seleccionado
+                // Haz algo con el valor seleccionado, si es necesario
+                mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                popupCambiarFrecuencia();
+            }
+        });
+    }
+
+    private void popupXmeses() {
+        View popupView = getLayoutInflater().inflate(R.layout.n64_4_popup_duracionmeses, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        NumberPicker numberPicker = popupView.findViewById(R.id.number_picker); // Asume que tu NumberPicker tiene el ID "numberPicker" en tu diseño XML
+
+        numberPicker.setMinValue(1); // Valor mínimo
+        numberPicker.setMaxValue(12); // Valor máximo
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedValue = numberPicker.getValue(); // Obtén el valor seleccionado en el NumberPicker
+                nombrefrecuencia = "Cada " + selectedValue + " meses"; // Establece nombrefrecuencia con el valor seleccionado
+                // Haz algo con el valor seleccionado, si es necesario
+                mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                popupCambiarFrecuencia();
+            }
+        });
+    }
+
+    private void popupCiclos() {
+        View popupView = getLayoutInflater().inflate(R.layout.n64_5_popup_duracionciclos, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        NumberPicker numberPickert = popupView.findViewById(R.id.number_pickert);
+
+        // Configura los valores mínimo y máximo
+        numberPickert.setMinValue(0); // Valor mínimo
+        numberPickert.setMaxValue(90); // Valor máximo
+
+        NumberPicker numberPickerd = popupView.findViewById(R.id.number_pickerd);
+
+        numberPickerd.setMinValue(1); // Valor mínimo
+        numberPickerd.setMaxValue(90); // Valor máximo
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedValuet = numberPickert.getValue(); // Obtén el valor seleccionado en el NumberPicker
+                int selectedValued = numberPickerd.getValue();
+                nombrefrecuencia = "Ciclo recurrente"; // Establece nombrefrecuencia con el valor seleccionado
+                // Haz algo con el valor seleccionado, si es necesario
+                mostrarNombreFrecuencia(nombrefrecuencia,selectedValuet,selectedValued);
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                popupCambiarFrecuencia();
+            }
+        });
+    }
+
+    private void popupCambiarHora() {
+        View popupView = getLayoutInflater().inflate(R.layout.n63_3_popup_cambiarhorario, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        TimePicker timePicker = popupView.findViewById(R.id.timePicker);
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener la hora y los minutos seleccionados del TimePicker
+                int horaSeleccionada = timePicker.getHour();
+                int minutosSeleccionados = timePicker.getMinute();
+
+                // Formatear la hora y los minutos en el formato deseado (por ejemplo, "09:03 p. m.")
+                String horaFormateada = String.format(Locale.getDefault(), "%02d:%02d", get12HourFormat(horaSeleccionada), minutosSeleccionados);
+                String horaAmPm = getAmPmString(horaSeleccionada); // Obtener "a. m." o "p. m."
+
+                // Construir la cadena completa con la hora formateada y "a. m." o "p. m."
+                String horaCompleta = horaFormateada + " " + horaAmPm;
+
+                // Haz algo con la hora completa, como mostrarla en un TextView
+                TextView primeratomaTextView = findViewById(R.id.primeratoma); // Cambia el ID según tu diseño
+                primeratomaTextView.setText("Primera administración a las:\n" + horaCompleta);
+
+                // Cerrar el PopupWindow y ocultar el dimView
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                popupCambiarFrecuencia();
+            }
+        });
+    }
+
+        // Método para obtener "a. m." o "p. m." según la hora seleccionada
+        private String getAmPmString(int horaSeleccionada) {
+            if (horaSeleccionada < 12) {
+                return "a. m.";
+            } else {
+                return "p. m.";
+            }
+        }
+
+        // Método para obtener el formato de 12 horas
+        private int get12HourFormat(int horaSeleccionada) {
+            if (horaSeleccionada == 0) {
+                return 12;
+            } else if (horaSeleccionada <= 12) {
+                return horaSeleccionada;
+            } else {
+                return horaSeleccionada - 12;
+            }
+        }
+
+    private void popupCambiarFecha() {
+        View popupView = getLayoutInflater().inflate(R.layout.n63_4_popup_cambiarfecha, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        DatePicker datePicker = popupView.findViewById(R.id.datePicker); // Asume que tu NumberPicker tiene el ID "numberPicker" en tu diseño XML
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        // Configura OnClickListener para el botón Aceptar en tu popupCambiarFecha
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener la fecha seleccionada del DatePicker
+                int year = datePicker.getYear();
+                int month = datePicker.getMonth();
+                int dayOfMonth = datePicker.getDayOfMonth();
+
+                // Crear un objeto LocalDate con la fecha seleccionada
+                LocalDate selectedDate = LocalDate.of(year, month + 1, dayOfMonth); // Sumamos 1 al mes porque en Java enero es 0
+
+                // Establecer la hora en 00:00
+                LocalTime horaCero = LocalTime.of(0, 0);
+
+                // Combinar la fecha seleccionada con la hora "00:00" para obtener un LocalDateTime
+                LocalDateTime selectedDateTime = selectedDate.atTime(horaCero);
+
+                // Formatear la fecha en el formato deseado (por ejemplo, "dd MMM yyyy")
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+                String fechaFormateada = selectedDateTime.format(formatter);
+
+                // Obtener el valor actual de días de duración
+                int diasduracion = recordatorio.getDuracionRecordatorio(); // Debes implementar este método para obtener el valor actual
+
+                // Llamar al método mostrarDuracion y pasar el LocalDateTime y el valor actual de días de duración
+                mostrarDuracion(selectedDateTime, diasduracion);
+
+                // Cerrar el popup y ocultar dimView
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+    }
+
+    private void popupCambiarDiasTratamiento() {
+        View popupView = getLayoutInflater().inflate(R.layout.n65_1_numero_dias, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        EditText textEditConcentracion = popupView.findViewById(R.id.textEdit_Concentracion);
+        ImageView botonMenos = popupView.findViewById(R.id.imagen_boton_menos);
+        ImageView botonMas = popupView.findViewById(R.id.imagen_boton_mas);
+        textEditConcentracion.setInputType(InputType.TYPE_CLASS_NUMBER);
+        // Establece el valor inicial en el EditText
+        int valorInicial = 1; // Puedes establecer el valor inicial deseado
+        textEditConcentracion.setText(String.valueOf(valorInicial));
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
+
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        // Configura OnClickListener para el botón Menos
+        botonMenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int valorActual = Integer.parseInt(textEditConcentracion.getText().toString());
+                if (valorActual > 1) {
+                    valorActual--;
+                    textEditConcentracion.setText(String.valueOf(valorActual));
+                }
+            }
+        });
+
+        // Configura OnClickListener para el botón Mas
+        botonMas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int valorActual = Integer.parseInt(textEditConcentracion.getText().toString());
+                if (valorActual < 99998) {
+                    valorActual++;
+                    textEditConcentracion.setText(String.valueOf(valorActual));
+                }
             }
         });
     }

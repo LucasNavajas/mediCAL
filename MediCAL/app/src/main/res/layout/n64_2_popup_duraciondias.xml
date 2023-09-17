@@ -17,7 +17,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/inter_semibold"
-        android:text="Establecer intervalo horario"
+        android:text="Establecer intervalo"
         android:textColor="@color/black"
         android:textSize="22sp"
         />
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
-            android:text="hora(s)"
+            android:text="día(s)"
             android:layout_marginLeft="10dp"
             android:textColor="@color/verdeClaro"
             android:textSize="21sp" />
