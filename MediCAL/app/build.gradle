@@ -56,5 +56,8 @@ dependencies {
 
     // Biblioteca para leer url de imágenes
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
 }

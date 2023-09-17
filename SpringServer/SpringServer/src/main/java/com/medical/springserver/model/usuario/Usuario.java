@@ -36,6 +36,7 @@ public class Usuario {
 	private String nombreUsuario;
 	private String telefonoUsuario;
 	private String usuarioUnico;
+	private String token;
 	
 	// relacion historial fin vigencia
 	@OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL)
@@ -162,7 +163,8 @@ public class Usuario {
 				+ contraseniaUsuario + ", fechaAltaUsuario=" + fechaAltaUsuario + ", fechaNacimientoUsuario="
 				+ fechaNacimientoUsuario + ", generoUsuario=" + generoUsuario + ", mailUsuario=" + mailUsuario
 				+ ", nombreInstitucion=" + nombreInstitucion + ", nombreUsuario=" + nombreUsuario + ", telefonoUsuario="
-				+ telefonoUsuario + ", Usuario=" + usuarioUnico + "]";
+				+ telefonoUsuario + ", usuarioUnico=" + usuarioUnico + ", token=" + token + ", perfil=" + perfil
+				+ ", codigoVerificacion=" + codigoVerificacion + "]";
 	}
 	
 	// Relaciones
@@ -190,6 +192,12 @@ public class Usuario {
 	}
 	public void setSolicitudControlado(List<Solicitud> solicitudControlado) {
 		this.solicitudControlado = solicitudControlado;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

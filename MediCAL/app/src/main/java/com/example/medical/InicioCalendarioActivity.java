@@ -1,37 +1,31 @@
 package com.example.medical;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medical.model.Calendario;
@@ -41,7 +35,6 @@ import com.example.medical.model.Recordatorio;
 import com.example.medical.model.Solicitud;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
-import com.example.medical.retrofit.CodigoVerificacionApi;
 import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.InventarioApi;
 import com.example.medical.retrofit.RecordatorioApi;
@@ -50,10 +43,13 @@ import com.example.medical.retrofit.SolicitudApi;
 import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -61,6 +57,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,7 +126,11 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         progressBar = findViewById(R.id.progressBar);
         selectedDate = LocalDate.now();
         intent1 = getIntent();
-        initWidgets();
+        try {
+            initWidgets();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         setView();
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,7 +298,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
 
-    private void initWidgets() {
+    private void initWidgets() throws JSONException {
         calendarRecyclerView = findViewById(R.id.calendar_recycler_view);
         fechaHoyText = findViewById(R.id.fecha_hoy_text);
         textosDia.add(findViewById(R.id.lunes));
@@ -324,7 +329,52 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         gestionarContactos = findViewById(R.id.gestionar_contactos);
         agregarRecordatorio = findViewById(R.id.agregar_recordatorio);
         llenarListaCalendarios();
+        // Iniciar el hilo de trabajo para realizar la solicitud de red
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sendNotification();
+            }
+        }).start();
 
+    }
+
+    private void sendNotification() {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
+
+            JSONObject json = new JSONObject();
+            json.put("to", "dIDtsB4aQN2JTyl8FKjEsZ:APA91bHudxSF6MjqmbQcNgHJ7dTxV7ze_2EPKqlUUr4NiEDc2A7sjMDKnsPk6WywzlEN7lC_R1EHn7Ng4xO3Cbj2idnx5yvuUDc4xJmEx05o6wH39_8IPbI5AfOdYL5seIGLRGWHjlZz");
+            json.put("priority", "high");
+
+            JSONObject notificationData = new JSONObject();
+            notificationData.put("title", "Título de prueba");
+            notificationData.put("body", "Este es un mensaje de prueba");
+            json.put("notification", notificationData);
+
+            RequestBody rBody = RequestBody.create(mediaType, json.toString());
+            Request request = new Request.Builder()
+                    .url("https://fcm.googleapis.com/fcm/send")
+                    .post(rBody)
+                    .addHeader("Authorization", "key=AAAACdR9ayg:APA91bHr0q58sCElsLKWv1iwXef6X_n4BVJ--KGqCBUJXfSXd2kNV6vYIEVuu8vIhmkB-qziYqE-65xhrFV654tZJpfmwExk9F2XVeFUyOCZ9SmAzMAF0qu_Hu27CBLWJk4i0HohbaEH")
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            okhttp3.Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                // Notificación enviada con éxito
+                //handler.sendEmptyMessage(REQUEST_SUCCESSFUL);
+            } else {
+                // Error al enviar la notificación
+                //handler.sendEmptyMessage(REQUEST_FAILED);
+            }
+        } catch (IOException | JSONException e) {
+            Log.e("Notificación Fallida", e.getMessage(), e);
+            // Manejar cualquier excepción que pueda ocurrir durante la solicitud
+            //handler.sendEmptyMessage(REQUEST_FAILED);
+        }
     }
    /* Handler handler = new Handler();
 
@@ -462,6 +512,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 Usuario usuarioLogeado = response.body();
                 nombreUsuario.setText(usuarioLogeado.getUsuarioUnico());
                 codUsuarioLogeado = usuarioLogeado.getCodUsuario();
+                setTokenUsuario();
                 llenarEstadosSolicitud();
                 buscarSolicitudPendiente();
                 buscarRespuestasSolicitudes();
@@ -494,6 +545,32 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al iniciar sesión, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setTokenUsuario() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        // Aquí tienes el token actual
+                        Log.d("Token", token);
+                        usuarioApi.modificarToken(codUsuarioLogeado, token).enqueue(new Callback<Usuario>() {
+                            @Override
+                            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                                FirebaseMessaging.getInstance().subscribeToTopic("All");
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Usuario> call, Throwable t) {
+                                Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al modificar el token, intente nuevamente", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        // Si no se puede obtener el token, maneja el error aquí
+                        Log.e("Token", "Error al obtener el token", task.getException());
+                    }
+                });
     }
 
     private void buscarContactosVinculados() {

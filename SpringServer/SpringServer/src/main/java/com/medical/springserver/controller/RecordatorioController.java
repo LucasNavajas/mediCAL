@@ -44,5 +44,10 @@ public class RecordatorioController {
 	public Recordatorio modificarRecordatorio(@RequestBody Recordatorio recordatorio) {
 		return recordatorioDao.modificarRecordatorio(recordatorio.getCodRecordatorio(), recordatorio);
 	}
+	
+	@PostMapping("/recordatorio/crear-registros/{codRecordatorio}")
+	public void crearRegistros(@PathVariable int codRecordatorio) {
+		recordatorioDao.crearRegistros(codRecordatorio);
+	}
 
 }

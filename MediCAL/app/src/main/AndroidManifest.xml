@@ -12,6 +12,21 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Permiso para recibir notificaciones -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- Reemplaza "com.tu.paquete" con el paquete de tu aplicación -->
+    <permission
+        android:name="com.tu.paquete.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.tu.paquete.permission.C2D_MESSAGE" />
+
+    <!-- Permiso para abrir enlaces desde notificaciones -->
+    <uses-permission android:name="android.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
 
 
     <queries>
@@ -30,6 +45,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediCAL"
         tools:targetApi="26">
+
+        <service
+            android:name=".FirebaseMessaging.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.Recieve"/>
+            </intent-filter>
+        </service>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

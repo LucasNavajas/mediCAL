@@ -61,4 +61,7 @@ public interface UsuarioApi {
     @POST("/usuario/eliminar/{codUsuario}")
     Call<Void> eliminarUsuario(@Path("codUsuario") int codUsuario, @Body String motivoFinVigencia);
 
+    @PUT("/usuario/token/{codUsuario}")
+    Call<Usuario> modificarToken(@Path("codUsuario") int codUsuario, @Body String token);
+
 }

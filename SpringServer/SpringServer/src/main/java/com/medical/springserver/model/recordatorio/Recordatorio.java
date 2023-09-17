@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.administracionmed.AdministracionMed;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.dosis.Dosis;
@@ -46,6 +47,7 @@ public class Recordatorio {
 	
 	// Relacion con RegistroRecordatorio
 	@OneToMany (mappedBy = "recordatorio", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<RegistroRecordatorio> registrorecordatorio;
 	
 	// Relacion con Inventario

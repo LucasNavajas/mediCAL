@@ -171,4 +171,10 @@ public class UsuarioController {
 	public void eliminarUsuario(@PathVariable int codUsuario, @RequestBody String motivoFinVigencia) throws FirebaseAuthException {
         usuarioDao.eliminarUsuario(codUsuario, motivoFinVigencia);
 	}
+	
+	@PutMapping("/usuario/token/{codUsuario}")
+	public Usuario modificarToken(@PathVariable int codUsuario, @RequestBody Map<String, String> requestBody) {
+	    String token = requestBody.get("token");
+		return usuarioDao.modificarToken(codUsuario, token);
+	}
 }

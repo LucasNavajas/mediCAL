@@ -1,5 +1,7 @@
 package com.medical.springserver.model.recordatorio;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +11,16 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import com.medical.springserver.model.calendario.Calendario;
+import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorio;
+import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorioDao;
 
 @Service
 
 public class RecordatorioDao {
 	@Autowired
 	private RecordatorioRepository repository;
+	@Autowired
+	private RegistroRecordatorioDao registroDao;
 	
 	public Recordatorio save(Recordatorio recordatorio) {
 		return repository.save(recordatorio);
@@ -50,5 +56,22 @@ public class RecordatorioDao {
 	        // Paso 3: Guardar la instancia actualizada
 	        return repository.save(registroExistente);
 	    }
+
+	   public void crearRegistros(int codRecordatorio) {
+		    Recordatorio recordatorio = repository.findByCodRecordatorio(codRecordatorio);
+		    int frecuencia = recordatorio.getFrecuencia().getCantidadFrecuencia(); // Obtener la frecuencia en horas
+		    int nroRegistro = 1; // Se inicializa el nro_registro en 1 y se va aumentando
+		    LocalDateTime fechaEsperadaToma = recordatorio.getFechaInicioRecordatorio();
+		    while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
+		        RegistroRecordatorio registro = new RegistroRecordatorio();
+		        registro.setFechaTomaEsperada(fechaEsperadaToma);
+		        fechaEsperadaToma = fechaEsperadaToma.plusHours(frecuencia); // Actualizar fechaEsperadaToma
+		        registro.setNroRegistro(nroRegistro++); // Se setea el nro y se aumenta
+		        registro.setRecordatorio(recordatorio);
+		        registro.setTomaRegistroRecordatorio(false);
+		        registroDao.save(registro);
+		    }
+		}
+
 
 }

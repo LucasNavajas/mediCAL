@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.medical.model.Calendario;
@@ -15,9 +16,13 @@ import com.example.medical.retrofit.ConsejoApi;
 import com.example.medical.retrofit.FAQApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 3000); // 3000 representa 3 segundos en milisegundos
+
 
     }
 

@@ -252,4 +252,16 @@ public class UsuarioDao {
         }
 		
 	}
+
+	public Usuario modificarToken(int codUsuario, String token) {
+		Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
+        Usuario usuario;
+        if (optionalUsuario.isPresent()) {
+            usuario = optionalUsuario.get();
+            usuario.setToken(token);
+           return save(usuario);
+        } else {
+            throw new NoSuchElementException("El usuario no existe.");
+        }
+	}
 }
