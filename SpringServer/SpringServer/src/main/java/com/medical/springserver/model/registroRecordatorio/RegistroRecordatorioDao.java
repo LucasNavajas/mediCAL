@@ -1,5 +1,6 @@
 package com.medical.springserver.model.registroRecordatorio;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,5 +26,13 @@ public class RegistroRecordatorioDao {
 	
 	public void delete(RegistroRecordatorio registroRecordatorio) {
 		repository.delete(registroRecordatorio);
+	}
+	
+	public List<RegistroRecordatorio> obtenerRegistrosCalendario(int codCalendario){
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime startDate = now.minusDays(30);
+		LocalDateTime endDate = now.plusDays(30);
+
+		return repository.obtenerRegistrosCalendarioEnRango(codCalendario, startDate, endDate);
 	}
 }

@@ -132,19 +132,19 @@ public class Recordatorio {
 				+ ", fechaAltaRecordatorio=" + fechaAltaRecordatorio + ", fechaFinRecordatorio=" + fechaFinRecordatorio
 				+ ", fechaFinVigenciaR=" + fechaFinVigenciaR + ", fechaInicioRecordatorio=" + fechaInicioRecordatorio
 				+ ", horarioRecordatorio=" + horarioRecordatorio + ", calendario=" + calendario
-				+ ", registrorecordatorio=" + registrorecordatorio + ", inventario=" + inventario + ", instruccion="
+				+ ", inventario=" + inventario + ", instruccion="
 				+ instruccion + ", medicamento=" + medicamento +  ", frecuencia=" + frecuencia
 				+ "]";
 	}
 	
 	// Relaciones
 	
-	public List<RegistroRecordatorio> getRegistroRecordatorio() {
+	/*public List<RegistroRecordatorio> getRegistroRecordatorio() {
 		return registrorecordatorio;
 	}
 	public void setRegistroRecordatorio(List<RegistroRecordatorio> registrorecordatorio) {
 		this.registrorecordatorio = registrorecordatorio;
-	}
+	}*/
 	public Dosis getDosis() {
 		return dosis;
 	}

@@ -62,6 +62,27 @@ public class RecordatorioDao {
 		    int frecuencia = recordatorio.getFrecuencia().getCantidadFrecuencia(); // Obtener la frecuencia en horas
 		    int nroRegistro = 1; // Se inicializa el nro_registro en 1 y se va aumentando
 		    LocalDateTime fechaEsperadaToma = recordatorio.getFechaInicioRecordatorio();
+		    if(recordatorio.getFrecuencia().getDiasDescansoF()!=0) {
+		    	int diasTranscurridos = 0;
+
+		        while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
+		            // Verificar si es un día de toma o de descanso
+		            if (diasTranscurridos % (recordatorio.getFrecuencia().getDiasTomaF() + recordatorio.getFrecuencia().getDiasDescansoF()) < recordatorio.getFrecuencia().getDiasTomaF()) {
+		                RegistroRecordatorio registro = new RegistroRecordatorio();
+		                registro.setFechaTomaEsperada(fechaEsperadaToma);
+		                fechaEsperadaToma = fechaEsperadaToma.plusHours(frecuencia); // Actualizar fechaEsperadaToma
+		                registro.setNroRegistro(nroRegistro++); // Se setea el nro y se aumenta
+		                registro.setRecordatorio(recordatorio);
+		                registro.setTomaRegistroRecordatorio(false);
+		                registroDao.save(registro);
+		            }
+
+		            // Avanzar al siguiente día
+		            fechaEsperadaToma = fechaEsperadaToma.plusDays(1);
+		            diasTranscurridos++;
+		        }
+		    }
+		    else {
 		    while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
 		        RegistroRecordatorio registro = new RegistroRecordatorio();
 		        registro.setFechaTomaEsperada(fechaEsperadaToma);
@@ -70,6 +91,7 @@ public class RecordatorioDao {
 		        registro.setRecordatorio(recordatorio);
 		        registro.setTomaRegistroRecordatorio(false);
 		        registroDao.save(registro);
+		    }
 		    }
 		}
 

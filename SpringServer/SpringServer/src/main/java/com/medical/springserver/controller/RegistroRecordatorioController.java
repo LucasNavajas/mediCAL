@@ -24,4 +24,9 @@ public class RegistroRecordatorioController {
 	public RegistroRecordatorio save(@RequestBody RegistroRecordatorio registroRecordatorio) {
 		return registroRecordatorioDao.save(registroRecordatorio);
 	}
+	
+	@GetMapping("registroRecordatorio/calendario/{codCalendario}")
+	public List<RegistroRecordatorio> obtenerRegistrosCalendario(@PathVariable int codCalendario){
+		return registroRecordatorioDao.obtenerRegistrosCalendario(codCalendario);
+	}
 }

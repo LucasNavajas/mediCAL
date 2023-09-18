@@ -2,6 +2,7 @@ package com.example.medical;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,22 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
             startActivity(intent);
         });
         hecho.setOnClickListener(view ->{
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    recordatorioApi.crearRegistros(getIntent().getIntExtra("codRecordatorio", 0)).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Log.d("Registros creados", "Se crearon los Registros Recordatorio correctamente");
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(AgregarDatosObligatoriosActivity.this, "Error al cargar el recordatorio", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).start();
             popUpExitoRecordatorio();
         });
     }
@@ -147,6 +164,8 @@ public class AgregarDatosObligatoriosActivity extends AppCompatActivity {
 
         Button agregarOtro = popupView.findViewById(R.id.button_anadir_mas);
         Button volverInicio = popupView.findViewById(R.id.button_volver_inicio);
+        TextView texto = popupView.findViewById(R.id.text);
+        texto.setText("Ha agregado con éxito "+getIntent().getStringExtra("nombreMedicamento"));
         agregarOtro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

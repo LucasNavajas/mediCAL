@@ -30,4 +30,7 @@ public interface RecordatorioApi {
 
     @POST("/recordatorio/modificar")
     Call <Recordatorio> modificarRecordatorio(@Body Recordatorio recordatorio);
+
+    @POST("/recordatorio/crear-registros/{codRecordatorio}")
+    Call <Void> crearRegistros(@Path("codRecordatorio") int codRecordatorio);
 }

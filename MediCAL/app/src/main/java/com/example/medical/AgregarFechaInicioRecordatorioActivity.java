@@ -28,7 +28,7 @@ public class AgregarFechaInicioRecordatorioActivity extends AppCompatActivity {
 
         siguiente.setOnClickListener(view ->{
             int year = datePicker.getYear();
-            int month = datePicker.getMonth();
+            int month = datePicker.getMonth()+1;
             int dayOfMonth = datePicker.getDayOfMonth();
             Intent intent = new Intent(AgregarFechaInicioRecordatorioActivity.this, AgregarDuracionRecordatorioActivity.class);
             intent.putExtra("year", year);

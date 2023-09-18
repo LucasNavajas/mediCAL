@@ -26,18 +26,22 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medical.adapter.RegistroAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.EstadoSolicitud;
 import com.example.medical.model.Inventario;
 import com.example.medical.model.Recordatorio;
+import com.example.medical.model.RegistroRecordatorio;
 import com.example.medical.model.Solicitud;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.InventarioApi;
 import com.example.medical.retrofit.RecordatorioApi;
+import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.SolicitudApi;
 import com.example.medical.retrofit.UsuarioApi;
@@ -91,6 +95,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private InventarioApi inventarioApi = retrofitService.getRetrofit().create(InventarioApi.class);
     private EstadoSolicitudApi estadoSolicitudApi = retrofitService.getRetrofit().create(EstadoSolicitudApi.class);
     private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
+    private RegistroRecordatorioApi registroRecordatorioApi = retrofitService.getRetrofit().create(RegistroRecordatorioApi.class);
     private List<Calendario> listaCalendarios;
     private LinearLayout contenedorCalendarios;
     private RelativeLayout soporte;
@@ -110,7 +115,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private List<EstadoSolicitud> estadosSolicitud;
 
     private EditText textEditCantidad;    // cantidad de recarga de inventario
+    private RecyclerView recyclerView;
+    private List<RegistroRecordatorio> allRegistros = new ArrayList<>();
+    private List<RegistroRecordatorio> registrosDia = new ArrayList<>();
 
+    private TextView textoSinRecordatorios;
+    private ImageView imagenSinRecordatorios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +141,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        setView();
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,6 +284,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 @Override
                 public void onResponse(Call<Calendario> call, Response<Calendario> response) {
                     calendarioSeleccionado = response.body();
+                    loadRegistros();
                     nombreCalendario.setText(calendarioSeleccionado.getNombreCalendario());
 
                     // Salto de Popup en caso de que el calendario seleccionado tenga algún recordatorio con inventarios con cantReal <= cantAviso
@@ -328,18 +338,37 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         eliminarCuenta = findViewById(R.id.eliminar_cuenta);
         gestionarContactos = findViewById(R.id.gestionar_contactos);
         agregarRecordatorio = findViewById(R.id.agregar_recordatorio);
+        recyclerView = findViewById(R.id.listarecordatorios_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        imagenSinRecordatorios = findViewById(R.id.imagen_sin_recordatorios);
+        textoSinRecordatorios = findViewById(R.id.texto_sin_recordatorios);
         llenarListaCalendarios();
         // Iniciar el hilo de trabajo para realizar la solicitud de red
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 sendNotification();
             }
-        }).start();
+        }).start();*/
 
     }
 
-    private void sendNotification() {
+    private void loadRegistros() {
+        registroRecordatorioApi.obtenerRegistrosCalendario(calendarioSeleccionado.getCodCalendario()).enqueue(new Callback<List<RegistroRecordatorio>>() {
+            @Override
+            public void onResponse(Call<List<RegistroRecordatorio>> call, Response<List<RegistroRecordatorio>> response) {
+                allRegistros = response.body();
+                setView();
+            }
+
+            @Override
+            public void onFailure(Call<List<RegistroRecordatorio>> call, Throwable t) {
+                Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al cargar los registros de recordatorio, intente nuevamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /*private void sendNotification() {
         try {
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json");
@@ -375,7 +404,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             // Manejar cualquier excepción que pueda ocurrir durante la solicitud
             //handler.sendEmptyMessage(REQUEST_FAILED);
         }
-    }
+    }*/
    /* Handler handler = new Handler();
 
     // Define un Runnable que se ejecutará después de 5 segundos
@@ -678,11 +707,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
 
-
-
-
-
-
     private void setView() {
         fechaHoyText.setText(mesDiaFromDate(selectedDate));
         ArrayList<LocalDate> daysInWeek = daysInWeekArray(selectedDate);
@@ -691,6 +715,22 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        registrosDia = new ArrayList<>();
+        for(RegistroRecordatorio registro : allRegistros) {
+            if (selectedDate.equals(registro.getFechaTomaEsperada().toLocalDate())) {
+                registrosDia.add(registro);
+            }
+        }
+        if(registrosDia.size()!=0){
+            textoSinRecordatorios.setVisibility(View.GONE);
+            imagenSinRecordatorios.setVisibility(View.GONE);
+        }
+        else{
+            textoSinRecordatorios.setVisibility(View.VISIBLE);
+            imagenSinRecordatorios.setVisibility(View.VISIBLE);
+        }
+        RegistroAdapter registroAdapter = new RegistroAdapter(registrosDia, this);
+        recyclerView.setAdapter(registroAdapter);
 
     }
 

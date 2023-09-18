@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8:00"
+        android:textSize="36sp"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"/>
+        <!-- Consejo Genérico -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/rectangle_recordatorio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hora"
+            android:background="@drawable/background_rounded_blanco"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <TextView
+                android:id="@+id/nombreMedicamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NombreMedicamento"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/presentacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dosis presentacion concentracion"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="22sp"
+                android:textColor="@color/gris_medical"
+                android:layout_marginStart="10dp"/>
+            <TextView
+                android:id="@+id/instrucciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instrucciones"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="22sp"
+                android:textColor="@color/gris_medical"
+                android:layout_marginStart="10dp"/>
+            <TextView
+                android:id="@+id/indicaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Indicaciones"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="22sp"
+                android:textColor="@color/gris_medical"
+                android:layout_marginStart="10dp"/>
+        </LinearLayout>
+
+</LinearLayout>
+

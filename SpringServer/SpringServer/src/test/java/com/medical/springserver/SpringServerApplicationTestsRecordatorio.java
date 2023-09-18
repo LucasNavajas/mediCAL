@@ -101,13 +101,6 @@ public class SpringServerApplicationTestsRecordatorio {
 		recordatorio.setInstruccion(instruccion);
 		recordatorio.setInventario(inventario);
 		
-		registrorecordatorio.setRecordatorio(recordatorio);
-		List<RegistroRecordatorio> regrecordatorio = new ArrayList<>();
-		regrecordatorio.add(registrorecordatorio);
-		recordatorio.setRegistroRecordatorio(regrecordatorio);
-		
-		
-		System.out.println(recordatorio.getRegistroRecordatorio());
 		
 		recordatorioDao.save(recordatorio);
 		
