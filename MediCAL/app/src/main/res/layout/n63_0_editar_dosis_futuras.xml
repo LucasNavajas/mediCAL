@@ -322,7 +322,7 @@
                             android:id="@+id/dias_tratamiento"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Días Tratamiento"
+                            android:text="Cambiar días de tratamiento"
                             android:textSize="19sp"
                             android:textColor="@color/black"
                             />

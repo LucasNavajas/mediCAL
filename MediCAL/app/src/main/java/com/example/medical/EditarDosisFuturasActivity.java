@@ -53,6 +53,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private Recordatorio recordatorio;
     private PopupWindow popupWindow;
     private String nombrefrecuencia;
+    private int keyboardHeight = 0;
 
     @Override
     public void onBackPressed() {
@@ -159,6 +160,16 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 popupCambiarDiasTratamiento();
+                            }
+                        });
+                        rbtcontinuo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Obtener el valor actual del EditText
+                                int diasduracion = 99999;
+
+                                // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
+                                mostrarDuracionDias(diasduracion);
                             }
                         });
                     } else {
@@ -288,7 +299,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 mostrarNombreMedicamento(nombreMedicamento);
                 mostrarNombreFrecuencia(nombreFrecuencia,diastoma,diasdescanso);
                 mostrarHorario(fechainiciorecordatorio);
-                mostrarDuracion(fechainiciorecordatorio, diasduracion);
+                mostrarDuracionFecha(fechainiciorecordatorio);
+                mostrarDuracionDias(diasduracion);
                 mostrarImagen(imagen);
                 mostrarDosis(cantdosis);
                 mostrarConcentracion(valorconcentracion, unidadmedidac);
@@ -384,9 +396,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         nombreMedicamentoTextView.setText(nombreMedicamento);
     }
 
-    private void mostrarDuracion(LocalDateTime fechainiciorecordatorio, int diasduracion) {
+    private void mostrarDuracionFecha(LocalDateTime fechainiciorecordatorio) {
         TextView duracionActualTextView = findViewById(R.id.duracion_actual); // Cambia el ID según tu diseño
-        TextView diasduracionTextView = findViewById(R.id.dias);
 
         // Formatear la fecha en el formato deseado
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
@@ -394,6 +405,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         // Establecer la fecha formateada en el TextView
         duracionActualTextView.setText("Fecha de inicio: " + fechaFormateada);
+
+    }
+
+    private void mostrarDuracionDias(int diasduracion) {
+
+        TextView diasduracionTextView = findViewById(R.id.dias);
 
         if (diasduracion == 99999) {
             diasduracionTextView.setText("Tratamiento continuo");
@@ -483,7 +500,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -627,7 +644,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -681,7 +698,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -735,7 +752,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -789,7 +806,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -849,7 +866,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -901,7 +918,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         botonAceptar.setOnClickListener(new View.OnClickListener() {
@@ -984,7 +1001,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Configura OnClickListener para el botón Aceptar
         // Configura OnClickListener para el botón Aceptar en tu popupCambiarFecha
@@ -1009,11 +1026,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
                 String fechaFormateada = selectedDateTime.format(formatter);
 
-                // Obtener el valor actual de días de duración
-                int diasduracion = recordatorio.getDuracionRecordatorio(); // Debes implementar este método para obtener el valor actual
 
                 // Llamar al método mostrarDuracion y pasar el LocalDateTime y el valor actual de días de duración
-                mostrarDuracion(selectedDateTime, diasduracion);
+                mostrarDuracionFecha(selectedDateTime);
 
                 // Cerrar el popup y ocultar dimView
                 popupWindow.dismiss();
@@ -1032,6 +1047,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void popupCambiarDiasTratamiento() {
         View popupView = getLayoutInflater().inflate(R.layout.n65_1_numero_dias, null);
@@ -1065,9 +1081,23 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
         popupView.startAnimation(scaleAnimation);
 
-        popupWindow.showAtLocation(rootView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el valor actual del EditText
+                int diasduracion = Integer.parseInt(textEditConcentracion.getText().toString());
 
 
+                // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
+                mostrarDuracionDias(diasduracion);
+
+                // Cerrar el popup y ocultar dimView
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
         botonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
