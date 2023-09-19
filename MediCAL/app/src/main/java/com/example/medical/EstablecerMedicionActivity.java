@@ -517,7 +517,7 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
         textFecha.setText(formattedDate);
     }
     private String getMonthName(int month) {
-        String[] months = getResources().getStringArray(R.array.months_array);
+        String[] months = getResources().getStringArray(R.array.meses_abreviados);
         return months[month];
     }
 

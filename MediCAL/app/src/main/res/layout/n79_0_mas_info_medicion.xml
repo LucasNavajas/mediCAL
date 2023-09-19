@@ -83,120 +83,98 @@
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="0dp">
 
-                                <LinearLayout
-                                    android:id="@+id/dia_sem_mes_anio"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginEnd="15dp"
-                                    android:background="@drawable/background_rounded_blanco"
-                                    android:layout_marginTop="15dp"
-                                    >
+                            <LinearLayout
+                                android:id="@+id/dia_sem_mes_anio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginTop="15dp">
 
-                                    <!-- Según si elige Dia/Semana/Mes/Año debe
-                                    mostrarse la fecha o rango seleccionado.
-                                    Falta crear calendar_cell como en n13y14-->
-
-                                    <TextView
-                                        android:id="@+id/dia"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="Día"
-                                        android:fontFamily="@font/inter_regular"
-                                        android:textColor="@color/black"
-                                        android:textSize="20sp"
-                                        android:textAlignment="center"
-                                        />
-                                    <TextView
-                                        android:id="@+id/semana"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="Semana"
-                                        android:fontFamily="@font/inter_regular"
-                                        android:textColor="@color/black"
-                                        android:textSize="20sp"
-                                        android:textAlignment="center"
-                                        />
-                                    <TextView
-                                        android:id="@+id/mes"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="Mes"
-                                        android:fontFamily="@font/inter_regular"
-                                        android:textColor="@color/black"
-                                        android:textSize="20sp"
-                                        android:textAlignment="center"
-                                        />
-                                    <TextView
-                                        android:id="@+id/anio"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="Año"
-                                        android:fontFamily="@font/inter_regular"
-                                        android:textColor="@color/black"
-                                        android:textSize="20sp"
-                                        android:textAlignment="center"
-                                        />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/fecha_hoy_seleccionada"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_below="@+id/dia_sem_mes_anio"
-                                    android:layout_marginStart="15dp"
-                                    android:layout_marginEnd="15dp"
-                                    android:layout_marginTop="10dp"
-                                    >
-
-                                <TextView
-                                    android:id="@+id/previo"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:text="&lt;"
-                                    android:layout_marginStart="5dp"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/inter_regular"
-                                    android:textSize="20sp"
-                                    android:onClick="Previo" />
-
-
-                                <!-- En este caso pone "MAY" pero dependería de
-                                lo seleccionado arriba-->
-                                <TextView
-                                    android:id="@+id/fecha_hoy"
+                                <Button
+                                    android:id="@+id/btnSemana"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="May"
-                                    android:textAlignment="center"
-                                    android:layout_toRightOf="@id/previo"
-                                    android:textColor="@color/verdeTextos"
-                                    android:fontFamily="@font/inter_medium"
-                                    android:textSize="24sp"
-                                    android:layout_marginBottom="10dp"
-                                    />
+                                    android:text="Semana"
+                                    android:background="@drawable/background_rounded_celeste"
+                                    android:textColor="#FFFFFF" /> <!-- Establece el color del texto en blanco (#FFFFFF) -->
+
+                                <Button
+                                    android:id="@+id/btnMes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Mes"
+                                    android:background="@drawable/background_rounded_celeste"/>
+
+                                <Button
+                                    android:id="@+id/btn3Mes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="3 meses"
+                                    android:background="@drawable/background_rounded_celeste"/>
+
+                                <Button
+                                    android:id="@+id/btnAnio"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Año"
+                                    android:background="@drawable/background_rounded_celeste"/>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/fecha_hoy_seleccionada"
+                                android:layout_width="wrap_content"
+                                android:layout_height="57dp"
+                                android:layout_below="@+id/dia_sem_mes_anio"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="15dp"
+                                android:orientation="horizontal">
+
+
+                                <ImageView
+                                    android:id="@+id/imageMenor"
+                                    android:layout_width="40dp"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="5dp"
+                                    android:src="@drawable/menor" />
 
                                 <TextView
-                                    android:id="@+id/posterior"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.3"
-                                    android:text="&gt;"
-                                    android:layout_marginStart="5dp"
-                                    android:layout_toRightOf="@id/fecha_hoy"
-                                    android:textColor="@color/black"
-                                    android:fontFamily="@font/inter_regular"
-                                    android:textSize="20sp"
-                                    android:onClick="Posterior"
-                                    android:gravity="end"/>
+                                    android:id="@+id/fecha_hoy"
+                                    android:layout_width="277dp"
+                                    android:layout_height="40dp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="-10dp"
+                                    android:layout_toRightOf="@id/previo"
+                                    android:fontFamily="@font/inter_medium"
+                                    android:text="May"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/verdeTextos"
+                                    android:textSize="22sp" />
+
+                                <ImageView
+                                    android:id="@+id/imageMayor"
+                                    android:layout_width="40dp"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="95dp"
+                                    android:src="@drawable/mayor" />
 
                             </LinearLayout>
 
@@ -207,7 +185,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="30dp"
                                 android:layout_marginLeft="20dp"
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
                                 android:text="NombreSeguimiento"
                                 android:textSize="24dp"
@@ -248,186 +226,18 @@
                                 android:layout_below="@id/rectangle_grafico"
                                 android:background="@drawable/background_rounded_blanco">
 
-                                <TextView
-                                    android:id="@+id/texto_titulo_medicion1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:text="Fecha y Hora 1"
-                                    android:textSize="24dp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/texto_medicion1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_titulo_medicion1"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:text="Valor unidaddemedida 1 "
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion1_1"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="70dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/lapiz_editar"
-                                    android:layout_alignParentEnd="true"/>
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion1_2"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/eliminar_tacho_basura"
-                                    app:layout_constraintStart_toEndOf="@id/imagen_medicion1_1"
-                                    android:layout_alignParentEnd="true"  />
 
                             </RelativeLayout>
-
-                            <!-- Ej Medicion 2 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_medicion2"
+                            <LinearLayout
+                                android:id="@+id/contenido2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/rectangle_medicion1"
-                                android:background="@drawable/background_rounded_blanco">
+                                android:layout_marginTop="25dp"
+                                android:layout_below="@id/rectangle_grafico"
 
-                                <TextView
-                                    android:id="@+id/texto_titulo_medicion2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:text="Fecha y Hora 2"
-                                    android:textSize="24dp"
-                                    android:textStyle="bold" />
+                                android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/texto_medicion2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_titulo_medicion2"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:text="Valor unidaddemedida 2 "
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion2_1"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="70dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/lapiz_editar"
-                                    android:layout_alignParentEnd="true"/>
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion2_2"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/eliminar_tacho_basura"
-                                    app:layout_constraintStart_toEndOf="@id/imagen_medicion2_1"
-                                    android:layout_alignParentEnd="true"  />
-
-                            </RelativeLayout>
-
-                            <!-- Ej Medicion 3 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_medicion3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_below="@id/rectangle_medicion2"
-                                android:background="@drawable/background_rounded_blanco">
-
-                                <TextView
-                                    android:id="@+id/texto_titulo_medicion3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="15dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="5dp"
-                                    android:text="Fecha y Hora 3"
-                                    android:textSize="24dp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/texto_medicion3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/texto_titulo_medicion3"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:text="Valor unidaddemedida 3 "
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion3_1"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="70dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/lapiz_editar"
-                                    android:layout_alignParentEnd="true"/>
-
-                                <ImageView
-                                    android:id="@+id/imagen_medicion3_2"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/eliminar_tacho_basura"
-                                    app:layout_constraintStart_toEndOf="@id/imagen_medicion3_1"
-                                    android:layout_alignParentEnd="true"  />
-
-                            </RelativeLayout>
+                            </LinearLayout>
 
                         </RelativeLayout>
 

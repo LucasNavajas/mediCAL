@@ -25,5 +25,32 @@
     <dimen name="imagen_medicion_margin_end">20dp</dimen>
     <dimen name="imagen_medicion_margin_bottom">20dp</dimen>
 
+    <!-- Dimensiones personalizadas para el ImageView -->
+    <dimen name="editar_width">40dp</dimen> <!-- Ancho en dp -->
+    <dimen name="editar_height">40dp</dimen> <!-- Altura en dp -->
+    <dimen name="editar_margin_start">20dp</dimen> <!-- Margen izquierdo en dp -->
+    <dimen name="editar_margin_top">20dp</dimen> <!-- Margen superior en dp -->
+    <dimen name="editar_margin_end">70dp</dimen> <!-- Margen derecho en dp -->
+    <dimen name="editar_margin_bottom">20dp</dimen> <!-- Margen inferior en dp -->
+
+    <!-- Dimensiones personalizadas para el ImageView de eliminación -->
+    <dimen name="eliminar_width">40dp</dimen> <!-- Ancho en dp -->
+    <dimen name="eliminar_height">40dp</dimen> <!-- Altura en dp -->
+    <dimen name="eliminar_margin_start">20dp</dimen> <!-- Margen izquierdo en dp -->
+    <dimen name="eliminar_margin_top">20dp</dimen> <!-- Margen superior en dp -->
+    <dimen name="eliminar_margin_end">20dp</dimen> <!-- Margen derecho en dp -->
+    <dimen name="eliminar_margin_bottom">20dp</dimen> <!-- Margen inferior en dp -->
+
+    <dimen name="layout_margin_horizontal">10dp</dimen> <!-- Puedes ajustar el valor según tus necesidades -->
+
+    <!-- Dimensiones personalizadas para el TextView de valor -->
+    <dimen name="valor_margin_start">19dp</dimen> <!-- Margen izquierdo en dp -->
+    <dimen name="valor_margin_top">60dp</dimen> <!-- Margen superior en dp -->
+    <dimen name="valor_margin_end">10dp</dimen> <!-- Margen derecho en dp -->
+    <dimen name="valor_margin_bottom">20dp</dimen> <!-- Margen inferior en dp -->
+
+
+
+
 
 </resources>

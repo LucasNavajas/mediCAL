@@ -452,6 +452,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
 
         for (CalendarioMedicion unaCalMedicion : calendarioMediciones) {
             String nombreMedicion = unaCalMedicion.getMedicion().getNombreMedicion();
+            int codCalendarioMedicion = unaCalMedicion.getCodCalendarioMedicion();
+            int codMedicion = unaCalMedicion.getMedicion().getCodMedicion();
 
             if (!nombresMedicionesProcesados.contains(nombreMedicion)) {
                 nombresMedicionesProcesados.add(nombreMedicion);
@@ -545,16 +547,16 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                 buttonMasInfo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // Crear un Intent para abrir la actividad MasInfoSintomaActivity
+                        // Crear un Intent para abrir la actividad MasInfoMedicionActivity
                         Intent intent = new Intent(AgregarSeguimientoActivity.this, MasInfoMedicionActivity.class);
                         intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                         intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
-
-                        // Iniciar la actividad MasInfoSintomaActivity
+                        intent.putExtra("codCalendarioMedicionid", unaCalMedicion.getCodCalendarioMedicion());
+                        intent.putExtra("medicionid",unaCalMedicion.getMedicion().getCodMedicion());
+                        // Iniciar la actividad MasInfoMedicionActivity
                         startActivity(intent);
                     }
                 });
-
                 // Configurar reglas de posicionamiento para el nuevo layout
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,

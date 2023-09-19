@@ -65,7 +65,6 @@ public class AnadirMedicionActivity extends AppCompatActivity {
         codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         Log.d("MiApp", "codCalendario en AnadirMedicionActivity: " + codCalendario);
 
-
         listaMedicionesListView = findViewById(R.id.lista_mediciones_comunes);
 
         MedicionComunAdapter commonMedicionesAdapter = new MedicionComunAdapter(this);
@@ -89,8 +88,6 @@ public class AnadirMedicionActivity extends AppCompatActivity {
         // Crear una instancia de TodasMedicionesAdapter y pasarle el valor de codCalendario
         TodasMedicionesAdapter todasMedicionesAdapter = new TodasMedicionesAdapter(this, new ArrayList<>(), codCalendario);
         listaTodasMedicionesListView.setAdapter(todasMedicionesAdapter);
-
-
 
         // Llama al método buscarMediciones para cargar todas las mediciones
         buscarMediciones("");
@@ -116,7 +113,6 @@ public class AnadirMedicionActivity extends AppCompatActivity {
             String selectedMedicionName = autoCompleteAdapter.getItem(position);
             Medicion selectedMedicion = findMedicionByName(selectedMedicionName);
 
-
             if (selectedMedicion != null) {
                 String unidadMedida = selectedMedicion.getUnidadMedidaMedicion();
                 Intent intent = new Intent(AnadirMedicionActivity.this, EstablecerMedicionActivity.class);
@@ -128,7 +124,6 @@ public class AnadirMedicionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         ImageView lupaImageView = findViewById(R.id.lupa_buscar);
 

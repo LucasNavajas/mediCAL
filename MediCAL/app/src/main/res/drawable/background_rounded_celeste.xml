@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado cuando el botón está presionado -->
+    <item android:state_pressed="true">
+        <!-- res/drawable/background_rounded_celeste.xml -->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
+            <solid android:color="@color/verdeTextos" /> <!-- Cambia el color de fondo a celeste -->
+            <corners android:radius="15dp" />
+        </shape>
+
+        <color android:color="#FFFFFF" /> <!-- Cambia el color del texto a blanco cuando está presionado -->
+    </item>
+
+    <!-- Estado por defecto (cuando el botón no está presionado) -->
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- Cambia el color del fondo a blanco -->
+            <corners android:radius="15dp" />
+        </shape>
+        <color android:color="@android:color/black" /> <!-- Cambia el color del texto a negro cuando no está presionado -->
+    </item>
+</selector>
