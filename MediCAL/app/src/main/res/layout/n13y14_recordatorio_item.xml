@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <TextView
@@ -14,15 +15,21 @@
         android:textColor="@color/black"
         android:layout_marginStart="20dp"/>
         <!-- Consejo Genérico -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/background_rounded_blanco"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/rectangle_recordatorio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/hora"
-            android:background="@drawable/background_rounded_blanco"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
             >
             <TextView
                 android:id="@+id/nombreMedicamento"
@@ -43,25 +50,47 @@
                 android:textSize="22sp"
                 android:textColor="@color/gris_medical"
                 android:layout_marginStart="10dp"/>
-            <TextView
-                android:id="@+id/instrucciones"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Instrucciones"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="22sp"
-                android:textColor="@color/gris_medical"
-                android:layout_marginStart="10dp"/>
-            <TextView
-                android:id="@+id/indicaciones"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Indicaciones"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="22sp"
-                android:textColor="@color/gris_medical"
-                android:layout_marginStart="10dp"/>
-        </LinearLayout>
 
+                <TextView
+                    android:id="@+id/instrucciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Instrucciones"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="22sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/gris_medical"
+                    android:layout_marginStart="10dp"/>
+
+            <TextView
+                    android:id="@+id/indicaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indicaciones"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="22sp"
+                    android:textColor="@color/gris_medical"
+                    android:layout_marginStart="10dp"/>
+            <TextView
+                android:id="@+id/tomado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrado a las 8:00, 11 may"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="22sp"
+                android:textColor="@color/verdeTextos"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/imagen_registro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="40dp"
+            android:maxWidth="40dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/reloj_medicion"
+            android:layout_marginEnd="10dp"/>
+    </LinearLayout>
 </LinearLayout>
 

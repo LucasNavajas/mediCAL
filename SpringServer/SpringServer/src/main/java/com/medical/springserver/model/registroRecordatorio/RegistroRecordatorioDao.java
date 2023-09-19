@@ -35,4 +35,9 @@ public class RegistroRecordatorioDao {
 
 		return repository.obtenerRegistrosCalendarioEnRango(codCalendario, startDate, endDate);
 	}
+	public List<RegistroRecordatorio> obtenerRegistrosActuales(){
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime hace15 = now.minusMinutes(15);
+		return repository.obtenerRegistrosCalendarioActuales(hace15, now);
+	}
 }

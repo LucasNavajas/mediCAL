@@ -21,9 +21,13 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormatSymbols;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -60,7 +64,30 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
         holder.presentacion.setText(presentacionString);
         holder.instrucciones.setText(recordatorio.getInstruccion().getNombreInstruccion());
-        holder.indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
+        if(recordatorio.getInstruccion().getDescInstruccion().equals("")){
+            holder.indicaciones.setVisibility(View.GONE);
+        }
+        else{
+            holder.indicaciones.setVisibility(View.VISIBLE);
+            holder.indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
+        }
+
+
+        if (registroRecordatorio.isTomaRegistroRecordatorio()==false && LocalDateTime.now().isAfter(registroRecordatorio.getFechaTomaEsperada())){
+            holder.imagenRegistro.setImageResource(R.drawable.cancelar);
+        }
+        else if(registroRecordatorio.isTomaRegistroRecordatorio()){
+            holder.imagenRegistro.setImageResource(R.drawable.tick);
+        }
+        else{
+            holder.imagenRegistro.setImageResource(R.drawable.reloj_medicion);
+        }
+
+        if(registroRecordatorio.getFechaTomaReal()!=null){
+            holder.tomado.setVisibility(View.VISIBLE);
+            holder.tomado.setText("Registrado a las"+ registroRecordatorio.getFechaTomaReal().getHour()+":"+registroRecordatorio.getFechaTomaReal().getMinute()+", "
+            + holder.mesDiaFromDate(registroRecordatorio.getFechaTomaReal().toLocalDate()));
+        }
 
     }
 
@@ -76,6 +103,8 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
         TextView presentacion;
         TextView instrucciones;
         TextView indicaciones;
+        ImageView imagenRegistro;
+        TextView tomado;
 
         public RegistroViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,7 +113,29 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             presentacion = itemView.findViewById(R.id.presentacion);
             instrucciones = itemView.findViewById(R.id.instrucciones);
             indicaciones = itemView.findViewById(R.id.indicaciones);
+            imagenRegistro = itemView.findViewById(R.id.imagen_registro);
+            tomado = itemView.findViewById(R.id.tomado);
 
+        }
+        private String mesDiaFromDate(LocalDate date) {
+            LocalDate today = LocalDate.now();
+            LocalDate tomorrow = today.plusDays(1);
+            LocalDate yesterday = today.minusDays(1);
+
+            String dayString;
+            if (date.isEqual(today)) {
+                dayString = "Hoy, ";
+            } else if (date.isEqual(yesterday)) {
+                dayString = "Ayer, ";
+            } else if (date.isEqual(tomorrow)) {
+                dayString = "Mañana, ";
+            } else {
+                dayString = "";
+            }
+
+            String month = new DateFormatSymbols(new Locale("es")).getMonths()[date.getMonthValue() - 1];
+            String formattedDate = dayString +  + date.getDayOfMonth() + " de " + month + ", " + date.getYear();
+            return formattedDate;
         }
     }
 }
