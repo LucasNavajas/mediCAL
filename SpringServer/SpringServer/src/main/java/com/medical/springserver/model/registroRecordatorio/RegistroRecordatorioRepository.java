@@ -21,7 +21,7 @@ public interface RegistroRecordatorioRepository extends CrudRepository<RegistroR
      );
     
     @Query("SELECT r FROM RegistroRecordatorio r WHERE " +
-            "r.fechaTomaEsperada BETWEEN :startDate AND :endDate ORDER BY r.fechaTomaEsperada")
+            "r.fechaTomaEsperada BETWEEN :startDate AND :endDate AND r.tomaRegistroRecordatorio = FALSE ORDER BY r.fechaTomaEsperada")
      List<RegistroRecordatorio> obtenerRegistrosCalendarioActuales(
              @Param("startDate") LocalDateTime startDate,
              @Param("endDate") LocalDateTime endDate

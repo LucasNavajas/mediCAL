@@ -8,12 +8,12 @@ import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorioD
 import com.medical.springserver.model.solicitud.Solicitud;
 import com.medical.springserver.model.solicitud.SolicitudDao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.threeten.bp.LocalDateTime;
 
 @Service
 public class NotificationService {
@@ -53,16 +53,29 @@ public class NotificationService {
     	for (RegistroRecordatorio registro : registrosActuales) {
     		String tokenUsuario = registro.getRecordatorio().getCalendario().getUsuario().getToken().replace("\"", "");
     		String tokenSupervisor = "";
+    		
+    		// Obtén la fecha y hora de registro.getFechaTomaEsperada()
+    		LocalDateTime fechaTomaEsperada = registro.getFechaTomaEsperada();
+    		// Compara si la fecha y hora actual es igual a fechaTomaEsperada
+    		boolean esIgual = now.isEqual(fechaTomaEsperada);
+
+    		// Compara si la fecha y hora actual está dentro de los últimos 5 minutos de fechaTomaEsperada
+    		boolean pasoHace5Minutos = fechaTomaEsperada.isBefore(now) && fechaTomaEsperada.plusMinutes(5).isEqual(now);
+    		
+    		// Compara si la fecha y hora actual está dentro de los últimos 15 minutos de fechaTomaEsperada
+    		boolean pasoHace15Minutos = fechaTomaEsperada.isBefore(now) && fechaTomaEsperada.plusMinutes(15).isEqual(now);
+    		
     		List<Solicitud> solicitudControlador = solicitudDao.obtenerSupervisor(registro.getRecordatorio().getCalendario().getUsuario().getCodUsuario());
     		if(solicitudControlador.size()>0) {
     			tokenSupervisor = solicitudControlador.get(0).getUsuarioControlador().getToken();
     		}
-    		if(now.getMinute()-registro.getFechaTomaEsperada().getMinute()==0) {
+    		if(esIgual || pasoHace5Minutos || pasoHace15Minutos) {
     			scheduleNotification(tokenUsuario, "Notificación de Recordatorio", "", registro);
     			if(!tokenSupervisor.equals("")) {
     				scheduleNotification(tokenSupervisor, "Notificación de Recordatorio", "", registro);
     			}
     		}
+    		
     		
     	}
     }
