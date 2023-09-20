@@ -23,6 +23,7 @@ public class NotificationService {
 	@Autowired
 	private SolicitudDao solicitudDao;
     public void scheduleNotification(String token, String title, String body, RegistroRecordatorio registro) {
+    	System.out.println("Enviando notificacion");
     	body = "Tiene un recordatorio pendiente: "+ registro.getRecordatorio().getMedicamento().getNombreMedicamento() 
     			+ " del calendario "+ registro.getRecordatorio().getCalendario().getNombreCalendario();
     	 Notification notification = Notification
@@ -54,19 +55,31 @@ public class NotificationService {
     		// Obtén la fecha y hora de registro.getFechaTomaEsperada()
     		LocalDateTime fechaTomaEsperada = registro.getFechaTomaEsperada();
     		// Compara si la fecha y hora actual es igual a fechaTomaEsperada
-    		boolean esIgual = now.isEqual(fechaTomaEsperada);
+    		boolean esIgual = now.getMinute() == registro.getFechaTomaEsperada().getMinute();
 
+    		
+    		// Obtiene la hora y los minutos actuales
+    		int horaActual = now.getHour();
+    		int minutoActual = now.getMinute();
+
+    		// Obtiene la hora y los minutos de fechaTomaEsperada
+    		int horaEsperada = fechaTomaEsperada.getHour();
+    		int minutoEsperado = fechaTomaEsperada.getMinute();
+
+    		// Calcula la diferencia en minutos entre la hora actual y la hora esperada
+    		int diferenciaMinutos = (horaActual - horaEsperada) * 60 + (minutoActual - minutoEsperado);
+    		
     		// Compara si la fecha y hora actual está dentro de los últimos 5 minutos de fechaTomaEsperada
-    		boolean pasoHace5Minutos = fechaTomaEsperada.isBefore(now) && fechaTomaEsperada.plusMinutes(5).isEqual(now);
+    		boolean pasoHace5Minutos = diferenciaMinutos == 5;
     		
     		// Compara si la fecha y hora actual está dentro de los últimos 15 minutos de fechaTomaEsperada
-    		boolean pasoHace15Minutos = fechaTomaEsperada.isBefore(now) && fechaTomaEsperada.plusMinutes(15).isEqual(now);
+    		boolean pasoHace10Minutos = diferenciaMinutos == 10;
     		
     		List<Solicitud> solicitudControlador = solicitudDao.obtenerSupervisor(registro.getRecordatorio().getCalendario().getUsuario().getCodUsuario());
     		if(solicitudControlador.size()>0) {
     			tokenSupervisor = solicitudControlador.get(0).getUsuarioControlador().getToken();
     		}
-    		if(esIgual || pasoHace5Minutos || pasoHace15Minutos) {
+    		if(esIgual || pasoHace5Minutos || pasoHace10Minutos) {
     			scheduleNotification(tokenUsuario, "Notificación de Recordatorio", "", registro);
     			if(!tokenSupervisor.equals("")) {
     				scheduleNotification(tokenSupervisor, "Notificación de Recordatorio", "", registro);

@@ -320,11 +320,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             @Override
             public void onResponse(Call<List<RegistroRecordatorio>> call, Response<List<RegistroRecordatorio>> response) {
                 registrosNotificacion = response.body();
-                if(registrosNotificacion != null) {
-                    while (registrosNotificacion.size() > 0) {
-                        popUpNotificacion(registrosNotificacion.get(0));
-                        registrosNotificacion.remove(0);
-                    }
+                if(registrosNotificacion != null && registrosNotificacion.size()>0) {
+                    popUpNotificacion(registrosNotificacion.get(0));
+                    registrosNotificacion.remove(0);
                 }
             }
 
