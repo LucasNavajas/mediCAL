@@ -44,7 +44,7 @@ public class NotificationService {
             // Manejar errores
         }
     }
-    @Scheduled(cron = "0 * * * * *")
+    //@Scheduled(cron = "0 * * * * *")
     public void enviarNotificaciones() {
     	System.out.println("Enviar Notificaciones activado");
     	List<RegistroRecordatorio> registrosActuales = registroDao.obtenerRegistrosActuales();

@@ -51,7 +51,7 @@ public class AgregarAlertaInventarioActivity extends AppCompatActivity {
         presentacionMedApi.getPresentacionMedByCod(getIntent().getIntExtra("presentacionMedId", 0)).enqueue(new Callback<PresentacionMed>() {
             @Override
             public void onResponse(Call<PresentacionMed> call, Response<PresentacionMed> response) {
-                presentacionMed.setText("Quedan " + response.body().getNombrePresentacionMed()+ "(s)");
+                presentacionMed.setText(response.body().getNombrePresentacionMed()+ "(s)");
             }
 
             @Override
