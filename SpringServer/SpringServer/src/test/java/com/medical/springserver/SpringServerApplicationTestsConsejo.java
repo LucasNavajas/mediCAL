@@ -26,13 +26,12 @@ class SpringServerApplicationTestsConsejo {
 		
 		// Usar Tests de TipoConsejo
 		
-		/*
+		
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();	
 			
 		Consejo consejo = new Consejo();
 		consejo.setNombreConsejo("Su consejo diario de MediCAL!");
-		consejo.setLikeConsejo(false);
 		consejo.setLinkConsejo("www.youtube.com");
 		consejo.setFechaAltaConsejo(fechaHoy);
 		consejo.setAuspiciante("MediCAL");
@@ -48,9 +47,8 @@ class SpringServerApplicationTestsConsejo {
 		
 		consejo.setTipoConsejo(tipoConsejo3);
 		consejoDao.save(consejo);
-		tipoConsejo3.setVarConsejo(consejos);
 		tipoConsejoDao.save(tipoConsejo3);	
-		*/
+		
 				
 	}
 	

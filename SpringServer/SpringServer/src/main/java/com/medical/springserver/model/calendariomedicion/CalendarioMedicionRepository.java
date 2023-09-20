@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 
 @Repository
@@ -14,5 +15,11 @@ public interface CalendarioMedicionRepository extends CrudRepository<CalendarioM
 	
 	@Query("SELECT cm FROM CalendarioMedicion cm WHERE cm.calendario.codCalendario = :codCalendario AND cm.fechaFinVigenciaCM IS NULL")
 	List<CalendarioMedicion> findByCodCalendario(@Param("codCalendario") Integer codCalendario);
+
+    CalendarioMedicion findByCodCalendarioMedicion(Integer codCalendarioMedicion);
+    
+	@Query("SELECT cm FROM CalendarioMedicion cm WHERE cm.medicion.codMedicion = :codMedicion AND cm.fechaFinVigenciaCM IS NULL")
+	List<CalendarioMedicion> findByCodMedicion(@Param("codMedicion") Integer codMedicion);
+
 
 }

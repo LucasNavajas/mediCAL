@@ -1,4 +1,5 @@
 package com.medical.springserver.controller;
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicionDao;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
@@ -19,9 +20,19 @@ public class CalendarioMedicionController {
 		return calendariomedicionDao.getAllCalendarioMediciones();
 	}
 	
+	@GetMapping("/calendariomedicion/{codCalendarioMedicion}")
+	public CalendarioMedicion getByCodCalendarioM(@PathVariable int codCalendarioMedicion) {
+		return calendariomedicionDao.findByCodCalendarioMedicion(codCalendarioMedicion);
+	}
+	
 	@GetMapping("/calendariomedicion/calendario/{codCalendario}")
 	public List<CalendarioMedicion> getByCodCalendarioMedicion(@PathVariable int codCalendario){
 		return calendariomedicionDao.findByCodCalendario(codCalendario);
+	}
+	
+	@GetMapping("/calendariomedicion/medicion/{codMedicion}")
+	public List<CalendarioMedicion> getByCodMedicion(@PathVariable int codMedicion){
+		return calendariomedicionDao.findByCodMedicion(codMedicion);
 	}
 
 	

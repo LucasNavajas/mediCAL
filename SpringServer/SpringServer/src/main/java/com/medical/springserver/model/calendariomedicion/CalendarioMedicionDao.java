@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 
 @Service
@@ -18,10 +19,19 @@ public class CalendarioMedicionDao {
 		return repository.save(calendariomedicion);
 	}
 	
+	public CalendarioMedicion findByCodCalendarioMedicion(int codCalendarioMedicion) {
+		return repository.findByCodCalendarioMedicion(codCalendarioMedicion);
+	}
+	
 	
 	public List<CalendarioMedicion> findByCodCalendario(int codCalendario){
 		return repository.findByCodCalendario(codCalendario);
 	}
+	
+	public List<CalendarioMedicion> findByCodMedicion(int codMedicion){
+		return repository.findByCodMedicion(codMedicion);
+	}
+	
 	
 	
 	public List<CalendarioMedicion> getAllCalendarioMediciones(){
