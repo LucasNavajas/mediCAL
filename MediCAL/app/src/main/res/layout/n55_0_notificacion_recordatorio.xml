@@ -28,7 +28,7 @@
                 android:fontFamily="@font/inter_medium"
                 android:text="08:00"
                 android:textColor="@color/verdeTextos"
-                android:textSize="30sp"
+                android:textSize="40sp"
                 android:gravity="center_horizontal" />
 
             <!--Nombre medicamento-->
@@ -40,11 +40,11 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/inter_medium"
                 android:text="Aspirineta"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="30sp"
                 android:inputType="textMultiLine"
                 android:gravity="left" />
 
@@ -61,7 +61,7 @@
                 android:fontFamily="@font/inter_regular"
                 android:text="1 Pastilla(s) 0,400 g"
                 android:textColor="@color/gris_medical"
-                android:textSize="21sp"
+                android:textSize="26sp"
                 android:inputType="textMultiLine"
                 android:gravity="left" />
 
@@ -78,7 +78,7 @@
                 android:fontFamily="@font/inter_regular"
                 android:text="Antes de comer"
                 android:textColor="@color/gris_medical"
-                android:textSize="21sp"
+                android:textSize="26sp"
                 android:inputType="textMultiLine"
                 android:gravity="left" />
 
@@ -95,7 +95,7 @@
                 android:text="Otras instrucciones"
                 android:maxLength="300"
                 android:textColor="@color/gris_medical"
-                android:textSize="21sp"
+                android:textSize="26sp"
                 android:inputType="textMultiLine"
                 android:gravity="left" />
 
@@ -122,13 +122,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginEnd="20dp"
                         android:gravity="center">
 
                         <ImageView
-                            android:layout_width="62dp"
-                            android:layout_height="62dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxWidth="60dp"
+                            android:maxHeight="60dp"
+                            android:adjustViewBounds="true"
                             android:src="@drawable/cancelar"
+                            android:id="@+id/omitir"
                             />
 
                         <TextView
@@ -138,7 +141,7 @@
                             android:gravity="center"
                             android:fontFamily="@font/inter_regular"
                             android:textColor="@color/verdeTextos"
-                            android:textSize="21sp"
+                            android:textSize="20sp"
                             />
                     </LinearLayout>
 
@@ -153,9 +156,13 @@
                         >
 
                         <ImageView
-                            android:layout_width="62dp"
-                            android:layout_height="62dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:maxWidth="60dp"
+                            android:maxHeight="60dp"
+                            android:adjustViewBounds="true"
                             android:src="@drawable/tick"
+                            android:id="@+id/aceptar"
                             />
 
                         <TextView
@@ -165,7 +172,7 @@
                             android:gravity="center"
                             android:fontFamily="@font/inter_regular"
                             android:textColor="@color/verdeTextos"
-                            android:textSize="21sp"
+                            android:textSize="20sp"
                             />
                     </LinearLayout>
 
@@ -175,12 +182,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:layout_marginStart="20dp">
+                        android:layout_marginStart="0dp">
 
                         <ImageView
-                            android:layout_width="62dp"
-                            android:layout_height="62dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxWidth="60dp"
+                            android:maxHeight="60dp"
+                            android:adjustViewBounds="true"
                             android:src="@drawable/aplazar"
+                            android:id="@+id/aplazar"
                             />
 
                         <TextView
@@ -190,7 +201,7 @@
                             android:gravity="center"
                             android:fontFamily="@font/inter_regular"
                             android:textColor="@color/verdeTextos"
-                            android:textSize="21sp"
+                            android:textSize="20sp"
                             />
                     </LinearLayout>
 

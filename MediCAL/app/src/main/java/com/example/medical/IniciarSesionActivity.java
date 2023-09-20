@@ -202,6 +202,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
     }
 
     private void popupInvalido(int layoutResId) {
+        progressBar.setVisibility(View.GONE);
         View popupView = getLayoutInflater().inflate(layoutResId, null);
 
 
@@ -244,6 +245,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
     }
 
     private void popupResetContrasenia() {
+
         View popupView = getLayoutInflater().inflate(R.layout.n10_popup_reiniciarpassword, null);
 
         // Crear la instancia de PopupWindow

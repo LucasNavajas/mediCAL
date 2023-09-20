@@ -38,11 +38,9 @@ public class RegistroRecordatorioController {
 		return registroRecordatorioDao.obtenerRegistrosActuales();
 	}
 	
-	/*@PostMapping("/enviarNotificacion")
-	public void enviarNotificacion() {
-		notificacion.scheduleNotification("dIDtsB4aQN2JTyl8FKjEsZ:APA91bHudxSF6MjqmbQcNgHJ7dTxV7ze_2EPKqlUUr4NiEDc2A7sjMDKnsPk6WywzlEN7lC_R1EHn7Ng4xO3Cbj2idnx5yvuUDc4xJmEx05o6wH39_8IPbI5AfOdYL5seIGLRGWHjlZz", 
-				"Notificación de Recordatorio", 
-				"", 
-				registroRecordatorioDao.obtenerRegistrosActuales().get(0));
-	}*/
+	@GetMapping("/registroRecordatorio/notificacion/{codCalendario}")
+	public List<RegistroRecordatorio> obtenerRegistrosCalendarioNotificacion(@PathVariable int codCalendario){
+		return registroRecordatorioDao.obtenerRegistrosCalendarioNotificacion(codCalendario);
+	}
+	
 }

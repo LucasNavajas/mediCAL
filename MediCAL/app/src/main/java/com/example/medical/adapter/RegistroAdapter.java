@@ -24,6 +24,7 @@ import org.w3c.dom.Text;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,11 +36,15 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
     private final Context context;
     private List<RegistroRecordatorio> registrosDia = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
 
     public RegistroAdapter(List<RegistroRecordatorio> registrosDia, Context context) {
         this.context = context;
         this.registrosDia = registrosDia;
 
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -54,7 +59,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
         RegistroRecordatorio registroRecordatorio = registrosDia.get(position);
         Recordatorio recordatorio = registroRecordatorio.getRecordatorio();
-        holder.hora.setText(String.valueOf(registroRecordatorio.getFechaTomaEsperada().getHour())+":"+String.valueOf(registroRecordatorio.getFechaTomaEsperada().getMinute()));
+        holder.hora.setText(String.valueOf(registroRecordatorio.getFechaTomaEsperada().toLocalTime()));
         holder.nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
         String presentacionString= "";
         presentacionString = Float.toString(recordatorio.getDosis().getCantidadDosis()) + " "
@@ -85,13 +90,25 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
         if(registroRecordatorio.getFechaTomaReal()!=null){
             holder.tomado.setVisibility(View.VISIBLE);
-            holder.tomado.setText("Registrado a las"+ registroRecordatorio.getFechaTomaReal().getHour()+":"+registroRecordatorio.getFechaTomaReal().getMinute()+", "
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            holder.tomado.setText("Registrado a las "+ registroRecordatorio.getFechaTomaReal().toLocalTime().format(formatter)+", "
             + holder.mesDiaFromDate(registroRecordatorio.getFechaTomaReal().toLocalDate()));
         }
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(registroRecordatorio);
+                }
+            }
+        });
+
     }
 
-
+    public interface OnItemClickListener {
+        void onItemClick(RegistroRecordatorio registro);
+    }
     @Override
     public int getItemCount() {
         return registrosDia.size(); // Solo mostrar un consejo aleatorio por tipo

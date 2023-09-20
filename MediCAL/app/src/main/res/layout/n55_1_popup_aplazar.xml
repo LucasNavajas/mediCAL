@@ -141,6 +141,7 @@
 
             <!--boton cancelar-->
                 <TextView
+                    android:id="@+id/cancelar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CANCELAR"
@@ -152,6 +153,7 @@
                     />
             <!--boton aceptar-->
                 <TextView
+                    android:id="@+id/aceptar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ACEPTAR"

@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.example.medical.adapter.RegistroAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.EstadoSolicitud;
 import com.example.medical.model.Inventario;
+import com.example.medical.model.Omision;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.model.RegistroRecordatorio;
 import com.example.medical.model.Solicitud;
@@ -40,6 +43,7 @@ import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.InventarioApi;
+import com.example.medical.retrofit.OmisionApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -57,6 +61,7 @@ import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -96,6 +101,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private EstadoSolicitudApi estadoSolicitudApi = retrofitService.getRetrofit().create(EstadoSolicitudApi.class);
     private SolicitudApi solicitudApi = retrofitService.getRetrofit().create(SolicitudApi.class);
     private RegistroRecordatorioApi registroRecordatorioApi = retrofitService.getRetrofit().create(RegistroRecordatorioApi.class);
+    private OmisionApi omisionApi = retrofitService.getRetrofit().create(OmisionApi.class);
     private List<Calendario> listaCalendarios;
     private LinearLayout contenedorCalendarios;
     private RelativeLayout soporte;
@@ -118,9 +124,11 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RecyclerView recyclerView;
     private List<RegistroRecordatorio> allRegistros = new ArrayList<>();
     private List<RegistroRecordatorio> registrosDia = new ArrayList<>();
+    private List<RegistroRecordatorio> registrosNotificacion = new ArrayList<>();
 
     private TextView textoSinRecordatorios;
     private ImageView imagenSinRecordatorios;
+    private int codCalendarioseleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,7 +284,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     private void mostrarCalendarioSeleccionado() {
         if (listaCalendarios != null && !listaCalendarios.isEmpty()) {
-            int codCalendarioseleccionado = listaCalendarios.get(0).getCodCalendario();
+            codCalendarioseleccionado = listaCalendarios.get(0).getCodCalendario();
             if (intent1.getIntExtra("codCalendario", 0) != 0) {
                 codCalendarioseleccionado = intent1.getIntExtra("codCalendario", 0);
             }
@@ -304,6 +312,353 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             startActivity(intent);
             finish();
         }
+
+    }
+
+    private void loadNotificaciones(int codCalendario) {
+        registroRecordatorioApi.obtenerRegistrosCalendarioNotificacion(codCalendario).enqueue(new Callback<List<RegistroRecordatorio>>() {
+            @Override
+            public void onResponse(Call<List<RegistroRecordatorio>> call, Response<List<RegistroRecordatorio>> response) {
+                registrosNotificacion = response.body();
+                if(registrosNotificacion != null) {
+                    while (registrosNotificacion.size() > 0) {
+                        popUpNotificacion(registrosNotificacion.get(0));
+                        registrosNotificacion.remove(0);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RegistroRecordatorio>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void popUpNotificacion(RegistroRecordatorio registroRecordatorio) {
+        View popupView = getLayoutInflater().inflate(R.layout.n55_0_notificacion_recordatorio, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+
+        TextView hora = popupView.findViewById(R.id.text_hora);
+        TextView nombreMedicamento = popupView.findViewById(R.id.text_nombremedicamento);
+        TextView cpc = popupView.findViewById(R.id.text_CPC);
+        TextView instrucciones = popupView.findViewById(R.id.text_instrucciones);
+        TextView indicaciones = popupView.findViewById(R.id.text_otras_instrucciones);
+        ImageView omitir = popupView.findViewById(R.id.omitir);
+        ImageView tomar = popupView.findViewById(R.id.aceptar);
+        ImageView aplazar = popupView.findViewById(R.id.aplazar);
+        Recordatorio recordatorio = registroRecordatorio.getRecordatorio();
+        String presentacionString= "";
+        presentacionString = Float.toString(recordatorio.getDosis().getCantidadDosis()) + " "
+                + registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()+ " "
+                + Float.toString(recordatorio.getDosis().getValorConcentracion())+ " "
+                + recordatorio.getDosis().getConcentracion().getUnidadMedidaC();
+
+        hora.setText(registroRecordatorio.getFechaTomaEsperada().toLocalTime().toString());
+        nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
+        cpc.setText(presentacionString);
+        instrucciones.setText(recordatorio.getInstruccion().getNombreInstruccion());
+        if(recordatorio.getInstruccion().getDescInstruccion().equals("")){
+            indicaciones.setVisibility(View.GONE);
+        }
+        indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
+
+       omitir.setOnClickListener(view ->{
+           popupWindow.dismiss();
+           popUpOmitir(registroRecordatorio);
+       });
+
+       tomar.setOnClickListener(view ->{
+           registroRecordatorio.setFechaTomaReal(LocalDateTime.now());
+           registroRecordatorio.setTomaRegistroRecordatorio(true);
+           registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
+               @Override
+               public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                   popupWindow.dismiss();
+                   dimView.setVisibility(View.GONE);
+                   Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                   intent.putExtra("codCalendario", codCalendarioseleccionado);
+                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                   startActivity(intent);
+               }
+
+               @Override
+               public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                   popupWindow.dismiss();
+                   dimView.setVisibility(View.GONE);
+                   Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
+               }
+           });
+       });
+
+       aplazar.setOnClickListener(view ->{
+           popUpAplazar(registroRecordatorio);
+       });
+
+        // Configurar el OnTouchListener para la vista oscura
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void popUpAplazar(RegistroRecordatorio registroRecordatorio) {
+        View popupView = getLayoutInflater().inflate(R.layout.n55_1_popup_aplazar, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+        TextView cincoMin = popupView.findViewById(R.id.text_cinco_min);
+        TextView diezMin = popupView.findViewById(R.id.text_diez_min);
+        TextView quinceMin = popupView.findViewById(R.id.text_quince_min);
+        TextView treintaMin = popupView.findViewById(R.id.text_treinta_min);
+        TextView sesentaMin = popupView.findViewById(R.id.text_sesenta_min);
+
+        cincoMin.setOnClickListener(view->{seleccionarOpcion(cincoMin);});
+        diezMin.setOnClickListener(view->{seleccionarOpcion(diezMin);});
+        quinceMin.setOnClickListener(view->{seleccionarOpcion(quinceMin);});
+        treintaMin.setOnClickListener(view->{seleccionarOpcion(treintaMin);});
+        sesentaMin.setOnClickListener(view->{seleccionarOpcion(sesentaMin);});
+
+        aceptar.setOnClickListener(view ->{
+            // Obtiene la fecha y hora actual
+            LocalDateTime now = LocalDateTime.now();
+
+            LocalDateTime adjustedTime = now.withSecond(0).withNano(0);
+            switch(opcionSeleccionada.getId()){
+
+                case R.id.text_diez_min:
+                    popupWindow.dismiss();
+                    registroRecordatorio.setFechaTomaEsperada(adjustedTime.plusMinutes(10));
+                    aplazarRegistro(popupWindow, dimView, registroRecordatorio, 10);
+                    break;
+                case R.id.text_quince_min:
+                    popupWindow.dismiss();
+                    registroRecordatorio.setFechaTomaEsperada(adjustedTime.plusMinutes(15));
+                    aplazarRegistro(popupWindow, dimView, registroRecordatorio, 15);
+                    break;
+                case R.id.text_treinta_min:
+                    popupWindow.dismiss();
+                    registroRecordatorio.setFechaTomaEsperada(adjustedTime.plusMinutes(30));
+                    aplazarRegistro(popupWindow, dimView, registroRecordatorio, 30);
+                    break;
+                case R.id.text_sesenta_min:
+                    popupWindow.dismiss();
+                    registroRecordatorio.setFechaTomaEsperada(adjustedTime.plusMinutes(60));
+                    aplazarRegistro(popupWindow, dimView, registroRecordatorio, 60);
+                    break;
+                default:
+                    popupWindow.dismiss();
+                    registroRecordatorio.setFechaTomaEsperada(adjustedTime.plusMinutes(5));
+                    aplazarRegistro(popupWindow, dimView, registroRecordatorio, 5);
+                    break;
+            }
+        });
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            popUpNotificacion(registroRecordatorio);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void aplazarRegistro(PopupWindow popupWindow, View dimView, RegistroRecordatorio registro, int minutos) {
+        registroRecordatorioApi.save(registro).enqueue(new Callback<RegistroRecordatorio>() {
+            @Override
+            public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                popupWindow.dismiss();
+                popUpAplazado(registro, minutos);
+            }
+
+            @Override
+            public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                Toast.makeText(InicioCalendarioActivity.this, "Error al guardar el aplazo del registro", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void popUpAplazado(RegistroRecordatorio registro, int minutos) {
+        View popupView = getLayoutInflater().inflate(R.layout.n55_2_aplazo_exitoso, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        ImageView botonCerrar = popupView.findViewById(R.id.boton_cerrar);
+        TextView nombreMedicamento = popupView.findViewById(R.id.text_nombremedicamento);
+        TextView textoAplazado = popupView.findViewById(R.id.text_tiempoaplazo);
+        nombreMedicamento.setText(registro.getRecordatorio().getMedicamento().getNombreMedicamento());
+        textoAplazado.setText("Aplazado por "+minutos+" min");
+        botonCerrar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+            intent.putExtra("codCalendario", codCalendarioseleccionado);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+                Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                intent.putExtra("codCalendario", codCalendarioseleccionado);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    private TextView opcionSeleccionada = null;
+
+    private void seleccionarOpcion(TextView opcion) {
+        if (opcionSeleccionada != null) {
+            opcionSeleccionada.setBackgroundResource(android.R.color.transparent);
+        }
+
+        opcion.setBackgroundResource(R.color.verdeSelector);
+        opcionSeleccionada = opcion;
+    }
+
+    private void popUpOmitir(RegistroRecordatorio registroRecordatorio) {
+        View popupView = getLayoutInflater().inflate(R.layout.n55_3_popup_por_que_se_omitio, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        RadioGroup radioGroup = popupView.findViewById(R.id.radio_group);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+
+        cancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            popUpNotificacion(registroRecordatorio);
+        });
+        aceptar.setOnClickListener(view ->{
+            int radioButtonId = radioGroup.getCheckedRadioButtonId();
+
+            if (radioButtonId != -1) {
+                RadioButton radioButton = popupView.findViewById(radioButtonId);
+                String textoSeleccionado = radioButton.getText().toString();
+                Omision omision = new Omision();
+                omision.setNombreOmision(textoSeleccionado);
+                omisionApi.save(omision).enqueue(new Callback<Omision>() {
+                    @Override
+                    public void onResponse(Call<Omision> call, Response<Omision> response) {
+                        registroRecordatorio.setOmision(response.body());
+                        registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
+                            @Override
+                            public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                                popupWindow.dismiss();
+                                dimView.setVisibility(View.GONE);
+                                Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                                intent.putExtra("codCalendario", codCalendarioseleccionado);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                                Toast.makeText(InicioCalendarioActivity.this, "Error al guardar el registro", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<Omision> call, Throwable t) {
+                        Toast.makeText(InicioCalendarioActivity.this, "Error al crear la omisión", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } else {
+                Toast.makeText(InicioCalendarioActivity.this, "Debe seleccionar una opción", Toast.LENGTH_LONG).show();
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -343,13 +698,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         imagenSinRecordatorios = findViewById(R.id.imagen_sin_recordatorios);
         textoSinRecordatorios = findViewById(R.id.texto_sin_recordatorios);
         llenarListaCalendarios();
-        // Iniciar el hilo de trabajo para realizar la solicitud de red
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendNotification();
-            }
-        }).start();*/
 
     }
 
@@ -359,6 +707,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onResponse(Call<List<RegistroRecordatorio>> call, Response<List<RegistroRecordatorio>> response) {
                 allRegistros = response.body();
                 setView();
+                progressBar.setVisibility(View.GONE);
+                View dimView = findViewById(R.id.dim_view);
+                dimView.setVisibility(View.GONE);
+                loadNotificaciones(codCalendarioseleccionado);
             }
 
             @Override
@@ -367,65 +719,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
     }
-
-    /*private void sendNotification() {
-        try {
-            OkHttpClient client = new OkHttpClient();
-            MediaType mediaType = MediaType.parse("application/json");
-
-            JSONObject json = new JSONObject();
-            json.put("to", "dIDtsB4aQN2JTyl8FKjEsZ:APA91bHudxSF6MjqmbQcNgHJ7dTxV7ze_2EPKqlUUr4NiEDc2A7sjMDKnsPk6WywzlEN7lC_R1EHn7Ng4xO3Cbj2idnx5yvuUDc4xJmEx05o6wH39_8IPbI5AfOdYL5seIGLRGWHjlZz");
-            json.put("priority", "high");
-
-            JSONObject notificationData = new JSONObject();
-            notificationData.put("title", "Título de prueba");
-            notificationData.put("body", "Este es un mensaje de prueba");
-            json.put("notification", notificationData);
-
-            RequestBody rBody = RequestBody.create(mediaType, json.toString());
-            Request request = new Request.Builder()
-                    .url("https://fcm.googleapis.com/fcm/send")
-                    .post(rBody)
-                    .addHeader("Authorization", "key=AAAACdR9ayg:APA91bHr0q58sCElsLKWv1iwXef6X_n4BVJ--KGqCBUJXfSXd2kNV6vYIEVuu8vIhmkB-qziYqE-65xhrFV654tZJpfmwExk9F2XVeFUyOCZ9SmAzMAF0qu_Hu27CBLWJk4i0HohbaEH")
-                    .addHeader("Content-Type", "application/json")
-                    .build();
-
-            okhttp3.Response response = client.newCall(request).execute();
-
-            if (response.isSuccessful()) {
-                // Notificación enviada con éxito
-                //handler.sendEmptyMessage(REQUEST_SUCCESSFUL);
-            } else {
-                // Error al enviar la notificación
-                //handler.sendEmptyMessage(REQUEST_FAILED);
-            }
-        } catch (IOException | JSONException e) {
-            Log.e("Notificación Fallida", e.getMessage(), e);
-            // Manejar cualquier excepción que pueda ocurrir durante la solicitud
-            //handler.sendEmptyMessage(REQUEST_FAILED);
-        }
-    }*/
-   /* Handler handler = new Handler();
-
-    // Define un Runnable que se ejecutará después de 5 segundos
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            progressBar.setVisibility(View.GONE);
-            View dimView = findViewById(R.id.dim_view);
-            dimView.setVisibility(View.GONE);
-            habilitarBotones();
-        }
-    };*/
     private void llenarEstadosSolicitud() {
         estadoSolicitudApi.getAllEstadoSolicitud().enqueue(new Callback<List<EstadoSolicitud>>() {
             @Override
             public void onResponse(Call<List<EstadoSolicitud>> call, Response<List<EstadoSolicitud>> response) {
                // handler.postDelayed(runnable, 5000); Para probar como funciona en caso de que llegue rápido la consulta
                 estadosSolicitud = response.body();
-                progressBar.setVisibility(View.GONE);
-                View dimView = findViewById(R.id.dim_view);
-                dimView.setVisibility(View.GONE);
                 habilitarBotones();
             }
 
@@ -586,7 +885,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                         usuarioApi.modificarToken(codUsuarioLogeado, token).enqueue(new Callback<Usuario>() {
                             @Override
                             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                                FirebaseMessaging.getInstance().subscribeToTopic("All");
 
                             }
 
@@ -731,6 +1029,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         }
         RegistroAdapter registroAdapter = new RegistroAdapter(registrosDia, this);
         recyclerView.setAdapter(registroAdapter);
+        registroAdapter.setOnItemClickListener(new RegistroAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RegistroRecordatorio registro) {
+                // Llama al método popUpNotificacion con el objeto RegistroRecordatorio
+                popUpNotificacion(registro);
+            }
+        });
 
     }
 

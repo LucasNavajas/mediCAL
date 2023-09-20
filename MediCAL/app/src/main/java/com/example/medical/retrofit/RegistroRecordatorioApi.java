@@ -20,4 +20,7 @@ public interface RegistroRecordatorioApi {
 
     @GET("/registroRecordatorio/calendario/{codCalendario}")
     Call<List<RegistroRecordatorio>> obtenerRegistrosCalendario(@Path("codCalendario") int codCalendario);
+
+    @GET("/registroRecordatorio/notificacion/{codCalendario}")
+    Call<List<RegistroRecordatorio>> obtenerRegistrosCalendarioNotificacion(@Path("codCalendario") int codCalendario);
 }

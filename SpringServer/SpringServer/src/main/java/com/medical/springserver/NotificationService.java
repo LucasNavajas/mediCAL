@@ -23,7 +23,6 @@ public class NotificationService {
 	@Autowired
 	private SolicitudDao solicitudDao;
     public void scheduleNotification(String token, String title, String body, RegistroRecordatorio registro) {
-    	System.out.println("Se activo la funcion schedule notification");
     	body = "Tiene un recordatorio pendiente: "+ registro.getRecordatorio().getMedicamento().getNombreMedicamento() 
     			+ " del calendario "+ registro.getRecordatorio().getCalendario().getNombreCalendario();
     	 Notification notification = Notification
@@ -44,11 +43,9 @@ public class NotificationService {
             // Manejar errores
         }
     }
-    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void enviarNotificaciones() {
-    	System.out.println("Enviar Notificaciones activado");
     	List<RegistroRecordatorio> registrosActuales = registroDao.obtenerRegistrosActuales();
-    	System.out.println("Registros actuales size:"+registrosActuales.size());
     	LocalDateTime now = LocalDateTime.now();
     	for (RegistroRecordatorio registro : registrosActuales) {
     		String tokenUsuario = registro.getRecordatorio().getCalendario().getUsuario().getToken().replace("\"", "");

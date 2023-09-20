@@ -173,9 +173,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/usuario/token/{codUsuario}")
-	public Usuario modificarToken(@PathVariable int codUsuario, @RequestBody Map<String, String> requestBody) {
-	    String token = requestBody.get("token");
-	    token = token.replace("\"", "");
+	public Usuario modificarToken(@PathVariable int codUsuario, @RequestBody String  token) {
 		return usuarioDao.modificarToken(codUsuario, token);
 	}
 }

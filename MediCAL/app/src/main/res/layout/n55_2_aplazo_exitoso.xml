@@ -20,14 +20,13 @@
     <!-- Contenedor del nombre del medicamento y tiempo aplazado -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_below="@id/boton_cerrar"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_vertical|center_horizontal">
 
         <!-- Nombre del medicamento aplazado -->
         <TextView
@@ -37,7 +36,7 @@
             android:fontFamily="@font/inter_medium"
             android:text="Aspirineta"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textAlignment="center"
             android:inputType="textMultiLine" />
 
@@ -49,7 +48,7 @@
             android:fontFamily="@font/inter_medium"
             android:text="Aplazado por x min"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textAlignment="center" />
     </LinearLayout>
 
