@@ -71,6 +71,7 @@ public class MasActivity extends AppCompatActivity {
     private ImageButton imageninicio;
     private ImageButton imagenconsejos;
 
+    private TextView perfilUsuario;
 
     private RecyclerView recyclerView;
     private PopupWindow popupWindow;
@@ -257,10 +258,14 @@ public class MasActivity extends AppCompatActivity {
         menuButton = findViewById(R.id.menu_button);
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         eliminarCuenta = findViewById(R.id.eliminar_cuenta);
+        perfilUsuario = findViewById(R.id.perfil_usuario);
         usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 usuarioInstance=response.body();
+                if(usuarioInstance.getPerfil()!=null) {
+                    perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
+                }
                 nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
                 nombre.setText(usuarioInstance.getUsuarioUnico());
             }

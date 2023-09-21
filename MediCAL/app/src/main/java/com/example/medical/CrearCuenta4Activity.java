@@ -14,7 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medical.model.Perfil;
 import com.example.medical.model.Usuario;
+import com.example.medical.retrofit.PerfilApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,6 +46,7 @@ public class CrearCuenta4Activity extends AppCompatActivity {
 
         RetrofitService retrofitService = new RetrofitService();
         UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+        PerfilApi perfilApi = retrofitService.getRetrofit().create(PerfilApi.class);
 
         Intent intent = getIntent();
         Button buttonSiguiente = findViewById(R.id.button_siguiente);
@@ -85,32 +88,42 @@ public class CrearCuenta4Activity extends AppCompatActivity {
             usuario.setTelefonoUsuario(telefono);
             usuario.setUsuarioUnico(usuarioUnico);
 
-            // Llamar al método modificarUsuario en la interfaz UsuarioApi
-            Call<Usuario> call = usuarioApi.modificarUsuario(usuario);
-
-            call.enqueue(new Callback<Usuario>() {
+            perfilApi.findByCodPerfil(1).enqueue(new Callback<Perfil>() {
                 @Override
-                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    // Aquí puedes verificar la respuesta del servidor
-                    if (response.isSuccessful()) {
-                        Intent intent2 = new Intent(CrearCuenta4Activity.this, BienvenidoUsuarioActivity.class);
-                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent2.putExtra("usuario", intent.getStringExtra("usuario"));
-                        intent2.putExtra("mail", mailUsuario);
-                        intent2.putExtra("contrasenia", contrasenia);
-                        startActivity(intent2);
-                        finish();
-                    } else {
-                        Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
-                    }
+                public void onResponse(Call<Perfil> call, Response<Perfil> response) {
+                    usuario.setPerfil(response.body());
+                    usuarioApi.save(usuario).enqueue(new Callback<Usuario>() {
+                        @Override
+                        public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                            // Aquí puedes verificar la respuesta del servidor
+                            if (response.isSuccessful()) {
+                                Intent intent2 = new Intent(CrearCuenta4Activity.this, BienvenidoUsuarioActivity.class);
+                                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent2.putExtra("usuario", intent.getStringExtra("usuario"));
+                                intent2.putExtra("mail", mailUsuario);
+                                intent2.putExtra("contrasenia", contrasenia);
+                                startActivity(intent2);
+                                finish();
+                            } else {
+                                Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Usuario> call, Throwable t) {
+                            Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
+                            Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error occurred");
+                        }
+                    });
                 }
 
                 @Override
-                public void onFailure(Call<Usuario> call, Throwable t) {
-                    Toast.makeText(CrearCuenta4Activity.this, "Error al crear la cuenta", Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<Perfil> call, Throwable t) {
+                    Toast.makeText(CrearCuenta4Activity.this, "Error al fijar el perfil", Toast.LENGTH_SHORT).show();
                     Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error occurred");
-                }
-            });
+                    }
+                });
+
             }
             else{
                 Toast.makeText(CrearCuenta4Activity.this, "Debe tener al menos 18 años para crear una cuenta", Toast.LENGTH_SHORT).show();

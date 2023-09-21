@@ -27,5 +27,9 @@ public class PerfilDao{
 		repository.delete(perfil);
 	}
 	
+	public Perfil findByCodPerfil(int codPefil) {
+		return repository.findByCodPerfil(codPefil);
+	}
+	
 }
 

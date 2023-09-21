@@ -56,10 +56,15 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
     @Override
     public void onBindViewHolder(@NonNull RegistroAdapter.RegistroViewHolder holder, int position) {
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         RegistroRecordatorio registroRecordatorio = registrosDia.get(position);
         Recordatorio recordatorio = registroRecordatorio.getRecordatorio();
-        holder.hora.setText(String.valueOf(registroRecordatorio.getFechaTomaEsperada().toLocalTime()));
+        if(recordatorio.getFrecuencia()==null && registroRecordatorio.getFechaTomaEsperada().getHour()==0 && registroRecordatorio.getFechaTomaEsperada().getMinute()==0){
+            holder.hora.setText("Cuando sea necesario");
+        }
+        else {
+            holder.hora.setText(String.valueOf(registroRecordatorio.getFechaTomaEsperada().toLocalTime().format(formatter)));
+        }
         holder.nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
         String presentacionString= "";
         presentacionString = Float.toString(recordatorio.getDosis().getCantidadDosis()) + " "
@@ -76,8 +81,6 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             holder.indicaciones.setVisibility(View.VISIBLE);
             holder.indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
         }
-
-
         if (registroRecordatorio.isTomaRegistroRecordatorio()==false && LocalDateTime.now().isAfter(registroRecordatorio.getFechaTomaEsperada())){
             holder.imagenRegistro.setImageResource(R.drawable.cancelar);
         }
@@ -90,7 +93,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
 
         if(registroRecordatorio.getFechaTomaReal()!=null){
             holder.tomado.setVisibility(View.VISIBLE);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
             holder.tomado.setText("Registrado a las "+ registroRecordatorio.getFechaTomaReal().toLocalTime().format(formatter)+", "
             + holder.mesDiaFromDate(registroRecordatorio.getFechaTomaReal().toLocalDate()));
         }

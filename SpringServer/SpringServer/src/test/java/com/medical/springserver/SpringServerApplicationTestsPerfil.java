@@ -146,7 +146,7 @@ class SpringServerApplicationTestsPerfil {
 		perfil.setFechaAltaPerfil(fechaHoy);
 		perfil.setFechaFinVigenciaP(null);
 		perfil.setMotivoFinVigenciaP(null);
-		perfil.setNombrePerfil("Particular");
+		perfil.setNombrePerfil("Usuario Particular");
 		perfilDao.save(perfil);
 		for(int i=0; i<15; i++) {
 			if(i<8 || i>10) {
@@ -156,6 +156,8 @@ class SpringServerApplicationTestsPerfil {
 				perfilPermisoDao.save(perfilPermiso);
 			}
 		}
+		
+	
 		
 		
 		
@@ -176,7 +178,6 @@ class SpringServerApplicationTestsPerfil {
 		
 		
 		
-		
 		Perfil perfil3 = new Perfil();
 		
 		perfil3.setDescPerfil("Usuarios administradores de instituciones de salud");
@@ -192,6 +193,24 @@ class SpringServerApplicationTestsPerfil {
 				perfilPermisoDao.save(perfilPermiso);
 		}
 		
+		
+		
+		Perfil perfil4 = new Perfil();
+		
+		perfil4.setDescPerfil("Profesionales de la salud que trabajan en una institución");
+		perfil4.setFechaAltaPerfil(fechaHoy);
+		perfil4.setFechaFinVigenciaP(null);
+		perfil4.setMotivoFinVigenciaP(null);
+		perfil4.setNombrePerfil("Profesional de la salud");
+		perfilDao.save(perfil4);
+		for(int i=0; i<15; i++) {
+			if(i<8 || i>10) {
+				PerfilPermiso perfilPermiso = new PerfilPermiso();
+				perfilPermiso.setPermiso(permisosTotales.get(i));
+				perfilPermiso.setPerfil(perfil);
+				perfilPermisoDao.save(perfilPermiso);
+			}
+		}
 		
 		
 	}

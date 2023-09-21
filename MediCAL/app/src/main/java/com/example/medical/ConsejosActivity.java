@@ -71,6 +71,7 @@ public class ConsejosActivity extends AppCompatActivity {
         private RelativeLayout eliminarCuenta;
 
         private FirebaseUser usuario;
+        private TextView perfilUsuario;
         private Usuario usuarioInstance;
         private RecyclerView recyclerView;
         private PopupWindow popupWindow;
@@ -251,11 +252,16 @@ public class ConsejosActivity extends AppCompatActivity {
             menuButton = findViewById(R.id.menu_button);
             menuButtonUsuario = findViewById(R.id.menu_button_nav);
             eliminarCuenta = findViewById(R.id.eliminar_cuenta);
+            perfilUsuario = findViewById(R.id.perfil_usuario);
 
             usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                     usuarioInstance = response.body();
+                    usuarioInstance=response.body();
+                    if(usuarioInstance.getPerfil()!=null) {
+                        perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
+                    }
                     nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
                     nombre.setText(usuarioInstance.getUsuarioUnico());
                 }

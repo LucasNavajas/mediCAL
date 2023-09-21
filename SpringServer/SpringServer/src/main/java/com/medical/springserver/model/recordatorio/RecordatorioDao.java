@@ -59,9 +59,31 @@ public class RecordatorioDao {
 
 	   public void crearRegistros(int codRecordatorio) {
 		    Recordatorio recordatorio = repository.findByCodRecordatorio(codRecordatorio);
-		    int frecuencia = recordatorio.getFrecuencia().getCantidadFrecuencia(); // Obtener la frecuencia en horas
+		    int frecuencia;
+		    if(recordatorio.getFrecuencia()!=null) {
+		    	frecuencia = recordatorio.getFrecuencia().getCantidadFrecuencia(); // Obtener la frecuencia en horas
+		    }
+		    else {
+		    	frecuencia=0;
+		    }
 		    int nroRegistro = 1; // Se inicializa el nro_registro en 1 y se va aumentando
 		    LocalDateTime fechaEsperadaToma = recordatorio.getFechaInicioRecordatorio();
+		    if(frecuencia==0) {
+		    	fechaEsperadaToma = fechaEsperadaToma.withHour(0).withMinute(0);
+		    	while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
+			        RegistroRecordatorio registro = new RegistroRecordatorio();
+			        registro.setFechaTomaEsperada(fechaEsperadaToma);
+			        fechaEsperadaToma = fechaEsperadaToma.plusHours(24); // Actualizar fechaEsperadaToma
+			        registro.setNroRegistro(nroRegistro++); // Se setea el nro y se aumenta
+			        registro.setRecordatorio(recordatorio);
+			        registro.setTomaRegistroRecordatorio(false);
+			        registroDao.save(registro);
+		    		}
+		    }
+		    else {
+		    	
+		 
+		    //Para los ciclos
 		    if(recordatorio.getFrecuencia().getDiasDescansoF()!=0) {
 		    	int diasTranscurridos = 0;
 
@@ -82,17 +104,19 @@ public class RecordatorioDao {
 		            diasTranscurridos++;
 		        }
 		    }
-		    else {
-		    while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
-		        RegistroRecordatorio registro = new RegistroRecordatorio();
-		        registro.setFechaTomaEsperada(fechaEsperadaToma);
-		        fechaEsperadaToma = fechaEsperadaToma.plusHours(frecuencia); // Actualizar fechaEsperadaToma
-		        registro.setNroRegistro(nroRegistro++); // Se setea el nro y se aumenta
-		        registro.setRecordatorio(recordatorio);
-		        registro.setTomaRegistroRecordatorio(false);
-		        registroDao.save(registro);
+		    else { //Para los que no son ciclo
+			    while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
+			        RegistroRecordatorio registro = new RegistroRecordatorio();
+			        registro.setFechaTomaEsperada(fechaEsperadaToma);
+			        fechaEsperadaToma = fechaEsperadaToma.plusHours(frecuencia); // Actualizar fechaEsperadaToma
+			        registro.setNroRegistro(nroRegistro++); // Se setea el nro y se aumenta
+			        registro.setRecordatorio(recordatorio);
+			        registro.setTomaRegistroRecordatorio(false);
+			        registroDao.save(registro);
+		    		}
+		    	}
 		    }
-		    }
+		    
 		}
 
 

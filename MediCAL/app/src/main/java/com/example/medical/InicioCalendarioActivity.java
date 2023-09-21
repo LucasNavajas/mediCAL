@@ -3,6 +3,7 @@ package com.example.medical;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,6 +63,7 @@ import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -115,6 +117,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private Button agregarRecordatorio;
     private RelativeLayout eliminarCuenta;
     private LinearLayout progressBar;
+    private Handler handler = new Handler();
+    private Runnable runnableCode;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
     private Intent intent1;
@@ -128,6 +132,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     private TextView textoSinRecordatorios;
     private ImageView imagenSinRecordatorios;
+    private TextView perfilUsuario;
     private int codCalendarioseleccionado;
 
     @Override
@@ -288,6 +293,20 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             if (intent1.getIntExtra("codCalendario", 0) != 0) {
                 codCalendarioseleccionado = intent1.getIntExtra("codCalendario", 0);
             }
+            //Codigo para refrescar notificaciones cada minuto, es decir que si tenes la app abierta y deberia aparecer una notificacion que lo haga
+            runnableCode = new Runnable() {
+                @Override
+                public void run() {
+                    // Coloca aquí el código que deseas ejecutar cada minuto
+                    loadNotificaciones(codCalendarioseleccionado);
+
+                    // Programa la próxima ejecución después de 1 minuto
+                    handler.postDelayed(this, 60 * 1000); // 60 segundos * 1000 ms
+                }
+            };
+
+            // Inicia la ejecución inicial después de 1 minuto
+            handler.postDelayed(runnableCode, 60 * 1000); // 60 segundos * 1000 ms
             calendarioApi.getByCodCalendario(codCalendarioseleccionado).enqueue(new Callback<Calendario>() {
                 @Override
                 public void onResponse(Call<Calendario> call, Response<Calendario> response) {
@@ -371,8 +390,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 + registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()+ " "
                 + Float.toString(recordatorio.getDosis().getValorConcentracion())+ " "
                 + recordatorio.getDosis().getConcentracion().getUnidadMedidaC();
-
-        hora.setText(registroRecordatorio.getFechaTomaEsperada().toLocalTime().toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        if(registroRecordatorio.getRecordatorio().getFrecuencia()==null && registroRecordatorio.getFechaTomaEsperada().getHour()==0 && registroRecordatorio.getFechaTomaEsperada().getMinute()==0) {
+            hora.setText("Cuando sea necesario");
+        }
+        else{
+            hora.setText(registroRecordatorio.getFechaTomaEsperada().toLocalTime().format(formatter).toString());
+        }
         nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
         cpc.setText(presentacionString);
         instrucciones.setText(recordatorio.getInstruccion().getNombreInstruccion());
@@ -383,34 +407,79 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
        omitir.setOnClickListener(view ->{
            popupWindow.dismiss();
-           popUpOmitir(registroRecordatorio);
+           if(registroRecordatorio.getRecordatorio().getFrecuencia()!=null && registroRecordatorio.getFechaTomaEsperada().getHour()!=0 && registroRecordatorio.getFechaTomaEsperada().getMinute()!=0) {
+               popUpOmitir(registroRecordatorio);
+           }
        });
 
        tomar.setOnClickListener(view ->{
-           registroRecordatorio.setFechaTomaReal(LocalDateTime.now());
-           registroRecordatorio.setTomaRegistroRecordatorio(true);
-           registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
+           if(registroRecordatorio.getRecordatorio().getFrecuencia()==null && registroRecordatorio.getFechaTomaEsperada().getHour()==0 && registroRecordatorio.getFechaTomaEsperada().getMinute()==0) {
+               RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
+               registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
+               registroNuevo.setFechaTomaEsperada(LocalDateTime.now());
+               registroNuevo.setFechaTomaReal(LocalDateTime.now());
+               registroNuevo.setTomaRegistroRecordatorio(true);
+               registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
+                   @Override
+                   public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                       popupWindow.dismiss();
+                       dimView.setVisibility(View.GONE);
+                       Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                       intent.putExtra("codCalendario", codCalendarioseleccionado);
+                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                       startActivity(intent);
+                   }
+
+                   @Override
+                   public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                       popupWindow.dismiss();
+                       dimView.setVisibility(View.GONE);
+                       Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
+                   }
+               });
+
+           }
+           else{
+               registroRecordatorio.setFechaTomaReal(LocalDateTime.now());
+               registroRecordatorio.setTomaRegistroRecordatorio(true);
+               registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
+                   @Override
+                   public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                       popupWindow.dismiss();
+                       dimView.setVisibility(View.GONE);
+                       Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                       intent.putExtra("codCalendario", codCalendarioseleccionado);
+                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                       startActivity(intent);
+                   }
+
+                   @Override
+                   public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                       popupWindow.dismiss();
+                       dimView.setVisibility(View.GONE);
+                       Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
+                   }
+               });
+           }
+       });
+
+       aplazar.setOnClickListener(view ->{
+           RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
+           registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
+           registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
                @Override
                public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
                    popupWindow.dismiss();
-                   dimView.setVisibility(View.GONE);
-                   Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
-                   intent.putExtra("codCalendario", codCalendarioseleccionado);
-                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                   startActivity(intent);
+                   popUpAplazar(response.body());
                }
 
                @Override
                public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
                    popupWindow.dismiss();
                    dimView.setVisibility(View.GONE);
-                   Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(InicioCalendarioActivity.this, "Error al registrar el aplazo", Toast.LENGTH_SHORT).show();
                }
            });
-       });
-
-       aplazar.setOnClickListener(view ->{
-           popUpAplazar(registroRecordatorio);
        });
 
         // Configurar el OnTouchListener para la vista oscura
@@ -695,7 +764,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         imagenSinRecordatorios = findViewById(R.id.imagen_sin_recordatorios);
         textoSinRecordatorios = findViewById(R.id.texto_sin_recordatorios);
+        perfilUsuario = findViewById(R.id.perfil_usuario);
         llenarListaCalendarios();
+
+
 
     }
 
@@ -836,6 +908,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 Usuario usuarioLogeado = response.body();
+                if(usuarioLogeado.getPerfil()!=null) {
+                    perfilUsuario.setText(usuarioLogeado.getPerfil().getNombrePerfil());
+                }
                 nombreUsuario.setText(usuarioLogeado.getUsuarioUnico());
                 codUsuarioLogeado = usuarioLogeado.getCodUsuario();
                 setTokenUsuario();
@@ -1641,5 +1716,11 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        // Detén la ejecución al destruir la actividad
+        handler.removeCallbacks(runnableCode);
+    }
 }

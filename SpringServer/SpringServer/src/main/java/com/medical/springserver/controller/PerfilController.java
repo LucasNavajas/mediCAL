@@ -25,4 +25,9 @@ public class PerfilController {
 	public Perfil save(@RequestBody Perfil perfil){
 		return perfilDao.save(perfil);
 	}
+	
+	@GetMapping("/perfil/{codPerfil}")
+	public Perfil findByCodPerfil(@PathVariable int codPerfil) {
+		return perfilDao.findByCodPerfil(codPerfil);
+	}
 }

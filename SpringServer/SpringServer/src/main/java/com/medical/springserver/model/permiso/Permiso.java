@@ -3,6 +3,7 @@ package com.medical.springserver.model.permiso;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.perfilpermiso.PerfilPermiso;
 
 import jakarta.persistence.CascadeType;
@@ -24,6 +25,7 @@ public class Permiso {
 	
 	//relacion PerfilPermiso
 	@OneToMany (mappedBy = "permiso", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<PerfilPermiso> perfilPermiso;
 	
 

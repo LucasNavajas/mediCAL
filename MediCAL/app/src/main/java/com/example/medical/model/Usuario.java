@@ -19,14 +19,14 @@ public class Usuario {
 	private String telefonoUsuario;
 	private String usuarioUnico;
 
-	/*private List<HistorialFinVigencia> historial;
-*/
+	private List<HistorialFinVigencia> historial;
+
 	private List<Calendario> varcalendario;
 /*
 	private List<Reporte> reportes;
-
-	private List<Perfil> perfil;
 */
+	private Perfil perfil;
+
 	private List<Solicitud> solicitudControlador;
 
 	private CodigoVerificacion codigoVerificacion;
@@ -51,13 +51,13 @@ public class Usuario {
 	public void setCodigoVerificacion(CodigoVerificacion codigoVerificacion) {
 		this.codigoVerificacion = codigoVerificacion;
 	}
-	/*
-	public List<Perfil> getPerfil() {
+
+	public Perfil getPerfil() {
 		return perfil;
 	}
-	public void setPerfil(List<Perfil> perfil) {
+	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
-	}*/
+	}
 	public int getCodUsuario() {
 		return codUsuario;
 	}
@@ -135,12 +135,12 @@ public class Usuario {
 
 	// Relaciones
 
-	/*public List<HistorialFinVigencia> getHistorial() {
+	public List<HistorialFinVigencia> getHistorial() {
 		return historial;
 	}
 	public void setHistorial(List<HistorialFinVigencia> historial) {
 		this.historial = historial;
-	}*/
+	}
 	public List<Calendario> getVarcalendario() {
 		return varcalendario;
 	}

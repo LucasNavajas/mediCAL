@@ -122,8 +122,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                             Toast.makeText(AgregarDuracionRecordatorioActivity.this, "Error al agregar duracion al recordatorio", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-
+                    break;
                 default:
                     int duracion = obtenerEnteroDuracion(view.getId());
                     recordatorio.setDuracionRecordatorio(duracion);
@@ -149,6 +148,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
                             Toast.makeText(AgregarDuracionRecordatorioActivity.this, "Error al agregar duracion al recordatorio", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    break;
             }
         }
     };
