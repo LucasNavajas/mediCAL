@@ -1,14 +1,17 @@
 package com.example.medical;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -121,6 +124,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         TextView dias = findViewById(R.id.dias);
         RadioButton rbdias = findViewById(R.id.radio_x_dias);
         RadioButton rbtcontinuo = findViewById(R.id.radio_tratamiento_continuo);
+        TextView cambiardosis = findViewById(R.id.botoncambiardosis);
+        EditText dosisEditText = findViewById(R.id.editdosis);
+        TextView cambiarconcentracion = findViewById(R.id.establecer_concentracion);
 
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,11 +225,44 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 if (cambiarConcentracion.getVisibility() == View.GONE) {
                     desplegableConcentracion.setImageResource(R.drawable.boton_desplegable_arriba);
                     cambiarConcentracion.setVisibility(View.VISIBLE);
+                    cambiardosis.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Obtener el valor ingresado en el EditText como texto
+                            String dosisTexto = dosisEditText.getText().toString();
+
+                            // Verificar si se ingresó un valor válido
+                            if (!TextUtils.isEmpty(dosisTexto)) {
+                                // Convertir el texto en un valor flotante (float)
+                                float cantdosis = Float.parseFloat(dosisTexto);
+
+                                // Mostrar el valor como hint en gris y borrar el contenido del EditText
+                                dosisEditText.setHintTextColor(getResources().getColor(R.color.gris_medical));
+                                dosisEditText.setHint(String.valueOf(cantdosis));
+                                dosisEditText.setText(""); // Borra el contenido
+
+                                // Cerrar el teclado
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(dosisEditText.getWindowToken(), 0);
+                                // Quitar el foco del EditText
+                                dosisEditText.clearFocus();
+                            }
+                        }
+                    });
+                    cambiarconcentracion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupCambiarConcentracion();
+                        }
+                    });
+
                 } else {
                     cambiarConcentracion.setVisibility(View.GONE);
                     desplegableConcentracion.setImageResource(R.drawable.boton_desplegable);
                 }
             }
+
+
         });
 
         desplegableInstrucciones.setOnClickListener(new View.OnClickListener() {
@@ -1130,5 +1169,46 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
     }
 
+    private void popupCambiarConcentracion() {
+        View popupView = getLayoutInflater().inflate(R.layout.n63_5_popup_cambiarconcentracion, null);
 
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+        // Configura OnClickListener para el botón Aceptar en tu popupCambiarFecha
+
+
+
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+    }
 }

@@ -476,22 +476,22 @@
 
                             <EditText
                                 android:id="@+id/editdosis"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.4"
                                 android:hint="x"
                                 android:textColorHint="@color/gris_medical"
                                 android:textColor="@color/black"
                                 android:textAlignment="center"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:textSize="20sp"
                                 android:fontFamily="@font/inter_regular"/>
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:id="@+id/botoncambiardosis"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Cambiar Dosis"
-                                android:layout_weight="1"
                                 android:textColor="@color/verdeTextos"
                                 android:textSize="19sp"
                                 android:layout_marginStart="20dp"/>
@@ -505,7 +505,7 @@
                             android:text="Concentración de la medicación: 00.00 g"
                             android:fontFamily="@font/inter_regular"
                             android:textSize="19sp"
-                            android:textColor="@color/gris_medical"
+                            android:textColor="@color/black"
                             android:layout_marginEnd="100dp"
                             android:layout_marginStart="10dp"
                             />
