@@ -258,21 +258,50 @@
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
 
-  // Iniciar sesión con correo y contraseña
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function(userCredential) {
-      // Inicio de sesión exitoso, puedes redirigir al usuario a la página deseada
-      window.location.href = "n2_pantalla_principal_institucion.html";
+  fetch(`http://localhost:8080/usuario/mail/${email}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+      }
+      return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
     })
-    .catch(function(error) {
-      // Ocurrió un error en la autenticación, muestra el mensaje de error
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      
-      // Puedes mostrar el mensaje de error en algún elemento HTML
-      document.getElementById("error-message").textContent = errorMessage;
+    .then(data => {
+      // Hacer algo con los datos de la respuesta
+      console.log(data);
+      if (data.perfil && data.perfil.codPerfil === 2) {
+        // Iniciar sesión con correo y contraseña
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(function (userCredential) {
+            // Inicio de sesión exitoso, puedes redirigir al usuario a la página deseada
+            // Convierte el objeto JSON en una cadena JSON utilizando JSON.stringify
+            var usuarioString = JSON.stringify(data);
+            // Almacena la cadena JSON en sessionStorage bajo un nombre de clave
+            sessionStorage.setItem('usuario', usuarioString);
+            window.location.href = "n18_pantalla_principal_admin_sistema.html";
+          })
+          .catch(function (error) {
+            // Ocurrió un error en la autenticación, muestra el mensaje de error
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            // Puedes mostrar el mensaje de error en algún elemento HTML
+            document.getElementById("error-message").textContent = "La contraseña es inválida";
+          });
+      }
+    })
+    .catch(error => {
+      // Manejar errores generales
+      console.error('Error:', error);
     });
 }
+
+
+
 </script>
 </body>
 </html>

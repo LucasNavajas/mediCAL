@@ -14,6 +14,7 @@ import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.historialfinvigencia.HistorialFinVigencia;
 import com.medical.springserver.model.perfil.Perfil;
+import com.medical.springserver.model.perfil.PerfilDao;
 import com.medical.springserver.model.solicitud.Solicitud;
 import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
@@ -24,7 +25,8 @@ class SpringServerApplicationTestsUsuario {
 	@Autowired
 	private UsuarioDao usuarioDao;
 	
-
+	@Autowired
+	private PerfilDao perfilDao;
 	
 	//@Test
 	void addUsuarioTest() {
@@ -145,6 +147,17 @@ class SpringServerApplicationTestsUsuario {
 			usuarioDao.delete(usuario);
 		}
 		
+	}
+	
+	@Test
+	void addUsuarioAdmin() {
+		Usuario admin = new Usuario();
+		admin.setContraseniaUsuario("medicalutnfrm");
+		admin.setFechaAltaUsuario(LocalDate.now());
+		admin.setUsuarioUnico("Medical");
+		admin.setMailUsuario("medicalutnfrm@gmail.com");
+		admin.setPerfil(perfilDao.findByCodPerfil(2));
+		usuarioDao.save(admin);
 	}
 	
 
