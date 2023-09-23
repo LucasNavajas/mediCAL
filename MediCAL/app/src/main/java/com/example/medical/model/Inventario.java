@@ -1,31 +1,29 @@
 package com.example.medical.model;
 
-import java.util.List;
-
 public class Inventario {
 
     private int codInventario;
-    private int cantAvisoInventario;
-    private int cantRealInventario;
+    private Integer cantAvisoInventario;
+    private Integer cantRealInventario;
 
     // Relacion con Recordatorio
     private Recordatorio recordatorio;
 
     public int getCodInventario() { return codInventario;     }
 
-    public int getCantAvisoInventario() {
+    public Integer getCantAvisoInventario() {
         return cantAvisoInventario;
     }
 
-    public void setCantAvisoInventario(int cantAvisoInventario) {
+    public void setCantAvisoInventario(Integer cantAvisoInventario) {
         this.cantAvisoInventario = cantAvisoInventario;
     }
 
-    public int getCantRealInventario() {
+    public Integer getCantRealInventario() {
         return cantRealInventario;
     }
 
-    public void setCantRealInventario(int cantRealInventario) {
+    public void setCantRealInventario(Integer cantRealInventario) {
         this.cantRealInventario = cantRealInventario;
     }
 

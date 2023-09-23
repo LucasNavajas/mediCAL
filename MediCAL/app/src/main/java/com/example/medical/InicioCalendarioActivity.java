@@ -1570,9 +1570,15 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
             inventarioAsociado.setRecordatorio(recordatorio);
 
+            // Revisar si cantReal es nula, si es así entonces se ha desactivado y no genera alertas ni popups
             // Revisar si del inventario la cantReal es igual a la cantAviso y llamar al popup
-            if (inventarioAsociado.getCantRealInventario() <= inventarioAsociado.getCantAvisoInventario() ){
-                popupInventarioAlerta(inventarioAsociado);
+            if (inventarioAsociado.getCantRealInventario() != null && inventarioAsociado.getCantRealInventario() <= inventarioAsociado.getCantAvisoInventario()) {
+                // Primero comprobar si está vacío o no
+                if (inventarioAsociado.getCantRealInventario() == 0) {
+                    popupInventarioVacio(inventarioAsociado);
+                } else {
+                    popupInventarioAlerta(inventarioAsociado);
+                }
             }
 
         } else {
@@ -1638,6 +1644,75 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
     }
 
+
+    private void popupInventarioVacio(Inventario inventario) {
+        View popupView = getLayoutInflater().inflate(R.layout.n88_3_popup_inventario_vacio, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text);
+        TextView textoCantReal = popupView.findViewById(R.id.text_restantes);
+
+        Log.d("MiApp", "El nombre del medicamento con inventario vacío es: " + inventario.getRecordatorio().getMedicamento().getNombreMedicamento());
+        Log.d("MiApp", "El nombre de la presentación del medicamento con inventario vacío es: " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed());
+
+        texto.setText("¡Inventario vacío de: " + inventario.getRecordatorio().getMedicamento().getNombreMedicamento() + "!");
+        textoCantReal.setText(inventario.getCantRealInventario() + " " + inventario.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + "(s) restantes");
+
+        Button recargar = popupView.findViewById(R.id.button_recargar);
+        Button omitir = popupView.findViewById(R.id.button_omitir);
+        Button desactivar = popupView.findViewById(R.id.button_desactivar);
+
+        Log.d("MiApp", "Se envía el inventario: " + inventario);
+
+        recargar.setOnClickListener(view ->{
+            Log.d("MiApp", "Se hizo clic en el botón recargar");
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            popupRecargarInventario(inventario);
+        });
+
+        omitir.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+
+        desactivar.setOnClickListener(view ->{
+            Log.d("MiApp", "Se hizo clic en el botón desactivar inventario");
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            desactivarInventario(inventario);
+        });
+
+        // Configurar el OnTouchListener para la vista oscura
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
+
     private void popupRecargarInventario(Inventario inventario) {
         Log.d("MiApp","Se llamó a popupRecargarInventario");
         View popupView = getLayoutInflater().inflate(R.layout.n88_2_popup_recarga, null);
@@ -1681,7 +1756,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             Log.d("MiApp","Se lee la cantidad de recarga y se llama a actualizarInventario");
             // Se actualiza el inventario guardando como cantReal = cantidad ingresada + cantReal (anterior)
 
-
             inventarioApi.actualizarInventario(inventario.getCodInventario(), cantidadRecarga+inventario.getCantRealInventario()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -1716,6 +1790,56 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             }
         });
     }
+
+    private void desactivarInventario(Inventario inventario) {
+        Log.d("MiApp","Se llamó a desactivarInventario");
+        View popupView = getLayoutInflater().inflate(R.layout.n88_4_popup_inventario_desactivado, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+
+        // Verifica si el inventario no es nulo
+        if (inventario != null) {
+
+            // Colocar cantidad real y de aviso en null para que deje de ser mostrado y deje de generar popups
+            inventario.setCantRealInventario(null);
+            inventario.setCantAvisoInventario(null);
+        }
+
+        cerrar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+
+        // Configurar el OnTouchListener para la vista oscura
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -49,8 +49,8 @@ public class InventarioAdapter extends RecyclerView.Adapter<InventarioAdapter.In
         // Establecer el nombre del medicamento en el TextView tituloInventario
         holder.tituloInventario.setText(nombreMedicamento + " - " + marcaMedicamento);
 
-        holder.cant_real.setText("Cantidad Real: "+ String.valueOf(inventario.getCantRealInventario()));
-        holder.cant_aviso.setText("Cantidad Aviso: " + String.valueOf(inventario.getCantAvisoInventario()));
+        holder.cant_real.setText("Stock Real: "+ String.valueOf(inventario.getCantRealInventario()));
+        holder.cant_aviso.setText("Stock Mínimo de Alerta: " + String.valueOf(inventario.getCantAvisoInventario()));
     }
 
     @Override
