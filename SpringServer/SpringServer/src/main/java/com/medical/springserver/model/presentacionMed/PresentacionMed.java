@@ -71,11 +71,11 @@ public class PresentacionMed {
 				+ ", fechaFinVigenciaPM=" + fechaFinVigenciaPM + ", nombrePresentacionMed=" + nombrePresentacionMed
 				+ "]";
 	}
-	public AdministracionMed getVaradministracionmed() {
+	public AdministracionMed getAdministracionMed() {
 		return administracionMed;
 	}
-	public void setVaradministracionmed(AdministracionMed varadministracionmed) {
-		this.administracionMed = varadministracionmed;
+	public void setVaradministracionmed(AdministracionMed administracionMed) {
+		this.administracionMed = administracionMed;
 	}
 
 }

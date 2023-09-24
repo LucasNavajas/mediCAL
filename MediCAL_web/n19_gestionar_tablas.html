@@ -127,7 +127,7 @@
           </li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="signOut()">
               <i class="bi bi-box-arrow-left"></i>
               Cerrar sesión
             </a>
@@ -170,7 +170,7 @@
     <!-- lista desplegable para elegir las tablas mostradas -->
     <div style="text-align: center;">
         <label style="font-size: 18px; font-weight: bold; margin-right: 10px;" for="lista_usuarios">Tablas</label>
-        <select id="lista_usuarios">
+        <select id="lista_usuarios" onchange="cambiarTabla()">
             <option value="Medicamento">Medicamento</option>
             <option value="Consejo">Consejo</option>
             <option value="FAQ">FAQ</option>
@@ -299,6 +299,8 @@
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="js/firebaseLoginAdminSistema.js"></script>
+  <script src="js/scripts.js"></script>
 
   <script>
     function toggleSearch(index) {
@@ -554,163 +556,230 @@
     });
 
 
-    function agregarCabeceras(tabla, tbody){
+fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                }
+                return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+              })
+              .then(data => {
+                // Hacer algo con los datos de la respuesta
+                console.log(data);
+                reemplazarFilasConJSON(data);
 
-    // Crea una fila para las cabeceras
-    var cabecera = document.createElement("tr");
+              })
+              .catch(error => {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
 
-    // Crea la celda del checkbox de selección
-    var checkboxHeaderCell = document.createElement("th");
-    var checkboxHeader = document.createElement("input");
-    checkboxHeader.type = "checkbox";
-    checkboxHeader.id = "selectAll";
-    checkboxHeader.onclick = function () {
-      toggleSelectAll();
-    };
-    checkboxHeaderCell.appendChild(checkboxHeader);
-    cabecera.appendChild(checkboxHeaderCell);
+function cambiarTabla() {
+    var lista = document.getElementById("lista_usuarios");
+    var valorSeleccionado = lista.value;
 
-    // Nombres de las cabeceras
-    var nombresCabeceras = [
-      "Cod Medicamento",
-      "Fecha Alta",
-      "Nombre Medicamento",
-      "Marca Medicamento",
-      "Fecha Fin Vigencia",
-    ];
+    switch (valorSeleccionado) {
+        case "Medicamento":
+                fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
 
-    for (var i = 0; i < nombresCabeceras.length; i++) {
-      var nombreCabecera = nombresCabeceras[i];
-      var cabeceraCell = document.createElement("th");
-      cabeceraCell.textContent = nombreCabecera;
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "Consejo":
+            fetch(`http://localhost:8080/consejo/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
 
-      // Ajusta la función onclick de acuerdo a la posición de la cabecera
-      cabeceraCell.onclick = function (index) {
-        return function () {
-          toggleSearch(index);
-        };
-      }(i);
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "FAQ":
+            fetch(`http://localhost:8080/FAQ/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
 
-      cabecera.appendChild(cabeceraCell);
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "Medicion":
+            fetch(`http://localhost:8080/medicion/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "Sintoma":
+            fetch(`http://localhost:8080/sintoma/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "AM":
+            fetch(`http://localhost:8080/administracionmed/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "PM":
+            fetch(`http://localhost:8080/presentacionMed/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        default:
+            fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
     }
+}
 
-// Agrega la fila de cabeceras al cuerpo de la tabla
-tbody.appendChild(cabecera);
-
-    }
-    // Función para reemplazar las filas de la tabla con datos JSON
-    function reemplazarFilasConJSON(datosJSON) {
-
-      var tabla = document.querySelector("table"); // Selecciona la tabla
-      var tbody = tabla.querySelector("tbody"); // Selecciona el cuerpo de la tabla
-      // Limpia el contenido actual del cuerpo de la tabla
-      tbody.innerHTML = "";
-      agregarCabeceras(tabla, tbody);
-      // Recorre los datos JSON y crea filas para cada elemento
-      for (var i = 0; i < datosJSON.length; i++) {
-        var medicamento = datosJSON[i];
-        var fila = document.createElement("tr");
-
-        // Celda para el checkbox
-        var checkboxCell = document.createElement("td");
-        var checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.className = "rowCheckbox";
-        checkbox.onclick = function () {
-          toggleRowSelection(this);
-        };
-        checkboxCell.appendChild(checkbox);
-        fila.appendChild(checkboxCell);
-
-        // Celdas para las demás propiedades
-        var propiedades = [
-          "codMedicamento",
-          "fechaAltaMedicamento",
-          "nombreMedicamento",
-          "marcaMedicamento",
-          "fechaFinVigenciaMed",
-        ];
-
-        for (var j = 0; j < propiedades.length; j++) {
-          var propiedad = propiedades[j];
-          var celda = document.createElement("td");
-
-          // Si la propiedad es "fechaAltaMedicamento", formatea la fecha
-          if (propiedad === "fechaAltaMedicamento") {
-            var fecha = new Date(
-              medicamento[propiedad][0],
-              medicamento[propiedad][1] - 1,
-              medicamento[propiedad][2]
-            );
-            celda.textContent = fecha.toLocaleDateString();
-          } else {
-            celda.textContent = medicamento[propiedad] || ""; // Verifica si la propiedad existe
-          }
-
-          fila.appendChild(celda);
-        }
-
-        // Celda con iconos
-        var iconosCell = document.createElement("td");
-        var iconosDiv = document.createElement("div");
-        iconosDiv.className = "edit-delete-revert-icons";
-
-        // Icono de edición
-        var editarIcono = document.createElement("i");
-        editarIcono.className = "bi bi-pencil edit-icon";
-        editarIcono.onclick = function () {
-          toggleProfileRow(i, this); // Ajusta el índice del botón de edición
-        };
-        iconosDiv.appendChild(editarIcono);
-
-        // Icono de eliminación
-        var eliminarIcono = document.createElement("i");
-        eliminarIcono.className = "bi bi-trash delete-icon";
-        eliminarIcono.onclick = function () {
-          toggleDeleteRow(i, this); // Ajusta el índice del botón de eliminación
-        };
-        iconosDiv.appendChild(eliminarIcono);
-
-        // Icono de reversión
-        var revertirIcono = document.createElement("i");
-        revertirIcono.className = "bi bi-arrow-return-left revert-icon hide";
-        revertirIcono.onclick = function () {
-          toggleRestoreRow(i, this); // Ajusta el índice del botón de reversión
-        };
-        iconosDiv.appendChild(revertirIcono);
-
-        iconosCell.appendChild(iconosDiv);
-        fila.appendChild(iconosCell);
-
-        // Agrega la fila al cuerpo de la tabla
-        tbody.appendChild(fila);
-      }
-    }
-
-
-
-    fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
-      }
-      return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
-    })
-    .then(data => {
-      // Hacer algo con los datos de la respuesta
-      console.log(data);
-      reemplazarFilasConJSON(data);
-
-    })
-    .catch(error => {
-      // Manejar errores generales
-      console.error('Error:', error);
-    });
+  
   </script>
 </body>
 

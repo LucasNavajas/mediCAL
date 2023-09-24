@@ -185,7 +185,8 @@
   
   <!--llamo el archivo de javascript-->
   <script src="js/main.js"></script>
-  <script src="firebaseLogin.js"></script>
+  <script src="js/firebaseLoginAdminSistema.js"></script>
+  <script src="js/scripts.js"></script>
   <script>
     // Para recuperar el objeto JSON de sessionStorage más tarde
     var usuario = sessionStorage.getItem('usuario');
@@ -194,21 +195,6 @@
     var usuarioJson = JSON.parse(usuario);
     document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
 
-    function signOut(){
-      // Cerrar sesión con Firebase Authentication
-      firebase.auth().signOut().then(function() {
-        // Cierre de sesión exitoso
-        console.log("Cierre de sesión exitoso");
-        window.location.href = "n1_inicio_sesion.html";
-      }).catch(function(error) {
-        // Ocurrió un error durante el cierre de sesión
-        console.error("Error durante el cierre de sesión:", error);
-      });
-    }
-
-    function redirigir(directorio){
-      window.location.href = directorio;
-    }
   </script>
 </body>
 </html> 

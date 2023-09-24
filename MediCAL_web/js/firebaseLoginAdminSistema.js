@@ -14,8 +14,20 @@ const firebaseConfig = {
     // Comprueba el estado de autenticación al cargar la página
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        // El usuario ha iniciado sesión, puedes realizar acciones para usuarios autenticados aquí
+        var usuario = sessionStorage.getItem('usuario');
+
+        // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
+        var usuarioJson = JSON.parse(usuario);
+        if(usuarioJson.perfil.codPerfil == 2){
+            // El usuario ha iniciado sesión, puedes realizar acciones para usuarios autenticados aquí
         console.log("Usuario autenticado:", user.displayName);
+        }
+        else{
+            // El usuario no ha iniciado sesión, puedes redirigirlo a la página de inicio de sesión o realizar otras acciones
+            console.log("Usuario no autenticado");
+            // Ejemplo de redirección a la página de inicio de sesión
+            window.location.href = "n1_inicio_sesion.html";
+        }
       } else {
         // El usuario no ha iniciado sesión, puedes redirigirlo a la página de inicio de sesión o realizar otras acciones
         console.log("Usuario no autenticado");
