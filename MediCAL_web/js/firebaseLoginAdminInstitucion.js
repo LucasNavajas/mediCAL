@@ -20,7 +20,7 @@ const firebaseConfig = {
         var usuarioJson = JSON.parse(usuario);
         if(usuarioJson.perfil.codPerfil == 3){
             // El usuario ha iniciado sesión, puedes realizar acciones para usuarios autenticados aquí
-        console.log("Usuario autenticado:", user.displayName);
+        console.log("Usuario autenticado:", usuarioJson.usuarioUnico);
         }
         else{
             // El usuario no ha iniciado sesión, puedes redirigirlo a la página de inicio de sesión o realizar otras acciones

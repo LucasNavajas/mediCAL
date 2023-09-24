@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface MedicamentoRepository extends CrudRepository<Medicamento, Integer>{
     @Query("SELECT m FROM Medicamento m WHERE m.esParticular = false")
     List<Medicamento> obtenerMedicamentosGenericos();
+    
+    Medicamento findByCodMedicamento(int codMedicamento);
 }
