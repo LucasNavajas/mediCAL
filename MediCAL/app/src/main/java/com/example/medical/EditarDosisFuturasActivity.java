@@ -40,6 +40,7 @@ import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -1174,6 +1175,14 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         TextView botonAceptar = popupView.findViewById(R.id.aceptar);
         TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+        EditText textEditConcentracion = popupView.findViewById(R.id.textEdit_Concentracion);
+        ImageView botonMenos = popupView.findViewById(R.id.imagen_boton_menos);
+        ImageView botonMas = popupView.findViewById(R.id.imagen_boton_mas);
+        textEditConcentracion.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        // Establece el valor inicial en el EditText (formato "00.00")
+        float valorInicial = 0.00f;
+        textEditConcentracion.setText(String.format("%05.2f", valorInicial));
 
         PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1196,11 +1205,41 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
-        // Configura OnClickListener para el botón Aceptar
-        // Configura OnClickListener para el botón Aceptar en tu popupCambiarFecha
+        // Configura OnClickListener para el botón Menos
+        botonMenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el valor actual del EditText como una cadena
+                String valorActualStr = textEditConcentracion.getText().toString();
 
+                // Parsear el valor actual a un número decimal (float)
+                float valorActual = Float.parseFloat(valorActualStr);
 
+                // Decrementar el valor en 1.00
+                valorActual -= 1.00f;
 
+                // Actualizar el valor del EditText con el nuevo valor formateado
+                textEditConcentracion.setText(String.format("%05.2f", valorActual));
+            }
+        });
+
+        // Configura OnClickListener para el botón Mas
+        botonMas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el valor actual del EditText como una cadena
+                String valorActualStr = textEditConcentracion.getText().toString();
+
+                // Parsear el valor actual a un número decimal (float)
+                float valorActual = Float.parseFloat(valorActualStr);
+
+                // Incrementar el valor en 1.00
+                valorActual += 1.00f;
+
+                // Actualizar el valor del EditText con el nuevo valor formateado
+                textEditConcentracion.setText(String.format("%05.2f", valorActual));
+            }
+        });
 
         // Establece OnClickListener para el botón Cancelar
         botonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -1209,6 +1248,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             }
         });
-
     }
+
+
 }
