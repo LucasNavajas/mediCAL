@@ -78,7 +78,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(4); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
 
         ImageView btnCerrar = findViewById(R.id.boton_cerrar);
         if (btnCerrar != null) {
@@ -1135,13 +1135,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         TextView botonAceptar = popupView.findViewById(R.id.aceptar);
         TextView botonCancelar = popupView.findViewById(R.id.cancelar);
-        EditText textEditConcentracion = popupView.findViewById(R.id.textEdit_Concentracion);
+        EditText textEditDias = popupView.findViewById(R.id.textEditdias);
         ImageView botonMenos = popupView.findViewById(R.id.imagen_boton_menos);
         ImageView botonMas = popupView.findViewById(R.id.imagen_boton_mas);
-        textEditConcentracion.setInputType(InputType.TYPE_CLASS_NUMBER);
+        textEditDias.setInputType(InputType.TYPE_CLASS_NUMBER);
         // Establece el valor inicial en el EditText
         int valorInicial = 1; // Puedes establecer el valor inicial deseado
-        textEditConcentracion.setText(String.valueOf(valorInicial));
+        textEditDias.setText(String.valueOf(valorInicial));
 
         PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1168,7 +1168,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Obtener el valor actual del EditText
-                int diasduracion = Integer.parseInt(textEditConcentracion.getText().toString());
+                int diasduracion = Integer.parseInt(textEditDias.getText().toString());
 
 
                 // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
@@ -1190,10 +1190,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         botonMenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int valorActual = Integer.parseInt(textEditConcentracion.getText().toString());
-                if (valorActual > 1) {
+                int valorActual = Integer.parseInt(textEditDias.getText().toString());
+                if (valorActual > 1) { // Verifica si el valor actual es mayor que 1
                     valorActual--;
-                    textEditConcentracion.setText(String.valueOf(valorActual));
+                    textEditDias.setText(String.valueOf(valorActual));
                 }
             }
         });
@@ -1202,10 +1202,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         botonMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int valorActual = Integer.parseInt(textEditConcentracion.getText().toString());
+                int valorActual = Integer.parseInt(textEditDias.getText().toString());
                 if (valorActual < 99998) {
                     valorActual++;
-                    textEditConcentracion.setText(String.valueOf(valorActual));
+                    textEditDias.setText(String.valueOf(valorActual));
                 }
             }
         });
@@ -1260,19 +1260,14 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         botonMenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtener el valor actual del EditText como una cadena
-                String valorActualStr = textEditConcentracion.getText().toString();
-
-                // Parsear el valor actual a un número decimal (float)
-                float valorActual = Float.parseFloat(valorActualStr);
-
-                // Decrementar el valor en 1.00
-                valorActual -= 1.00f;
-
-                // Actualizar el valor del EditText con el nuevo valor formateado
-                textEditConcentracion.setText(String.format("%05.2f", valorActual));
+                float valorActual = Float.parseFloat(textEditConcentracion.getText().toString());
+                if (valorActual > 00.00f) { // Verifica si el valor actual es mayor que 0.00
+                    valorActual -= 01.00f;
+                    textEditConcentracion.setText(String.format("%05.2f", valorActual));
+                }
             }
         });
+
 
         // Configura OnClickListener para el botón Mas
         botonMas.setOnClickListener(new View.OnClickListener() {
@@ -1299,6 +1294,28 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             }
         });
+        // Configura OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el valor actual del EditText como una cadena
+                String valorActualStr = textEditConcentracion.getText().toString();
+
+                // Parsear el valor actual a un número decimal (float)
+                float valorActual = Float.parseFloat(valorActualStr);
+
+                // Obtener la unidad de medida del Spinner
+                String unidadMedida = concentracionSpinner.getSelectedItem().toString();
+
+                // Llamar al método mostrarConcentracion y pasar el valor y la unidad de medida
+                mostrarConcentracion(valorActual, unidadMedida);
+
+                // Cerrar el popup y ocultar dimView
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
     }
 
 
