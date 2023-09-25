@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.MessageDigestPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SecurityConfig{
@@ -27,7 +29,6 @@ public class SecurityConfig{
     	        .anyRequest().permitAll()
     	    )
     	.csrf(csrf -> csrf.disable())
-    	.cors(cors -> cors.disable())
     		.httpBasic(withDefaults());
     	return http.build();
     }
@@ -46,6 +47,15 @@ public class SecurityConfig{
     	return new MessageDigestPasswordEncoder("SHA-256");
     }
    
+    @Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*");
+			}
+		};
+	}
 
 
 }

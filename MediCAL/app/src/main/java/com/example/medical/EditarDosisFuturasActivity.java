@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,6 +39,7 @@ import com.example.medical.model.Instruccion;
 import com.example.medical.model.Inventario;
 import com.example.medical.model.Medicamento;
 import com.example.medical.model.Recordatorio;
+import com.example.medical.retrofit.ConcentracionApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
@@ -45,6 +48,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -54,6 +59,10 @@ import retrofit2.Response;
 public class EditarDosisFuturasActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
+    private ConcentracionApi concentracionApi = retrofitService.getRetrofit().create(ConcentracionApi.class);
+    private List<Concentracion> concentracionList;
+    private List<String> concentraciones = new ArrayList<String>() {};
+    private LinearLayout cambiarConcentracion;
     private Recordatorio recordatorio;
     private PopupWindow popupWindow;
     private String nombrefrecuencia;
@@ -113,7 +122,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         ImageButton desplegableImagen = findViewById(R.id.desplegable_imagen);
         RelativeLayout cambiarImagen = findViewById(R.id.relative_cambiar_imagen);
         ImageButton desplegableConcentracion = findViewById(R.id.desplegable_concentracion);
-        LinearLayout cambiarConcentracion = findViewById(R.id.cambiar_concentracion);
+        cambiarConcentracion = findViewById(R.id.cambiar_concentracion);
         ImageButton desplegableInstrucciones = findViewById(R.id.desplegable_instrucciones);
         LinearLayout cambiarInstrucciones = findViewById(R.id.cambiar_instrucciones);
         ImageButton desplegableRecarga = findViewById(R.id.desplegable_recordatorio_receta);
@@ -250,12 +259,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                             }
                         }
                     });
-                    cambiarconcentracion.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupCambiarConcentracion();
-                        }
-                    });
 
                 } else {
                     cambiarConcentracion.setVisibility(View.GONE);
@@ -309,6 +312,26 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     }
 
     private void obtenerDatos(int codRecordatorio) {
+        concentracionApi.getAllConcentracion().enqueue(new Callback<List<Concentracion>>() {
+            @Override
+            public void onResponse(Call<List<Concentracion>> call, Response<List<Concentracion>> response) {
+                concentracionList=response.body();
+                for(Concentracion concentracion : concentracionList){
+                    concentraciones.add(concentracion.getUnidadMedidaC());
+                }
+                cambiarConcentracion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupCambiarConcentracion();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<Concentracion>> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Error al cargar las concentraciones", Toast.LENGTH_SHORT).show();
+            }
+        });
         recordatorioApi.getByCodRecordatorio(codRecordatorio).enqueue(new Callback<Recordatorio>() {
             @Override
             public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
@@ -321,18 +344,32 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 Inventario inventario = recordatorio.getInventario();
 
                 String nombreMedicamento = medicamento.getNombreMedicamento();
-                String nombreFrecuencia = frecuencia.getNombreFrecuencia();
-                int diastoma = frecuencia.getDiasTomaF();
-                int diasdescanso = frecuencia.getDiasDescansoF();
+                int diastoma = 0;
+                int diasdescanso = 0;
+                String nombreFrecuencia = "";
+                if(frecuencia == null){
+                    nombreFrecuencia = "Según sea necesario";
+                }
+                else{
+                    nombreFrecuencia = frecuencia.getNombreFrecuencia();
+                    frecuencia.getDiasTomaF();
+                    frecuencia.getDiasDescansoF();
+                }
+
                 String imagen = recordatorio.getImagen();
                 float cantdosis = dosis.getCantidadDosis();
                 float valorconcentracion = dosis.getValorConcentracion();
                 String unidadmedidac = concentracion.getUnidadMedidaC();
                 String radioinstruccion = instruccion.getNombreInstruccion();
                 String descindicacion = instruccion.getDescInstruccion();
-                int codinventario = inventario.getCodInventario();
-                int cantreal = inventario.getCantRealInventario();
-                int cantaviso = inventario.getCantAvisoInventario();
+                int codinventario = 0;
+                int cantreal = 0;
+                int cantaviso = 0;
+                if(inventario != null) {
+                    codinventario = inventario.getCodInventario();
+                    cantreal = inventario.getCantRealInventario();
+                    cantaviso = inventario.getCantAvisoInventario();
+                }
                 LocalDateTime fechainiciorecordatorio = recordatorio.getFechaInicioRecordatorio();
                 int diasduracion = recordatorio.getDuracionRecordatorio();
 
@@ -549,29 +586,33 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 String nombreFrecuencia = obtenerNombreFrecuenciaSeleccionada();
                 switch (nombreFrecuencia) {
                     case "Cada X horas":
+                        popupWindow.dismiss();
                         popupXhoras();
                         break;
                     case "Cada X días":
+                        popupWindow.dismiss();
                         popupXdias();
                         break;
                     case "Cada X semanas":
+                        popupWindow.dismiss();
                         popupXsemanas();
                         break;
                     case "Cada X meses":
+                        popupWindow.dismiss();
                         popupXmeses();
                         break;
                     case "Ciclo recurrente":
+                        popupWindow.dismiss();
                         popupCiclos();
 
                         break;
                     case "Según sea necesario":
+                        popupWindow.dismiss();
                         nombrefrecuencia = "Según sea necesario";
                         mostrarNombreFrecuencia(nombrefrecuencia, 0, 0);
-
                         break;
                 }
-                popupWindow.dismiss();
-                dimView.setVisibility(View.VISIBLE);
+
 
             }
         });
@@ -1179,6 +1220,16 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         ImageView botonMenos = popupView.findViewById(R.id.imagen_boton_menos);
         ImageView botonMas = popupView.findViewById(R.id.imagen_boton_mas);
         textEditConcentracion.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        Spinner concentracionSpinner = popupView.findViewById(R.id.concentracion_spinner);
+        ArrayAdapter<String> concentracionAdapter;
+        // Suponiendo que tienes una lista de concentraciones en un array llamado concentracionesList
+        // Supongamos que tienes una lista de concentraciones en un array llamado concentracionesList
+        String[] concentracionesArray = concentraciones.toArray(new String[0]);
+        concentracionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, concentracionesArray);
+        concentracionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Configura el adaptador para el Spinner
+        concentracionSpinner.setAdapter(concentracionAdapter);
 
         // Establece el valor inicial en el EditText (formato "00.00")
         float valorInicial = 0.00f;
