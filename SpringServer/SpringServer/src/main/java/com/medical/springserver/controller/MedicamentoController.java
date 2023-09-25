@@ -29,4 +29,9 @@ public class MedicamentoController {
 	public List<Medicamento> getAllMedicamentosGenericos(){
 		return medicamentoDao.getAllMedicamentosGenericos();
 	}
+	
+	@PutMapping("/medicamento/baja/{codMedicamento}")
+	public Medicamento bajaMedicamento(int codMedicamento) {
+		return medicamentoDao.bajaMedicamento(codMedicamento);
+	}
 }

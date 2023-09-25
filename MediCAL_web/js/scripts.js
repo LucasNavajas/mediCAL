@@ -49,10 +49,24 @@
 
             // Ajusta la función onclick de acuerdo a la posición de la cabecera
             cabeceraCell.onclick = function () {
-                toggleSearch(propiedadesCabecera.indexOf(nombreCabecera));
-            };
+        		toggleSearch(index); // Pasa el índice como argumento
+    		};
 
-            cabecera.appendChild(cabeceraCell);
+				    // Crear div con input de búsqueda dentro de la celda de cabecera
+		    var searchContainer = document.createElement("div");
+		    searchContainer.id = "searchContainer" + index; // Asigna un ID único
+		    searchContainer.className = "search-container";
+		    searchContainer.style.alignItems = "center";
+
+		    var searchInput = document.createElement("input");
+		    searchInput.type = "search";
+		    searchInput.id = "search" + index; // Asigna un ID único
+		    searchInput.className = "search-input";
+		    searchInput.placeholder = "Buscar por " + cabeceraTexto;
+
+		    searchContainer.appendChild(searchInput);
+		    cabeceraCell.appendChild(searchContainer);
+		    cabecera.appendChild(cabeceraCell);
         });
     }
 
@@ -130,9 +144,14 @@
         // Icono de eliminación
         var eliminarIcono = document.createElement("i");
         eliminarIcono.className = "bi bi-trash delete-icon";
-        eliminarIcono.onclick = function () {
-          toggleDeleteRow(i, this); // Ajusta el índice del botón de eliminación
-        };
+        (function (fila) {
+		    eliminarIcono.onclick = function () {
+		      // Obtener el valor de la segunda columna de la fila
+		      var idInstancia = fila.cells[1].textContent;
+		      //eliminarInstancia(idInstancia);
+		      toggleDeleteRow(i, this);
+		    };
+		  })(fila); // Pasar el valor actual de i a la IIFE
         iconosDiv.appendChild(eliminarIcono);
 
         // Icono de reversión
@@ -158,4 +177,451 @@ function getFirstAttribute(obj) {
     }
   }
   return "-";
+}
+
+function toggleSearch(index) {
+  var container = document.getElementById('searchContainer' + index);
+  container.classList.toggle('active');
+  var input = container.querySelector('.search-input');
+  if (container.classList.contains('active')) {
+    input.focus();
+  } else {
+    input.value = '';
+    filterTable();
+  }
+}
+
+function toggleDeleteButtonVisibility() {
+    var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+    var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
+    eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+}
+
+function toggleRevertButtonVisibility() {
+    var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
+    var revertInstanciasBtn = document.getElementById('revertInstanciasBtn');
+    revertInstanciasBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+}
+
+
+    function toggleRowSelection(checkbox) {
+        var tableRow = checkbox.closest('tr');
+        if (checkbox.checked) {
+            tableRow.classList.add('clicked');
+        } else {
+            tableRow.classList.remove('clicked');
+        }
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        toggleDeletedRowsVisibility();
+    }
+
+    function toggleSelectAll() {
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
+        var selectAllCheckbox = document.getElementById('selectAll');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = selectAllCheckbox.checked;
+            toggleRowSelection(checkboxes[i]);
+        }
+    }
+
+    
+    
+    // Función para restaurar fila
+    function toggleRestoreRow(row, icon) {
+        var revertIcon= icon;
+        var deleteIcon = revertIcon.previousElementSibling;
+        //var editIcon = deleteIcon.previousElementSibling;
+
+        revertIcon.classList.toggle('hide');
+        deleteIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
+
+        var tableRow = revertIcon.closest('tr');
+        tableRow.classList.remove('deleted-row');
+
+        var checkbox = tableRow.querySelector('.rowCheckbox');
+        checkbox.style.display = 'inline-block';
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        //toggleDeletedRowsVisibility();
+    }
+    
+    
+    // Función para restaurar varias filas
+    function restaurarFilasSeleccionadas() {
+        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
+        //var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            var tableRow = checkbox.closest('tr');
+            var revertIcon = tableRow.querySelector('.revert-icon');
+            var deleteIcon = tableRow.querySelector('.delete-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
+
+            deleteIcon.classList.remove('hide');
+            //editIcon.classList.remove('hide');
+            revertIcon.classList.add('hide');
+            tableRow.classList.remove('deleted-row');
+            //checkbox.style.display = 'inline-block';
+        }
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        //toggleDeletedRowsVisibility();
+    }
+
+
+    // Función para eliminar fila
+    function toggleDeleteRow(row, icon) {
+        var deleteIcon = icon;
+        //var editIcon = deleteIcon.previousElementSibling;
+        var revertIcon = deleteIcon.nextElementSibling;
+
+        deleteIcon.classList.toggle('hide');
+        //editIcon.classList.toggle('hide');
+        revertIcon.classList.toggle('hide');
+
+        var tableRow = deleteIcon.closest('tr');
+        tableRow.classList.toggle('deleted-row');
+
+        //var checkbox = tableRow.querySelector('.rowCheckbox');
+        //checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
+
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        //toggleDeletedRowsVisibility();
+    }
+    
+
+    // Función para eliminar varias filas
+    function eliminarCalendariosSeleccionados() {
+        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            var tableRow = checkbox.closest('tr');
+            var deleteIcon = tableRow.querySelector('.delete-icon');
+            //var editIcon = tableRow.querySelector('.edit-icon');
+            var revertIcon = tableRow.querySelector('.revert-icon');
+
+            deleteIcon.classList.add('hide');
+            //editIcon.classList.add('hide');
+            revertIcon.classList.remove('hide')
+            tableRow.classList.add('deleted-row');
+
+        }
+
+        // Eliminar el fondo gris de las filas eliminadas
+        var deletedRows = document.querySelectorAll('.deleted-row');
+        for (var j = 0; j < deletedRows.length; j++) {
+            deletedRows[j].classList.remove('clicked');
+        }
+        
+        toggleDeleteButtonVisibility();
+        toggleRevertButtonVisibility();
+        //toggleDeletedRowsVisibility();
+    }
+
+
+    
+
+
+    window.onload = function () {
+      var cells = document.getElementsByTagName('td');
+      for (var i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('click', function () {
+          this.setAttribute('tabindex', '0');
+          this.focus();
+        });
+        cells[i].addEventListener('blur', function () {
+          this.removeAttribute('tabindex');
+        });
+      }
+
+      var inputs = document.getElementsByClassName('search-input');
+      for (var j = 0; j < inputs.length; j++) {
+        inputs[j].addEventListener('input', function () {
+          filterTable();
+        });
+      }
+
+      toggleDeleteButtonVisibility();
+      toggleRevertButtonVisibility();
+      //toggleDeletedRowsVisibility();
+    };
+
+    function activarBusqueda(){
+    var cells2 = document.getElementsByTagName('td');
+      for (var i = 0; i < cells2.length; i++) {
+        cells2[i].addEventListener('click', function () {
+          this.setAttribute('tabindex', '0');
+          this.focus();
+        });
+        cells2[i].addEventListener('blur', function () {
+          this.removeAttribute('tabindex');
+        });
+      }
+
+      var inputs2 = document.getElementsByClassName('search-input');
+      for (var j = 0; j < inputs2.length; j++) {
+        inputs2[j].addEventListener('input', function () {
+          filterTable();
+        });
+      }
+
+      toggleDeleteButtonVisibility();
+      toggleRevertButtonVisibility();
+      //toggleDeletedRowsVisibility();
+    }
+
+    function filterTable() {
+      var table = document.getElementsByTagName('table')[0];
+      var rows = table.getElementsByTagName('tr');
+
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        var shouldDisplayRow = true;
+
+        var cells = row.getElementsByTagName('td');
+        for (var j = 1; j < cells.length - 1; j++) { // Start from 1 to skip the checkbox column
+          var cell = cells[j];
+          var searchInput = document.getElementById('search' + (j - 1)); // Adjust the search input index
+
+            if (searchInput) {
+                var searchText = searchInput.value.toUpperCase();
+                var cellText = cell.textContent || cell.innerText;
+
+                // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
+                if (j === 4 && searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
+                // Obtener el valor del campo de fecha
+                var selectedDate = $(searchInput).datepicker('getDate');
+
+                // Formatear la fecha en el formato "dd/mm/yyyy"
+                searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+                }
+
+                if (cellText.toUpperCase().indexOf(searchText) === -1) {
+                shouldDisplayRow = false;
+                break;
+                }
+            }
+            
+        }
+
+        row.style.display = shouldDisplayRow ? '' : 'none';
+      }
+    }
+
+    function eliminarInstancia(idInstancia){
+    var lista = document.getElementById("lista_usuarios");
+    var valorSeleccionado = lista.value;
+
+    switch (valorSeleccionado) {
+        case "Medicamento":
+                fetch(`http://localhost:8080/medicamento/baja/${idInstancia}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "Consejo":
+            fetch(`http://localhost:8080/consejo/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "FAQ":
+            fetch(`http://localhost:8080/FAQ/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "Medicion":
+            fetch(`http://localhost:8080/medicion/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "Sintoma":
+            fetch(`http://localhost:8080/sintoma/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "AM":
+            fetch(`http://localhost:8080/administracionmed/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        case "PM":
+            fetch(`http://localhost:8080/presentacionMed/get-all`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+            break;
+        default:
+            fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  console.log(data);
+                  reemplazarFilasConJSON(data);
+                  activarBusqueda();
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+                    
+            break;
+    }
+
 }

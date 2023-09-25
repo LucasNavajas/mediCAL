@@ -1,4 +1,5 @@
 package com.medical.springserver.model.medicamento;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +30,11 @@ public class MedicamentoDao {
 	
 	public List<Medicamento> getAllMedicamentosGenericos(){
 		return repository.obtenerMedicamentosGenericos();
+	}
+	
+	public Medicamento bajaMedicamento(int codMedicamento) {
+		Medicamento medicamento = repository.findByCodMedicamento(codMedicamento);
+		medicamento.setFechaFinVigenciaMed(LocalDate.now());
+		return repository.save(medicamento);
 	}
 }
