@@ -27,12 +27,22 @@ public class MedicamentoController {
 	
 	@GetMapping("/medicamento/get-all-genericos")
 	public List<Medicamento> getAllMedicamentosGenericos(){
+		return medicamentoDao.obtenerMedicamentosGenericos();
+	}
+	
+	@GetMapping("/medicamento/get-all-genericos-y-bajas")
+	public List<Medicamento> getAllMedicamentosGenericosYBajas(){
 		return medicamentoDao.getAllMedicamentosGenericos();
 	}
 	
 	@PutMapping("/medicamento/baja/{codMedicamento}")
 	public Medicamento bajaMedicamento(@PathVariable int codMedicamento) {
 	    return medicamentoDao.bajaMedicamento(codMedicamento);
+	}
+	
+	@PutMapping("/medicamento/recuperar/{codMedicamento}")
+	public Medicamento recuperarMedicamento(@PathVariable int codMedicamento) {
+	    return medicamentoDao.recuperarMedicamento(codMedicamento);
 	}
 
 }
