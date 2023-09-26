@@ -31,7 +31,8 @@ public class MedicamentoController {
 	}
 	
 	@PutMapping("/medicamento/baja/{codMedicamento}")
-	public Medicamento bajaMedicamento(int codMedicamento) {
-		return medicamentoDao.bajaMedicamento(codMedicamento);
+	public Medicamento bajaMedicamento(@PathVariable int codMedicamento) {
+	    return medicamentoDao.bajaMedicamento(codMedicamento);
 	}
+
 }

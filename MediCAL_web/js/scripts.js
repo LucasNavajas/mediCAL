@@ -101,7 +101,6 @@
         var propiedades = Object.keys(primerObjeto);
 
 
-
         for (var j = 0; j < propiedades.length; j++) {
 
 
@@ -148,7 +147,7 @@
 		    eliminarIcono.onclick = function () {
 		      // Obtener el valor de la segunda columna de la fila
 		      var idInstancia = fila.cells[1].textContent;
-		      //eliminarInstancia(idInstancia);
+		      eliminarInstancia(idInstancia);
 		      toggleDeleteRow(i, this);
 		    };
 		  })(fila); // Pasar el valor actual de i a la IIFE
@@ -167,6 +166,15 @@
 
         // Agrega la fila al cuerpo de la tabla
         tbody.appendChild(fila);
+
+        for (var j = 0; j < propiedades.length; j++) {
+          var propiedad = propiedades[j];
+		  if (propiedad.includes("fechaFin") && medicamento[propiedad] !== null) {
+		    var iconosBorrar = document.querySelectorAll(".bi.bi-trash.delete-icon");
+		    toggleDeleteRow(i, iconosBorrar[i]);
+		    break; // Detiene el bucle una vez que se ha ejecutado toggleDeleteRow
+		  }
+		}
       }
     }
 
@@ -437,7 +445,6 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   console.log(data);
-                  reemplazarFilasConJSON(data);
                   activarBusqueda();
 
                 })

@@ -18,10 +18,7 @@ public class MedicamentoDao {
 	}
 	
 	public List<Medicamento> getAllMedicamentos(){
-		Streamable<Medicamento> streamableMedicamentos = Streamable.of(repository.findAll());
-		List<Medicamento> medicamentos = new ArrayList<>();
-		streamableMedicamentos.forEach(medicamentos::add);
-		return medicamentos;
+		return repository.getAllMedicamentos();
 	}
 	
 	public void delete(Medicamento medicamento) {

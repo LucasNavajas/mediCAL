@@ -20,6 +20,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SecurityConfig{
 
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+	    return new WebMvcConfigurer() {
+	        @Override
+	        public void addCorsMappings(CorsRegistry registry) {
+	            registry.addMapping("/**")
+	                .allowedOrigins("*", "http://localhost:8081") // Permitir desde cualquier origen y localhost:8081
+	                .allowedMethods("GET", "POST", "PUT", "DELETE") // Permitir los métodos que necesitas
+	                .allowedHeaders("*"); // Permitir todos los encabezados
+	        }
+	    };
+	}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,15 +59,7 @@ public class SecurityConfig{
     	return new MessageDigestPasswordEncoder("SHA-256");
     }
    
-    @Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*");
-			}
-		};
-	}
+
 
 
 }

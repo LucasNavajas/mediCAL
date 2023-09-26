@@ -1,5 +1,7 @@
 package com.example.medical;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -56,9 +57,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -68,11 +67,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -134,6 +128,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private ImageView imagenSinRecordatorios;
     private TextView perfilUsuario;
     private int codCalendarioseleccionado;
+    public boolean notificacionActiva = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -297,16 +292,17 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             runnableCode = new Runnable() {
                 @Override
                 public void run() {
-                    // Coloca aquí el código que deseas ejecutar cada minuto
+                    // Coloca aquí el código que deseas ejecutar cada 15 seg
                     loadNotificaciones(codCalendarioseleccionado);
 
-                    // Programa la próxima ejecución después de 1 minuto
-                    handler.postDelayed(this, 60 * 1000); // 60 segundos * 1000 ms
+                    // Programa la próxima ejecución después de 15 segundos
+                    handler.postDelayed(this, 15 * 1000); // 15 segundos * 1000 ms
                 }
             };
 
-            // Inicia la ejecución inicial después de 1 minuto
-            handler.postDelayed(runnableCode, 60 * 1000); // 60 segundos * 1000 ms
+            // Inicia la ejecución inicial después de 5 segundos
+            handler.postDelayed(runnableCode, 15 * 1000); // 15 segundos * 1000 ms
+
             calendarioApi.getByCodCalendario(codCalendarioseleccionado).enqueue(new Callback<Calendario>() {
                 @Override
                 public void onResponse(Call<Calendario> call, Response<Calendario> response) {
@@ -334,7 +330,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
     }
 
-    private void loadNotificaciones(int codCalendario) {
+    public void loadNotificaciones(int codCalendario) {
         registroRecordatorioApi.obtenerRegistrosCalendarioNotificacion(codCalendario).enqueue(new Callback<List<RegistroRecordatorio>>() {
             @Override
             public void onResponse(Call<List<RegistroRecordatorio>> call, Response<List<RegistroRecordatorio>> response) {
@@ -353,142 +349,178 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popUpNotificacion(RegistroRecordatorio registroRecordatorio) {
-        View popupView = getLayoutInflater().inflate(R.layout.n55_0_notificacion_recordatorio, null);
+        if(notificacionActiva==false) {
+            notificacionActiva = true;
+            View popupView = getLayoutInflater().inflate(R.layout.n55_0_notificacion_recordatorio, null);
 
-        // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            // Crear la instancia de PopupWindow
+            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        // Hacer que el popup sea enfocable (opcional)
-        popupWindow.setFocusable(true);
+            // Hacer que el popup sea enfocable (opcional)
+            popupWindow.setFocusable(true);
 
-        // Configurar animación para oscurecer el fondo
-        View rootView = findViewById(android.R.id.content);
+            // Configurar animación para oscurecer el fondo
+            View rootView = findViewById(android.R.id.content);
 
-        View dimView = findViewById(R.id.dim_view);
-        dimView.setVisibility(View.VISIBLE);
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.VISIBLE);
 
-        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
-        popupView.startAnimation(scaleAnimation);
+            Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+            popupView.startAnimation(scaleAnimation);
 
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(false);
-        // Mostrar el popup en la ubicación deseada
-        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+            popupWindow.setFocusable(true);
+            popupWindow.setOutsideTouchable(false);
+            // Mostrar el popup en la ubicación deseada
+            popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
 
-        TextView hora = popupView.findViewById(R.id.text_hora);
-        TextView nombreMedicamento = popupView.findViewById(R.id.text_nombremedicamento);
-        TextView cpc = popupView.findViewById(R.id.text_CPC);
-        TextView instrucciones = popupView.findViewById(R.id.text_instrucciones);
-        TextView indicaciones = popupView.findViewById(R.id.text_otras_instrucciones);
-        ImageView omitir = popupView.findViewById(R.id.omitir);
-        ImageView tomar = popupView.findViewById(R.id.aceptar);
-        ImageView aplazar = popupView.findViewById(R.id.aplazar);
-        Recordatorio recordatorio = registroRecordatorio.getRecordatorio();
-        String presentacionString= "";
-        presentacionString = Float.toString(recordatorio.getDosis().getCantidadDosis()) + " "
-                + registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()+ " "
-                + Float.toString(recordatorio.getDosis().getValorConcentracion())+ " "
-                + recordatorio.getDosis().getConcentracion().getUnidadMedidaC();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        if(registroRecordatorio.getRecordatorio().getFrecuencia()==null && registroRecordatorio.getFechaTomaEsperada().getHour()==0 && registroRecordatorio.getFechaTomaEsperada().getMinute()==0) {
-            hora.setText("Cuando sea necesario");
-        }
-        else{
-            hora.setText(registroRecordatorio.getFechaTomaEsperada().toLocalTime().format(formatter).toString());
-        }
-        nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
-        cpc.setText(presentacionString);
-        instrucciones.setText(recordatorio.getInstruccion().getNombreInstruccion());
-        if(recordatorio.getInstruccion().getDescInstruccion().equals("")){
-            indicaciones.setVisibility(View.GONE);
-        }
-        indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
-
-       omitir.setOnClickListener(view ->{
-           popupWindow.dismiss();
-           if(registroRecordatorio.getRecordatorio().getFrecuencia()!=null && registroRecordatorio.getFechaTomaEsperada().getHour()!=0 && registroRecordatorio.getFechaTomaEsperada().getMinute()!=0) {
-               popUpOmitir(registroRecordatorio);
-           }
-       });
-
-       tomar.setOnClickListener(view ->{
-           if(registroRecordatorio.getRecordatorio().getFrecuencia()==null && registroRecordatorio.getFechaTomaEsperada().getHour()==0 && registroRecordatorio.getFechaTomaEsperada().getMinute()==0) {
-               RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
-               registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
-               registroNuevo.setFechaTomaEsperada(LocalDateTime.now());
-               registroNuevo.setFechaTomaReal(LocalDateTime.now());
-               registroNuevo.setTomaRegistroRecordatorio(true);
-               registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
-                   @Override
-                   public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
-                       popupWindow.dismiss();
-                       dimView.setVisibility(View.GONE);
-                       Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
-                       intent.putExtra("codCalendario", codCalendarioseleccionado);
-                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                       startActivity(intent);
-                   }
-
-                   @Override
-                   public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
-                       popupWindow.dismiss();
-                       dimView.setVisibility(View.GONE);
-                       Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
-                   }
-               });
-
-           }
-           else{
-               registroRecordatorio.setFechaTomaReal(LocalDateTime.now());
-               registroRecordatorio.setTomaRegistroRecordatorio(true);
-               registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
-                   @Override
-                   public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
-                       popupWindow.dismiss();
-                       dimView.setVisibility(View.GONE);
-                       Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
-                       intent.putExtra("codCalendario", codCalendarioseleccionado);
-                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                       startActivity(intent);
-                   }
-
-                   @Override
-                   public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
-                       popupWindow.dismiss();
-                       dimView.setVisibility(View.GONE);
-                       Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
-                   }
-               });
-           }
-       });
-
-       aplazar.setOnClickListener(view ->{
-           RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
-           registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
-           registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
-               @Override
-               public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
-                   popupWindow.dismiss();
-                   popUpAplazar(response.body());
-               }
-
-               @Override
-               public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
-                   popupWindow.dismiss();
-                   dimView.setVisibility(View.GONE);
-                   Toast.makeText(InicioCalendarioActivity.this, "Error al registrar el aplazo", Toast.LENGTH_SHORT).show();
-               }
-           });
-       });
-
-        // Configurar el OnTouchListener para la vista oscura
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                dimView.setVisibility(View.GONE);
+            TextView hora = popupView.findViewById(R.id.text_hora);
+            TextView nombreMedicamento = popupView.findViewById(R.id.text_nombremedicamento);
+            TextView cpc = popupView.findViewById(R.id.text_CPC);
+            TextView instrucciones = popupView.findViewById(R.id.text_instrucciones);
+            TextView indicaciones = popupView.findViewById(R.id.text_otras_instrucciones);
+            ImageView omitir = popupView.findViewById(R.id.omitir);
+            ImageView tomar = popupView.findViewById(R.id.aceptar);
+            ImageView aplazar = popupView.findViewById(R.id.aplazar);
+            Recordatorio recordatorio = registroRecordatorio.getRecordatorio();
+            String presentacionString = "";
+            presentacionString = Float.toString(recordatorio.getDosis().getCantidadDosis()) + " "
+                    + registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed() + " "
+                    + Float.toString(recordatorio.getDosis().getValorConcentracion()) + " "
+                    + recordatorio.getDosis().getConcentracion().getUnidadMedidaC();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            if (registroRecordatorio.getRecordatorio().getFrecuencia() == null && registroRecordatorio.getFechaTomaEsperada().getHour() == 0 && registroRecordatorio.getFechaTomaEsperada().getMinute() == 0) {
+                hora.setText("Cuando sea necesario");
+            } else {
+                hora.setText(registroRecordatorio.getFechaTomaEsperada().toLocalTime().format(formatter).toString());
             }
-        });
+            nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
+            cpc.setText(presentacionString);
+            instrucciones.setText(recordatorio.getInstruccion().getNombreInstruccion());
+            if (recordatorio.getInstruccion().getDescInstruccion().equals("")) {
+                indicaciones.setVisibility(View.GONE);
+            }
+            indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
+
+            omitir.setOnClickListener(view -> {
+                popupWindow.dismiss();
+                if (registroRecordatorio.getRecordatorio().getFrecuencia() != null && registroRecordatorio.getFechaTomaEsperada().getHour() != 0 && registroRecordatorio.getFechaTomaEsperada().getMinute() != 0) {
+                    popUpOmitir(registroRecordatorio);
+                }
+            });
+
+            tomar.setOnClickListener(view -> {
+                if (registroRecordatorio.isTomaRegistroRecordatorio()==false) {
+                    if (registroRecordatorio.getRecordatorio().getFrecuencia() == null && registroRecordatorio.getFechaTomaEsperada().getHour() == 0 && registroRecordatorio.getFechaTomaEsperada().getMinute() == 0) {
+                        RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
+                        registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
+                        registroNuevo.setFechaTomaEsperada(LocalDateTime.now());
+                        registroNuevo.setFechaTomaReal(LocalDateTime.now());
+                        registroNuevo.setTomaRegistroRecordatorio(true);
+                        disminuirInventario(registroRecordatorio.getRecordatorio());
+                        registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
+                            @Override
+                            public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                                popupWindow.dismiss();
+                                dimView.setVisibility(View.GONE);
+                                Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                                intent.putExtra("codCalendario", codCalendarioseleccionado);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                                popupWindow.dismiss();
+                                dimView.setVisibility(View.GONE);
+                                Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    } else {
+                        registroRecordatorio.setFechaTomaReal(LocalDateTime.now());
+                        registroRecordatorio.setTomaRegistroRecordatorio(true);
+                        disminuirInventario(registroRecordatorio.getRecordatorio());
+                        registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
+                            @Override
+                            public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                                popupWindow.dismiss();
+                                dimView.setVisibility(View.GONE);
+                                Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+                                intent.putExtra("codCalendario", codCalendarioseleccionado);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                                popupWindow.dismiss();
+                                dimView.setVisibility(View.GONE);
+                                Toast.makeText(InicioCalendarioActivity.this, "Error al registrar la toma", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+                else{
+                    popupWindow.dismiss();
+                    dimView.setVisibility(View.GONE);
+                }
+            });
+
+            aplazar.setOnClickListener(view -> {
+                RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
+                registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
+                registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
+                    @Override
+                    public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                        popupWindow.dismiss();
+                        popUpAplazar(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                        popupWindow.dismiss();
+                        dimView.setVisibility(View.GONE);
+                        Toast.makeText(InicioCalendarioActivity.this, "Error al registrar el aplazo", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+
+            // Configurar el OnTouchListener para la vista oscura
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    dimView.setVisibility(View.GONE);
+                    notificacionActiva = false;
+                }
+            });
+        }
+    }
+
+    private void disminuirInventario(Recordatorio recordatorio) {
+        if(recordatorio.getInventario()!=null) {
+            if(recordatorio.getInventario().getCantRealInventario()>0) {
+                Inventario inventario = recordatorio.getInventario();
+                int cantInventario = recordatorio.getInventario().getCantRealInventario();
+                if (cantInventario<(int) recordatorio.getDosis().getCantidadDosis()){
+                    cantInventario = 0;
+                }
+                else {
+                    cantInventario = cantInventario - (int) recordatorio.getDosis().getCantidadDosis();
+                }
+                inventario.setCantRealInventario(cantInventario);
+                inventarioApi.save(inventario).enqueue(new Callback<Inventario>() {
+                    @Override
+                    public void onResponse(Call<Inventario> call, Response<Inventario> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<Inventario> call, Throwable t) {
+                        Toast.makeText(InicioCalendarioActivity.this, "Error al disminuir el inventario", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
 
     }
 
@@ -1315,7 +1347,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             TextView text = popupView.findViewById(R.id.text);
             ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
             String textPopup = text.getText().toString();
-            text.setText(solicitud.getUsuarioControlado().getUsuarioUnico() + textPopup);
+            text.setText(solicitud.getUsuarioControlado().getNombreUsuario()+" " +solicitud.getUsuarioControlado().getApellidoUsuario() + textPopup);
 
             cerrar.setOnClickListener(view -> {
                 popupWindow.dismiss();
@@ -1361,7 +1393,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         Button aceptar = popupView.findViewById(R.id.button_aceptar);
         Button rechazar = popupView.findViewById(R.id.button_rechazar);
         String textoPopup = texto.getText().toString();
-        texto.setText(solicitud.getUsuarioControlador().getUsuarioUnico()+ textoPopup);
+        texto.setText(solicitud.getUsuarioControlado().getNombreUsuario()+" " +solicitud.getUsuarioControlado().getApellidoUsuario() + textoPopup);
 
         aceptar.setOnClickListener(view ->{
             actualizarEstadoSolicitud(solicitud, estadosSolicitud.get(4), dimView, popupWindow);
