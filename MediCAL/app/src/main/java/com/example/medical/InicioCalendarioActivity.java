@@ -129,7 +129,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private TextView perfilUsuario;
     private int codCalendarioseleccionado;
     public boolean notificacionActiva = false;
-
+    public boolean notificacionInventario = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -810,8 +810,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 allRegistros = response.body();
                 setView();
                 progressBar.setVisibility(View.GONE);
-                View dimView = findViewById(R.id.dim_view);
-                dimView.setVisibility(View.GONE);
+                if (notificacionInventario==false) {
+                    View dimView = findViewById(R.id.dim_view);
+                    dimView.setVisibility(View.GONE);
+                }
                 loadNotificaciones(codCalendarioseleccionado);
             }
 
@@ -1607,8 +1609,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             if (inventarioAsociado.getCantRealInventario() != null && inventarioAsociado.getCantRealInventario() <= inventarioAsociado.getCantAvisoInventario()) {
                 // Primero comprobar si está vacío o no
                 if (inventarioAsociado.getCantRealInventario() == 0) {
+                    View dimView = findViewById(R.id.dim_view);
+                    dimView.setVisibility(View.VISIBLE);
                     popupInventarioVacio(inventarioAsociado);
                 } else {
+                    View dimView = findViewById(R.id.dim_view);
+                    dimView.setVisibility(View.VISIBLE);
                     popupInventarioAlerta(inventarioAsociado);
                 }
             }
@@ -1619,6 +1625,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popupInventarioAlerta(Inventario inventario) {
+        notificacionInventario = true;
         View popupView = getLayoutInflater().inflate(R.layout.n88_1_popup_recordatorio_existencias, null);
 
         // Crear la instancia de PopupWindow
@@ -1678,6 +1685,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
 
     private void popupInventarioVacio(Inventario inventario) {
+        notificacionInventario = true;
         View popupView = getLayoutInflater().inflate(R.layout.n88_3_popup_inventario_vacio, null);
 
         // Crear la instancia de PopupWindow
