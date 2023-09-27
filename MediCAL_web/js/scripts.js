@@ -138,7 +138,7 @@
 		editarIcono.className = "bi bi-pencil edit-icon";
 		editarIcono.onclick = (function (index, icono) {
 		  return function () {
-		    toggleProfileRow(index, icono); // Ajusta el índice del botón de edición
+		    editarInstancia(index); // Ajusta el índice del botón de edición
 		  };
 		})(i, editarIcono); // Pasar el valor actual de i y el elemento icono a la IIFE
 		iconosDiv.appendChild(editarIcono);
@@ -179,7 +179,7 @@
 
         for (var j = 0; j < propiedades.length; j++) {
           var propiedad = propiedades[j];
-		  if (propiedad.includes("fechaFin") && medicamento[propiedad] !== null) {
+		  if (propiedad.includes("fechaFin") && medicamento[propiedad] !== null && medicamento[propiedad] <= new Date().toISOString().slice(0, 10)) {
 		    var iconosBorrar = document.querySelectorAll(".bi.bi-trash.delete-icon");
 		    toggleDeleteRow(i, iconosBorrar[i]);
 		    break; // Detiene el bucle una vez que se ha ejecutado toggleDeleteRow
@@ -188,126 +188,8 @@
       }
     }
 
-function toggleProfileRow(index, editIcon) {
-  // Obtener la fila correspondiente al índice
-  var tableRow = document.querySelectorAll('tr')[index+1];
 
-  // Obtener todos los elementos <td> en la fila
-  var tdElements = tableRow.querySelectorAll('td');
 
-  // Habilitar la edición para todos los campos en la fila, excepto aquellos que comienzan con "cod"
-  for (var i = 0; i < tdElements.length; i++) {
-    var propiedad = tdElements[i].getAttribute("data-propiedad");
-
-    if (propiedad && !propiedad.startsWith("cod") && !propiedad.startsWith("fecha") && !propiedad.startsWith("esPart")) {
-      tdElements[i].contentEditable = true;
-    }
-  }
-
-  // Cambiar el ícono de edición al ícono de guardado
-  editIcon.classList.remove('bi-pencil');
-  editIcon.classList.add('bi-check'); // Ajusta la clase según tus íconos
-
-  // Agregar un evento de clic para guardar los cambios
-  editIcon.onclick = function () {
-    saveProfileChanges(index, editIcon);
-  };
-}
-
-function saveProfileChanges(index, editIcon) {
-  // Obtener la fila correspondiente al índice
-  var tableRow = document.querySelectorAll('tr')[index + 1];
-
-  // Obtener todos los elementos <td> en la fila
-  var tdElements = tableRow.querySelectorAll('td');
-
-  // Crear un objeto para almacenar todas las propiedades
-  var allProperties = {};
-
-  // Recorrer los elementos <td> y recopilar todas las propiedades
-  for (var i = 0; i < tdElements.length; i++) {
-    var propiedad = tdElements[i].getAttribute("data-propiedad");
-    var contenido = tdElements[i].textContent;
-
-    if (propiedad && contenido !== "-") {
-      if (propiedad.startsWith("cod")) {
-        allProperties[propiedad] = parseInt(contenido);
-      }
-      else if(propiedad.startsWith("fecha")){
-      	var fechaString = contenido;
-      	var partesFecha = fechaString.split('/');
-      	console.log(partesFecha);
-
-		// Crea un objeto de fecha usando las partes divididas
-		var fecha = new Date(
-		  parseInt(partesFecha[2]), // Año
-		  parseInt(partesFecha[0]) - 1, // Mes (restamos 1 porque los meses en JavaScript son de 0 a 11)
-		  parseInt(partesFecha[1]) // Día
-		);
-
-		// Convierte la fecha al formato deseado ("yyyy-mm-dd")
-		var fechaFormateada = fecha.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
-
-		console.log(fechaFormateada);
-		allProperties[propiedad] = fecha;
-      }
-      else {
-        allProperties[propiedad] = contenido;
-      }
-    }
-  }
-  console.log(allProperties);
-
-  // Enviar los cambios al servidor (puedes usar una función fetch o AJAX aquí)
-  // Ejemplo ficticio:
-  sendChangesToServer(allProperties)
-    .then(function (response) {
-      // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito
-      console.log('Cambios guardados exitosamente');
-    })
-    .catch(function (error) {
-      // Manejar errores en la comunicación con el servidor
-      console.error('Error al guardar los cambios:', error);
-    });
-
-  // Deshabilitar la edición de los campos
-  for (var i = 0; i < tdElements.length; i++) {
-    tdElements[i].contentEditable = false;
-  }
-
-  // Cambiar el ícono de guardado de nuevo al ícono de edición
-  editIcon.classList.remove('bi-check');
-  editIcon.classList.add('bi-pencil'); // Ajusta la clase según tus íconos
-
-  // Restaurar la función de clic original (editar)
-  editIcon.onclick = function () {
-    toggleProfileRow(index, editIcon);
-  };
-}
-
-// Función ficticia para enviar los cambios al servidor
-function sendChangesToServer(changes) {
-  return fetch('http://localhost:8080/medicamento/save', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(changes)
-  }).then(function (response) {
-    if (!response.ok) {
-      throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
-    }
-    return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
-  })
-  .then(function (data) {
-    // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
-    console.log('Medicamento guardado con éxito:', data);
-  })
-  .catch(function (error) {
-    // Manejar errores generales
-    console.error('Error:', error);
-  });
-}
 
 
 
@@ -482,7 +364,8 @@ function toggleRevertButtonVisibility() {
 
 
     window.onload = function () {
-      var cells = document.getElementsByTagName('td');
+      var mainElement = document.querySelector('main'); // Obtener el elemento <main>
+	  var cells = mainElement.querySelectorAll('td'); 
       for (var i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', function () {
           this.setAttribute('tabindex', '0');
@@ -506,7 +389,8 @@ function toggleRevertButtonVisibility() {
     };
 
     function activarBusqueda(){
-    var cells2 = document.getElementsByTagName('td');
+    var mainElement = document.querySelector('main'); // Obtener el elemento <main>
+	var cells2 = mainElement.querySelectorAll('td'); 
       for (var i = 0; i < cells2.length; i++) {
         cells2[i].addEventListener('click', function () {
           this.setAttribute('tabindex', '0');

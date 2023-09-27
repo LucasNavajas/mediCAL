@@ -27,36 +27,51 @@
   />
 
   <!--referencio el archivo de estilos-->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
+    <!--Iconos que uso de bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <!--Tipografia Fuente:Inter sacada de google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <!--referencio el archivo de estilos-->
+    <link rel="stylesheet" href="css/style.css"/>
+    <!-- Referencia a jQuery para calendario fnacimiento -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="css/style.css" />
+      <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
   <!--Iconito de la pestaña-->
   <link rel="icon" href="img/Icono_MediCAL_Web.png" />
 
   <style>
-    .container {
+    main .container {
       display: flex;
       justify-content: right;
       margin-top: 30px;
     }
 
-    .button-container {
+    main .button-container {
       display: flex;
       justify-content: space-between;
       max-width: 100%;
       padding: 0 18px 15px; /* Ajustar el espacio horizontal entre los botones */
     }
 
-    #eliminarCalendariosBtn {
+    main #eliminarCalendariosBtn {
       margin-right: 10px; /* Ajustar el espacio entre los botones en pantallas más grandes */
     }
     
-    #revertInstanciasBtn {
+    main #revertInstanciasBtn {
       margin-right: 15px; /* Ajustar el espacio entre los botones en pantallas más grandes */
     }
 
-    .btn-agregar,
-    .btn-revert,
-    .btn-eliminar {
+    main .btn-agregar,
+    main .btn-revert,
+    main .btn-eliminar {
       border: none;
       border-radius: 100px;
       color: var(--fourth-color); /* Cambiar el color del texto según el formato */
@@ -68,31 +83,31 @@
       cursor: pointer;
     }
 
-    .btn-agregar {
+    main .btn-agregar {
       background-color: var(--first-color); /* Utilizar el color del formato para el botón de agregar */
     }
 
-    .btn-revert {
+    main .btn-revert {
       background-color: var(--second-color); /* Utilizar el color del formato claro para el botón de revert */
     }
 
-    .btn-eliminar {
+    main .btn-eliminar {
       background-color: var(--third-color); /* Utilizar el color rojo para el botón de eliminar */
     }
 
 
     @media (max-width: 550px) {
       /* Aplicar estilos para pantallas medianas */
-      .container {
+      main .container {
         justify-content: center; /* Centrar el contenedor de botones en pantallas medianas */
       }
-      .btn-agregar,
-      .btn-revert,
-      .btn-eliminar {
+      main .btn-agregar,
+      main .btn-revert,
+      main .btn-eliminar {
       font-size: 14px;
     }
     }
-      .hide {
+      main .hide {
       display: none;
     }
         /* Estilos CSS aquí */
@@ -137,7 +152,7 @@
         }
 
         /* Etiquetas e inputs */
-        .popup-overlay label {
+        .popup-content label {
             color: var(--fifth-color);
             font-weight: 400px;
             font-size: 18px;
@@ -148,7 +163,7 @@
             margin-top: 15px;
         }
 
-        .popup-overlay input {
+        .popup-content input {
             border: none;
             border-bottom: 1px solid var(--seventh-color);
             border-radius: none;
@@ -163,16 +178,16 @@
         margin-top: 15px;
         }
 
-        .popup-overlay input:focus {
+        .popup-content input:focus {
             border-bottom: 2px solid var(--first-color);
         }
 
-        .popup-overlay ::placeholder {
+        .popup-content ::placeholder {
             color: var(--seventh-color);
         }
 
         /* Estilo para el menú desplegable */
-        .popup-overlay select {
+        .popup-content select {
             width: 100%;
             max-width: 500px;
             height: 40px;
@@ -187,13 +202,13 @@
     /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
     ya que se como los estilos de tablas */
 
-    .camp-table{
+    .popup-content .camp-table{
         width: 100%;
         border-collapse: collapse;
         border: none;
     }
 
-    .camp-table td, .camp-table th {
+    .popup-content .camp-table td, .camp-table th {
         /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
         border: none;
         align-items: center;
@@ -204,22 +219,22 @@
 
     }
 
-    .popup-overlay tr.clicked td {
+    .popup-content tr.clicked td {
     background-color: transparent;
     }
 
-    .popup-overlay tr:focus-within td {
+    .popup-content tr:focus-within td {
         background-color: transparent;
         font-weight: 400;
     }
 
-    .column-one {
+    .popup-content .column-one {
         width: 40%; /* Anchura de la columna uno */
         vertical-align: top;
         padding: 2px;
     }
 
-    .column-two {
+    .popup-content .column-two {
         width: 70%; /* Anchura de la columna dos */
         text-align: center;
         padding: 2px;
@@ -227,7 +242,7 @@
 
     /*alertas e iconitos*/
 
-    .alert {
+    .popup-content .alert {
     color: red;
     outline: none;
     font-weight: 400px;
@@ -238,20 +253,20 @@
     max-width: 100%;
 }
 /* Estilos para el input-group */
-.input-group {
+.popup-content .input-group {
     display: flex;
     align-items: center;
     width: 100%;
 }
 
 /* Estilos para el input */
-.input-group input {
+.popup-content .input-group input {
     flex: 1;
     border-radius: 0px;
     padding: 0px;
 }
 
-.popup-overlay textarea {
+   .popup-content textarea {
             border: none;
             border-bottom: 1px solid var(--seventh-color);
             border-radius: none;
@@ -269,7 +284,7 @@
 
 
 /* Estilos para el span que contiene los iconos */
-.input-group .input-group-text {
+.popup-content .input-group .input-group-text {
     background-color: transparent;
     border: none;
     align-items: right;
@@ -290,7 +305,7 @@
       color: red;
     }
 /*boton guardar*/
-.popup-overlay .button-container {
+ .popup-content .button-container {
     display: flex;
     justify-content: center; /* Cambiado a 'center' */
     align-items: center; /* Cambiado a 'center' */
@@ -363,7 +378,7 @@
           <button id="revertInstanciasBtn" onclick="restaurarFilasSeleccionadas()" class="click-animation btn-revert hide">
             Restablecer instancias
           </button>
-          <button type="submit" class="click-animation btn-agregar" onclick="openDialog()">
+          <button type="submit" class="click-animation btn-agregar" onclick="abrirPopup();">
             Agregar instancia
           </button>
       </div>
@@ -426,11 +441,13 @@
       </tr>
       
     </table>
-  <div id="popup-overlay" class="popup-overlay"></div>
+  
+  </main>
+<div id="popup-overlay" class="popup-overlay"></div>
 
-    <div id="popup-dialog" class="popup-content">
+    <div id="popup-dialog-med" class="popup-content">
         <!-- Icono de cerrar -->
-<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-med')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
         <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Medicamento</h3>
         
         <table class="camp-table">
@@ -440,7 +457,7 @@
                     <label for="campo_codigo">Código</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    <input type="text" id="campo_codigo_Med" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
                     font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
                 </td>
             </tr>
@@ -451,7 +468,7 @@
                     <label for="campo_fechaFV">Fecha Fin Vigencia </label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    <input type="text" id="campo_fechaFV_Med" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
                     font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
                 </td>
             </tr>
@@ -461,8 +478,8 @@
                     <label for="campo_marca">Marca</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_marca" placeholder="Marca del medicamento" style="width: 100%;" oninput="checkMarca()">
-                    <div id="marca-alert" class="alert"></div>
+                    <input type="text" id="campo_marca_Med" placeholder="Marca del medicamento" style="width: 100%;" oninput="checkMarca('campo_marca_Med', 'marca-alert-med')">
+                    <div id="marca-alert-med" class="alert"></div>
                 </td>
             </tr>
 
@@ -471,23 +488,96 @@
                     <label for="campo_nombre">Nombre</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_nombre" placeholder="Nombre del medicamento" style="width: 100%;" oninput="checkName()">
-                    <div id="name-alert" class="alert"></div>
+                    <input type="text" id="campo_nombre_Med" placeholder="Nombre del medicamento" style="width: 100%;" oninput="checkName('campo_nombre_Med', 'name-alert-med')">
+                    <div id="name-alert-med" class="alert"></div>
                 </td>
             </tr>
           
         </table>
 <!--boton guardar-->
 <div class="button-container">
-    <form action="tu_ruta_de_destino.html" method="POST">
+    <form action="javascript:altaInstancia();" method="POST" id="formulario-nuevo-medicamento">
       <div class="form-group">
         <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
       </div>
     </form>
   </div>
     </div>
-  </main>
 
+    <div id="popup-dialog-modif-med" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-med')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Medicamento</h3>
+        
+        <!-- DESDE AQUI -->
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_Med_Modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_Med_Modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_marca">Marca</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_marca_Med_Modif" placeholder="Marca del medicamento" style="width: 100%;" oninput="checkMarca('campo_marca_Med_Modif', 'marca-alert-med_Modif')">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="marca-alert-med_Modif" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_nombre_Med_Modif" placeholder="Nombre del medicamento" style="width: 100%;" oninput="checkName('campo_nombre_Med_Modif','name-alert-med_Modif')">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="name-alert-med_Modif" class="alert"></div>
+                </td>
+            </tr>
+        </table>
+        <!--boton guardar-->
+        <div class="button-container">
+            <form action="javascript:modificarInstancia();" method="POST">
+              <div class="form-group">
+                <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+              </div>
+            </form>
+          </div>
+            </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
@@ -509,25 +599,34 @@
 
     <script>
         // JavaScript aquí
-        function openDialog() {
+        function openDialog(id) {
             var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById("popup-dialog");
+            var dialog = document.getElementById(id);
             overlay.style.display = "block";
             overlay.style.opacity = "1";
             dialog.style.display = "block";
         }
 
-        function closeDialog() {
+        function openDialogModificar(id, index) {
             var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById("popup-dialog");
+            var dialog = document.getElementById(id);
+            setearValoresAModificar(id, index);
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+        }
+
+        function closeDialog(id) {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById(id);
             overlay.style.display = "none";
             overlay.style.opacity = "0";
             dialog.style.display = "none";
         }
 
-        function cancelDialog() {
+        function cancelDialog(id) {
             var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById("popup-dialog");
+            var dialog = document.getElementById(id);
             overlay.style.display = "none";
             overlay.style.opacity = "0";
             dialog.style.display = "none";
@@ -548,8 +647,8 @@
         minDate.setFullYear(minDate.getFullYear());
         minDate.setDate(minDate.getDate());
 
-        $("#campo_fechaFV").datepicker({
-            dateFormat: "dd MM yy", // Formato de la fecha: "dd nombre_mes aaaa"
+        $(".campo_fecha").datepicker({
+            dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
             changeMonth: true, // Permite cambiar el mes
             changeYear: true, // Permite cambiar el año
             yearRange: "0:+30", // Rango de años permitidos
@@ -564,10 +663,10 @@
     <!--script para alertar campos editables-->
     <script>
 
-        function checkName() {
-            var nameInput = document.getElementById("campo_nombre");
+        function checkName(idCampo, idAlert) {
+            var nameInput = document.getElementById(idCampo);
             var name = nameInput.value;
-            var nameAlert = document.getElementById("name-alert");
+            var nameAlert = document.getElementById(idAlert);
     
             if (name.length > 30) {
                 nameAlert.innerText = "Ingresar nombre en 30 caracteres.";
@@ -577,10 +676,10 @@
             }
         }
 
-        function checkMarca() {
-            var marcaInput = document.getElementById("campo_marca");
+        function checkMarca(idCampo, idAlert) {
+            var marcaInput = document.getElementById(idCampo);
             var marca = marcaInput.value;
-            var marcaAlert = document.getElementById("marca-alert");
+            var marcaAlert = document.getElementById(idAlert);
     
             if (marca.length > 30) {
                 marcaAlert.innerText = "Ingresar marca en 30 caracteres.";
@@ -868,7 +967,245 @@ function cambiarTabla() {
 
 }
 
+function abrirPopup(){
+  var lista = document.getElementById("lista_usuarios");
+  var valorSeleccionado = lista.value;
+
+    switch (valorSeleccionado) {
+        case "Medicamento":
+               openDialog("popup-dialog-med");
+               break;
+        case "Consejo":
+            
+            break;
+        case "FAQ":
+           
+            break;
+        case "Medicion":
+            
+            break;
+        case "Sintoma":
+            
+            break;
+        case "AM":
+            
+            break;
+        case "PM":
+           
+            break;
+        default:
+            
+            break;
+    }
+
+}
+
+function altaInstancia(){
+  var lista = document.getElementById("lista_usuarios");
+  var valorSeleccionado = lista.value;
+
+    switch (valorSeleccionado) {
+        case "Medicamento":
+               altaMedicamento();
+               break;
+        case "Consejo":
+            
+            break;
+        case "FAQ":
+           
+            break;
+        case "Medicion":
+            
+            break;
+        case "Sintoma":
+            
+            break;
+        case "AM":
+            
+            break;
+        case "PM":
+           
+            break;
+        default:
+            
+            break;
+    }
+}
+
+function setearValoresAModificar(id, index){
+  var lista = document.getElementById("lista_usuarios");
+  var valorSeleccionado = lista.value;
+  const contenedor = document.getElementById(id);
+  const tabla = document.querySelector("table");
+  const fila = tabla.rows[index+1];
+    switch (valorSeleccionado) {
+        case "Medicamento":
+               const codigo = contenedor.querySelector("#campo_codigo_Med_Modif");
+               const nombre = contenedor.querySelector("#campo_nombre_Med_Modif");
+               const marca = contenedor.querySelector("#campo_marca_Med_Modif");
+               const fechaFV = contenedor.querySelector("#campo_fechaFV_Med_Modif");
+
+               codigo.value = fila.cells[1].textContent;
+               nombre.value = fila.cells[6].textContent;
+               marca.value = fila.cells[5].textContent;
+               if(fila.cells[4].textContent !== "-"){
+               fechaFV.value = fila.cells[4].textContent;
+               }
+               break;
+        case "Consejo":
+            
+            break;
+        case "FAQ":
+           
+            break;
+        case "Medicion":
+            
+            break;
+        case "Sintoma":
+            
+            break;
+        case "AM":
+            
+            break;
+        case "PM":
+           
+            break;
+        default:
+            
+            break;
+    }
+}
+
+function editarInstancia(index){
+  var lista = document.getElementById("lista_usuarios");
+  var valorSeleccionado = lista.value;
+
+    switch (valorSeleccionado) {
+        case "Medicamento":
+               openDialogModificar("popup-dialog-modif-med", index);
+               break;
+        case "Consejo":
+            
+            break;
+        case "FAQ":
+           
+            break;
+        case "Medicion":
+            
+            break;
+        case "Sintoma":
+            
+            break;
+        case "AM":
+            
+            break;
+        case "PM":
+           
+            break;
+        default:
+            
+            break;
+    }
+
+}
+
+// Función ficticia para enviar los cambios al servidor
+function sendChangesToServer(changes) {
+  var lista = document.getElementById("lista_usuarios");
+  var valorSeleccionado = lista.value;
+
+    switch (valorSeleccionado) {
+        case "Medicamento":
+               return fetch('http://localhost:8080/medicamento/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                console.log('Medicamento guardado con éxito:', data);
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
+               break;
+        case "Consejo":
+            
+            break;
+        case "FAQ":
+           
+            break;
+        case "Medicion":
+            
+            break;
+        case "Sintoma":
+            
+            break;
+        case "AM":
+            
+            break;
+        case "PM":
+           
+            break;
+        default:
+            
+            break;
+    }
+}
+
+function altaMedicamento(){
+  var medicamentoJSON = crearJSONMedicamento();
+
+  fetch(`http://localhost:8080/medicamento/save`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(medicamentoJSON)
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  closeDialog('popup-dialog-med');
+                  cambiarTabla();
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+
+}
   
+function crearJSONMedicamento() {
+    // Obtener los valores de los campos input por su ID
+    var fechaActual = new Date();
+    var fechaFV = document.getElementById("campo_fechaFV_Med").value;
+    var marca = document.getElementById("campo_marca_Med").value;
+    var nombre = document.getElementById("campo_nombre_Med").value;
+
+    // Construir el objeto JSON
+    var jsonObject = {
+      fechaAltaMedicamento: fechaActual,
+      fechaFinVigenciaMed: fechaFV,
+      marcaMedicamento: marca,
+      nombreMedicamento: nombre
+    };
+
+    return jsonObject;
+}
   </script>
 </body>
 
