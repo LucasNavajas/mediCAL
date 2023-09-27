@@ -52,4 +52,18 @@ public class InventarioDao {
 		return repository.save(inventario);
 	}
 
+	public Inventario desactivarInventario(int codInventario) {
+		Optional<Inventario> optionalInventario = repository.findById(codInventario);
+		Inventario inventario;
+		if (optionalInventario.isPresent()) {
+            inventario = optionalInventario.get();
+            inventario.setCantRealInventario(null);
+            inventario.setCantAvisoInventario(null);;
+        } else {
+            throw new NoSuchElementException("El inventario no existe.");
+        }
+		return repository.save(inventario);
+	}
+	
+	
 }

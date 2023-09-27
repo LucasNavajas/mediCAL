@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -15,17 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medical.adapter.ConsejoAdapter;
 import com.example.medical.adapter.InventarioAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Inventario;
 import com.example.medical.model.Recordatorio;
-import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
-import com.example.medical.retrofit.InventarioApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
-import com.example.medical.retrofit.UsuarioApi;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -47,6 +41,7 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private InventarioAdapter inventarioAdapter;
     private int codUsuarioLogeado;
+    private int codCalendarioSeleccionado;
     private boolean existenInventarios = false; // Variable global para verificar existencia de inventarios
     private List<Inventario> listaTotalInventarios = new ArrayList<>(); // Lista global para almacenar todos los inventarios de un usuario
 
@@ -62,6 +57,7 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
 
         Intent intent1 = getIntent();
         codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
+        codCalendarioSeleccionado = intent1.getIntExtra("calendarioSeleccionadoid", 0);
 
         OnDataLoadedListener onDataLoadedListener = new OnDataLoadedListener() {
             @Override
@@ -74,7 +70,9 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
             }
         };
 
-        obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener); // Llama a este método para verificar existencia de inventarios
+        // obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener); // Llama a este método para verificar existencia de inventarios
+        obtenerCalendarioSeleccionado(codCalendarioSeleccionado, onDataLoadedListener);    // Llama a éste método para obtener el calendario seleccionado actual y luego mostrar únicamente los inventarios de éste
+
 
         setContentView(R.layout.n87_inventario_sin_cargar); // Establece la pantalla 88 como predeterminada en caso que no hayan inventarios
 
@@ -91,6 +89,8 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
 
     }
 
+
+    /*
     // Método para obtener los calendarios del usuario
     private void obtenerUsuarioLogeado(int codUsuarioLogeado, OnDataLoadedListener listener) {
         RetrofitService retrofitService = new RetrofitService();
@@ -159,6 +159,40 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
             }
         });
     }
+    */
+
+
+    // Método para obtener el calendario seleccionado actualmente
+    private void obtenerCalendarioSeleccionado (int codCalendarioSeleccionado, OnDataLoadedListener listener) {
+        RetrofitService retrofitService = new RetrofitService();
+        CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
+
+        Log.d("MiApp", "Se llama a obtenerCalendarioSeleccionado, con el codCalendarioSeleccionado: " + codCalendarioSeleccionado);
+
+        // Hacer la llamada a la API para obtener los calendarios asociados al usuario
+        Call<Calendario> calendariosCall = calendarioApi.getByCodCalendario(codCalendarioSeleccionado);
+
+        calendariosCall.enqueue(new Callback<Calendario>() {
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                if (response.isSuccessful()) {
+                    Calendario calendarioSeleccionado = response.body();
+                    if (calendarioSeleccionado != null) {
+                        Log.d("MiApp", "Calendario seleccionado encontrado: " + calendarioSeleccionado.getCodCalendario());
+                        obtenerRecordatoriosPorCalendario(calendarioSeleccionado, listener);
+                    } else {
+                        Log.d("MiApp", "No se encontró calendario asociado al codCalendarioSeleccionado: " + codCalendarioSeleccionado);
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud de calendario seleccionado: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud de calendario: " + t.getMessage());
+            }
+        });
+    }
+
 
 
     // Método para obtener las clases "Recordatorio" asociadas a un calendario
@@ -201,7 +235,8 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
 
         Inventario inventarioAsociado = recordatorio.getInventario();
 
-        if (inventarioAsociado != null) {
+        // Se agrega validación de que si el atributo de cantidad real es nulo (inventario desactivado) entonces no se agrega a la lista de inventario a mostrar
+        if (inventarioAsociado != null && inventarioAsociado.getCantRealInventario() != null) {
             Log.d("MiApp", "Inventario Asociado Encontrado: ");
             existenInventarios = true;
             Log.d("MiApp", "variable existenInventarios: " + existenInventarios);
@@ -231,7 +266,7 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
             setContentView(R.layout.n88_0_inventario_cargado); // Muestra layout n88 si existen inventarios
 
             botonVolver = findViewById(R.id.boton_volver);
-            botonDesplegable = findViewById(R.id.desplegable);
+            // botonDesplegable = findViewById(R.id.desplegable);   (era el botón asociado al menú desplegable)
             opciones.add("Todos los medicamentos"); // Primer elemento sería por defecto que muestre todos
 
             // Configurar el RecyclerView
@@ -261,29 +296,19 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
                 }
             });
 
+            /*
             botonDesplegable.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
                     mostrarMenu(view); // Llama al método para mostrar menú desplegable
                 }
             });
+             */
 
         }
     }
 
-
-    private void populateListView(List<Inventario> inventarioList) {
-        if (listaTotalInventarios != null) {
-            Log.d("InventarioMedicamentosActivity", "populo en la list");
-            InventarioAdapter inventarioAdapter = new InventarioAdapter(listaTotalInventarios);
-            recyclerView.setAdapter(inventarioAdapter);
-        } else {
-            Log.d("InventarioMedicamentosActivity", "no populo en la list");
-            Toast.makeText(InventarioMedicamentosActivity.this, "La lista de Inventarios está vacía o es nula", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
+    /*
     public void mostrarMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, botonDesplegable);
 
@@ -298,6 +323,7 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
+    */
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -306,7 +332,6 @@ public class InventarioMedicamentosActivity extends AppCompatActivity {
 
     @SuppressLint("WrongViewCast")
     private void inicializarVariables () {
-        // Falta 
 
         retrofitService = new RetrofitService();
     }

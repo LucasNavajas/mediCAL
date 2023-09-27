@@ -48,5 +48,17 @@ public class InventarioController {
             return new ResponseEntity<>("Error al actualizar el inventario.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 	}
+	
+	@PostMapping("inventario/desactivarInventario/{codInventario}")
+	public ResponseEntity<String> desactivarInventario(@PathVariable int codInventario){
+		try {
+            Inventario inventario = inventarioDao.desactivarInventario(codInventario);
+            return new ResponseEntity<>("Inventario desactivado correctamente.", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("El inventario no existe.", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al desactivar el inventario.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+	}
 
 }

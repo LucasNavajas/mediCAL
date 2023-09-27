@@ -24,4 +24,7 @@ public interface InventarioApi {
     @POST("inventario/actualizarInventario/{codInventario}")
     Call<Void>actualizarInventario(@Path("codInventario") int codInventario, @Body int nuevaCantidadReal);
 
+    @POST("inventario/desactivarInventario/{codInventario}")
+    Call<Void>desactivarInventario(@Path("codInventario") int codInventario);
+
 }

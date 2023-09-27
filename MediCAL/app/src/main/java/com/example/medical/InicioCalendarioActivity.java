@@ -1860,9 +1860,30 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         // Verifica si el inventario no es nulo
         if (inventario != null) {
 
+            Log.d("MiApp", "El código del inventario a desactivar es: " + inventario.getCodInventario());
+
+
             // Colocar cantidad real y de aviso en null para que deje de ser mostrado y deje de generar popups
-            inventario.setCantRealInventario(null);
-            inventario.setCantAvisoInventario(null);
+            inventarioApi.desactivarInventario(inventario.getCodInventario()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Recordatorio recordatorioAsociado = inventario.getRecordatorio();
+                        Inventario inventarioDesactivado = recordatorioAsociado.getInventario();
+
+                        Log.d("MiApp", "Se ha desactivado el inventario" + inventarioDesactivado);
+                        Log.d("MiApp","La cantidad real del inventario desactivado ahora es: " + inventarioDesactivado.getCantRealInventario());
+                        Log.d("MiApp","La cantidad de aviso del inventario desactivado ahora es: " + inventarioDesactivado.getCantAvisoInventario());
+                    } else {
+                        Toast.makeText(InicioCalendarioActivity.this, "Error al desactivar el inventario, intente nuevamente", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(InicioCalendarioActivity.this, "Error en la solicitud a la API, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
 
         cerrar.setOnClickListener(view ->{
