@@ -35,7 +35,6 @@
             android:layout_toEndOf="@id/boton_volver"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
-            android:text="nombreMedición"
             android:fontFamily="@font/inter_medium"
             android:textSize="26sp"
             android:textColor="#FFF" />
@@ -91,7 +90,6 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/inter_regular"
             android:padding="8dp"
-            android:text="(unidaddemedida)"
             android:textColor="@android:color/black"
             android:textSize="22sp" />
 
@@ -112,7 +110,8 @@
             android:layout_marginTop="30dp"
             android:layout_marginStart="-30dp"
             android:clickable="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/imagen_reloj"

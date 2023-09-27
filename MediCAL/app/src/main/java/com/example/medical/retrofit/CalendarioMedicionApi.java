@@ -8,11 +8,14 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface CalendarioMedicionApi {
+    @DELETE("/calendariomedicion/delete/{codCalendarioMedicion}")
+    Call<Void> deleteCalendarioMedicion(@Path("codCalendarioMedicion") int codCalendarioMedicion);
 
     @GET("/calendariomedicion/get-all")
     Call<List<CalendarioMedicion>> getAllCalendarioMedicion();
@@ -27,6 +30,7 @@ public interface CalendarioMedicionApi {
     Call<CalendarioMedicion> getByCodCalendarioM(@Path("codCalendarioMedicion") int codCalendarioMedicion);
     @POST("/calendariomedicion/save")
     Call<CalendarioMedicion> saveCalendarioMedicion(@Body CalendarioMedicion calendarioMedicion);
+
 
 
 }

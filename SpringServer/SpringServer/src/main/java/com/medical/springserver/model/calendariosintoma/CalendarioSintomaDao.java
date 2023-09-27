@@ -8,6 +8,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import com.medical.springserver.model.calendario.Calendario;
+import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 
 @Service
 
@@ -17,6 +18,14 @@ public class CalendarioSintomaDao {
 	
 	public CalendarioSintoma save(CalendarioSintoma calendariosintoma) {
 		return repository.save(calendariosintoma);
+	}
+	
+	public CalendarioSintoma findByCodCalendarioSintoma(int codCalendarioSintoma) {
+		return repository.findByCodCalendarioSintoma(codCalendarioSintoma);
+	}
+	
+	public List<CalendarioSintoma> findByCodSintoma(int codSintoma){
+		return repository.findByCodSintoma(codSintoma);
 	}
 	
 	public List<CalendarioSintoma> findByCodCalendario(int codCalendario){

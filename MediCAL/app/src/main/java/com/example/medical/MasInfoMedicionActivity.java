@@ -7,13 +7,19 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,18 +38,23 @@ import org.json.JSONArray;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +82,20 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
     boolean mostrarMes;
     boolean mostrar3Meses;
     boolean mostrarSemana;
+    private int mesActualMes;
+    private int añoActualMes;
+    private int mesActual3Meses;
+    private int añoActualAnio;
+    private Calendar fechaActualSemanaa ;
+    private Calendar[] fechaActualSemana = new Calendar[1];
+    private int primerDiaSemana;
+    private int ultimoDiaSemana;
+    private String nombreMesActual;
+    private String nombreMesActualIn;
+    private String fechaInicioSem;
+    private String fechaFinSem;
+   private String fechaInicioSemana ="1";
+    private String fechaFinSemana= "1";
     List<CalendarioMedicion> calendarioMedicionesSelec ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +153,9 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
         // Declarar e inicializar la variable añoActual como un arreglo de un solo elemento
         final int[] añoActual = {Calendar.getInstance().get(Calendar.YEAR)};
         Calendar fechaActual = Calendar.getInstance();
-        final Calendar[] fechaActualSemana = {Calendar.getInstance()};
+
         // Declarar una variable para rastrear la fecha actual de la semana
-       Calendar fechaActualSemana2 = Calendar.getInstance();
+        Calendar fechaActualSemana2 = Calendar.getInstance();
 
 // Lugar donde se inicializa 'fechaActualSemana' (fuera del método)
         fechaActualSemana2.setFirstDayOfWeek(Calendar.SUNDAY);
@@ -147,37 +172,49 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     }
                     updateFechaHoy(añoActual[0], mesesAbreviados3meses[mesActual]);
                     CrearRelativeLayout(calendarioMedicionesSelec);
-                } else if (mostrar3Meses ==true) {
-                    mesActual -= 3;
-                    if (mesActual < 0) {
-                        mesActual += 12;
-                        añoActual[0]--;
+                } else if (mostrar3Meses) {
+                    String fechaTexto = fechaHoy.getText().toString();
+                    String[] partesFecha = fechaTexto.split(" ");
+                    String mesInicial = partesFecha[0];
+                    String mesFinal = partesFecha[2];
+                    int año = Integer.parseInt(partesFecha[3]);
+                    int mesInicialIndex = Arrays.asList(mesesAbreviados).indexOf(mesInicial);
+                    int mesFinalIndex = Arrays.asList(mesesAbreviados).indexOf(mesFinal);
+                    mesInicialIndex -= 3;
+                    mesFinalIndex -= 3;
+                    if (mesInicialIndex < 0) {
+                        mesInicialIndex += 12;
                     }
-                    if (mesActual >= 0 && mesActual < mesesAbreviados.length) {
-                        int mesFinal = (mesActual) % 12; // Obtener el mes final del rango
-                        int mesInicial = mesActual - 2;
-                        Resources resources = getResources(); // Obtener el objeto Resources
-                        String[] meses_Abreviados = resources.getStringArray(R.array.meses_abreviados);
-
-                        String mesInicialAbreviado = meses_Abreviados[mesInicial];
-                        String mesFinalAbreviado = meses_Abreviados[mesFinal];
-
-                        updateFechaHoy(añoActual[0], mesInicialAbreviado + " - " + mesFinalAbreviado);
+                    if (mesFinalIndex < 0) {
+                        mesFinalIndex += 12;
+                        año--;
                     }
+                    String nuevoMesInicial = mesesAbreviados[mesInicialIndex];
+                    String nuevoMesFinal = mesesAbreviados[mesFinalIndex];
+                    updateFechaHoy(año, nuevoMesInicial + " - " + nuevoMesFinal);
                     CrearRelativeLayout(calendarioMedicionesSelec);
-                } else if (mostrarSemana) {
-                    fechaActualSemana2.add(Calendar.DAY_OF_MONTH, -7);
-                    fechaActualSemana2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                    int primerDiaSemana = fechaActualSemana2.get(Calendar.DAY_OF_MONTH);
-                    int mesActualSemana = fechaActualSemana2.get(Calendar.MONTH);
+                }
+                else if (mostrarSemana) {
+                    String fechaTexto = fechaHoy.getText().toString();
+                    Calendar fechaActualSemana2 = Calendar.getInstance();
+
+                    if (!fechaTexto.isEmpty()) {
+                        // Si hay un texto en fechaTexto, entonces disminuir la fecha actual
+                        fechaActualSemanaa.add(Calendar.DAY_OF_MONTH, -7);
+                    }
+
+                    fechaActualSemanaa.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                    int primerDiaSemana = fechaActualSemanaa.get(Calendar.DAY_OF_MONTH);
+                    int mesActualSemana = fechaActualSemanaa.get(Calendar.MONTH);
                     Resources resources = getResources();
                     String[] meses_Abreviados = resources.getStringArray(R.array.meses_abreviados);
                     String[] meses_Completos = resources.getStringArray(R.array.months_array);
-                    fechaActualSemana2.add(Calendar.DAY_OF_MONTH, 6);
-                    int ultimoDiaSemana = fechaActualSemana2.get(Calendar.DAY_OF_MONTH);
-                    if (mesActualSemana != fechaActualSemana2.get(Calendar.MONTH)) {
+                    fechaActualSemanaa.add(Calendar.DAY_OF_MONTH, 6);
+                    int ultimoDiaSemana = fechaActualSemanaa.get(Calendar.DAY_OF_MONTH);
+
+                    if (mesActualSemana != fechaActualSemanaa.get(Calendar.MONTH)) {
                         // Los días están en meses diferentes
-                        int mesSiguiente = fechaActualSemana2.get(Calendar.MONTH);
+                        int mesSiguiente = fechaActualSemanaa.get(Calendar.MONTH);
                         String nombreMesSiguiente = meses_Abreviados[mesSiguiente];
                         String nombreMesActual = meses_Abreviados[mesActualSemana];
                         updateFechaHoy(0, primerDiaSemana + " de " + nombreMesActual + " - " + ultimoDiaSemana + " de " + nombreMesSiguiente);
@@ -187,6 +224,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         updateFechaHoy(0, primerDiaSemana + " - " + ultimoDiaSemana + " de " + nombreMesActual);
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     }
+
                 } else {
                     añoActual[0]--; // Disminuir el año
                     updateFechaHoy(añoActual[0], ""); // Deja el mes en blanco
@@ -231,18 +269,18 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     int mesAc = fechaActual.getMonthValue() -1;
                     int añoAc = fechaActual.getYear();
                     if (año != añoAc) {
-                           mesInicialIndex += 3;
-                           if (mesInicialIndex > 11) {
-                               mesInicialIndex -= 12;
-                               año++;
-                           }
-                           mesFinalIndex += 3;
-                           if (mesFinalIndex > 11) {
-                               mesFinalIndex -= 12;
-                           }
-                           updateFechaHoy(año, mesesAbreviados[mesInicialIndex] + " - " + mesesAbreviados[mesFinalIndex]);
+                        mesInicialIndex += 3;
+                        if (mesInicialIndex > 11) {
+                            mesInicialIndex -= 12;
+                            año++;
+                        }
+                        mesFinalIndex += 3;
+                        if (mesFinalIndex > 11) {
+                            mesFinalIndex -= 12;
+                        }
+                        updateFechaHoy(año, mesesAbreviados[mesInicialIndex] + " - " + mesesAbreviados[mesFinalIndex]);
                         CrearRelativeLayout(calendarioMedicionesSelec);
-                   } else if (mesFinalIndex != mesAc){
+                    } else if (mesFinalIndex != mesAc){
                         mesInicialIndex += 3;
                         if (mesInicialIndex > 11) {
                             mesInicialIndex -= 12;
@@ -256,18 +294,18 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     }
                 } else if (mostrarSemana) {
-                    fechaActualSemana2.add(Calendar.DAY_OF_MONTH, +7);
-                    fechaActualSemana2.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                    int primerDiaSemana = fechaActualSemana2.get(Calendar.DAY_OF_MONTH);
-                    int mesActualSemana = fechaActualSemana2.get(Calendar.MONTH);
+                    fechaActualSemanaa.add(Calendar.DAY_OF_MONTH, +7);
+                    fechaActualSemanaa.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                    int primerDiaSemana = fechaActualSemanaa.get(Calendar.DAY_OF_MONTH);
+                    int mesActualSemana = fechaActualSemanaa.get(Calendar.MONTH);
                     Resources resources = getResources();
                     String[] meses_Abreviados = resources.getStringArray(R.array.meses_abreviados);
                     String[] meses_Completos = resources.getStringArray(R.array.months_array);
-                    fechaActualSemana2.add(Calendar.DAY_OF_MONTH, 6);
-                    int ultimoDiaSemana = fechaActualSemana2.get(Calendar.DAY_OF_MONTH);
-                    if (mesActualSemana != fechaActualSemana2.get(Calendar.MONTH)) {
+                    fechaActualSemanaa.add(Calendar.DAY_OF_MONTH, 6);
+                    int ultimoDiaSemana = fechaActualSemanaa.get(Calendar.DAY_OF_MONTH);
+                    if (mesActualSemana != fechaActualSemanaa.get(Calendar.MONTH)) {
                         // Los días están en meses diferentes
-                        int mesSiguiente = fechaActualSemana2.get(Calendar.MONTH);
+                        int mesSiguiente = fechaActualSemanaa.get(Calendar.MONTH);
                         String nombreMesSiguiente = meses_Abreviados[mesSiguiente];
                         String nombreMesActual = meses_Abreviados[mesActualSemana];
                         updateFechaHoy(0, primerDiaSemana + " de " + nombreMesActual + " - " + ultimoDiaSemana + " de " + nombreMesSiguiente);
@@ -278,7 +316,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     }
 
-               } else {
+                } else {
                     // Si mostrarMes es falso, aumentar el año solo si no es el año actual
                     int añoActualValor = Calendar.getInstance().get(Calendar.YEAR);
                     Log.e("MiApp", "añoaValorctual" + añoActualValor);
@@ -294,24 +332,28 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         updateFechaHoy(añoActual[0], ""); // Dejar el mes en blanco
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     }
+                }
             }
-        }
         });
 
         // Variables para los años actuales en cada modo
-        int añoActualMes = Calendar.getInstance().get(Calendar.YEAR);
+        añoActualMes = Calendar.getInstance().get(Calendar.YEAR);
         int añoActual3Meses = Calendar.getInstance().get(Calendar.YEAR);
-        int añoActualAnio = Calendar.getInstance().get(Calendar.YEAR);
+        añoActualAnio = Calendar.getInstance().get(Calendar.YEAR);
         int añoActualSemana = Calendar.getInstance().get(Calendar.YEAR);
         Calendar calendar = Calendar.getInstance();
-        int mesActualMes = calendar.get(Calendar.MONTH);
-        int mesActual3Meses = calendar.get(Calendar.MONTH);
+        mesActualMes = Calendar.getInstance().get(Calendar.MONTH);
+        mesActual3Meses = calendar.get(Calendar.MONTH);
+        fechaActualSemanaa = calendar.getInstance();
+        String[] fechaInicioSem = {null};
+        String[] fechaFinSem = {null};
+
+
         View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Deseleccionar todos los botones
                 deselectAllButtons();
-
                 // Según el botón presionado, seleccionarlo y realizar acciones correspondientes
                 switch (v.getId()) {
                     case R.id.btnSemana:
@@ -319,8 +361,45 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         mostrarSemana = true;
                         mostrarMes = false;
                         mostrar3Meses = false;
-                        añoActual[0] = añoActualSemana;
-                        fechaActualSemana[0] = Calendar.getInstance();
+                        añoActual[0] = Integer.parseInt(String.valueOf(añoActualSemana));
+                        fechaActualSemana[0] = fechaActualSemanaa;
+                        fechaInicioSem[0]= String.valueOf(fechaInicioSemana);
+                        fechaFinSem[0]=String.valueOf(fechaFinSemana);
+                        if (fechaInicioSemana=="1" && fechaFinSemana=="1"){
+                            Calendar calendar = Calendar.getInstance();
+                            int primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                            while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                                calendar.add(Calendar.DAY_OF_MONTH, -1);
+                                primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                            }
+                            int mesPrimerDia = calendar.get(Calendar.MONTH);
+                            Resources resources = getResources();
+                            String[] mesesCompletos = resources.getStringArray(R.array.months_array);
+                            String nombreMesPrimerDia = mesesCompletos[mesPrimerDia];
+                            calendar.add(Calendar.DAY_OF_MONTH, 6);
+                            int ultimoDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                            int mesUltimoDia = calendar.get(Calendar.MONTH);
+                            String nombreMesUltimoDia = mesesCompletos[mesUltimoDia];
+                            if (nombreMesPrimerDia == nombreMesUltimoDia) {
+                                fechaInicioSemana = primerDiaSemana + "";
+                                fechaFinSemana = ultimoDiaSemana + " de " + nombreMesPrimerDia;
+                                fechaInicioSem[0] = String.valueOf(fechaInicioSemana);
+                                fechaFinSem[0] = String.valueOf(fechaFinSemana);
+                                updateFechaHoy(0, fechaInicioSem[0] + " - " + fechaFinSem[0]);
+                                CrearRelativeLayout(calendarioMedicionesSelec);
+                            } else {
+                                fechaInicioSemana = primerDiaSemana + " de "+ nombreMesPrimerDia;
+                                fechaFinSemana = ultimoDiaSemana + " de " + nombreMesUltimoDia;
+                                Log.d("Miapp", "primerDia" + primerDiaSemana);
+                                fechaInicioSem[0] = String.valueOf(fechaInicioSemana);
+                                fechaFinSem[0] = String.valueOf(fechaFinSemana);
+                                updateFechaHoy(0, fechaInicioSem[0] + " - " + fechaFinSem[0]);
+                                CrearRelativeLayout(calendarioMedicionesSelec);
+                            }
+                        } else {
+                            updateFechaHoy(0, fechaInicioSem[0] + " - " + fechaFinSem[0]);
+                            CrearRelativeLayout(calendarioMedicionesSelec);
+                        }
                         break;
                     case R.id.btnMes:
                         selectButton(btnMes);
@@ -328,7 +407,9 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         mostrar3Meses = false;
                         mostrarSemana = false;
                         añoActual[0] = añoActualMes;
-                        mesActual =  mesActualMes;
+                        mesActual = mesActualMes;
+                        updateFechaHoy(añoActual[0], mesesAbreviados[mesActual]);
+                        CrearRelativeLayout(calendarioMedicionesSelec);
                         break;
                     case R.id.btn3Mes:
                         selectButton(btn3Mes);
@@ -352,7 +433,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     mesSeleccionado = Calendar.getInstance().get(Calendar.MONTH);
                     añoSeleccionado = Calendar.getInstance().get(Calendar.YEAR);
                     añoActual[0] = añoActualMes;
-                    updateFechaHoy(añoActual[0], mesesAbreviados[mesSeleccionado]);
+
                     CrearRelativeLayout(calendarioMedicionesSelec);
                 } else if (mostrar3Meses) {
                     int mesActual = Calendar.getInstance().get(Calendar.MONTH);
@@ -364,33 +445,25 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     updateFechaHoy(añoActual[0], mesInicialAbreviado + " - " + mesFinalAbreviado);
                     CrearRelativeLayout(calendarioMedicionesSelec);
                 } else  if (mostrarSemana) {
-                    // Obtener la fecha actual
-                    Calendar calendar = Calendar.getInstance();
-                    int añoActual = calendar.get(Calendar.YEAR); // Obtener el año actual
-                    int mesActual = calendar.get(Calendar.MONTH);
-                    int diaActual = calendar.get(Calendar.DAY_OF_MONTH);
 
-                    // Ajustar el día actual al primer día de la semana (domingo)
-                    int primerDiaSemana = diaActual;
-                    while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                        calendar.add(Calendar.DAY_OF_MONTH, -1);
-                        primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                    if (fechaInicioSemana=="1" && fechaFinSemana=="1"){
+                        Calendar calendar = Calendar.getInstance();
+                        int primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                            calendar.add(Calendar.DAY_OF_MONTH, -1);
+                            primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                        }
+                        calendar.add(Calendar.DAY_OF_MONTH, 6);
+                        int ultimoDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
+                        int mesActual = calendar.get(Calendar.MONTH);
+                        Resources resources = getResources();
+                        String[] mesesCompletos = resources.getStringArray(R.array.months_array);
+                        String nombreMesActual = mesesCompletos[mesActual];
+                        fechaInicioSemana = primerDiaSemana + " de " + nombreMesActual;
+                        fechaFinSemana = ultimoDiaSemana + " de " + nombreMesActual;
+                        updateFechaHoy(0, fechaInicioSem[0] + " - " + fechaFinSem[0]);
+                        CrearRelativeLayout(calendarioMedicionesSelec);
                     }
-
-                    // Calcular el último día de la semana (sábado)
-                    calendar.add(Calendar.DAY_OF_MONTH, 6);
-                    int ultimoDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
-
-                    // Obtener el nombre del mes actual
-                    Resources resources = getResources(); // Obtener el objeto Resources
-                    String[] meses_Completos = resources.getStringArray(R.array.months_array);
-                    String nombreMesActual = meses_Completos[mesActual];
-
-                    // Actualizar la fecha en la interfaz
-                    String fechaInicio = primerDiaSemana + "";
-                    String fechaFin = ultimoDiaSemana + " de " + nombreMesActual;
-                    updateFechaHoy(0, fechaInicio + " - " + fechaFin);
-                    CrearRelativeLayout(calendarioMedicionesSelec);
                 }
                 else {
                     añoActual[0] = añoActualAnio;
@@ -536,41 +609,225 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
     }
 
     private void CrearRelativeLayout(List<CalendarioMedicion> calendarioMediciones) {
-        Log.d("MiApp", "entra: " + calendarioMediciones.size());
+        Log.d("MiApp", "entra en crear Relative: " + calendarioMediciones.size());
         String fechaHoyTexto = fechaHoy.getText().toString();
         Log.d("MiApp", "efechaHoy: " +fechaHoyTexto);
+
+        boolean seCreoRelativeLayout = false;
         LinearLayout layoutPrincipal = findViewById(R.id.contenido2);
         layoutPrincipal.removeAllViews();
-        // Lista para almacenar los nombres de los meses con datos
-        List<String> mesesConDatos = new ArrayList<>();
-        // Recorrer la lista de CalendarioMedicion
+        // Mapeo personalizado de nombres de meses abreviados a Month
+        Map<String, Month> mesAbreviadoAMonth = new HashMap<>();
+        mesAbreviadoAMonth.put("ENE", Month.JANUARY);
+        mesAbreviadoAMonth.put("FEB", Month.FEBRUARY);
+        mesAbreviadoAMonth.put("MAR", Month.MARCH);
+        mesAbreviadoAMonth.put("ABR", Month.APRIL);
+        mesAbreviadoAMonth.put("MAY", Month.MAY);
+        mesAbreviadoAMonth.put("JUN", Month.JUNE);
+        mesAbreviadoAMonth.put("JUL", Month.JULY);
+        mesAbreviadoAMonth.put("AGO", Month.AUGUST);
+        mesAbreviadoAMonth.put("SEP", Month.SEPTEMBER);
+        mesAbreviadoAMonth.put("OCT", Month.OCTOBER);
+        mesAbreviadoAMonth.put("NOV", Month.NOVEMBER);
+        mesAbreviadoAMonth.put("DIC", Month.DECEMBER);
+        if (mostrar3Meses) {
+            // btn3Meses
+            // Mapa para almacenar los TextView y sus IDs generados
+            Map<TextView, Integer> textViewIds = new HashMap<>();
+            if (fechaHoyTexto.contains(" - ")) {
+                String[] partesFechaFormato = fechaHoyTexto.split(" - ");
+                if (partesFechaFormato.length == 2) {
+                    String nombreMesAbreviado = partesFechaFormato[0].trim().toUpperCase(); // Convierte a mayúsculas y elimina espacios en blanco
+                    String[] partesMeses = partesFechaFormato[1].trim().split(" ");
+                    if (partesMeses.length == 2) {
+                        String año = partesMeses[1].trim(); // Obtiene el año
+                        int numeroMes = obtenerNumeroMesDesdeAbreviatura(nombreMesAbreviado);
+                        for (int i = 0; i < 3; i++) {
+                            String nombreMesCompleto = obtenerNombreMesCompleto(numeroMes);
+                            String textoMes = nombreMesCompleto + " de " + año;
+                            RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+                            int relativeLayoutId = View.generateViewId(); // Generar un ID único para el RelativeLayout
+                            relativeLayoutGrafico.setId(relativeLayoutId);
+                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                            );
+                            int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
+                            layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
+                            relativeLayoutGrafico.setLayoutParams(layoutParams);
+                            relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
+                            TextView textViewFechaHora = new TextView(this);
+                            int textViewId = View.generateViewId(); // Generar un ID único
+                            textViewFechaHora.setId(textViewId); // Asignar el ID al TextView
+                            RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                            );
+                            paramsFechaHora.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1); // Alinea el TextView debajo de otro elemento, en este caso, texto_titulo_medicion1
+                            paramsFechaHora.setMargins(
+                                    getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                                    getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                                    getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                                    getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+                            );
+                            textViewFechaHora.setText(textoMes);
+                            textViewFechaHora.setLayoutParams(paramsFechaHora);
+                            textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                            textViewFechaHora.setTypeface(null, Typeface.BOLD);
+                            relativeLayoutGrafico.addView(textViewFechaHora);
+                            double valorMinimo = Double.MAX_VALUE;
+                            double valorMaximo = Double.MIN_VALUE;
+                            String unidadMedida = "";
+                            for (CalendarioMedicion calendarioMedicionActual : calendarioMediciones) {
+                                double valorCalendarioMedicion = calendarioMedicionActual.getValorCalendarioMedicion();
+                                unidadMedida = calendarioMedicionActual.getMedicion().getUnidadMedidaMedicion();
+                                LocalDateTime fechaMedicion = calendarioMedicionActual.getFechaCalendarioMedicion();
+                                int mesMedicion = fechaMedicion.getMonthValue();
+                                int añoMedicion = fechaMedicion.getYear();
+                                if (mesMedicion == numeroMes) {
+                                    if (añoMedicion == Integer.parseInt(año)) {
+                                        // Compara con valorMinimo y valorMaximo solo si pertenece al mes actual
+                                        if (valorCalendarioMedicion < valorMinimo) {
+                                            valorMinimo = valorCalendarioMedicion;
+                                        }
+                                        if (valorCalendarioMedicion > valorMaximo) {
+                                            valorMaximo = valorCalendarioMedicion;
+                                        }
+                                    }
+                                }
+                            }
+                            TextView textViewValores = new TextView(this);
+                            RelativeLayout.LayoutParams paramsValores = new RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                            );
+                            paramsValores.addRule(RelativeLayout.BELOW, textViewFechaHora.getId()); // Alinea debajo del TextView de fecha y hora
+                            paramsValores.setMargins(
+                                    getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
+                                    getResources().getDimensionPixelSize(R.dimen.valor_margin_top2),
+                                    getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
+                                    getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
+                            );
+                            String valorMinimoFormateado = String.format("%.2f", valorMinimo);
+                            String valorMaximoFormateado = String.format("%.2f", valorMaximo);
+                            String textoValores;
+                            if (valorMinimo == valorMaximo ) {
+                                textoValores = valorMinimoFormateado;
+                            } else {
+                                textoValores =  "Mín: " + valorMinimoFormateado + " - Máx: " + valorMaximoFormateado;
+                            }
+                            String valorConUnidad = textoValores + " " + unidadMedida;
+                            if (valorMinimo == Double.MAX_VALUE && valorMaximo == Double.MIN_VALUE) {
+                                textViewValores.setText("No hay datos");
+                            } else {
+                                textViewValores.setText(valorConUnidad);
+                            }
+                            textViewValores.setLayoutParams(paramsValores);
+                            textViewValores.setTextColor(ContextCompat.getColor(this, R.color.black));
+                            textViewValores.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+                            relativeLayoutGrafico.addView(textViewValores);
+                            layoutPrincipal.addView(relativeLayoutGrafico);
+                            seCreoRelativeLayout = true;
 
-        // Recorrer la lista de CalendarioMedicion
-        for (CalendarioMedicion calendarioMedicion : calendarioMediciones) {
+                            // Guardar el TextView y su ID en el mapa
+                            textViewIds.put(textViewFechaHora, textViewId);
+                            final TextView fechaHoyTexto2 = findViewById(R.id.fecha_hoy);
+                            if (fechaHoyTexto2 != null) {
+                                Log.d("Miapp", "Valor actual de fechaHoyTexto2: " + fechaHoyTexto2.getText().toString());
+                            } else {
+                                Log.e("Miapp", "fechaHoyTexto2 es null");
+                            }
 
-            if (mostrarMes ==true) {
-                Log.d("MiApp", "entra al mostrarMes: " + calendarioMediciones.size());
-                // Obtener el año de la fechaCalendarioMedicion
-                String añoFecha = obtenerAñoEnFormatoDeseado(calendarioMedicion.getFechaCalendarioMedicion());
-                String mesFecha = obtenerMesEnFormatoDeseado(calendarioMedicion.getFechaCalendarioMedicion());
-                if (fechaHoyTexto.contains(añoFecha)) {
-                    Log.d("MiApp", "entra al añofecha: " +añoFecha);
-                    Log.d("MiApp", "mesfecha: " +mesFecha);
-                    if(fechaHoyTexto.contains(mesFecha)){
-                        Log.d("MiApp", "entra al mesfecha: " +mesFecha);
-                    // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
+                            relativeLayoutGrafico.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // Obtener el texto del TextView en el RelativeLayout seleccionado
+                                    TextView textViewFecha = v.findViewById(textViewFechaHora.getId());
+
+                                    if (textViewFecha != null) {
+                                        String fechaSeleccionada = textViewFecha.getText().toString();
+
+                                        // Analizar el texto para obtener el mes y el año
+                                        String mesSeleccionado = obtenerMesDesdeTexto(fechaSeleccionada);
+                                        String añoSeleccionado = obtenerAñoDesdeTexto(fechaSeleccionada);
+
+                                        if (!mesSeleccionado.isEmpty() && !añoSeleccionado.isEmpty()) {
+                                            // Actualizar mesActualMes con el mes seleccionado
+                                            mesActualMes = obtenerNumeroDeMes(mesSeleccionado);
+                                            añoActualMes = Integer.parseInt(añoSeleccionado);;
+                                        }
+                                    }
+
+                                    // Simular un clic en el botón btnMes
+                                    btnMes.performClick();
+                                }
+                            });
+
+
+                            // Avanza al siguiente mes
+                            numeroMes++;
+                            if (numeroMes > 12) {
+                                numeroMes = 1; // Si el siguiente mes es mayor que 12, reinicia en enero y aumenta el año
+                                año = Integer.toString(Integer.parseInt(año) + 1);
+                            }
+                        }
+
+                    } else {
+                        Log.e("MiApp", "Formato de fecha incorrecto: " + fechaHoyTexto);
+                    }
+                } else {
+                    Log.e("MiApp", "Formato de fecha incorrecto: " + fechaHoyTexto);
+                }
+            } else {
+                Log.e("MiApp", "Formato de fecha incorrecto: " + fechaHoyTexto);
+            }
+        } else if (mostrarMes == true) {
+            //btnMes
+            Map<TextView, Integer> textViewIds = new HashMap<>();
+            String[] partesFecha = fechaHoyTexto.split(" ");
+            String nombreMesAbreviado = partesFecha[0].toUpperCase(); // Convertir a mayúsculas
+            int año = Integer.parseInt(partesFecha[1]);
+            Month mes = mesAbreviadoAMonth.get(nombreMesAbreviado);
+
+            LocalDate primerDiaDelMes = LocalDate.of(año, mes, 1);
+            LocalDate ultimoDiaDelMes = primerDiaDelMes.with(TemporalAdjusters.lastDayOfMonth());
+            LocalDate inicioSemana = primerDiaDelMes.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+            LocalDate finSemana = inicioSemana.plusDays(6); // Calcula el fin de semana
+
+            while (inicioSemana.isBefore(ultimoDiaDelMes) || inicioSemana.isEqual(ultimoDiaDelMes)) {
+                Log.d("MiApp", "entra en el while ");
+                List<CalendarioMedicion> calendarioMedicionesSemana = new ArrayList<>();
+
+                for (CalendarioMedicion calendarioMedicion : calendarioMediciones) {
+                    Log.d("MiApp", "entra en el for calendarioMedicion ");
+                    LocalDateTime fechaCalendarioMedicion = calendarioMedicion.getFechaCalendarioMedicion();
+
+                    if (!fechaCalendarioMedicion.toLocalDate().isBefore(inicioSemana) &&
+                            !fechaCalendarioMedicion.toLocalDate().isAfter(finSemana)) {
+                        Log.d("MiApp", "entra en el if");
+                        calendarioMedicionesSemana.add(calendarioMedicion);
+                    }
+                }
+                // Si hay al menos una CalendarioMedicion en esta semana, crea un RelativeLayout
+                if (!calendarioMedicionesSemana.isEmpty()) {
+                    Log.d("MiApp", "entra en el isEmpty");
+                    String fechaFormateada = inicioSemana.format(DateTimeFormatter.ofPattern("d 'de' MMM", Locale.getDefault())) +
+                            " - " +
+                            finSemana.format(DateTimeFormatter.ofPattern("d 'de' MMM", Locale.getDefault()));
                     RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+                    int relativeLayoutId = View.generateViewId(); // Generar un ID único para el RelativeLayout
+                    relativeLayoutGrafico.setId(relativeLayoutId);
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    // Establecer márgenes en los lados izquierdo y derecho (en este caso, 20dp)
                     int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
                     layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
                     relativeLayoutGrafico.setLayoutParams(layoutParams);
                     relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
-                    // Crear un nuevo TextView para la fecha y hora dentro del RelativeLayout
                     TextView textViewFechaHora = new TextView(this);
+                    int textViewId = View.generateViewId(); // Generar un ID único
+                    textViewFechaHora.setId(textViewId);
                     RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -582,241 +839,1109 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                             getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
                             getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
                     );
-                    // Obtener el día, mes y año de la fechaCalendarioMedicion
-                    int dia = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
-                    String nombreMes = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
-                    int año = calendarioMedicion.getFechaCalendarioMedicion().getYear();
-                    // Crear la cadena con el formato deseado
-                    String fechaFormateada = dia + " de " + nombreMes + " de " + año;
                     textViewFechaHora.setText(fechaFormateada);
                     textViewFechaHora.setLayoutParams(paramsFechaHora);
-                    textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24); // Tamaño del texto en sp
-                    textViewFechaHora.setTypeface(null, Typeface.BOLD); // Establece el estilo del texto como negrita
-                    // Agregar el TextView de fecha y hora al RelativeLayout
+                    textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                    textViewFechaHora.setTypeface(null, Typeface.BOLD);
                     relativeLayoutGrafico.addView(textViewFechaHora);
-                    // Crear el TextView para mostrar el valor y la unidad de medida
-                    TextView textViewValor = new TextView(this);
-                    RelativeLayout.LayoutParams paramsValor = new RelativeLayout.LayoutParams(
+                    layoutPrincipal.addView(relativeLayoutGrafico);
+                    seCreoRelativeLayout = true;
+                    // Crear un TextView para mostrar los valores
+                    TextView textViewValores = new TextView(this);
+                    RelativeLayout.LayoutParams paramsValores = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    paramsValor.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1);
-                    paramsValor.setMargins(
+                    paramsValores.addRule(RelativeLayout.BELOW, textViewFechaHora.getId()); // Alinea debajo del TextView de fecha y hora
+                    paramsValores.setMargins(
                             getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
-                            getResources().getDimensionPixelSize(R.dimen.valor_margin_top),
+                            getResources().getDimensionPixelSize(R.dimen.valor_margin_top2),
                             getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
                             getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
                     );
-                    textViewValor.setLayoutParams(paramsValor);
-                    textViewValor.setTextColor(ContextCompat.getColor(this, R.color.black));
-                    textViewValor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
-                    // Obtener el valor y la unidad de medida de calendarioMedicion
-                    String valorMedicion = "Valor: " + calendarioMedicion.getValorCalendarioMedicion() + " " + calendarioMedicion.getMedicion().getUnidadMedidaMedicion();
-                    textViewValor.setText(valorMedicion);
-                    // Agregar el TextView al RelativeLayout
-                    relativeLayoutGrafico.addView(textViewValor);
-                    // Crear el ImageView para editar dentro del RelativeLayout
-                    ImageView imageViewEditar = new ImageView(this);
-                    imageViewEditar.setLayoutParams(new RelativeLayout.LayoutParams(
-                            getResources().getDimensionPixelSize(R.dimen.editar_width),
-                            getResources().getDimensionPixelSize(R.dimen.editar_height)
-                    ));
-                    // Configurar los márgenes
-                    RelativeLayout.LayoutParams paramsEditar = (RelativeLayout.LayoutParams) imageViewEditar.getLayoutParams();
-                    paramsEditar.setMargins(
+                    textViewValores.setLayoutParams(paramsValores);
+                    textViewValores.setTextColor(ContextCompat.getColor(this, R.color.black));
+                    textViewValores.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+                    double valorMinimo = calendarioMedicionesSemana.get(0).getValorCalendarioMedicion();
+                    double valorMaximo = calendarioMedicionesSemana.get(0).getValorCalendarioMedicion();
+                    String unidadMedida = calendarioMedicionesSemana.get(0).getMedicion().getUnidadMedidaMedicion();
+                    for (CalendarioMedicion calendarioMedicion : calendarioMedicionesSemana) {
+                        double valor = calendarioMedicion.getValorCalendarioMedicion();
+                        if (valor < valorMinimo) {
+                            valorMinimo = valor;
+                        }
+                        if (valor > valorMaximo) {
+                            valorMaximo = valor;
+                        }
+                    }
+                    String valorMinimoFormateado = String.format("%.2f", valorMinimo);
+                    String valorMaximoFormateado = String.format("%.2f", valorMaximo);
+                    String valorAEnviar;
+                    if (valorMinimo == valorMaximo) {
+                        valorAEnviar = valorMinimoFormateado;
+                    } else {
+                        valorAEnviar = "Mín: " + valorMinimoFormateado + " - Máx: " + valorMaximoFormateado;
+                    }
+                    String valorConUnidad = valorAEnviar + " " + unidadMedida;
+                    // Muestra el valor en el TextView o "No hay datos" si no hay valores
+                    if (calendarioMedicionesSemana.isEmpty()) {
+                        textViewValores.setText("No hay datos");
+                    } else {
+                        textViewValores.setText(valorConUnidad);
+                    }
+                    relativeLayoutGrafico.addView(textViewValores);
+                    textViewIds.put(textViewFechaHora, textViewId);
+                    final TextView fechaHoyTexto2 = findViewById(R.id.fecha_hoy);
+                    relativeLayoutGrafico.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TextView textViewFecha = v.findViewById(textViewFechaHora.getId());
+                            if (textViewFecha != null) {
+                                String fechaSeleccionada = textViewFecha.getText().toString();
+
+                                // Elimina los puntos y espacios de la cadena
+                                fechaSeleccionada = fechaSeleccionada.replace(".", "").replace(" ", "");
+
+                                Log.d("Miapp", "fechaSeleccionado: " + fechaSeleccionada);
+
+                                // Divide la cadena en dos partes usando "-" como separador
+                                String[] partes = fechaSeleccionada.split("-");
+
+                                if (partes.length == 2) {
+                                    // Obtiene la primera parte como primerDiaSemana y nombreMesActualIn
+                                    String primeraParte = partes[0].trim();
+                                    String[] datosPrimeraParte = primeraParte.split("de");
+                                    if (datosPrimeraParte.length == 2) {
+                                        // Obtiene el primer día de la semana (primerDiaSemana) como número
+                                        int primerDiaSemana = Integer.parseInt(datosPrimeraParte[0].trim());
+                                        // Obtiene el nombre del mes correspondiente a la primera parte (nombreMesActualIn)
+                                        String nombreMesActualIn = datosPrimeraParte[1].trim().substring(0, 1).toUpperCase() + datosPrimeraParte[1].trim().substring(1);
+
+                                        // Obtiene la segunda parte como últimoDiaSemana y nombreMesActual
+                                        String segundaParte = partes[1].trim();
+                                        String[] datosSegundaParte = segundaParte.split("de");
+                                        if (datosSegundaParte.length == 2) {
+                                            // Obtiene el último día de la semana (ultimoDiaSemana) como número
+                                            int ultimoDiaSemana = Integer.parseInt(datosSegundaParte[0].trim());
+                                            // Obtiene el nombre del mes correspondiente a la segunda parte (nombreMesActual)
+                                            String nombreMesActual = datosSegundaParte[1].trim();
+                                            if (!nombreMesActual.isEmpty()) {
+                                                // Obtener la primera letra
+                                                String primeraLetra = nombreMesActual.substring(0, 1);
+                                                // Convertir la primera letra a mayúscula
+                                                primeraLetra = primeraLetra.toUpperCase();
+                                                // Obtener el resto de la cadena (sin la primera letra)
+                                                String restoDeLaCadena = nombreMesActual.substring(1);
+                                                // Concatenar la primera letra mayúscula con el resto de la cadena
+                                                nombreMesActual = primeraLetra + restoDeLaCadena;
+                                            }
+                                            String fechaInicioStr = convertirFechaAlNuevoFormato(partes[0]);
+                                            Log.d("Miapp", "fechaInicioStr: " + fechaInicioStr);
+                                            // Ahora, parsea las cadenas de fecha en objetos Calendar
+                                            Calendar fechaInicioParaPasar = parsearFechaComoCalendar(fechaInicioStr);
+                                            fechaActualSemanaa = fechaInicioParaPasar;
+                                            if (nombreMesActualIn.equals(nombreMesActual)) {
+                                                Log.d("Miapp","entra en la comparacion");
+                                                if (!nombreMesActual.isEmpty()) {
+                                                    if (nombreMesActual.equals("Ene")) {
+                                                        nombreMesActual = "Enero";
+                                                    } else if (nombreMesActual.equals("Feb")) {
+                                                        nombreMesActual = "Febrero";
+                                                    } else if (nombreMesActual.equals("Mar")) {
+                                                        nombreMesActual = "Marzo";
+                                                    } else if (nombreMesActual.equals("Abr")) {
+                                                        nombreMesActual = "Abril";
+                                                    } else if (nombreMesActual.equals("May")) {
+                                                        nombreMesActual = "Mayo";
+                                                    } else if (nombreMesActual.equals("Jun")) {
+                                                        nombreMesActual = "Junio";
+                                                    } else if (nombreMesActual.equals("Jul")) {
+                                                        nombreMesActual = "Julio";
+                                                    } else if (nombreMesActual.equals("Ago")) {
+                                                        nombreMesActual = "Agosto";
+                                                    } else if (nombreMesActual.equals("Sep")) {
+                                                        nombreMesActual = "Septiembre";
+                                                    } else if (nombreMesActual.equals("Oct")) {
+                                                        nombreMesActual = "Octubre";
+                                                    } else if (nombreMesActual.equals("Nov")) {
+                                                        nombreMesActual = "Noviembre";
+                                                    } else if (nombreMesActual.equals("Dic")) {
+                                                        nombreMesActual = "Diciembre";
+                                                    }
+                                                }
+                                                nombreMesActualIn = ""; // Establece en vacío si son iguales
+                                                // Actualizar la fecha en la interfaz
+                                                fechaInicioSemana = primerDiaSemana + "";
+                                                fechaFinSemana = ultimoDiaSemana + " de " + nombreMesActual;
+                                            } else {
+                                                nombreMesActual = nombreMesActual.substring(0, 1).toUpperCase() + nombreMesActual.substring(1); // Convierte la primera letra a mayúscula
+                                                nombreMesActualIn = datosPrimeraParte[1].trim().substring(0, 1).toUpperCase() + datosPrimeraParte[1].trim().substring(1);
+                                                // Actualizar la fecha en la interfaz
+                                                fechaInicioSemana = primerDiaSemana + " de " + nombreMesActualIn;
+                                                fechaFinSemana = ultimoDiaSemana + " de " + nombreMesActual;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    // Manejo de error si el formato no es válido
+                                    Log.e("Miapp", "Formato de fecha no válido: " + fechaSeleccionada);
+                                }
+                            }
+                            btnSemana.performClick();
+                        }
+                    });
+                } else {
+                    Log.d("MiApp", "entra en el isEmpty");
+                    String fechaFormateada = inicioSemana.format(DateTimeFormatter.ofPattern("d 'de' MMM", Locale.getDefault())) +
+                            " - " +
+                            finSemana.format(DateTimeFormatter.ofPattern("d 'de' MMM", Locale.getDefault()));
+                    RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+                    int relativeLayoutId = View.generateViewId(); // Generar un ID único para el RelativeLayout
+                    relativeLayoutGrafico.setId(relativeLayoutId);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
+                    layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
+                    relativeLayoutGrafico.setLayoutParams(layoutParams);
+                    relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
+                    TextView textViewFechaHora = new TextView(this);
+                    int textViewId = View.generateViewId(); // Generar un ID único
+                    textViewFechaHora.setId(textViewId);
+                    RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    paramsFechaHora.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1); // Alinea el TextView debajo de otro elemento, en este caso, texto_titulo_medicion1
+                    paramsFechaHora.setMargins(
                             getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
                             getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
                             getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
                             getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
                     );
-                    // Establecer la alineación con respecto al padre (end = derecha)
-                    paramsEditar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-                    paramsEditar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                    imageViewEditar.setLayoutParams(paramsEditar);
-                    imageViewEditar.setImageResource(R.drawable.lapiz_editar);
-                    // Agregar el ImageView de editar al RelativeLayout
-                    relativeLayoutGrafico.addView(imageViewEditar);
-                    // Crear el ImageView para eliminar dentro del RelativeLayout
-                    ImageView imageViewEliminar = new ImageView(this);
-                    imageViewEliminar.setId(R.id.imagen_medicion1_2); // Establecer el ID
-                    imageViewEliminar.setLayoutParams(new RelativeLayout.LayoutParams(
-                            getResources().getDimensionPixelSize(R.dimen.eliminar_width),
-                            getResources().getDimensionPixelSize(R.dimen.eliminar_height)
-                    ));
-                    // Configurar los márgenes
-                    RelativeLayout.LayoutParams paramsEliminar = (RelativeLayout.LayoutParams) imageViewEliminar.getLayoutParams();
-                    paramsEliminar.setMargins(
-                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_start),
-                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_top),
-                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_end),
-                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_bottom)
-                    );
-                    // Establecer la alineación con respecto al padre (end = derecha)
-                    paramsEliminar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-                    paramsEliminar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                    imageViewEliminar.setLayoutParams(paramsEliminar);
-                    imageViewEliminar.setImageResource(R.drawable.eliminar_tacho_basura);
-                    // Agregar el ImageView de eliminar al RelativeLayout
-                    relativeLayoutGrafico.addView(imageViewEliminar);
+                    textViewFechaHora.setText(fechaFormateada);
+                    textViewFechaHora.setLayoutParams(paramsFechaHora);
+                    textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                    textViewFechaHora.setTypeface(null, Typeface.BOLD);
+                    relativeLayoutGrafico.addView(textViewFechaHora);
                     layoutPrincipal.addView(relativeLayoutGrafico);
+                    seCreoRelativeLayout = true;
+                    // Crear un TextView para mostrar los valores
+                    TextView textViewValores = new TextView(this);
+                    RelativeLayout.LayoutParams paramsValores = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    paramsValores.addRule(RelativeLayout.BELOW, textViewFechaHora.getId()); // Alinea debajo del TextView de fecha y hora
+                    paramsValores.setMargins(
+                            getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
+                            getResources().getDimensionPixelSize(R.dimen.valor_margin_top2),
+                            getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
+                            getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
+                    );
+                    textViewValores.setLayoutParams(paramsValores);
+                    textViewValores.setTextColor(ContextCompat.getColor(this, R.color.black));
+                    textViewValores.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+                    textViewValores.setText("No hay datos");
+                    relativeLayoutGrafico.addView(textViewValores);
+
+                    textViewIds.put(textViewFechaHora, textViewId);
+                    final TextView fechaHoyTexto2 = findViewById(R.id.fecha_hoy);
+                    relativeLayoutGrafico.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TextView textViewFecha = v.findViewById(textViewFechaHora.getId());
+                            if (textViewFecha != null) {
+                                String fechaSeleccionada = textViewFecha.getText().toString();
+
+                                // Elimina los puntos y espacios de la cadena
+                                fechaSeleccionada = fechaSeleccionada.replace(".", "").replace(" ", "");
+
+                                Log.d("Miapp", "fechaSeleccionado: " + fechaSeleccionada);
+
+                                // Divide la cadena en dos partes usando "-" como separador
+                                String[] partes = fechaSeleccionada.split("-");
+
+                                if (partes.length == 2) {
+                                    // Obtiene la primera parte como primerDiaSemana y nombreMesActualIn
+                                    String primeraParte = partes[0].trim();
+                                    String[] datosPrimeraParte = primeraParte.split("de");
+                                    if (datosPrimeraParte.length == 2) {
+                                        // Obtiene el primer día de la semana (primerDiaSemana) como número
+                                        int primerDiaSemana = Integer.parseInt(datosPrimeraParte[0].trim());
+                                        // Obtiene el nombre del mes correspondiente a la primera parte (nombreMesActualIn)
+                                        String nombreMesActualIn = datosPrimeraParte[1].trim().substring(0, 1).toUpperCase() + datosPrimeraParte[1].trim().substring(1);
+
+                                        // Obtiene la segunda parte como últimoDiaSemana y nombreMesActual
+                                        String segundaParte = partes[1].trim();
+                                        String[] datosSegundaParte = segundaParte.split("de");
+                                        if (datosSegundaParte.length == 2) {
+                                            // Obtiene el último día de la semana (ultimoDiaSemana) como número
+                                            int ultimoDiaSemana = Integer.parseInt(datosSegundaParte[0].trim());
+                                            // Obtiene el nombre del mes correspondiente a la segunda parte (nombreMesActual)
+                                            String nombreMesActual = datosSegundaParte[1].trim();
+                                            if (!nombreMesActual.isEmpty()) {
+                                                // Obtener la primera letra
+                                                String primeraLetra = nombreMesActual.substring(0, 1);
+                                                // Convertir la primera letra a mayúscula
+                                                primeraLetra = primeraLetra.toUpperCase();
+                                                // Obtener el resto de la cadena (sin la primera letra)
+                                                String restoDeLaCadena = nombreMesActual.substring(1);
+                                                // Concatenar la primera letra mayúscula con el resto de la cadena
+                                                nombreMesActual = primeraLetra + restoDeLaCadena;
+                                            }
+                                            String fechaInicioStr = convertirFechaAlNuevoFormato(partes[0]);
+                                            // Ahora, parsea las cadenas de fecha en objetos Calendar
+                                            Calendar fechaInicioParaPasar = parsearFechaComoCalendar(fechaInicioStr);
+                                             fechaActualSemanaa = fechaInicioParaPasar;
+                                            if (nombreMesActualIn.equals(nombreMesActual)) {
+                                                if (!nombreMesActual.isEmpty()) {
+                                                    if (nombreMesActual.equals("Ene")) {
+                                                        nombreMesActual = "Enero";
+                                                    } else if (nombreMesActual.equals("Feb")) {
+                                                        nombreMesActual = "Febrero";
+                                                    } else if (nombreMesActual.equals("Mar")) {
+                                                        nombreMesActual = "Marzo";
+                                                    } else if (nombreMesActual.equals("Abr")) {
+                                                        nombreMesActual = "Abril";
+                                                    } else if (nombreMesActual.equals("May")) {
+                                                        nombreMesActual = "Mayo";
+                                                    } else if (nombreMesActual.equals("Jun")) {
+                                                        nombreMesActual = "Junio";
+                                                    } else if (nombreMesActual.equals("Jul")) {
+                                                        nombreMesActual = "Julio";
+                                                    } else if (nombreMesActual.equals("Ago")) {
+                                                        nombreMesActual = "Agosto";
+                                                    } else if (nombreMesActual.equals("Sep")) {
+                                                        nombreMesActual = "Septiembre";
+                                                    } else if (nombreMesActual.equals("Oct")) {
+                                                        nombreMesActual = "Octubre";
+                                                    } else if (nombreMesActual.equals("Nov")) {
+                                                        nombreMesActual = "Noviembre";
+                                                    } else if (nombreMesActual.equals("Dic")) {
+                                                        nombreMesActual = "Diciembre";
+                                                    }
+                                                }
+
+                                                nombreMesActualIn = ""; // Establece en vacío si son iguales
+                                                // Actualizar la fecha en la interfaz
+                                                fechaInicioSemana = primerDiaSemana + "";
+                                                fechaFinSemana = ultimoDiaSemana + " de " + nombreMesActual;
+                                            } else {
+                                                Log.d("Miapp", "entra en la comparacion else");
+                                                nombreMesActual = nombreMesActual.substring(0, 1).toUpperCase() + nombreMesActual.substring(1); // Convierte la primera letra a mayúscula
+                                                nombreMesActualIn = datosPrimeraParte[1].trim().substring(0, 1).toUpperCase() + datosPrimeraParte[1].trim().substring(1);
+                                                // Actualizar la fecha en la interfaz
+                                                fechaInicioSemana = primerDiaSemana + " de " + nombreMesActualIn;
+                                                fechaFinSemana = ultimoDiaSemana + " de " + nombreMesActual;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    // Manejo de error si el formato no es válido
+                                    Log.e("Miapp", "Formato de fecha no válido: " + fechaSeleccionada);
+                                }
+                            }
+                            btnSemana.performClick();
+                        }
+                    });
                 }
+                inicioSemana = finSemana.plusDays(1);
+                finSemana = inicioSemana.plusDays(6);
             }
-            } else if (mostrarSemana == true) {
-                Log.d("MiApp", "entra al mostrarSemana: " + calendarioMediciones.size());
+        } else if (mostrarSemana == false) {
+            //btn Año
+            // Mapa para almacenar los TextView y sus IDs generados
+            Map<TextView, Integer> textViewIds = new HashMap<>();
+            fechaHoyTexto = fechaHoyTexto.trim();
+            int año = Integer.parseInt(fechaHoyTexto);
+            for (int numeroMes = 1; numeroMes <= 12; numeroMes++) {
+                String nombreMesCompleto = obtenerNombreMesCompleto(numeroMes); // Función para obtener el nombre completo del mes
+                String textoMes = nombreMesCompleto;
+                RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+                int relativeLayoutId = View.generateViewId(); // Generar un ID único para el RelativeLayout
+                relativeLayoutGrafico.setId(relativeLayoutId);
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
+                layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
+                relativeLayoutGrafico.setLayoutParams(layoutParams);
+                relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
+                TextView textViewFechaHora = new TextView(this);
+                int textViewId = View.generateViewId(); // Generar un ID único
+                textViewFechaHora.setId(textViewId);
+                RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                paramsFechaHora.setMargins(
+                        getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                        getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                        getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                        getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+                );
+                textViewFechaHora.setText(textoMes);
+                textViewFechaHora.setLayoutParams(paramsFechaHora);
+                textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                textViewFechaHora.setTypeface(null, Typeface.BOLD);
+                relativeLayoutGrafico.addView(textViewFechaHora);
 
-            }  else {
-                Log.d("MiApp", "entra al mostrarMes: " + calendarioMediciones.size());
-                // Obtener el año de la fechaCalendarioMedicion
-                String añoFecha = obtenerAñoEnFormatoDeseado(calendarioMedicion.getFechaCalendarioMedicion());
+                // Calcular el valor mínimo y máximo para el mes actual
+                double valorMinimo = Double.MAX_VALUE; // Inicializa con el valor máximo posible
+                double valorMaximo = Double.MIN_VALUE; // Inicializa con el valor mínimo posible
+                String unidadMedida = "";
+                int añoMedicion = 0;
+                for (CalendarioMedicion calendarioMedicionActual : calendarioMediciones) {
+                    // Obtén el valorCalendarioMedicion del objeto CalendarioMedicion actual
+                    double valorCalendarioMedicion = calendarioMedicionActual.getValorCalendarioMedicion();
 
-                if (fechaHoyTexto.contains(añoFecha)) {
-                    Log.d("MiApp", "entra al añofecha: " + añoFecha);
-                        // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
-                        RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
-                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        // Establecer márgenes en los lados izquierdo y derecho (en este caso, 20dp)
-                        int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
-                        layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
-                        relativeLayoutGrafico.setLayoutParams(layoutParams);
-                        relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
-                        // Crear un nuevo TextView para la fecha y hora dentro del RelativeLayout
-                        TextView textViewFechaHora = new TextView(this);
-                        RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        paramsFechaHora.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1); // Alinea el TextView debajo de otro elemento, en este caso, texto_titulo_medicion1
-                        paramsFechaHora.setMargins(
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
-                        );
-                        // Obtener el día, mes y año de la fechaCalendarioMedicion
-                        int dia = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
-                        String nombreMes = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
-                        int año = calendarioMedicion.getFechaCalendarioMedicion().getYear();
-                        // Crear la cadena con el formato deseado
-                        String fechaFormateada = dia + " de " + nombreMes + " de " + año;
-                        textViewFechaHora.setText(fechaFormateada);
-                        textViewFechaHora.setLayoutParams(paramsFechaHora);
-                        textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24); // Tamaño del texto en sp
-                        textViewFechaHora.setTypeface(null, Typeface.BOLD); // Establece el estilo del texto como negrita
-                        // Agregar el TextView de fecha y hora al RelativeLayout
-                        relativeLayoutGrafico.addView(textViewFechaHora);
-                        // Crear el TextView para mostrar el valor y la unidad de medida
-                        TextView textViewValor = new TextView(this);
-                        RelativeLayout.LayoutParams paramsValor = new RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        paramsValor.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1);
-                        paramsValor.setMargins(
-                                getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
-                                getResources().getDimensionPixelSize(R.dimen.valor_margin_top),
-                                getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
-                                getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
-                        );
-                        textViewValor.setLayoutParams(paramsValor);
-                        textViewValor.setTextColor(ContextCompat.getColor(this, R.color.black));
-                        textViewValor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
-                        // Obtener el valor y la unidad de medida de calendarioMedicion
-                        String valorMedicion = "Valor: " + calendarioMedicion.getValorCalendarioMedicion() + " " + calendarioMedicion.getMedicion().getUnidadMedidaMedicion();
-                        textViewValor.setText(valorMedicion);
-                        // Agregar el TextView al RelativeLayout
-                        relativeLayoutGrafico.addView(textViewValor);
-                        // Crear el ImageView para editar dentro del RelativeLayout
-                        ImageView imageViewEditar = new ImageView(this);
-                        imageViewEditar.setLayoutParams(new RelativeLayout.LayoutParams(
-                                getResources().getDimensionPixelSize(R.dimen.editar_width),
-                                getResources().getDimensionPixelSize(R.dimen.editar_height)
-                        ));
-                        // Configurar los márgenes
-                        RelativeLayout.LayoutParams paramsEditar = (RelativeLayout.LayoutParams) imageViewEditar.getLayoutParams();
-                        paramsEditar.setMargins(
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
-                                getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
-                        );
-                        // Establecer la alineación con respecto al padre (end = derecha)
-                        paramsEditar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-                        paramsEditar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                        imageViewEditar.setLayoutParams(paramsEditar);
-                        imageViewEditar.setImageResource(R.drawable.lapiz_editar);
-                        // Agregar el ImageView de editar al RelativeLayout
-                        relativeLayoutGrafico.addView(imageViewEditar);
-                        // Crear el ImageView para eliminar dentro del RelativeLayout
-                        ImageView imageViewEliminar = new ImageView(this);
-                        imageViewEliminar.setId(R.id.imagen_medicion1_2); // Establecer el ID
-                        imageViewEliminar.setLayoutParams(new RelativeLayout.LayoutParams(
-                                getResources().getDimensionPixelSize(R.dimen.eliminar_width),
-                                getResources().getDimensionPixelSize(R.dimen.eliminar_height)
-                        ));
-                        // Configurar los márgenes
-                        RelativeLayout.LayoutParams paramsEliminar = (RelativeLayout.LayoutParams) imageViewEliminar.getLayoutParams();
-                        paramsEliminar.setMargins(
-                                getResources().getDimensionPixelSize(R.dimen.eliminar_margin_start),
-                                getResources().getDimensionPixelSize(R.dimen.eliminar_margin_top),
-                                getResources().getDimensionPixelSize(R.dimen.eliminar_margin_end),
-                                getResources().getDimensionPixelSize(R.dimen.eliminar_margin_bottom)
-                        );
-                        // Establecer la alineación con respecto al padre (end = derecha)
-                        paramsEliminar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-                        paramsEliminar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-                        imageViewEliminar.setLayoutParams(paramsEliminar);
-                        imageViewEliminar.setImageResource(R.drawable.eliminar_tacho_basura);
-                        // Agregar el ImageView de eliminar al RelativeLayout
-                        relativeLayoutGrafico.addView(imageViewEliminar);
-                        layoutPrincipal.addView(relativeLayoutGrafico);
+                    unidadMedida = calendarioMedicionActual.getMedicion().getUnidadMedidaMedicion();
+
+                    // Obtén la fecha de la medición
+                    LocalDateTime fechaMedicion = calendarioMedicionActual.getFechaCalendarioMedicion();
+                    int año2 = Calendar.getInstance().get(Calendar.YEAR);
+                    // Verifica a qué mes corresponde la fecha de la medición
+                    int mesMedicion = fechaMedicion.getMonthValue(); // Obtiene el número del mes
+                    añoMedicion = fechaMedicion.getYear();
+                    // Verifica si el mes de la medición coincide con el mes actual
+                    if (mesMedicion == numeroMes) {
+                        if (añoMedicion == Integer.parseInt(String.valueOf(año2))) {
+                            // Compara con valorMinimo y valorMaximo solo si pertenece al mes actual
+                            if (valorCalendarioMedicion < valorMinimo) {
+                                valorMinimo = valorCalendarioMedicion;
+                            }
+                            if (valorCalendarioMedicion > valorMaximo) {
+                                valorMaximo = valorCalendarioMedicion;
+                            }
+                        }
                     }
                 }
 
+                // Crear un TextView para mostrar los valores mínimo y máximo
+                TextView textViewValores = new TextView(this);
+                RelativeLayout.LayoutParams paramsValores = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                paramsValores.addRule(RelativeLayout.BELOW, textViewFechaHora.getId()); // Alinea debajo del TextView de fecha y hora
+                paramsValores.setMargins(
+                        getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
+                        getResources().getDimensionPixelSize(R.dimen.valor_margin_top2),
+                        getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
+                        getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
+                );
+                String valorMinimoFormateado = String.format("%.2f", valorMinimo);
+                String valorMaximoFormateado = String.format("%.2f", valorMaximo);
+
+                String textoValores;
+                if (valorMinimo == valorMaximo ) {
+                    // No hay datos para este mes
+                    textoValores = valorMinimoFormateado;
+                } else {
+                    textoValores =  "Mín: " + valorMinimoFormateado + " - Máx: " + valorMaximoFormateado;
+                }
+
+                String valorConUnidad = textoValores + " " + unidadMedida;
+                if (valorMinimo == Double.MAX_VALUE && valorMaximo == Double.MIN_VALUE) {
+                    textViewValores.setText("No hay datos");
+                } else {
+                    if(año == añoMedicion) {
+                        textViewValores.setText(valorConUnidad);
+                    } else {
+                        textViewValores.setText("No hay datos");
+                    }
+                }
+                textViewValores.setLayoutParams(paramsValores);
+                textViewValores.setTextColor(ContextCompat.getColor(this, R.color.black));
+                textViewValores.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+                relativeLayoutGrafico.addView(textViewValores);
+                layoutPrincipal.addView(relativeLayoutGrafico);
+                seCreoRelativeLayout = true;
+                textViewIds.put(textViewFechaHora, textViewId);
+                final TextView fechaHoyTexto2 = findViewById(R.id.fecha_hoy);
+                relativeLayoutGrafico.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView textViewFecha = v.findViewById(textViewFechaHora.getId());
+                        if (textViewFecha != null) {
+                            String fechaSeleccionada = textViewFecha.getText().toString();
+                            String mesSeleccionado = obtenerMes(fechaSeleccionada);
+                            String añoSeleccionado = fechaHoyTexto2.getText().toString();
+                            if (!mesSeleccionado.isEmpty() && !añoSeleccionado.isEmpty()) {
+                                añoSeleccionado = añoSeleccionado.trim();
+                                mesActualMes = obtenerNumeroDeMess(mesSeleccionado);
+                                try {
+                                    añoActualMes = Integer.parseInt(añoSeleccionado);
+                                } catch (NumberFormatException e) {
+                                    Log.e("Miapp", "Error al convertir el año a un número: " + e.getMessage());
+                                }
+                            }
+
+                        }
+                        btnMes.performClick();
+                    }
+                });
             }
         }
 
-    private int obtenerDiaEnFormatoDeseado(String fecha) {
-        // Implementa la lógica para extraer el día de la fecha en el formato deseado
-        // Por ejemplo, si la fecha es "2023-09-17", puedes hacer algo como esto:
-        String[] partesFecha = fecha.split("-");
-        if (partesFecha.length == 3) {
-            try {
-                return Integer.parseInt(partesFecha[2]);
-            } catch (NumberFormatException e) {
-                // Maneja la excepción si la conversión a entero falla
-                e.printStackTrace();
+        // Recorrer la lista de CalendarioMedicion
+        for (CalendarioMedicion calendarioMedicion : calendarioMediciones) {
+
+            // btnSemana
+            if (mostrarSemana == true) {
+                Log.d("MiApp", "entra al mostrarSemana: " + calendarioMediciones.size());
+                Log.d("MiApp", "fechaHoyTexto: " + fechaHoyTexto);
+                if (fechaHoyTexto.contains(" - ")) {
+                    // Procesar el primer formato 10 - 16 de Septiembre
+                    String[] partesFechaHoy = fechaHoyTexto.split(" - ");
+                    if (partesFechaHoy.length == 2) {
+                        Log.d("MiApp", "entra al primer formato");
+                        String fechaInicio = partesFechaHoy[0].trim();
+                        String fechaFin = partesFechaHoy[1].trim();
+                        // Obtener el día actual de calendarioMedicion
+                        int diaMedicion = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
+                        // Verificar si las fechas son no nulas ni vacías antes de convertirlas en enteros
+                        if (!fechaInicio.isEmpty() && !fechaFin.isEmpty()) {
+                            // Obtener los días de inicio y fin del rango
+                            int diaInicio = Integer.parseInt(fechaInicio.split(" de ")[0]);
+                            int diaFin = Integer.parseInt(fechaFin.split(" de ")[0]);
+
+                            // Verificar si el día actual está dentro del rango
+                            if (diaMedicion >= diaInicio && diaMedicion <= diaFin) {
+                                String mesInicio = fechaFin.split(" de ")[1];
+                                Log.d("MiApp", "mesInicio: "+mesInicio);
+                                String mesMedicion = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+                                LocalDateTime calendarioMefecha = calendarioMedicion.getFechaCalendarioMedicion();
+                                // Verificar si el mes actual coincide con el mes en fechaHoyTexto
+                                if (mesMedicion.equalsIgnoreCase(mesInicio)) {
+                                    // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
+                                    RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+                                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    );
+                                    // Establecer márgenes en los lados izquierdo y derecho (en este caso, 20dp)
+                                    int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
+                                    layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
+                                    relativeLayoutGrafico.setLayoutParams(layoutParams);
+                                    relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
+                                    // Crear un nuevo TextView para la fecha y hora dentro del RelativeLayout
+                                    TextView textViewFechaHora = new TextView(this);
+                                    RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    );
+                                    paramsFechaHora.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1); // Alinea el TextView debajo de otro elemento, en este caso, texto_titulo_medicion1
+                                    paramsFechaHora.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+                                    );
+                                    // Obtener el día, mes y año de la fechaCalendarioMedicion
+                                    int dia = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
+                                    String nombreMes = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+                                    int hora = calendarioMedicion.getFechaCalendarioMedicion().getHour();
+                                    int minutos = calendarioMedicion.getFechaCalendarioMedicion().getMinute();
+                                    String fechaFormateada = dia + " de " + nombreMes + " " + hora + ":" + minutos;
+
+                                    textViewFechaHora.setText(fechaFormateada);
+                                    textViewFechaHora.setLayoutParams(paramsFechaHora);
+                                    textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24); // Tamaño del texto en sp
+                                    textViewFechaHora.setTypeface(null, Typeface.BOLD); // Establece el estilo del texto como negrita
+                                    // Agregar el TextView de fecha y hora al RelativeLayout
+                                    relativeLayoutGrafico.addView(textViewFechaHora);
+                                    // Crear el TextView para mostrar el valor y la unidad de medida
+                                    TextView textViewValor = new TextView(this);
+                                    RelativeLayout.LayoutParams paramsValor = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    );
+                                    paramsValor.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1);
+                                    paramsValor.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_top3),
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
+                                    );
+                                    textViewValor.setLayoutParams(paramsValor);
+                                    textViewValor.setTextColor(ContextCompat.getColor(this, R.color.black));
+                                    textViewValor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+                                    // Obtener el valor y la unidad de medida de calendarioMedicion
+                                    String valorMedicion = "Valor: " + calendarioMedicion.getValorCalendarioMedicion() + " " + calendarioMedicion.getMedicion().getUnidadMedidaMedicion();
+                                    textViewValor.setText(valorMedicion);
+                                    // Agregar el TextView al RelativeLayout
+                                    relativeLayoutGrafico.addView(textViewValor);
+                                    // Crear el ImageView para editar dentro del RelativeLayout
+                                    ImageView imageViewEditar = new ImageView(this);
+                                    imageViewEditar.setLayoutParams(new RelativeLayout.LayoutParams(
+                                            getResources().getDimensionPixelSize(R.dimen.editar_width),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_height)
+                                    ));
+                                    // Configurar los márgenes
+                                    RelativeLayout.LayoutParams paramsEditar = (RelativeLayout.LayoutParams) imageViewEditar.getLayoutParams();
+                                    paramsEditar.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+                                    );
+                                    // Establecer la alineación con respecto al padre (end = derecha)
+                                    paramsEditar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+                                    paramsEditar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                                    imageViewEditar.setLayoutParams(paramsEditar);
+                                    imageViewEditar.setImageResource(R.drawable.lapiz_editar);
+                                    // Agregar el ImageView de editar al RelativeLayout
+                                    relativeLayoutGrafico.addView(imageViewEditar);
+                                    imageViewEditar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // Aquí inicia la actividad EditarMedicionActivity
+                                            Intent intent = new Intent(MasInfoMedicionActivity.this, EditarMedicionActivity.class);
+                                            intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                                            intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
+                                            intent.putExtra("codCalendarioMedicionid", calendarioMedicion.getCodCalendarioMedicion());
+                                            intent.putExtra("medicionid",calendarioMedicion.getMedicion().getCodMedicion());
+                                            // Iniciar la actividad MasInfoMedicionActivity
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    // Crear el ImageView para eliminar dentro del RelativeLayout
+                                    ImageView imageViewEliminar = new ImageView(this);
+                                    imageViewEliminar.setId(R.id.imagen_medicion1_2); // Establecer el ID
+                                    imageViewEliminar.setLayoutParams(new RelativeLayout.LayoutParams(
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_width),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_height)
+                                    ));
+                                    // Configurar los márgenes
+                                    RelativeLayout.LayoutParams paramsEliminar = (RelativeLayout.LayoutParams) imageViewEliminar.getLayoutParams();
+                                    paramsEliminar.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_top),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_bottom)
+                                    );
+                                    // Establecer la alineación con respecto al padre (end = derecha)
+                                    paramsEliminar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+                                    paramsEliminar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                                    imageViewEliminar.setLayoutParams(paramsEliminar);
+                                    imageViewEliminar.setImageResource(R.drawable.eliminar_tacho_basura);
+                                    // Agregar el ImageView de eliminar al RelativeLayout
+                                    relativeLayoutGrafico.addView(imageViewEliminar);
+                                    imageViewEliminar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // Pasa el codCalendarioMedicion como parámetro a la función popupBorrarMedicion
+                                            popupBorrarMedicion(calendarioMedicion.getCodCalendarioMedicion());
+                                            btnSemana.performClick();
+                                        }
+                                    });
+
+                                    layoutPrincipal.addView(relativeLayoutGrafico);
+
+                                    seCreoRelativeLayout = true;
+
+                                }
+                            }
+
+                        }
+                    } else {
+                        // Manejo de error si las fechas son nulas o vacías
+                        Log.e("MiApp", "Las fechas de inicio o fin son nulas o vacías");
+                    }
+                }
+                if (fechaHoyTexto.matches("\\d{1,2} de \\w+ - \\d{1,2} de \\w+")) {
+                    Log.d("MiApp", "entra al segundo formato");
+                    // Procesar el segundo formato (por ejemplo, "27 de Ago - 2 de Sep")
+                    String[] partesFechaHoy = fechaHoyTexto.split(" - ");
+                    if (partesFechaHoy.length == 2) {
+                        String[] partesInicio = partesFechaHoy[0].split(" de ");
+                        String[] partesFin = partesFechaHoy[1].split(" de ");
+                        if (partesInicio.length == 2 && partesFin.length == 2) {
+                            int diaInicio = Integer.parseInt(partesInicio[0].trim());
+                            String mesInicio = partesInicio[1].trim();
+                            int diaFin = Integer.parseInt(partesFin[0].trim());
+                            String mesFin = partesFin[1].trim();
+
+                            // Obtener el día actual de calendarioMedicion
+                            int diaMedicion = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
+                            if ((diaMedicion >= diaInicio && diaMedicion <= diaFin) || (diaMedicion >= diaInicio && diaMedicion <= diaFin + 30) || (diaMedicion <= diaInicio && diaMedicion<= diaFin)) {
+                                String mesMedicion = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+                                mesMedicion = mesMedicion.substring(0, mesMedicion.length() - 1); // Elimina el último carácter (el punto)
+                                mesMedicion = mesMedicion.substring(0, 1).toUpperCase() + mesMedicion.substring(1); // Convierte la primera letra en mayúscula
+                                if (mesMedicion.equalsIgnoreCase(mesInicio) || mesMedicion.equalsIgnoreCase(mesFin)) {
+                                    // Tanto el día como el mes coinciden con el rango de fechas
+                                    // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
+                                    RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+                                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    );
+                                    // Establecer márgenes en los lados izquierdo y derecho (en este caso, 20dp)
+                                    int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
+                                    layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
+                                    relativeLayoutGrafico.setLayoutParams(layoutParams);
+                                    relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
+                                    // Crear un nuevo TextView para la fecha y hora dentro del RelativeLayout
+                                    TextView textViewFechaHora = new TextView(this);
+                                    RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    );
+                                    paramsFechaHora.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1); // Alinea el TextView debajo de otro elemento, en este caso, texto_titulo_medicion1
+                                    paramsFechaHora.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+                                    );
+                                    // Obtener el día, mes y año de la fechaCalendarioMedicion
+                                    int dia = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
+                                    String nombreMes = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+                                    int hora = calendarioMedicion.getFechaCalendarioMedicion().getHour();
+                                    int minutos = calendarioMedicion.getFechaCalendarioMedicion().getMinute();
+                                    String fechaFormateada = dia + " de " + nombreMes + " " + hora + ":" + minutos;
+
+                                    textViewFechaHora.setText(fechaFormateada);
+                                    textViewFechaHora.setLayoutParams(paramsFechaHora);
+                                    textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24); // Tamaño del texto en sp
+                                    textViewFechaHora.setTypeface(null, Typeface.BOLD); // Establece el estilo del texto como negrita
+                                    // Agregar el TextView de fecha y hora al RelativeLayout
+                                    relativeLayoutGrafico.addView(textViewFechaHora);
+                                    // Crear el TextView para mostrar el valor y la unidad de medida
+                                    TextView textViewValor = new TextView(this);
+                                    RelativeLayout.LayoutParams paramsValor = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                                    );
+                                    paramsValor.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1);
+                                    paramsValor.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_top3),
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.valor_margin_bottom)
+                                    );
+                                    textViewValor.setLayoutParams(paramsValor);
+                                    textViewValor.setTextColor(ContextCompat.getColor(this, R.color.black));
+                                    textViewValor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+                                    // Obtener el valor y la unidad de medida de calendarioMedicion
+                                    String valorMedicion = "Valor: " + calendarioMedicion.getValorCalendarioMedicion() + " " + calendarioMedicion.getMedicion().getUnidadMedidaMedicion();
+                                    textViewValor.setText(valorMedicion);
+                                    // Agregar el TextView al RelativeLayout
+                                    relativeLayoutGrafico.addView(textViewValor);
+                                    // Crear el ImageView para editar dentro del RelativeLayout
+                                    ImageView imageViewEditar = new ImageView(this);
+                                    imageViewEditar.setLayoutParams(new RelativeLayout.LayoutParams(
+                                            getResources().getDimensionPixelSize(R.dimen.editar_width),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_height)
+                                    ));
+                                    // Configurar los márgenes
+                                    RelativeLayout.LayoutParams paramsEditar = (RelativeLayout.LayoutParams) imageViewEditar.getLayoutParams();
+                                    paramsEditar.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+                                    );
+                                    // Establecer la alineación con respecto al padre (end = derecha)
+                                    paramsEditar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+                                    paramsEditar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                                    imageViewEditar.setLayoutParams(paramsEditar);
+                                    imageViewEditar.setImageResource(R.drawable.lapiz_editar);
+                                    // Agregar el ImageView de editar al RelativeLayout
+                                    relativeLayoutGrafico.addView(imageViewEditar);
+                                    imageViewEditar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // Aquí inicia la actividad EditarMedicionActivity
+                                            Intent intent = new Intent(MasInfoMedicionActivity.this, EditarMedicionActivity.class);
+                                            intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
+                                            intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
+                                            intent.putExtra("codCalendarioMedicionid", calendarioMedicion.getCodCalendarioMedicion());
+                                            intent.putExtra("medicionid",calendarioMedicion.getMedicion().getCodMedicion());
+                                            // Iniciar la actividad MasInfoMedicionActivity
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    // Crear el ImageView para eliminar dentro del RelativeLayout
+                                    ImageView imageViewEliminar = new ImageView(this);
+                                    imageViewEliminar.setId(R.id.imagen_medicion1_2); // Establecer el ID
+                                    imageViewEliminar.setLayoutParams(new RelativeLayout.LayoutParams(
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_width),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_height)
+                                    ));
+                                    // Configurar los márgenes
+                                    RelativeLayout.LayoutParams paramsEliminar = (RelativeLayout.LayoutParams) imageViewEliminar.getLayoutParams();
+                                    paramsEliminar.setMargins(
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_start),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_top),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_end),
+                                            getResources().getDimensionPixelSize(R.dimen.eliminar_margin_bottom)
+                                    );
+                                    // Establecer la alineación con respecto al padre (end = derecha)
+                                    paramsEliminar.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+                                    paramsEliminar.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                                    imageViewEliminar.setLayoutParams(paramsEliminar);
+                                    imageViewEliminar.setImageResource(R.drawable.eliminar_tacho_basura);
+                                    // Agregar el ImageView de eliminar al RelativeLayout
+                                    relativeLayoutGrafico.addView(imageViewEliminar);
+                                    imageViewEliminar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // Pasa el codCalendarioMedicion como parámetro a la función popupBorrarMedicion
+                                            popupBorrarMedicion(calendarioMedicion.getCodCalendarioMedicion());
+                                            btnSemana.performClick();
+                                        }
+                                    });
+
+
+                                    layoutPrincipal.addView(relativeLayoutGrafico);
+
+                                    seCreoRelativeLayout = true;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        // Verificar si se creó algún RelativeLayout
+        if (seCreoRelativeLayout == false) {
+            RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            int marginInDp = getResources().getDimensionPixelSize(R.dimen.layout_margin_horizontal);
+            layoutParams.setMargins(marginInDp, 0, marginInDp, marginInDp); // Agregar margen en la parte inferior
+            relativeLayoutGrafico.setLayoutParams(layoutParams);
+            relativeLayoutGrafico.setBackgroundResource(R.drawable.background_rounded_blanco);
+            TextView textViewFechaHora = new TextView(this);
+            RelativeLayout.LayoutParams paramsFechaHora = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            paramsFechaHora.addRule(RelativeLayout.BELOW, R.id.texto_titulo_medicion1); // Alinea el TextView debajo de otro elemento, en este caso, texto_titulo_medicion1
+            paramsFechaHora.setMargins(
+                    getResources().getDimensionPixelSize(R.dimen.editar_margin_start),
+                    getResources().getDimensionPixelSize(R.dimen.editar_margin_top),
+                    getResources().getDimensionPixelSize(R.dimen.editar_margin_end),
+                    getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
+            );
+            textViewFechaHora.setText("No hay datos");
+            textViewFechaHora.setLayoutParams(paramsFechaHora);
+            textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+            textViewFechaHora.setTypeface(null, Typeface.BOLD);
+            relativeLayoutGrafico.addView(textViewFechaHora);
+            layoutPrincipal.addView(relativeLayoutGrafico);
+
+        }
+
+    }
+
+
+    private int obtenerNumeroMesDesdeAbreviatura(String abreviatura) {
+        switch (abreviatura.toUpperCase()) {
+            case "ENE":
+                return 1; // Enero
+            case "FEB":
+                return 2; // Febrero
+            case "MAR":
+                return 3; // Marzo
+            case "ABR":
+                return 4; // Abril
+            case "MAY":
+                return 5; // Mayo
+            case "JUN":
+                return 6; // Junio
+            case "JUL":
+                return 7; // Julio
+            case "AGO":
+                return 8; // Agosto
+            case "SEP":
+                return 9; // Septiembre
+            case "OCT":
+                return 10; // Octubre
+            case "NOV":
+                return 11; // Noviembre
+            case "DIC":
+                return 12; // Diciembre
+            default:
+                return 1; // Valor predeterminado en caso de que la abreviatura sea desconocida
+        }
+    }
+
+    // Función para obtener el nombre completo del mes a partir del número del mes
+    private String obtenerNombreMesCompleto(int numeroMes) {
+        Month mes = Month.of(numeroMes);
+        return mes.getDisplayName(TextStyle.FULL, Locale.getDefault());
+    }
+    // Implementa esta función para obtener el mes desde el texto ("julio de 2023")
+    private String obtenerMesDesdeTexto(String fechaTexto) {
+        // Tu lógica para extraer el mes aquí
+        // Por ejemplo, puedes dividir el texto en palabras y tomar la primera palabra.
+        // Luego, puedes mapear esa palabra a la abreviatura del mes.
+
+        // Ejemplo simplificado:
+        String[] palabras = fechaTexto.split(" ");
+        if (palabras.length >= 2) {
+            String mes = palabras[0].toLowerCase(); // Obtener la primera palabra y convertirla a minúsculas
+
+            // Mapear nombres de meses a abreviaturas
+            switch (mes) {
+                case "enero":
+                    return "Ene";
+                case "febrero":
+                    return "Feb";
+                case "marzo":
+                    return "Mar";
+                case "abril":
+                    return "Abr";
+                case "mayo":
+                    return "May";
+                case "junio":
+                    return "Jun";
+                case "julio":
+                    return "Jul";
+                case "agosto":
+                    return "Ago";
+                case "septiembre":
+                    return "Sep";
+                case "octubre":
+                    return "Oct";
+                case "noviembre":
+                    return "Nov";
+                case "diciembre":
+                    return "Dic";
+                default:
+                    return "";
             }
         }
-        // Si no se puede obtener el día, devuelve un valor predeterminado o maneja el error de otra manera
-        return -1;
-    }
-    private String obtenerMesEnFormatoDeseado(LocalDateTime fecha) {
-        // Crea un formateador que genere la abreviatura del nombre del mes
-        DateTimeFormatter formatoMesAbreviado = DateTimeFormatter.ofPattern("MMM");
 
-        // Formatea la fecha para obtener la abreviatura del nombre del mes
-        String mesAbreviado = fecha.format(formatoMesAbreviado);
-
-        // Convierte la primera letra a mayúscula y elimina el punto
-        mesAbreviado = mesAbreviado.substring(0, 1).toUpperCase() + mesAbreviado.substring(1).replace(".", "");
-
-        return mesAbreviado;
+        return "";
     }
 
+    // Implementa esta función para obtener el año desde el texto ("julio de 2023")
+    private String obtenerAñoDesdeTexto(String fechaTexto) {
+        // Tu lógica para extraer el año aquí
+        // Por ejemplo, puedes dividir el texto en palabras y tomar la última palabra.
 
-    private String obtenerAñoEnFormatoDeseado(LocalDateTime fecha) {
-        // Obtener el año de la fecha
-        int año = fecha.getYear();
-        // Devolver el año como una cadena
-        return String.valueOf(año);
+        // Ejemplo simplificado:
+        String[] palabras = fechaTexto.split(" ");
+        if (palabras.length >= 3) {
+            return palabras[palabras.length - 1]; // Obtener la última palabra
+        }
+
+        return "";
+    }
+    private int obtenerNumeroDeMes(String nombreMesAbreviado) {
+        int numeroMes = 0;
+
+        switch (nombreMesAbreviado) {
+            case "Ene":
+                numeroMes = Calendar.JANUARY;
+                break;
+            case "Feb":
+                numeroMes = Calendar.FEBRUARY;
+                break;
+            case "Mar":
+                numeroMes = Calendar.MARCH;
+                break;
+            case "Abr":
+                numeroMes = Calendar.APRIL;
+                break;
+            case "May":
+                numeroMes = Calendar.MAY;
+                break;
+            case "Jun":
+                numeroMes = Calendar.JUNE;
+                break;
+            case "Jul":
+                numeroMes = Calendar.JULY;
+                break;
+            case "Ago":
+                numeroMes = Calendar.AUGUST;
+                break;
+            case "Sep":
+                numeroMes = Calendar.SEPTEMBER;
+                break;
+            case "Oct":
+                numeroMes = Calendar.OCTOBER;
+                break;
+            case "Nov":
+                numeroMes = Calendar.NOVEMBER;
+                break;
+            case "Dic":
+                numeroMes = Calendar.DECEMBER;
+                break;
+        }
+
+        return numeroMes;
+    }
+    private String obtenerMes(String fecha) {
+        // Dividir el texto por espacios
+        String[] partes = fecha.split(" ");
+
+        if (partes.length >= 1) {
+            // El primer elemento debe ser el nombre del mes
+            return partes[0];
+        } else {
+            return ""; // Devolver una cadena vacía si no se puede analizar
+        }
+    }
+    private int obtenerNumeroDeMess(String nombreMes) {
+        // Aquí defines un array con los nombres de los meses en español
+        String[] meses = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
+
+        // Busca el nombre del mes en el array y devuelve su índice (que es el número de mes + 1)
+        for (int i = 0; i < meses.length; i++) {
+            if (meses[i].equalsIgnoreCase(nombreMes)) {
+                return i ; // Suma 1 porque los índices de arrays comienzan en 0
+            }
+        }
+
+        return 0; // Devuelve 0 si el nombre del mes no se encuentra en la lista
+    }
+    private String convertirFechaAlNuevoFormato(String fecha) {
+        // Divide la cadena en palabras
+        String[] palabras = fecha.split(" ");
+
+        // Verifica cada palabra y capitaliza la primera letra, manteniendo las demás en minúscula
+        StringBuilder fechaFormateada = new StringBuilder();
+        for (int i = 0; i < palabras.length; i++) {
+            String palabra = palabras[i];
+            if (!palabra.isEmpty()) {
+                if (i > 0) {
+                    fechaFormateada.append(" ");
+                }
+                if (i == 1 || i == 4) { // Las posiciones 1 y 4 corresponden a las palabras "de" entre números
+                    fechaFormateada.append("de");
+                } else if (i == 2) { // Si es el nombre del mes, capitaliza la primera letra
+                    fechaFormateada.append(Character.toUpperCase(palabra.charAt(0)))
+                            .append(palabra.substring(1).toLowerCase());
+                } else {
+                    fechaFormateada.append(palabra.toLowerCase());
+                }
+            }
+        }
+
+        return fechaFormateada.toString();
     }
 
+    private Calendar parsearFechaComoCalendar(String fechaStr) {
+        try {
+            int index = 0;
+            while (index < fechaStr.length() && Character.isDigit(fechaStr.charAt(index))) {
+                index++;
+            }
+            String diaStr = fechaStr.substring(0, index);
+            int dia = Integer.parseInt(diaStr);
+            String mesStr = fechaStr.substring(index).toLowerCase();
+            Map<String, Integer> meses = new HashMap<>();
+            meses.put("dene", Calendar.JANUARY);
+            meses.put("defeb", Calendar.FEBRUARY);
+            meses.put("demar", Calendar.MARCH);
+            meses.put("deabr", Calendar.APRIL);
+            meses.put("demay", Calendar.MAY);
+            meses.put("dejun", Calendar.JUNE);
+            meses.put("dejul", Calendar.JULY);
+            meses.put("deago", Calendar.AUGUST);
+            meses.put("desep", Calendar.SEPTEMBER);
+            meses.put("deoct", Calendar.OCTOBER);
+            meses.put("denov", Calendar.NOVEMBER);
+            meses.put("dedic", Calendar.DECEMBER);
+            int mes = meses.get(mesStr);
+            int año = Calendar.getInstance().get(Calendar.YEAR);
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.set(año, mes, dia);
+            return calendar;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private void popupBorrarMedicion(int codCalendarioMedicion) {
+        View popupView = getLayoutInflater().inflate(R.layout.n79_1_popup_borrar_medicion, null);
 
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setElevation(10.0f); // Agrega elevación para el efecto de sombra
 
+        // Hacer que el popup sea enfocable
+        popupWindow.setFocusable(true);
 
+        // Configurar animación para oscurecer el fondo
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Configurar la animación de entrada del popup
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+        TextView eliminar = popupView.findViewById(R.id.eliminar);
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Aquí puedes utilizar el codCalendarioMedicion para eliminar el elemento
+                eliminarCalendarioMedicion(codCalendarioMedicion);
+
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void eliminarCalendarioMedicion(int codCalendarioMedicion) {
+
+        Log.d("Miapp","codCalendarioMedicion: "+codCalendarioMedicion);
+        Call<Void> call = calendarioMedicionApi.deleteCalendarioMedicion(codCalendarioMedicion);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+        } else {
+                  Toast.makeText(getApplicationContext(), "Error al eliminar el CalendarioMedicion", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Maneja el error de la llamada de red, por ejemplo, mostrando un mensaje de error.
+                Toast.makeText(getApplicationContext(), "Error de red al eliminar el CalendarioMedicion", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
 

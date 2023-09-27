@@ -105,6 +105,9 @@ public class EstablecerMedicionActivity extends AppCompatActivity {
         });
 
         LinearLayout layoutHora = findViewById(R.id.layout_hora);
+        // Para hacerlo visible
+        layoutHora.setVisibility(View.VISIBLE);
+
         layoutHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

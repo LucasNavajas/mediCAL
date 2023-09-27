@@ -16,7 +16,6 @@
     <dimen name="button_padding_start">20dp</dimen>
     <dimen name="button_padding_end">20dp</dimen>
 
-
     <!-- Dimensiones para la imagen de mediciones -->
     <dimen name="imagen_medicion_width">60dp</dimen>
     <dimen name="imagen_medicion_height">60dp</dimen>
@@ -45,9 +44,11 @@
 
     <!-- Dimensiones personalizadas para el TextView de valor -->
     <dimen name="valor_margin_start">19dp</dimen> <!-- Margen izquierdo en dp -->
-    <dimen name="valor_margin_top">60dp</dimen> <!-- Margen superior en dp -->
+    <dimen name="valor_margin_top2">-2dp</dimen> <!-- Margen superior en dp -->
     <dimen name="valor_margin_end">10dp</dimen> <!-- Margen derecho en dp -->
     <dimen name="valor_margin_bottom">20dp</dimen> <!-- Margen inferior en dp -->
+
+    <dimen name="valor_margin_top3">70dp</dimen> <!-- Margen superior en dp -->
 
 
 
