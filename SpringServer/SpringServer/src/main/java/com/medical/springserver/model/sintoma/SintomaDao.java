@@ -1,5 +1,6 @@
 package com.medical.springserver.model.sintoma;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,26 @@ public class SintomaDao {
 	private SintomaRepository repository;
 	
 	public Sintoma save(Sintoma sintoma) {
-		return repository.save(sintoma);
+	    // Buscar la entidad existente por su código
+	    Sintoma existingSintoma = repository.findById(sintoma.getCodSintoma()).orElse(null);
+
+	    if (existingSintoma != null) {
+	        if (sintoma.getFechaAltaSintoma() != null) {
+	            existingSintoma.setFechaAltaSintoma(sintoma.getFechaAltaSintoma());
+	        }
+	        existingSintoma.setFechaFinVigenciaS(sintoma.getFechaFinVigenciaS());
+	        if (sintoma.getNombreSintoma() != null) {
+	            existingSintoma.setNombreSintoma(sintoma.getNombreSintoma());
+	        }
+
+	        // Guardar la entidad actualizada
+	        return repository.save(existingSintoma);
+	    } else {
+	        // Si no se encuentra la entidad existente, crea una nueva
+	        return repository.save(sintoma);
+	    }
 	}
+
 	
 	public List<Sintoma> getAllSintomas(){
 		Streamable<Sintoma> streamableSintomas = Streamable.of(repository.findAll());
@@ -27,4 +46,22 @@ public class SintomaDao {
 		repository.delete(sintoma);
 	}
 
+	
+    public List<Sintoma> getAllSintomasYBajas() {
+        return repository.getAllSintomasYBajas();
+    }
+
+    public Sintoma bajaSintoma(int codSintoma) {
+        Sintoma sintoma = repository.findByCodSintoma(codSintoma);
+        sintoma.setFechaFinVigenciaS(LocalDate.now());
+        repository.save(sintoma);
+        return sintoma;
+    }
+
+    public Sintoma recuperarSintoma(int codSintoma) {
+        Sintoma sintoma = repository.findByCodSintoma(codSintoma);
+        sintoma.setFechaFinVigenciaS(null);
+        repository.save(sintoma);
+        return sintoma;
+    }
 }

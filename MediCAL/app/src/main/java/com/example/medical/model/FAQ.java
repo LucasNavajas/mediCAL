@@ -7,6 +7,7 @@ public class FAQ {
     private LocalDate fechaActualizacionFAQ;
     private String preguntatFAQ;
     private String respuestaFAQ;
+    private LocalDate fechaFinVigenciaFAQ;
 
     // ... Getters y setters
 
@@ -40,6 +41,15 @@ public class FAQ {
 
     public void setRespuestaFAQ(String respuestaFAQ) {
         this.respuestaFAQ = respuestaFAQ;
+    }
+
+    public LocalDate getFechaFinVigenciaFAQ() {
+        return fechaFinVigenciaFAQ;
+    }
+
+
+    public void setFechaFinVigenciaFAQ(LocalDate fechaFinVigenciaFAQ) {
+        this.fechaFinVigenciaFAQ = fechaFinVigenciaFAQ;
     }
 
     @Override

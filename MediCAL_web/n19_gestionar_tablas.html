@@ -641,7 +641,7 @@
                     <label for="campo_desc_consejo">Descripción</label>
                 </td>
                 <td class="column-two">
-                    <textarea id="campo_desc_consejo" placeholder="Descripción del consejo" oninput="limitarCaracteres(event)" rows="4" wrap="soft" ></textarea>
+                    <textarea id="campo_desc_consejo" placeholder="Descripción del consejo" oninput="limitarCaracteresConsejo(event)" rows="4" wrap="soft" ></textarea>
                     <span id="contadorCaracteres_consejo" style="display: block; text-align: left; margin-top: 5px;">300 caracteres máximo</span>
                 </td>
             </tr>
@@ -691,10 +691,355 @@
 
     <div id="popup-dialog-modif-consejo" class="popup-content">
         <!-- Icono de cerrar -->
-<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-consejo')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
         <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Consejo</h3>
         
         <!-- DESDE AQUI -->
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_consejo_Modif">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_consejo_Modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_consejo_Modif">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_consejo_Modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_consejo_Modif">Nombre Consejo</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_consejo_Modif" placeholder="Nombre del consejo" style="width: 100%;" oninput="checkName('campo_nombre_Med_Modif', 'name-alert-consejo-modif')">
+                    <div id="name-alert-consejo-modif" class="alert"></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_tipoconsejo_Modif">Tipo Consejo</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_tipoconsejo_Modif">
+                            <option value="" disabled selected>Seleccionar Tipo Consejo</option>
+                            <option value="1">Médicos</option>
+                            <option value="2">Bienestar y Salud</option>
+                            <option value = "3">Sobre la App</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc_consejo_Modif">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_desc_consejo_Modif" placeholder="Descripción del consejo" oninput="limitarCaracteresConsejModif(event)" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_consejo_Modif" style="display: block; text-align: left; margin-top: 10px;"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_link_consejo_Modif">Link</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_link_consejo_Modif" placeholder="Link del consejo" style="width: 100%;">
+                    <div id="link-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_foto_consejo_Modif">Foto</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_foto_consejo_Modif" placeholder="URL de archivo de foto" style="width: 100%;">
+                    <div id="foto-alert" class="alert"></div>
+                </td>
+            </tr>         
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre2_consejo_Modif">Nombre Auspiciante</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre2_consejo_Modif" placeholder="Nombre del auspiciante" style="width: 100%;" oninput="checkName('campo_nombre2_consejo_Modif', 'name-alert-consejo-auspiciante-modif')">
+                    <div id="name-alert-consejo-auspiciante-modif" class="alert"></div>
+                </td>
+            </tr>
+          
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONConsejoModificado();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+<div id="popup-dialog-FAQ" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-FAQ')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de FAQ</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_FAQ">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_FAQ" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_FAQ">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_FAQ" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_pregunta_FAQ">Pregunta FAQ</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_pregunta_FAQ" placeholder="Pregunta Frecuente" oninput="limitarCaracteresFAQ(event,'contadorCaracteres_FAQPreg')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_FAQPreg" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>                        
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_respuesta_FAQ">Respuesta FAQ</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_respuesta_FAQ" placeholder="Respuesta de FAQ" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_FAQ')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_FAQ" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONFAQ();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <div id="popup-dialog-modif-FAQ" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-FAQ')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de FAQ</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_FAQ_Modif">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_FAQ_Modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_FAQ_Modif">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_FAQ_Modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_pregunta_FAQ_Modif">Pregunta FAQ</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_pregunta_FAQ_Modif" placeholder="Pregunta Frecuente" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_FAQPreg_Modif')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_FAQPreg_Modif" style="display: block; text-align: left; margin-top: 10px;"></span>
+                </td>
+            </tr>                        
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_respuesta_FAQ_Modif">Respuesta FAQ</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_respuesta_FAQ_Modif" placeholder="Respuesta de FAQ" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_FAQ_Modif')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_FAQ_Modif" style="display: block; text-align: left; margin-top: 10px;"></span>
+                </td>
+            </tr>
+
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONFAQModificada();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <div id="popup-dialog-medicion" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-medicion')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Medición</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_medicion">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_medicion" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_medicion">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_medicion" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_medicion">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_medicion" placeholder="Nombre de la medición" style="width: 100%;" oninput="checkName('campo_nombre_medicion', 'name-alert-medicion')">
+                    <div id="name-alert-medicion" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_unidad_medicion">Unidad</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_unidad_medicion" placeholder="Unidad de medida medición" style="width: 100%;" oninput="checkUnidad('campo_unidad_medicion', 'unidad-alert-medicion')">
+                    <div id="unidad-alert-medicion" class="alert"></div>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONMedicion();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <div id="popup-dialog-modif-medicion" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-medicion')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Medición</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_medicion_modif">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_medicion_modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_medicion_modif">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_medicion_modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_medicion_modif">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_medicion_modif" placeholder="Nombre de la medición" style="width: 100%;" oninput="checkName('campo_nombre_medicion_modif', 'name-alert-medicion-modif')">
+                    <div id="name-alert-medicion-modif" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_unidad_medicion_modif">Unidad</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_unidad_medicion_modif" placeholder="Unidad de medida medición" style="width: 100%;" oninput="checkUnidad('campo_unidad_medicion_modif', 'unidad-alert-medicion-modif')">
+                    <div id="unidad-alert-medicion-modif" class="alert"></div>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONMedicionModificada();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+<div id="popup-dialog-sintoma" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-sintoma')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Síntoma</h3>
+       
         <table class="camp-table">
 
             <tr>
@@ -720,72 +1065,14 @@
 
             <tr>
                 <td class="column-one">
-                    <label for="campo_nombre">Nombre Consejo</label>
+                    <label for="campo_nombre">Nombre</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_nombre" placeholder="Nombre del consejo" style="width: 100%;" oninput="checkName()">
+                    <input type="text" id="campo_nombre" placeholder="Nombre del síntoma" style="width: 100%;" oninput="checkName()">
                     <div id="name-alert" class="alert"></div>
                 </td>
             </tr>
-
-
-            <tr>
-                <td class="column-one">
-                    <label for="campo_tipoconsejo">Tipo Consejo</label>
-                </td>
-                <td class="column-two">
-                    <div style="display: flex; justify-content: flex-start; width: 100%;">
-                        <select id="campo_tipoconsejo">
-                            <option value="" disabled selected>Seleccionar Tipo Consejo</option>
-                            <option value="Medicos">Médicos</option>
-                            <option value="Bienestar">Bienestar y Salud</option>
-                           
-                        </select>
-                    </div>
-                </td>
-            </tr>
             
-            
-            <tr>
-                <td class="column-one">
-                    <label for="campo_desc">Descripción</label>
-                </td>
-                <td class="column-two">
-                    <textarea id="desc" placeholder="Descripción del consejo" oninput="limitarCaracteres(event)" rows="4" wrap="soft" ></textarea>
-                    <span id="contadorCaracteres" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="column-one">
-                    <label for="campo_link">Link</label>
-                </td>
-                <td class="column-two">
-                    <input type="text" id="campo_link" placeholder="Link del consejo" style="width: 100%;">
-                    <div id="link-alert" class="alert"></div>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="column-one">
-                    <label for="campo_foto">Foto</label>
-                </td>
-                <td class="column-two">
-                    <input type="text" id="campo_foto" placeholder="URL de archivo de foto" style="width: 100%;">
-                    <div id="foto-alert" class="alert"></div>
-                </td>
-            </tr>         
-            
-            <tr>
-                <td class="column-one">
-                    <label for="campo_nombre2">Nombre Auspiciante</label>
-                </td>
-                <td class="column-two">
-                    <input type="text" id="campo_nombre2" placeholder="Nombre del auspiciante" style="width: 100%;" oninput="checkName()">
-                    <div id="name-alert" class="alert"></div>
-                </td>
-            </tr>
-          
         </table>
 <!--boton guardar-->
 <div class="button-container">
@@ -796,6 +1083,57 @@
     </form>
   </div>
     </div>
+
+
+<div id="popup-dialog-modif-sintoma" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Síntoma</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre" placeholder="Nombre del síntoma" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="tu_ruta_de_destino.html" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
@@ -850,7 +1188,7 @@
             dialog.style.display = "none";
         }
 
-      function limitarCaracteres(event) {
+      function limitarCaracteresConsejo(event) {
             const input = event.target;
             const maxLength = 300;
             const currentLength = input.value.length;
@@ -864,7 +1202,35 @@
                 document.getElementById('contadorCaracteres_consejo').textContent = '0 caracteres restantes';
             }
         }
-        
+
+        function limitarCaracteresConsejModif(event) {
+            const input = event.target;
+            const maxLength = 300;
+            const currentLength = input.value.length;
+            const remainingChars = maxLength - currentLength;
+
+            if (remainingChars >= 0) {
+                document.getElementById('contadorCaracteres_consejo_Modif').textContent = remainingChars + ' caracteres restantes';
+            } else {
+                // Si excede el límite, cortamos el texto en 300 caracteres
+                input.value = input.value.slice(0, maxLength);
+                document.getElementById('contadorCaracteres_consejo_Modif').textContent = '0 caracteres restantes';
+            }
+        }
+        function limitarCaracteresFAQ(event, id) {
+            const input = event.target;
+            const maxLength = 300;
+            const currentLength = input.value.length;
+            const remainingChars = maxLength - currentLength;
+
+            if (remainingChars >= 0) {
+                document.getElementById(id).textContent = remainingChars + ' caracteres restantes';
+            } else {
+                // Si excede el límite, cortamos el texto en 300 caracteres
+                input.value = input.value.slice(0, maxLength);
+                document.getElementById(id).textContent = '0 caracteres restantes';
+            }
+        }
     </script>
 
     <!--script para selector fecha fin vigencia, permitiendo hasta 20 años en adelante -->
@@ -920,6 +1286,19 @@
                 marcaAlert.innerText = "";
             }
         }    
+
+        function checkUnidad(idCampo, idAlert) {
+            var unidadInput = document.getElementById(idCampo);
+            var unidad = unidadInput.value;
+            var unidadAlert = document.getElementById(idAlert);
+    
+            if (unidad.length > 10) {
+                unidadAlert.innerText = "Ingresar unidad en 10 caracteres.";
+                unidadInput.value = unidad.substring(0, 10); // Corta el texto hasta los primeros 10 caracteres
+            } else {
+                unidadAlert.innerText = "";
+            }
+        } 
         
         
     </script>
@@ -991,7 +1370,7 @@ function cambiarTabla() {
                 });
             break;
         case "Consejo":
-            fetch(`http://localhost:8080/consejo/get-all`, {
+            fetch(`http://localhost:8080/consejo/get-all-con-bajas`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1016,7 +1395,7 @@ function cambiarTabla() {
                 });
             break;
         case "FAQ":
-            fetch(`http://localhost:8080/FAQ/get-all`, {
+            fetch(`http://localhost:8080/FAQ/get-all-y-bajas`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1041,7 +1420,7 @@ function cambiarTabla() {
                 });
             break;
         case "Medicion":
-            fetch(`http://localhost:8080/medicion/get-all`, {
+            fetch(`http://localhost:8080/medicion/get-all-y-bajas`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1182,14 +1561,14 @@ function abrirPopup(){
               openDialog("popup-dialog-consejo");
               break;
         case "FAQ":
-           
-            break;
+              openDialog("popup-dialog-FAQ");
+              break;
         case "Medicion":
-            
-            break;
+              openDialog("popup-dialog-medicion");
+              break;
         case "Sintoma":
-            
-            break;
+              openDialog("popup-dialog-sintoma");
+              break;
         case "AM":
             
             break;
@@ -1212,10 +1591,10 @@ function setearValoresAModificar(id, index){
   const fila = tabla.rows[index+1];
     switch (valorSeleccionado) {
         case "Medicamento":
-               const codigo = contenedor.querySelector("#campo_codigo_Med_Modif");
-               const nombre = contenedor.querySelector("#campo_nombre_Med_Modif");
-               const marca = contenedor.querySelector("#campo_marca_Med_Modif");
-               const fechaFV = contenedor.querySelector("#campo_fechaFV_Med_Modif");
+               var codigo = contenedor.querySelector("#campo_codigo_Med_Modif");
+               var nombre = contenedor.querySelector("#campo_nombre_Med_Modif");
+               var marca = contenedor.querySelector("#campo_marca_Med_Modif");
+               var fechaFV = contenedor.querySelector("#campo_fechaFV_Med_Modif");
 
                codigo.value = fila.cells[1].textContent;
                nombre.value = fila.cells[6].textContent;
@@ -1225,14 +1604,52 @@ function setearValoresAModificar(id, index){
                }
                break;
         case "Consejo":
-            
-            break;
+              var codigo = contenedor.querySelector("#campo_codigo_consejo_Modif");
+              var nombre = contenedor.querySelector("#campo_nombre_consejo_Modif");
+              var link = contenedor.querySelector("#campo_link_consejo_Modif");
+              var auspiciante = contenedor.querySelector("#campo_nombre2_consejo_Modif");
+              var descripcion = contenedor.querySelector("#campo_desc_consejo_Modif");
+              var foto = contenedor.querySelector("#campo_foto_consejo_Modif");
+              var fechaFV = contenedor.querySelector("#campo_fechaFV_consejo_Modif");
+              var tipoConsejo = contenedor.querySelector("#campo_tipoconsejo_Modif");
+
+              codigo.value = fila.cells[1].textContent;
+              nombre.value = fila.cells[2].textContent;
+              link.value = fila.cells[3].textContent;
+              auspiciante.value = fila.cells[4].textContent;
+              descripcion.value = fila.cells[5].textContent;
+              foto.value = fila.cells[7].textContent;
+              if (fila.cells[8].textContent !== "-"){
+                fechaFV.value = fila.cells[8].textContent;
+              }
+              tipoConsejo.value = fila.cells[9].textContent;
+              break;
         case "FAQ":
-           
-            break;
+              var codigo = contenedor.querySelector("#campo_codigo_FAQ_Modif");
+              var pregunta = contenedor.querySelector("#campo_pregunta_FAQ_Modif");
+              var respuesta = contenedor.querySelector("#campo_respuesta_FAQ_Modif");
+              var fechaFV = contenedor.querySelector("#campo_fechaFV_FAQ_Modif");
+
+              codigo.value = fila.cells[1].textContent;
+              pregunta.value = fila.cells[3].textContent;
+              respuesta.value = fila.cells[4].textContent;
+              if (fila.cells[5].textContent !== "-"){
+              fechaFV.value = fila.cells[5].textContent; 
+              }
+              break;
         case "Medicion":
-            
-            break;
+              var codigo = contenedor.querySelector("#campo_codigo_medicion_modif");
+              var fechaFV = contenedor.querySelector("#campo_fechaFV_medicion_modif");
+              var nombre = contenedor.querySelector("#campo_nombre_medicion_modif");
+              var unidad = contenedor.querySelector("#campo_unidad_medicion_modif");
+
+              codigo.value = fila.cells[1].textContent;
+              if(fila.cells[3].textContent !== "-"){
+                fechaFV.value = fila.cells[3].textContent;
+              }
+              nombre.value = fila.cells[4].textContent;
+              unidad.value = fila.cells[5].textContent;
+              break;
         case "Sintoma":
             
             break;
@@ -1254,20 +1671,20 @@ function editarInstancia(index){
 
     switch (valorSeleccionado) {
         case "Medicamento":
-               openDialogModificar("popup-dialog-modif-med", index);
-               break;
+              openDialogModificar("popup-dialog-modif-med", index);
+              break;
         case "Consejo":
-            
-            break;
+              openDialogModificar("popup-dialog-modif-consejo", index);
+              break;
         case "FAQ":
-           
-            break;
+              openDialogModificar("popup-dialog-modif-FAQ", index);
+              break;
         case "Medicion":
-            
-            break;
+              openDialogModificar("popup-dialog-modif-medicion", index);
+              break;
         case "Sintoma":
-            
-            break;
+              openDialogModificar("popup-dialog-modif-sintoma", index);
+              break;
         case "AM":
             
             break;
@@ -1338,13 +1755,79 @@ function sendChangesToServer(changes) {
               });
             break;
         case "FAQ":
-           
+           return fetch('http://localhost:8080/FAQ/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                console.log('Consejo guardado con éxito:', data);
+                closeDialog('popup-dialog-FAQ');
+                closeDialog('popup-dialog-modif-FAQ');
+                cambiarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
             break;
         case "Medicion":
-            
+            return fetch('http://localhost:8080/medicion/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                console.log('Consejo guardado con éxito:', data);
+                closeDialog('popup-dialog-medicion');
+                closeDialog('popup-dialog-modif-medicion');
+                cambiarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
             break;
         case "Sintoma":
-            
+            return fetch('http://localhost:8080/sintoma/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                console.log('Consejo guardado con éxito:', data);
+                closeDialog('popup-dialog-sintoma');
+                closeDialog('popup-dialog-modif-sintoma');
+                cambiarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
             break;
         case "AM":
             
@@ -1418,9 +1901,98 @@ function crearJSONConsejo(){
   sendChangesToServer(jsonObject);
 
 }
+
+function crearJSONConsejoModificado(){
+  var codigo = document.getElementById("campo_codigo_consejo_Modif").value;
+  var fechaFV = document.getElementById("campo_fechaFV_consejo_Modif").value;
+  var nombre = document.getElementById("campo_nombre_consejo_Modif").value;
+  var tipoConsejo = document.getElementById("campo_tipoconsejo_Modif").value;
+  var descripcion = document.getElementById("campo_desc_consejo_Modif").value;
+  var link = document.getElementById("campo_link_consejo_Modif").value;
+  var foto = document.getElementById("campo_foto_consejo_Modif").value;
+  var auspiciante = document.getElementById("campo_nombre2_consejo_Modif").value;
+
+  var jsonObject = {
+    nroConsejo : codigo,
+    nombreConsejo : nombre,
+    linkConsejo : link,
+    auspiciante : auspiciante,
+    descConsejo : descripcion,
+    fotoConsejo : foto,
+    fechaFinVigenciaConsejo : fechaFV,
+    tipoConsejo : {
+      nroTipoConsejo : tipoConsejo
+    }
+
+  };
+  sendChangesToServer(jsonObject);
+
+}
+
+function crearJSONFAQ(){
+   var fechaActual = new Date();
+   var pregunta = document.getElementById("campo_pregunta_FAQ").value;
+   var respuesta = document.getElementById("campo_respuesta_FAQ").value;
+   var fechaFV = document.getElementById("campo_fechaFV_FAQ").value;
+
+   var jsonObject = {
+     preguntatFAQ : pregunta,
+     respuestaFAQ : respuesta,
+     fechaFinVigenciaFAQ : fechaFV,
+     fechaActualizacionFAQ : fechaActual
+   };
+
+   sendChangesToServer(jsonObject);
+
+}
+
+function crearJSONFAQModificada(){
+   var codigo = document.getElementById("campo_codigo_FAQ_Modif").value;
+   var pregunta = document.getElementById("campo_pregunta_FAQ_Modif").value;
+   var respuesta = document.getElementById("campo_respuesta_FAQ_Modif").value;
+   var fechaFV = document.getElementById("campo_fechaFV_FAQ_Modif").value;
+
+   var jsonObject = {
+     codFAQ : codigo,
+     preguntatFAQ : pregunta,
+     respuestaFAQ : respuesta,
+     fechaFinVigenciaFAQ : fechaFV
+   };
+
+   sendChangesToServer(jsonObject);
+
+}
+
+function crearJSONMedicion(){
+  var fechaActual = new Date();
+  var fechaFV = document.getElementById("campo_fechaFV_medicion").value;
+  var nombre = document.getElementById("campo_nombre_medicion").value;
+  var unidad = document.getElementById("campo_unidad_medicion").value;
+
+  var jsonObject = {
+    fechaAltaMedicion : fechaActual,
+    fechaFinVigenciaM : fechaFV,
+    nombreMedicion : nombre,
+    unidadMedidaMedicion : unidad
+  };
+  sendChangesToServer(jsonObject);
+}
+
+function crearJSONMedicionModificada(){
+  var codigo = document.getElementById("campo_codigo_medicion_modif").value;
+  var fechaFV = document.getElementById("campo_fechaFV_medicion_modif").value;
+  var nombre = document.getElementById("campo_nombre_medicion_modif").value;
+  var unidad = document.getElementById("campo_unidad_medicion_modif").value;
+
+  var jsonObject = {
+    codMedicion : codigo,
+    fechaFinVigenciaM : fechaFV,
+    nombreMedicion : nombre,
+    unidadMedidaMedicion : unidad
+  };
+  sendChangesToServer(jsonObject);
+}
   </script>
-}
-}
 </body>
 
 </html>

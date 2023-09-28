@@ -509,8 +509,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         case "FAQ":
-            fetch(`http://localhost:8080/FAQ/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/FAQ/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -523,10 +523,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -534,8 +531,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         case "Medicion":
-            fetch(`http://localhost:8080/medicion/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/medicion/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -548,10 +545,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -559,8 +553,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         case "Sintoma":
-            fetch(`http://localhost:8080/sintoma/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/sintoma/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -573,10 +567,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -714,8 +705,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         case "FAQ":
-            fetch(`http://localhost:8080/FAQ/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/FAQ/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -728,10 +719,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -739,8 +727,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         case "Medicion":
-            fetch(`http://localhost:8080/medicion/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/medicion/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -753,10 +741,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -764,8 +749,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         case "Sintoma":
-            fetch(`http://localhost:8080/sintoma/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/sintoma/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -778,10 +763,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales

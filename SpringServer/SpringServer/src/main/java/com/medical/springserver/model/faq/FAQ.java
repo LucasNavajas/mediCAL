@@ -15,6 +15,7 @@ public class FAQ {
 	private LocalDate fechaActualizacionFAQ;
 	private String preguntatFAQ;
 	private String respuestaFAQ;
+	private LocalDate fechaFinVigenciaFAQ;
 
 
 	public int getCodFAQ() {
@@ -59,7 +60,19 @@ public class FAQ {
 
 	@Override
 	public String toString() {
-		return "FAQ [codFAQ=" + codFAQ + ", fechaActualizacionFAQ=" + fechaActualizacionFAQ + ",  preguntatFAQ=" + preguntatFAQ +  ",  respuestaFAQ=" + respuestaFAQ + "]";
+		return "FAQ [codFAQ=" + codFAQ + ", fechaActualizacionFAQ=" + fechaActualizacionFAQ + ", preguntatFAQ="
+				+ preguntatFAQ + ", respuestaFAQ=" + respuestaFAQ + ", fechaFinVigenciaFAQ=" + fechaFinVigenciaFAQ
+				+ "]";
+	}
+
+
+	public LocalDate getFechaFinVigenciaFAQ() {
+		return fechaFinVigenciaFAQ;
+	}
+
+
+	public void setFechaFinVigenciaFAQ(LocalDate fechaFinVigenciaFAQ) {
+		this.fechaFinVigenciaFAQ = fechaFinVigenciaFAQ;
 	}
 }
 	

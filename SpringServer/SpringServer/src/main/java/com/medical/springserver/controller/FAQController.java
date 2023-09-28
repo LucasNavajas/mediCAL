@@ -26,4 +26,19 @@ public class FAQController {
 	public FAQ save(@RequestBody FAQ FAQ){
 		return FAQDao.save(FAQ);
 	}
+	
+	@GetMapping("/FAQ/get-all-y-bajas")
+	public List<FAQ> getAllFAQS(){
+		return FAQDao.getAllFAQS();
+	}
+	
+	@PutMapping("/FAQ/baja/{codFAQ}")
+	public FAQ bajaFAQ(@PathVariable int codFAQ) {
+		return FAQDao.bajaFAQ(codFAQ);
+	}
+	
+	@PutMapping("/FAQ/recuperar/{codFAQ}")
+	public FAQ recuperarFAQ(@PathVariable int codFAQ) {
+		return FAQDao.recuperarFAQ(codFAQ);
+	}
 }

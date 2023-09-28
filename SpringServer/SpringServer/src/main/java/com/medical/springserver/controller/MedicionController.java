@@ -28,5 +28,20 @@ public class MedicionController {
 	public Medicion save(@RequestBody Medicion medicion) {
 		return medicionDao.save(medicion);
 	}
+	
+	@GetMapping("/medicion/get-all-y-bajas")
+	public List<Medicion> getAllMedicionesYBajas(){
+		return medicionDao.getAllMedicionesYBajas();
+	}
+	
+    @PutMapping("/medicion/baja/{codMedicion}")
+    public Medicion bajaMedicion(@PathVariable int codMedicion) {
+        return medicionDao.bajaMedicion(codMedicion);
+    }
+
+    @PutMapping("/medicion/recuperar/{codMedicion}")
+    public Medicion recuperarMedicion(@PathVariable int codMedicion) {
+        return medicionDao.recuperarMedicion(codMedicion);
+    }
 
 }

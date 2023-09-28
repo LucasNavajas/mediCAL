@@ -24,5 +24,20 @@ public class SintomaController {
 	public Sintoma save(@RequestBody Sintoma sintoma) {
 		return sintomaDao.save(sintoma);
 	}
+	
+	@GetMapping("/sintoma/get-all-y-bajas")
+    public List<Sintoma> getAllSintomasYBajas() {
+        return sintomaDao.getAllSintomasYBajas();
+    }
+
+    @PutMapping("/sintoma/baja/{codSintoma}")
+    public Sintoma bajaSintoma(@PathVariable int codSintoma) {
+        return sintomaDao.bajaSintoma(codSintoma);
+    }
+
+    @PutMapping("/sintoma/recuperar/{codSintoma}")
+    public Sintoma recuperarSintoma(@PathVariable int codSintoma) {
+        return sintomaDao.recuperarSintoma(codSintoma);
+    }
 
 }

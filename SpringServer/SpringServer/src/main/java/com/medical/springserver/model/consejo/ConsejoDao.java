@@ -17,34 +17,41 @@ public class ConsejoDao {
 	private ConsejoRepository repository;
 	
 	public Consejo save(Consejo consejo) {
-	    // Consulta la entidad existente por su código
+	    // Buscar la entidad existente por su código (nroConsejo)
 	    Consejo existingConsejo = repository.findById(consejo.getNroConsejo()).orElse(null);
 
-	    if (existingConsejo!=null) {
-	        // Copia los valores de las propiedades no nulas del objeto JSON a la entidad existente
-	        BeanUtils.copyProperties(consejo, existingConsejo, getNullPropertyNames(consejo));
+	    if (existingConsejo != null) {
+	        if (consejo.getNombreConsejo() != null) {
+	            existingConsejo.setNombreConsejo(consejo.getNombreConsejo());
+	        }
+	        if (consejo.getLinkConsejo() != null) {
+	            existingConsejo.setLinkConsejo(consejo.getLinkConsejo());
+	        }
+	        if (consejo.getAuspiciante() != null) {
+	            existingConsejo.setAuspiciante(consejo.getAuspiciante());
+	        }
+	        if (consejo.getDescConsejo() != null) {
+	            existingConsejo.setDescConsejo(consejo.getDescConsejo());
+	        }
+	        if (consejo.getFechaAltaConsejo() != null) {
+	            existingConsejo.setFechaAltaConsejo(consejo.getFechaAltaConsejo());
+	        }
+	        if (consejo.getFotoConsejo() != null) {
+	            existingConsejo.setFotoConsejo(consejo.getFotoConsejo());
+	        }
+	        existingConsejo.setFechaFinVigenciaConsejo(consejo.getFechaFinVigenciaConsejo());
+	        if (consejo.getTipoConsejo() != null) {
+	            existingConsejo.setTipoConsejo(existingConsejo.getTipoConsejo());
+	        }
 
-	        // Guarda la entidad actualizada en la base de datos
+	        // Guardar la entidad actualizada
 	        return repository.save(existingConsejo);
 	    } else {
-	        // Si no existe la entidad, simplemente la guardas como una nueva
+	        // Si no se encuentra la entidad existente, crea una nueva
 	        return repository.save(consejo);
 	    }
 	}
 
-	// Método para obtener los nombres de las propiedades nulas en un objeto
-	private String[] getNullPropertyNames(Object source) {
-	    final BeanWrapper src = new BeanWrapperImpl(source);
-	    java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
-
-	    List<String> emptyNames = new ArrayList<>();
-	    for (java.beans.PropertyDescriptor pd : pds) {
-	        Object srcValue = src.getPropertyValue(pd.getName());
-	        if (srcValue == null) emptyNames.add(pd.getName());
-	    }
-	    
-	    return emptyNames.toArray(new String[0]);
-	}
 	public List<Consejo> getAllConsejo() {
 	    return repository.getAllConsejos(LocalDate.now());
 	}
