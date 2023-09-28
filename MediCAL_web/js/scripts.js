@@ -190,7 +190,14 @@
 
 
 
-
+function getFirstAttribute(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return obj[key];
+    }
+  }
+  return "-";
+}
 
 
 function toggleSearch(index) {
@@ -480,8 +487,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         case "Consejo":
-            fetch(`http://localhost:8080/consejo/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/consejo/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -494,10 +501,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -688,8 +692,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         case "Consejo":
-            fetch(`http://localhost:8080/consejo/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/consejo/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -702,10 +706,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales

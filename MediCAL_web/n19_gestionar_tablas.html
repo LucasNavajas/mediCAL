@@ -496,7 +496,7 @@
         </table>
 <!--boton guardar-->
 <div class="button-container">
-    <form action="javascript:altaInstancia();" method="POST" id="formulario-nuevo-medicamento">
+    <form action="javascript:crearJSONMedicamento();" method="POST" id="formulario-nuevo-medicamento">
       <div class="form-group">
         <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
       </div>
@@ -571,13 +571,231 @@
         </table>
         <!--boton guardar-->
         <div class="button-container">
-            <form action="javascript:modificarInstancia();" method="POST">
+            <form action="javascript:crearJSONMedicamentoModificado();" method="POST">
               <div class="form-group">
                 <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
               </div>
             </form>
           </div>
             </div>
+
+<div id="popup-dialog-consejo" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-consejo')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Consejo</h3>
+        
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_consejo">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_consejo" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_consejo">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_consejo" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre Consejo</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_consejo" placeholder="Nombre del consejo" style="width: 100%;" oninput="checkName('campo_nombre_consejo', 'name-alert-consejo')">
+                    <div id="name-alert-consejo" class="alert"></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_tipoconsejo">Tipo Consejo</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_tipoconsejo">
+                            <option value="" disabled selected>Seleccionar Tipo Consejo</option>
+                            <option value="1">Médicos</option>
+                            <option value="2">Bienestar y Salud</option>
+                            <option value="3">Sobre la App</option>
+                           
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc_consejo">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_desc_consejo" placeholder="Descripción del consejo" oninput="limitarCaracteres(event)" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_consejo" style="display: block; text-align: left; margin-top: 5px;">300 caracteres máximo</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_link_consejo">Link</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_link_consejo" placeholder="Link del consejo" style="width: 100%;">
+                    <div id="link-alert-consejo" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_foto_consejo">Foto</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_foto_consejo" placeholder="URL de archivo de foto" style="width: 100%;">
+                    <div id="foto-alert-consejo" class="alert"></div>
+                </td>
+            </tr>  
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre2_consejo">Nombre Auspiciante</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre2_consejo" placeholder="Nombre del auspiciante" style="width: 100%;" oninput="checkName('campo_nombre2_consejo', 'name-alert-consejo-auspiciante')">
+                    <div id="name-alert-consejo-auspiciante" class="alert"></div>
+                </td>
+            </tr>
+          
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONConsejo();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+<div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog-modif-consejo" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Consejo</h3>
+        
+        <!-- DESDE AQUI -->
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre Consejo</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre" placeholder="Nombre del consejo" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_tipoconsejo">Tipo Consejo</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_tipoconsejo">
+                            <option value="" disabled selected>Seleccionar Tipo Consejo</option>
+                            <option value="Medicos">Médicos</option>
+                            <option value="Bienestar">Bienestar y Salud</option>
+                           
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="desc" placeholder="Descripción del consejo" oninput="limitarCaracteres(event)" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_link">Link</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_link" placeholder="Link del consejo" style="width: 100%;">
+                    <div id="link-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_foto">Foto</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_foto" placeholder="URL de archivo de foto" style="width: 100%;">
+                    <div id="foto-alert" class="alert"></div>
+                </td>
+            </tr>         
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre2">Nombre Auspiciante</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre2" placeholder="Nombre del auspiciante" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
+          
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="tu_ruta_de_destino.html" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
@@ -631,7 +849,21 @@
             overlay.style.opacity = "0";
             dialog.style.display = "none";
         }
-      
+
+      function limitarCaracteres(event) {
+            const input = event.target;
+            const maxLength = 300;
+            const currentLength = input.value.length;
+            const remainingChars = maxLength - currentLength;
+
+            if (remainingChars >= 0) {
+                document.getElementById('contadorCaracteres_consejo').textContent = remainingChars + ' caracteres restantes';
+            } else {
+                // Si excede el límite, cortamos el texto en 300 caracteres
+                input.value = input.value.slice(0, maxLength);
+                document.getElementById('contadorCaracteres_consejo').textContent = '0 caracteres restantes';
+            }
+        }
         
     </script>
 
@@ -692,35 +924,6 @@
         
     </script>
   <script>
-
-
-    // Función para mostrar la fila como eliminada si existe una fecha de fin vigencia
-    // No funciona  
-    /*  
-    function toggleDeletedRowsVisibility() {
-        // Obtener todas las filas de la tabla
-        var tableRows = document.querySelectorAll('tr');
-
-        // Recorrer todas las filas (excluyendo la primera fila de cabecera)
-        for (let i = 1; i < tableRows.length; i++) {
-            var row = tableRows[i];
-
-            // Obtener el contenido de la columna "Fecha Fin Vigencia"
-            var fechaFinVigenciaCell = row.querySelector('.fecha-fin-vigencia');
-
-            // Obtener el texto contenido en la celda
-            var fechaFinVigenciaText = fechaFinVigenciaCell.innerText;
-
-            // Verificar si contiene algo
-            if (motivoText !== '' || fechaFinVigenciaText !== '') {
-                // Si contiene algo, marca la fila como "deleted-row"
-                row.classList.add('deleted-row');
-            } 
-        }
-    }
-    */
-
-
    
     // Inicializar el selector de fecha en los campos con clase "datepicker"
     $(document).ready(function () {
@@ -976,8 +1179,8 @@ function abrirPopup(){
                openDialog("popup-dialog-med");
                break;
         case "Consejo":
-            
-            break;
+              openDialog("popup-dialog-consejo");
+              break;
         case "FAQ":
            
             break;
@@ -1000,37 +1203,6 @@ function abrirPopup(){
 
 }
 
-function altaInstancia(){
-  var lista = document.getElementById("lista_usuarios");
-  var valorSeleccionado = lista.value;
-
-    switch (valorSeleccionado) {
-        case "Medicamento":
-               altaMedicamento();
-               break;
-        case "Consejo":
-            
-            break;
-        case "FAQ":
-           
-            break;
-        case "Medicion":
-            
-            break;
-        case "Sintoma":
-            
-            break;
-        case "AM":
-            
-            break;
-        case "PM":
-           
-            break;
-        default:
-            
-            break;
-    }
-}
 
 function setearValoresAModificar(id, index){
   var lista = document.getElementById("lista_usuarios");
@@ -1131,6 +1303,9 @@ function sendChangesToServer(changes) {
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
                 console.log('Medicamento guardado con éxito:', data);
+                closeDialog('popup-dialog-med');
+                closeDialog('popup-dialog-modif-med');
+                cambiarTabla();
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -1138,7 +1313,29 @@ function sendChangesToServer(changes) {
               });
                break;
         case "Consejo":
-            
+            return fetch('http://localhost:8080/consejo/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                console.log('Consejo guardado con éxito:', data);
+                closeDialog('popup-dialog-consejo');
+                closeDialog('popup-dialog-modif-consejo');
+                cambiarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
             break;
         case "FAQ":
            
@@ -1160,34 +1357,6 @@ function sendChangesToServer(changes) {
             break;
     }
 }
-
-function altaMedicamento(){
-  var medicamentoJSON = crearJSONMedicamento();
-
-  fetch(`http://localhost:8080/medicamento/save`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(medicamentoJSON)
-              })
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
-                  }
-                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
-                })
-                .then(data => {
-                  // Hacer algo con los datos de la respuesta
-                  closeDialog('popup-dialog-med');
-                  cambiarTabla();
-                })
-                .catch(error => {
-                  // Manejar errores generales
-                  console.error('Error:', error);
-                });
-
-}
   
 function crearJSONMedicamento() {
     // Obtener los valores de los campos input por su ID
@@ -1204,9 +1373,54 @@ function crearJSONMedicamento() {
       nombreMedicamento: nombre
     };
 
-    return jsonObject;
+    sendChangesToServer(jsonObject);
+}
+
+function crearJSONMedicamentoModificado(){
+  var fechaFV = document.getElementById("campo_fechaFV_Med_Modif").value;
+  var marca = document.getElementById("campo_marca_Med_Modif").value;
+  var nombre = document.getElementById("campo_nombre_Med_Modif").value;
+  var codigo = document.getElementById("campo_codigo_Med_Modif").value;
+
+  var jsonObject = {
+    codMedicamento : codigo,
+    fechaFinVigenciaMed: fechaFV,
+    marcaMedicamento: marca,
+    nombreMedicamento: nombre
+  };
+  sendChangesToServer(jsonObject);
+
+}
+
+function crearJSONConsejo(){
+  var fechaActual = new Date();
+  var fechaFV = document.getElementById("campo_fechaFV_consejo").value;
+  var nombre = document.getElementById("campo_nombre_consejo").value;
+  var tipoConsejo = document.getElementById("campo_tipoconsejo").value;
+  var descripcion = document.getElementById("campo_desc_consejo").value;
+  var link = document.getElementById("campo_link_consejo").value;
+  var foto = document.getElementById("campo_foto_consejo").value;
+  var auspiciante = document.getElementById("campo_nombre2_consejo").value;
+
+  var jsonObject = {
+    nombreConsejo : nombre,
+    linkConsejo : link,
+    auspiciante : auspiciante,
+    descConsejo : descripcion,
+    fechaAltaConsejo : fechaActual,
+    fotoConsejo : foto,
+    fechaFinVigenciaConsejo : fechaFV,
+    tipoConsejo : {
+      nroTipoConsejo : tipoConsejo
+    }
+
+  };
+  sendChangesToServer(jsonObject);
+
 }
   </script>
+}
+}
 </body>
 
 </html>

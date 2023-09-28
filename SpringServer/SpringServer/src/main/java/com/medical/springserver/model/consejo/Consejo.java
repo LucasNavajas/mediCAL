@@ -25,6 +25,7 @@ public class Consejo {
 	private LocalDate fechaAltaConsejo;
 	// foto antes era tipo Image
 	private String fotoConsejo;
+	private LocalDate fechaFinVigenciaConsejo;
 	
 	@ManyToOne
 	@JoinColumn(name = "nroTipoConsejo")
@@ -95,7 +96,8 @@ public class Consejo {
 	public String toString() {
 		return "Consejo [nroConsejo=" + nroConsejo + ", nombreConsejo=" + nombreConsejo + ", linkConsejo=" + linkConsejo
 				+ ", auspiciante=" + auspiciante + ", descConsejo=" + descConsejo + ", fechaAltaConsejo="
-				+ fechaAltaConsejo + ", fotoConsejo=" + fotoConsejo + ", tipoconsejo=" + tipoconsejo + "]";
+				+ fechaAltaConsejo + ", fotoConsejo=" + fotoConsejo + ", fechaFinVigenciaConsejo="
+				+ fechaFinVigenciaConsejo + ", tipoconsejo=" + tipoconsejo + "]";
 	}
 
 
@@ -116,6 +118,16 @@ public class Consejo {
 
 	public void setAuspiciante(String auspiciante) {
 		this.auspiciante = auspiciante;
+	}
+
+
+	public LocalDate getFechaFinVigenciaConsejo() {
+		return fechaFinVigenciaConsejo;
+	}
+
+
+	public void setFechaFinVigenciaConsejo(LocalDate fechaFinVigenciaConsejo) {
+		this.fechaFinVigenciaConsejo = fechaFinVigenciaConsejo;
 	}
 
 

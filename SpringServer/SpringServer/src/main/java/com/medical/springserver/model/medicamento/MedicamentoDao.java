@@ -21,9 +21,7 @@ public class MedicamentoDao {
             if (medicamento.getFechaAltaMedicamento() != null) {
                 existingMedicamento.setFechaAltaMedicamento(medicamento.getFechaAltaMedicamento());
             }
-            if (medicamento.getFechaFinVigenciaMed() != null) {
                 existingMedicamento.setFechaFinVigenciaMed(medicamento.getFechaFinVigenciaMed());
-            }
             if (medicamento.getMarcaMedicamento() != null) {
                 existingMedicamento.setMarcaMedicamento(medicamento.getMarcaMedicamento());
             }
