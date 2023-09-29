@@ -115,7 +115,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         }
         TextView stockmin = findViewById(R.id.establecer_alerta_inventario);
         if (stockmin != null) {
-            stockmin.setOnClickListener(new View.OnClickListener() {
+            cambiarHora.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     popupStockmin();
@@ -349,6 +349,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
                 }
             }
+
         });
 
         recordatorioRecarga.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -356,6 +357,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     agregarInventario.setVisibility(View.VISIBLE);
+                    agregarInventario.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupStockmin();
+                        }
+                    });
 
                 } else {
                     agregarInventario.setVisibility(View.GONE);
@@ -1375,6 +1382,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private void popupStockmin() {
         View popupView = getLayoutInflater().inflate(R.layout.n66_1_numero_inventario, null);
 
+        EditText editTextCantidad = popupView.findViewById(R.id.cantstock);
         TextView botonAceptar = popupView.findViewById(R.id.aceptar);
         TextView botonCancelar = popupView.findViewById(R.id.cancelar);
 
@@ -1399,8 +1407,30 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
-        // Configura OnClickListener para el botón Aceptar
+        // Establece OnClickListener para el botón Aceptar
+        botonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtén el valor ingresado en el EditText
+                String cantidadIngresada = editTextCantidad.getText().toString().trim();
 
+                // Verifica si la cantidad ingresada no está vacía
+                if (!cantidadIngresada.isEmpty()) {
+                    // Convierte la cantidad ingresada a un número entero
+                    int cantidad = Integer.parseInt(cantidadIngresada);
+
+                    // Guarda el valor ingresado en textViewCantaviso
+                    TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
+                    textViewCantaviso.setText("Establecer cuando me queden " + cantidad + " medicamentos");
+
+                    // Cierra el popup
+                    popupWindow.dismiss();
+                } else {
+                    // Muestra un mensaje de error si no se ingresa ninguna cantidad
+                    Toast.makeText(getApplicationContext(), "Por favor, ingrese una cantidad válida", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // Establece OnClickListener para el botón Cancelar
         botonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -1410,5 +1440,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
