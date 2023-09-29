@@ -1924,19 +1924,30 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
     private void eliminarCalendarioMedicion(int codCalendarioMedicion) {
 
         Log.d("Miapp","codCalendarioMedicion: "+codCalendarioMedicion);
-        Call<Void> call = calendarioMedicionApi.deleteCalendarioMedicion(codCalendarioMedicion);
 
-        call.enqueue(new Callback<Void>() {
+        CalendarioMedicion medicionModificada = new CalendarioMedicion();
+        medicionModificada.setCodCalendarioMedicion(codCalendarioMedicion); // Establece el ID de la medición
+        LocalDate fechaActual = LocalDate.now();
+        medicionModificada.setFechaFinVigenciaCM(fechaActual);
+        Call<CalendarioMedicion> call10 = calendarioMedicionApi.eliminarCalendarioMedicion(medicionModificada);
+
+        call10.enqueue(new Callback<CalendarioMedicion>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<CalendarioMedicion> call10, Response<CalendarioMedicion> response) {
                 if (response.isSuccessful()) {
+                    // Puedes mantener el código existente para iniciar la nueva actividad después de la modificación
+                    Intent intent2 = new Intent(MasInfoMedicionActivity.this, AgregarSeguimientoActivity.class);
+                    intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent2.putExtra("codUsuario", getIntent().getIntExtra("codUsuario", 0));
+                    intent2.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                    startActivity(intent2);
         } else {
                   Toast.makeText(getApplicationContext(), "Error al eliminar el CalendarioMedicion", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<CalendarioMedicion> call10, Throwable t) {
                 // Maneja el error de la llamada de red, por ejemplo, mostrando un mensaje de error.
                 Toast.makeText(getApplicationContext(), "Error de red al eliminar el CalendarioMedicion", Toast.LENGTH_SHORT).show();
             }

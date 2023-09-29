@@ -56,6 +56,7 @@ public class EditarMedicionActivity extends AppCompatActivity {
 
     private MedicionApi medicionApi;
     private Medicion medicionSeleccionada;
+    private int idMedicionCal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,11 +139,10 @@ public class EditarMedicionActivity extends AppCompatActivity {
             }
         });
 
+        Button buttonModificar = findViewById(R.id.button_siguiente);
+        buttonModificar.setText("Modificar medición");
 
-        Button buttonAgregar = findViewById(R.id.button_siguiente);
-        buttonAgregar.setText("Modificar medición");
-
-        buttonAgregar.setOnClickListener(new View.OnClickListener() {
+        buttonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText textoLineaEditText = findViewById(R.id.texto_linea);
@@ -151,44 +151,45 @@ public class EditarMedicionActivity extends AppCompatActivity {
                 String formattedNumber = formatNumberWithZeros(inputText);
 
                 try {
-                    float inputValue = Float.parseFloat(formattedNumber);
+                    float newValue = Float.parseFloat(formattedNumber);
 
-                    if (inputValue == 0) {
+                    if (newValue == 0) {
                         Toast.makeText(EditarMedicionActivity.this, "Ingrese un valor mayor a 0", Toast.LENGTH_SHORT).show();
                     } else {
-                        CalendarioMedicion nuevaMedicion = new CalendarioMedicion();
+                        // Obtén el ID de la medición que deseas modificar (reemplaza con tu lógica)
+                        int idMedicionAModificar = idMedicionCal;// Reemplaza con tu lógica para obtener el ID
 
-                        if (fechaSeleccionada == null) {
-                            fechaSeleccionada = LocalDateTime.now();
-                        }
-                        nuevaMedicion.setFechaCalendarioMedicion(fechaSeleccionada);
-                        nuevaMedicion.setFechaFinVigenciaCM(null);
-                        nuevaMedicion.setValorCalendarioMedicion(inputValue);
+                        CalendarioMedicion calendarioMedicion = new CalendarioMedicion();
+                        calendarioMedicion.setCodCalendarioMedicion(idMedicionAModificar); // Reemplaza con el código correcto
+                        calendarioMedicion.setValorCalendarioMedicion(newValue); // Reemplaza con el nuevo valor
 
-                        nuevaMedicion.setMedicion(medicionSeleccionada);
-                        nuevaMedicion.setCalendario(calendarioSeleccionado);
+                        Call<CalendarioMedicion> call = calendarioMedicionApi.modificarCalendarioMedicion(calendarioMedicion);
 
-                        Call<CalendarioMedicion> call = calendarioMedicionApi.saveCalendarioMedicion(nuevaMedicion);
                         call.enqueue(new Callback<CalendarioMedicion>() {
                             @Override
                             public void onResponse(Call<CalendarioMedicion> call, Response<CalendarioMedicion> response) {
                                 if (response.isSuccessful()) {
-                                    Log.d("MiApp", "CalendarioMedicion guardado exitosamente");
+                                    // La modificación se realizó con éxito
+                                    CalendarioMedicion modifiedCalendarioMedicion = response.body();
+                                    // Maneja la respuesta según tus necesidades
                                 } else {
-                                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                                    // Ocurrió un error en la solicitud HTTP
+                                    // Maneja el error según tus necesidades
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<CalendarioMedicion> call, Throwable t) {
-                                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+                                // Maneja el error de la solicitud HTTP
                             }
                         });
 
+
+                        // Puedes mantener el código existente para iniciar la nueva actividad después de la modificación
                         Intent intent2 = new Intent(EditarMedicionActivity.this, AgregarSeguimientoActivity.class);
                         intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent2.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
-                        intent2.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
+                        intent2.putExtra("codUsuario", getIntent().getIntExtra("codUsuario", 0));
+                        intent2.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
                         startActivity(intent2);
                     }
                 } catch (NumberFormatException e) {
@@ -279,6 +280,8 @@ public class EditarMedicionActivity extends AppCompatActivity {
 
                         // Obtener el nombre de la medicion desde el primer elemento
                         String nombreMedicion = primerCalendarioMedicion.getMedicion().getNombreMedicion();
+
+                        idMedicionCal = primerCalendarioMedicion.getCodCalendarioMedicion();
 
                         // Actualizar el nombre de la medición en el TextView correspondiente
                         TextView nombreMedicionTextView = findViewById(R.id.texto_editar);

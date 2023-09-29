@@ -1,4 +1,5 @@
 package com.medical.springserver.controller;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicionDao;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -17,6 +20,42 @@ public class CalendarioMedicionController {
 	
 	@Autowired
 	CalendarioMedicionDao calendariomedicionDao;
+	
+	@PostMapping("/calendariomedicion/modificar")
+	public ResponseEntity<CalendarioMedicion> modificarCalendarioMedicion(@RequestBody CalendarioMedicion calendariomedicion)  {
+	    int codCalendarioMedicion = calendariomedicion.getCodCalendarioMedicion();
+	    float nuevoValor = calendariomedicion.getValorCalendarioMedicion();
+
+	    CalendarioMedicion modifiedCalendarioMedicion= calendariomedicionDao.modificarCalendarioMedicion(codCalendarioMedicion, nuevoValor);
+
+	    if (modifiedCalendarioMedicion != null) {
+	        return new ResponseEntity<>(modifiedCalendarioMedicion, HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
+	
+
+	@PostMapping("/calendariomedicion/eliminar")
+	public ResponseEntity<CalendarioMedicion> eliminarCalendarioMedicion(@RequestBody CalendarioMedicion calendariomedicion) {
+	    int codCalendarioMedicion = calendariomedicion.getCodCalendarioMedicion();
+
+	    // Obtén el CalendarioMedicion actual
+	    CalendarioMedicion calendarioMedicion = calendariomedicionDao.findByCodCalendarioMedicion(codCalendarioMedicion);
+
+	    if (calendarioMedicion == null) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+
+	    // Actualiza el atributo fechaFinVigenciaCM con la fecha actual
+	    calendarioMedicion.setFechaFinVigenciaCM(LocalDate.now()); // Usa LocalDate.now() para obtener la fecha actual
+
+	    // Guarda los cambios en la base de datos
+	    calendariomedicionDao.save(calendarioMedicion);
+
+	    return new ResponseEntity<>(calendarioMedicion, HttpStatus.OK);
+	}
+
 	
 	@GetMapping("/calendariomedicion/get-all")
 	public List<CalendarioMedicion> getAllCalendarioMediciones(){
