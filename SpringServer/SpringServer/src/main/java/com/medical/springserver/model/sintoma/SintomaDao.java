@@ -36,10 +36,7 @@ public class SintomaDao {
 
 	
 	public List<Sintoma> getAllSintomas(){
-		Streamable<Sintoma> streamableSintomas = Streamable.of(repository.findAll());
-		List<Sintoma> sintomas = new ArrayList<>();
-		streamableSintomas.forEach(sintomas::add);
-		return sintomas;
+		return repository.getAllSintomas(LocalDate.now());
 	}
 	
 	public void delete(Sintoma sintoma) {

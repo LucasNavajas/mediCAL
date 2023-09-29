@@ -34,5 +34,20 @@ public class PresentacionMedController {
     public List<PresentacionMed> getPresentacionesMedByCodAdministracionMed(@PathVariable int codAdministracionMed) {
         return presentacionMedDao.findByCodAdministracionMed(codAdministracionMed);
     }
+    
+    @GetMapping("/presentacionmed/get-all-y-bajas")
+    public List<PresentacionMed> getAllPresentacionesMedicasYBajas() {
+        return presentacionMedDao.getAllPresentacionesMedicasYBajas();
+    }
+
+    @PutMapping("/presentacionmed/baja/{codPresentacionMed}")
+    public PresentacionMed bajaPresentacionMedica(@PathVariable int codPresentacionMed) {
+        return presentacionMedDao.bajaPresentacionMedica(codPresentacionMed);
+    }
+
+    @PutMapping("/presentacionmed/recuperar/{codPresentacionMed}")
+    public PresentacionMed recuperarPresentacionMedica(@PathVariable int codPresentacionMed) {
+        return presentacionMedDao.recuperarPresentacionMedica(codPresentacionMed);
+    }
 
 }

@@ -36,10 +36,23 @@ public class AdministracionMedController {
 			return administracionMed;
 		} else {
 			return null;
-		}
-	   
-	           
+		}      
 	}
+	
+	@GetMapping("/administracionmed/get-all-y-bajas")
+    public List<AdministracionMed> getAllAdministracionMedYBajas() {
+        return administracionmedDao.getAllAdministracionMedYBajas();
+    }
+
+    @PutMapping("/administracionmed/baja/{codAdministracionMed}")
+    public AdministracionMed bajaAdministracionMed(@PathVariable int codAdministracionMed) {
+        return administracionmedDao.bajaAdministracionMed(codAdministracionMed);
+    }
+
+    @PutMapping("/administracionmed/recuperar/{codAdministracionMed}")
+    public AdministracionMed recuperarAdministracionMed(@PathVariable int codAdministracionMed) {
+        return administracionmedDao.recuperarAdministracionMed(codAdministracionMed);
+    }
 
 }
 

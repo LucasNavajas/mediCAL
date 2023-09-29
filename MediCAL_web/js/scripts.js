@@ -151,8 +151,8 @@
 		  eliminarIcono.onclick = function () {
 		    // Obtener el valor de la segunda columna de la fila
 		    var idInstancia = fila.cells[1].textContent;
-		    eliminarInstancia(idInstancia);
-		    toggleDeleteRow(index, this);
+        openDialogBaja('popup-dialog-baja', idInstancia, index, this);
+
 		  };
 		})(i, fila); // Pasar el valor actual de i a la IIFE
         iconosDiv.appendChild(eliminarIcono);
@@ -575,8 +575,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         case "AM":
-            fetch(`http://localhost:8080/administracionmed/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/adminstracionmed/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -589,10 +589,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -600,8 +597,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         case "PM":
-            fetch(`http://localhost:8080/presentacionMed/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/presentacionmed/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -614,10 +611,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -625,8 +619,8 @@ function toggleRevertButtonVisibility() {
                 });
             break;
         default:
-            fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/medicamento/baja/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -639,10 +633,7 @@ function toggleRevertButtonVisibility() {
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -771,8 +762,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         case "AM":
-            fetch(`http://localhost:8080/administracionmed/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/administracionmed/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -785,10 +776,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -796,8 +784,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         case "PM":
-            fetch(`http://localhost:8080/presentacionMed/get-all`, {
-                method: 'GET',
+            fetch(`http://localhost:8080/presentacionmed/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -810,10 +798,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -821,8 +806,8 @@ function recuperarInstancia(idInstancia){
                 });
             break;
         default:
-            fetch(`http://localhost:8080/medicamento/get-all-genericos`, {
-                method: 'GET',
+ 			fetch(`http://localhost:8080/medicamento/recuperar/${idInstancia}`, {
+                method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json'
                 },
@@ -835,10 +820,7 @@ function recuperarInstancia(idInstancia){
                 })
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
-                  console.log(data);
-                  reemplazarFilasConJSON(data);
-                  activarBusqueda();
-
+                  actualizar(idInstancia, data);
                 })
                 .catch(error => {
                   // Manejar errores generales

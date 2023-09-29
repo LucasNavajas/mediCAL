@@ -48,6 +48,9 @@
   <link rel="icon" href="img/Icono_MediCAL_Web.png" />
 
   <style>
+    body{
+    user-select: none;
+  }
     main .container {
       display: flex;
       justify-content: right;
@@ -315,6 +318,75 @@
     margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
 }
   </style>
+
+  <style>
+            #popup-dialog-baja .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+         #popup-dialog-baja h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-baja h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-baja .popup-content, #popup-dialog-baja .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-baja .popup-content,  #popup-dialog-baja button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #popup-dialog-baja button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-baja .popup-content, #popup-dialog-baja .popup-buttons, #popup-dialog-baja .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        #popup-dialog-baja .popup-content, #popup-dialog-baja .popup-buttons, #popup-dialog-baja .accept-button {
+            order: 2;
+        }
+  </style>
 </head>
 
 <body>
@@ -444,6 +516,16 @@
   
   </main>
 <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog-baja" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea dar la baja lógica a esta instancia de la tabla?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-baja')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-baja'); ">ACEPTAR</button>
+        </div>
+    </div>
 
     <div id="popup-dialog-med" class="popup-content">
         <!-- Icono de cerrar -->
@@ -1044,10 +1126,10 @@
 
             <tr>
                 <td class="column-one">
-                    <label for="campo_codigo">Código</label>
+                    <label for="campo_codigo_sintoma">Código</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    <input type="text" id="campo_codigo_sintoma" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
                     font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
                 </td>
             </tr>
@@ -1055,28 +1137,28 @@
             <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
             <tr>
                 <td class="column-one">
-                    <label for="campo_fechaFV">Fecha Fin Vigencia </label>
+                    <label for="campo_fechaFV_sintoma">Fecha Fin Vigencia </label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    <input type="text" id="campo_fechaFV_sintoma" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
                     font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
                 </td>
             </tr>
 
             <tr>
                 <td class="column-one">
-                    <label for="campo_nombre">Nombre</label>
+                    <label for="campo_nombre_sintoma">Nombre</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_nombre" placeholder="Nombre del síntoma" style="width: 100%;" oninput="checkName()">
-                    <div id="name-alert" class="alert"></div>
+                    <input type="text" id="campo_nombre_sintoma" placeholder="Nombre del síntoma" style="width: 100%;" oninput="checkName('campo_nombre_sintoma', 'name-alert-sintoma')">
+                    <div id="name-alert-sintoma" class="alert"></div>
                 </td>
             </tr>
             
         </table>
 <!--boton guardar-->
 <div class="button-container">
-    <form action="tu_ruta_de_destino.html" method="POST">
+    <form action="javascript:crearJSONSintoma();" method="POST">
       <div class="form-group">
         <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
       </div>
@@ -1087,17 +1169,17 @@
 
 <div id="popup-dialog-modif-sintoma" class="popup-content">
         <!-- Icono de cerrar -->
-<i class="bi bi-x-lg" onclick="closeDialog()" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-sintoma')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
         <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Síntoma</h3>
        
         <table class="camp-table">
 
             <tr>
                 <td class="column-one">
-                    <label for="campo_codigo">Código</label>
+                    <label for="campo_codigo_sintoma_modif">Código</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_codigo" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    <input type="text" id="campo_codigo_sintoma_modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
                     font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
                 </td>
             </tr>
@@ -1105,28 +1187,299 @@
             <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
             <tr>
                 <td class="column-one">
-                    <label for="campo_fechaFV">Fecha Fin Vigencia </label>
+                    <label for="campo_fechaFV_sintoma_modif">Fecha Fin Vigencia </label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_fechaFV" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    <input type="text" id="campo_fechaFV_sintoma_modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
                     font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
                 </td>
             </tr>
 
             <tr>
                 <td class="column-one">
-                    <label for="campo_nombre">Nombre</label>
+                    <label for="campo_nombre_sintoma_modif">Nombre</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_nombre" placeholder="Nombre del síntoma" style="width: 100%;" oninput="checkName()">
-                    <div id="name-alert" class="alert"></div>
+                    <input type="text" id="campo_nombre_sintoma_modif" placeholder="Nombre del síntoma" style="width: 100%;" oninput="checkName('campo_codigo_sintoma_modif', 'name-alert-sintoma-modif')">
+                    <div id="name-alert-sintoma-modif" class="alert"></div>
                 </td>
             </tr>
             
         </table>
 <!--boton guardar-->
 <div class="button-container">
-    <form action="tu_ruta_de_destino.html" method="POST">
+    <form action="javascript:crearJSONSintomaModificado();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+        <div id="popup-dialog-adminmed" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-adminmed')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Administración de Medicamento</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_adminmed">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_adminmed" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_adminmed">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_adminmed" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_adminmed">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_adminmed" placeholder="Nombre de la administración" style="width: 100%;" oninput="checkName('campo_nombre_adminmed', 'name-alert-adminmed')">
+                    <div id="name-alert-adminmed" class="alert"></div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc_adminmed">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_desc_adminmed" placeholder="Descripción de la administración" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_adminmed')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_adminmed" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONAdminmed();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <div id="popup-dialog-modif-adminmed" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-adminmed')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Administración de Medicamento</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_adminmed_modif">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_adminmed_modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_adminmed_modif">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_adminmed_modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_adminmed_modif">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_adminmed_modif" placeholder="Nombre de la administración" style="width: 100%;" oninput="checkName('campo_nombre_adminmed_modif', 'name-alert-adminmed-modif')">
+                    <div id="name-alert-adminmed-modif" class="alert"></div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc_adminmed_modif">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_desc_adminmed_modif" placeholder="Descripción de la administración" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_adminmed_modif')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_adminmed_modif" style="display: block; text-align: left; margin-top: 10px;"></span>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONAdminmedModificada();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+     <div id="popup-dialog-presmed" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-presmed')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Instancia de Presentación de Medicamento</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_presmed">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_presmed" placeholder="Autogenerado" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_presmed">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_presmed" class= "campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_presmed">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_presmed" placeholder="Nombre de la administración" style="width: 100%;" oninput="checkName('campo_nombre_presmed', 'name-alert-presmed')">
+                    <div id="name-alert-presmed" class="alert"></div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc_presmed">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_desc_presmed" placeholder="Descripción de la administración" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_presmed')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_presmed" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_forma_adm_presmed">Forma Administración</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_forma_adm_presmed">
+                            <option value="" disabled selected>Seleccionar Forma de Administración</option>
+                           <!-- Se agregan dinámicamente en base a la base de datos-->
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONPresmed();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+
+    <div id="popup-dialog-modif-presmed" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif-presmed')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Instancia de Presentación de Medicamento</h3>
+       
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_presmed_modif">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_presmed_modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_presmed_modif">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_presmed_modif" class= "campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_presmed_modif">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_presmed_modif" placeholder="Nombre de la administración" style="width: 100%;" oninput="checkName('campo_nombre_presmed_modif', 'name-alert-presmed-modif')">
+                    <div id="name-alert-presmed-modif" class="alert"></div>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_desc_presmed_modif">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_desc_presmed_modif" placeholder="Descripción de la administración" oninput="limitarCaracteresFAQ(event, 'contadorCaracteres_presmed_modif')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_presmed_modif" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_forma_adm_presmed_modif">Forma Administración</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_forma_adm_presmed_modif">
+                            <option value="" disabled selected>Seleccionar Forma de Administración</option>
+                           <!-- Se cargan dinámicamente-->
+                           
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONPresmedModificada();" method="POST">
       <div class="form-group">
         <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
       </div>
@@ -1171,6 +1524,27 @@
             overlay.style.opacity = "1";
             dialog.style.display = "block";
         }
+
+        function openDialogBaja(id, idInstancia, index, esto) {
+          var overlay = document.getElementById("popup-overlay");
+          var dialog = document.getElementById(id);
+          var aceptar = dialog.querySelector(".accept-button");
+          var aceptarNuevo = aceptar.cloneNode(true);
+          aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+
+          // Define el nuevo controlador de eventos para el botón "aceptar"
+          function handleAceptarClick() {
+              eliminarInstancia(idInstancia);
+              toggleDeleteRow(index, esto);
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+      }
 
         function closeDialog(id) {
             var overlay = document.getElementById("popup-overlay");
@@ -1256,6 +1630,46 @@
             showAnim: "fold"
         });
     });
+
+
+        function llenarSelectAdministraciones(){
+          fetch(`http://localhost:8080/administracionmed/get-all-y-bajas`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  const selectElement = document.getElementById('campo_forma_adm_presmed');
+                  const selectElement2 = document.getElementById("campo_forma_adm_presmed_modif");
+                  data.forEach(administracionMed => {
+                  const option1 = document.createElement('option');
+                  option1.value = administracionMed.codAdministracionMed;
+                  option1.textContent = administracionMed.nombreAdministracionMed;
+                  selectElement.appendChild(option1);
+                });
+
+                // 3. Iterar sobre la lista de AdministracionMed y crear opciones para el segundo select
+                data.forEach(administracionMed => {
+                  const option2 = document.createElement('option');
+                  option2.value = administracionMed.codAdministracionMed;
+                  option2.textContent = administracionMed.nombreAdministracionMed;
+                  selectElement2.appendChild(option2);
+                });
+
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+        }
+         llenarSelectAdministraciones();
     </script>
 
     <!--script para alertar campos editables-->
@@ -1445,7 +1859,7 @@ function cambiarTabla() {
                 });
             break;
         case "Sintoma":
-            fetch(`http://localhost:8080/sintoma/get-all`, {
+            fetch(`http://localhost:8080/sintoma/get-all-y-bajas`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1470,7 +1884,7 @@ function cambiarTabla() {
                 });
             break;
         case "AM":
-            fetch(`http://localhost:8080/administracionmed/get-all`, {
+            fetch(`http://localhost:8080/administracionmed/get-all-y-bajas`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1495,7 +1909,7 @@ function cambiarTabla() {
                 });
             break;
         case "PM":
-            fetch(`http://localhost:8080/presentacionMed/get-all`, {
+            fetch(`http://localhost:8080/presentacionmed/get-all-y-bajas`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1570,14 +1984,14 @@ function abrirPopup(){
               openDialog("popup-dialog-sintoma");
               break;
         case "AM":
-            
-            break;
+              openDialog("popup-dialog-adminmed");
+              break;
         case "PM":
-           
-            break;
+              openDialog("popup-dialog-presmed");
+              break;
         default:
-            
-            break;
+              openDialog("popup-dialog-med");
+              break;
     }
 
 }
@@ -1600,7 +2014,7 @@ function setearValoresAModificar(id, index){
                nombre.value = fila.cells[6].textContent;
                marca.value = fila.cells[5].textContent;
                if(fila.cells[4].textContent !== "-"){
-               fechaFV.value = fila.cells[4].textContent;
+               fechaFV.value = formatearStringADate(fila.cells[4].textContent);
                }
                break;
         case "Consejo":
@@ -1620,7 +2034,7 @@ function setearValoresAModificar(id, index){
               descripcion.value = fila.cells[5].textContent;
               foto.value = fila.cells[7].textContent;
               if (fila.cells[8].textContent !== "-"){
-                fechaFV.value = fila.cells[8].textContent;
+                fechaFV.value = formatearStringADate(fila.cells[8].textContent);
               }
               tipoConsejo.value = fila.cells[9].textContent;
               break;
@@ -1634,7 +2048,7 @@ function setearValoresAModificar(id, index){
               pregunta.value = fila.cells[3].textContent;
               respuesta.value = fila.cells[4].textContent;
               if (fila.cells[5].textContent !== "-"){
-              fechaFV.value = fila.cells[5].textContent; 
+              fechaFV.value = formatearStringADate(fila.cells[5].textContent);
               }
               break;
         case "Medicion":
@@ -1645,24 +2059,78 @@ function setearValoresAModificar(id, index){
 
               codigo.value = fila.cells[1].textContent;
               if(fila.cells[3].textContent !== "-"){
-                fechaFV.value = fila.cells[3].textContent;
+                fechaFV.value = formatearStringADate(fila.cells[3].textContent);
               }
               nombre.value = fila.cells[4].textContent;
               unidad.value = fila.cells[5].textContent;
               break;
         case "Sintoma":
-            
-            break;
+              var codigo = contenedor.querySelector("#campo_codigo_sintoma_modif");
+              var fechaFV = contenedor.querySelector("#campo_fechaFV_sintoma_modif");
+              var nombre = contenedor.querySelector("#campo_nombre_sintoma_modif");
+
+              codigo.value = fila.cells[1].textContent;
+              if (fila.cells[3].textContent !== "-"){
+                fechaFV.value = formatearStringADate(fila.cells[3].textContent);
+              }
+              nombre.value = fila.cells[4].textContent;
+              break;
         case "AM":
-            
-            break;
+              var codigo = contenedor.querySelector("#campo_codigo_adminmed_modif");
+              var descripcion = contenedor.querySelector("#campo_desc_adminmed_modif");
+              var fechaFV = contenedor.querySelector("#campo_fechaFV_adminmed_modif");
+              var nombre = contenedor.querySelector("#campo_nombre_adminmed_modif");
+
+              codigo.value = fila.cells[1].textContent;
+              descripcion.value = fila.cells[2].textContent;
+              if (fila.cells[4].textContent !== "-"){
+                fechaFV.value = formatearStringADate(fila.cells[4].textContent);
+              }
+              nombre.value = fila.cells[5].textContent;
+              break;
         case "PM":
-           
+              var codigo = contenedor.querySelector("#campo_codigo_presmed_modif");
+              var descripcion = contenedor.querySelector("#campo_desc_presmed_modif");
+              var fechaFV = contenedor.querySelector("#campo_fechaFV_presmed_modif");
+              var nombre = contenedor.querySelector("#campo_nombre_presmed_modif");
+              var admin = contenedor.querySelector("#campo_forma_adm_presmed_modif");
+
+              codigo.value = fila.cells[1].textContent;
+              descripcion.value = fila.cells[2].textContent;
+              if (fila.cells[4].textContent !== "-"){
+                fechaFV.value = formatearStringADate(fila.cells[4].textContent);
+              }
+              nombre.value = fila.cells[5].textContent;
+              admin.value = fila.cells[6].textContent;
             break;
         default:
-            
             break;
     }
+}
+
+function formatearStringADate(dateString){
+  // Divide la cadena en partes (mes, día, año) usando el carácter "/"
+  var dateParts = dateString.split('/');
+
+  // El constructor Date espera argumentos en el orden: año, mes (0-11), día
+  // Por lo tanto, resta 1 al mes para ajustar al formato de JavaScript (0-11)
+  var year = parseInt(dateParts[2]);
+  var month = parseInt(dateParts[0]) - 1;
+  var day = parseInt(dateParts[1]);
+
+  // Crea un objeto Date
+  var date = new Date(year, month, day);
+
+  // Obtiene el año en formato de dos dígitos (yy)
+  var yearInTwoDigits = date.getFullYear();
+
+  // Obtiene el día y el mes con ceros a la izquierda si son menores a 10 (dd-mm)
+  var dayWithLeadingZero = (date.getDate() < 10 ? '0' : '') + date.getDate();
+  var monthWithLeadingZero = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+
+  // Formatea la fecha como "yy-dd-mm"
+  var formattedDate = yearInTwoDigits + '-' + monthWithLeadingZero + '-' + dayWithLeadingZero;
+  return formattedDate;
 }
 
 function editarInstancia(index){
@@ -1686,14 +2154,14 @@ function editarInstancia(index){
               openDialogModificar("popup-dialog-modif-sintoma", index);
               break;
         case "AM":
-            
-            break;
+              openDialogModificar("popup-dialog-modif-adminmed", index);
+              break;
         case "PM":
-           
+              openDialogModificar("popup-dialog-modif-presmed", index);
             break;
         default:
-            
-            break;
+              openDialogModificar("popup-dialog-modif-med", index);
+              break;
     }
 
 }
@@ -1719,7 +2187,6 @@ function sendChangesToServer(changes) {
               })
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
-                console.log('Medicamento guardado con éxito:', data);
                 closeDialog('popup-dialog-med');
                 closeDialog('popup-dialog-modif-med');
                 cambiarTabla();
@@ -1744,7 +2211,6 @@ function sendChangesToServer(changes) {
               })
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
-                console.log('Consejo guardado con éxito:', data);
                 closeDialog('popup-dialog-consejo');
                 closeDialog('popup-dialog-modif-consejo');
                 cambiarTabla();
@@ -1769,7 +2235,6 @@ function sendChangesToServer(changes) {
               })
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
-                console.log('Consejo guardado con éxito:', data);
                 closeDialog('popup-dialog-FAQ');
                 closeDialog('popup-dialog-modif-FAQ');
                 cambiarTabla();
@@ -1794,7 +2259,6 @@ function sendChangesToServer(changes) {
               })
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
-                console.log('Consejo guardado con éxito:', data);
                 closeDialog('popup-dialog-medicion');
                 closeDialog('popup-dialog-modif-medicion');
                 cambiarTabla();
@@ -1819,7 +2283,6 @@ function sendChangesToServer(changes) {
               })
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
-                console.log('Consejo guardado con éxito:', data);
                 closeDialog('popup-dialog-sintoma');
                 closeDialog('popup-dialog-modif-sintoma');
                 cambiarTabla();
@@ -1830,13 +2293,55 @@ function sendChangesToServer(changes) {
               });
             break;
         case "AM":
-            
+            return fetch('http://localhost:8080/administracionmed/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                closeDialog('popup-dialog-adminmed');
+                closeDialog('popup-dialog-modif-adminmed');
+                cambiarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
             break;
         case "PM":
-           
+           return fetch('http://localhost:8080/presentacionMed/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                closeDialog('popup-dialog-presmed');
+                closeDialog('popup-dialog-modif-presmed');
+                cambiarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
+            break;
             break;
         default:
-            
             break;
     }
 }
@@ -1992,7 +2497,104 @@ function crearJSONMedicionModificada(){
   };
   sendChangesToServer(jsonObject);
 }
+
+function crearJSONSintoma(){
+  var fechaActual = new Date();
+  var fechaFV = document.getElementById("campo_fechaFV_sintoma").value;
+  var nombre = document.getElementById("campo_nombre_sintoma").value;
+
+  var jsonObject = {
+    fechaAltaSintoma : fechaActual,
+    fechaFinVigenciaS : fechaFV,
+    nombreSintoma : nombre
+  };
+  sendChangesToServer(jsonObject);
+}
+
+function crearJSONSintomaModificado(){
+  var codigo = document.getElementById("campo_codigo_sintoma_modif").value;
+  var fechaFV = document.getElementById("campo_fechaFV_sintoma_modif").value;
+  var nombre = document.getElementById("campo_nombre_sintoma_modif").value;
+
+  var jsonObject = {
+    codSintoma : codigo,
+    fechaFinVigenciaS : fechaFV,
+    nombreSintoma : nombre
+  };
+  sendChangesToServer(jsonObject);
+}
+
+function crearJSONAdminmed(){
+  var fechaActual = new Date();
+  var fechaFV = document.getElementById("campo_fechaFV_adminmed").value;
+  var nombre = document.getElementById("campo_nombre_adminmed").value;
+  var descripcion = document.getElementById("campo_desc_adminmed").value;
+
+  var jsonObject = {
+    fechaAltaAdministracionMed : fechaActual,
+    fechaFinVigenciaAM : fechaFV,
+    nombreAdministracionMed : nombre,
+    descAdministracionMed : descripcion
+  };
+  sendChangesToServer(jsonObject);
+}
+
+function crearJSONAdminmedModificada(){
+  var codigo = document.getElementById("campo_codigo_adminmed_modif").value;
+  var fechaFV = document.getElementById("campo_fechaFV_adminmed_modif").value;
+  var nombre = document.getElementById("campo_nombre_adminmed_modif").value;
+  var descripcion = document.getElementById("campo_desc_adminmed_modif").value;
+
+  var jsonObject = {
+    codAdministracionMed : codigo,
+    fechaFinVigenciaAM : fechaFV,
+    nombreAdministracionMed : nombre,
+    descAdministracionMed : descripcion
+  };
+  sendChangesToServer(jsonObject);
+}
+
+
+function crearJSONPresmed(){
+  var fechaActual = new Date();
+  var fechaFV = document.getElementById("campo_fechaFV_presmed").value;
+  var nombre = document.getElementById("campo_nombre_presmed").value;
+  var descripcion = document.getElementById("campo_desc_presmed").value;
+  var administracion = document.getElementById("campo_forma_adm_presmed").value;
+
+  var jsonObject = {
+    fechaAltaPresentacionMed : fechaActual,
+    fechaFinVigenciaPM : fechaFV,
+    nombrePresentacionMed : nombre,
+    descPresentacionMed : descripcion,
+    administracionMed : {
+      codAdministracionMed : administracion
+    }
+  };
+  sendChangesToServer(jsonObject);
+}
+
+
+function crearJSONPresmedModificada(){
+  var codigo = document.getElementById("campo_codigo_presmed_modif").value;
+  var fechaFV = document.getElementById("campo_fechaFV_presmed_modif").value;
+  var nombre = document.getElementById("campo_nombre_presmed_modif").value;
+  var descripcion = document.getElementById("campo_desc_presmed_modif").value;
+  var administracion = document.getElementById("campo_forma_adm_presmed_modif").value;
+
+  var jsonObject = {
+    codPresentacionMed : codigo,
+    fechaFinVigenciaPM : fechaFV,
+    nombrePresentacionMed : nombre,
+    descPresentacionMed : descripcion,
+    administracionMed : {
+      codAdministracionMed : administracion
+    }
+  };
+  sendChangesToServer(jsonObject);
+}
   </script>
+
 </body>
 
 </html>
