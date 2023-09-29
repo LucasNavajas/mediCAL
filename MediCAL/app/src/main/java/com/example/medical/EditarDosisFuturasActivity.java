@@ -3,14 +3,18 @@ package com.example.medical;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -106,6 +110,15 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     popupCambiarHora();
+                }
+            });
+        }
+        TextView stockmin = findViewById(R.id.establecer_alerta_inventario);
+        if (stockmin != null) {
+            stockmin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupStockmin();
                 }
             });
         }
@@ -269,15 +282,56 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         });
 
+        EditText indicaciones = findViewById(R.id.indicaciones);
+
+        indicaciones.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Se presionó la tecla "Done" o "Enter" en el teclado
+                    String textoIngresado = indicaciones.getText().toString();
+                    indicaciones.setHint(textoIngresado); // Establece el texto ingresado como hint
+                    indicaciones.setText(""); // Limpia el texto del EditText
+                    indicaciones.clearFocus(); // Desenfoca el EditText para deseleccionarlo
+                    return true; // Indica que el evento ha sido manejado
+                }
+                return false; // Indica que el evento no ha sido manejado
+            }
+        });
+
         desplegableInstrucciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cambiarInstrucciones.getVisibility() == View.GONE) {
-                    desplegableInstrucciones.setImageResource(R.drawable.boton_desplegable_arriba);
+                    // Cambia la visibilidad y la imagen del desplegable
                     cambiarInstrucciones.setVisibility(View.VISIBLE);
+                    desplegableInstrucciones.setImageResource(R.drawable.boton_desplegable_arriba);
+
+                    // Guarda el hint actual antes de cambiarlo
+                    String hintActual = indicaciones.getHint().toString();
+
+                    // Cambia el hint al texto ingresado si no está vacío
+                    String textoIngresado = indicaciones.getText().toString();
+                    if (!textoIngresado.isEmpty()) {
+                        indicaciones.setHint(textoIngresado);
+                        indicaciones.setText(""); // Limpia el texto del EditText
+                        indicaciones.clearFocus(); // Desenfoca el EditText para deseleccionarlo
+                        indicaciones.setCursorVisible(false); // Oculta el cursor de texto
+                    }
+
+                    // Guarda el hint original en una etiqueta invisible
+                    indicaciones.setTag(hintActual);
                 } else {
+                    // Restaura la visibilidad y la imagen del desplegable
                     cambiarInstrucciones.setVisibility(View.GONE);
                     desplegableInstrucciones.setImageResource(R.drawable.boton_desplegable);
+
+                    // Restaura el hint original
+                    String hintOriginal = indicaciones.getTag().toString();
+                    indicaciones.setHint(hintOriginal);
+
+                    // Vuelve a habilitar el cursor de texto
+                    indicaciones.setCursorVisible(true);
                 }
             }
         });
@@ -1318,5 +1372,43 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
     }
 
+    private void popupStockmin() {
+        View popupView = getLayoutInflater().inflate(R.layout.n66_1_numero_inventario, null);
+
+        TextView botonAceptar = popupView.findViewById(R.id.aceptar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setFocusable(true);
+
+        View rootView = findViewById(android.R.id.content);
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        // Agregar un OnDismissListener para ocultar el dimView cuando se cierre el popup
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        // Configura OnClickListener para el botón Aceptar
+
+
+        // Establece OnClickListener para el botón Cancelar
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
 
 }

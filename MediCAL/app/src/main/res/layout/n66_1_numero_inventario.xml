@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <!--titulo-->
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Recordatorio de recarga"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        />
+    <TextView
+        android:id="@+id/subtitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_regular"
+        android:text="¿Cuántas medicinas quiere que queden antes de recibir un recordatorio?"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:id="@+id/cantreal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="5dp"
+        android:hint="Cantidad de stock mínimo"
+        android:inputType="numberDecimal"
+        android:fontFamily="@font/inter_regular"
+        android:textSize="19sp"/>
+
+    <!--botones aceptar y cancelar-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="35dp"
+        >
+
+        <!--boton cancelar-->
+        <TextView
+            android:id="@+id/cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCELAR"
+            android:gravity="center"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="65dp"
+            />
+        <!--boton aceptar-->
+        <TextView
+            android:id="@+id/aceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACEPTAR"
+            android:gravity="center"
+            android:fontFamily="@font/inter_regular"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginStart="65dp"
+            />
+    </LinearLayout>
+    <View
+        android:id="@+id/dim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+</LinearLayout>
+
+
