@@ -5,7 +5,11 @@ import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintomaDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -28,6 +32,26 @@ public class CalendarioSintomaController {
 	@GetMapping("/calendariosintoma/sintoma/{codSintoma}")
 	public List<CalendarioSintoma> getByCodSintoma(@PathVariable int codSintoma){
 		return calendariosintomaDao.findByCodSintoma(codSintoma);
+	}
+	
+	@PostMapping("/calendariosintoma/eliminar")
+	public ResponseEntity<CalendarioSintoma> eliminarCalendarioSintoma(@RequestBody CalendarioSintoma calendariosintoma) {
+	    int codCalendarioSintoma = calendariosintoma.getCodCalendarioSintoma();
+
+	    // Obtén el CalendarioSintoma actual
+	    CalendarioSintoma calendarioSintoma = calendariosintomaDao.findByCodCalendarioSintoma(codCalendarioSintoma);
+
+	    if (calendarioSintoma == null) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+
+	    // Actualiza el atributo fechaFinVigenciaCS con la fecha actual
+	    calendarioSintoma.setFechaFinVigenciaCS(LocalDate.now()); // Usa LocalDate.now() para obtener la fecha actual
+
+	    // Guarda los cambios en la base de datos
+	    calendariosintomaDao.save(calendarioSintoma);
+
+	    return new ResponseEntity<>(calendarioSintoma, HttpStatus.OK);
 	}
 	
 	

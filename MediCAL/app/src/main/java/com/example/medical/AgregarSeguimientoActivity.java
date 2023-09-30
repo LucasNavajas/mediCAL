@@ -55,8 +55,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
     private CalendarioMedicionApi calendarioMedicionApi;
     private RelativeLayout ultimaRelativeLayoutSintoma=null;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +64,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
         paraSacar1.setVisibility(View.VISIBLE);
         paraSacar2.setVisibility(View.VISIBLE);
 
-
         RetrofitService retrofitService = new RetrofitService();
         // Recuperar el objeto calendarioSeleccionado del Intent
         Intent intent1 = getIntent();
@@ -75,141 +72,12 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
 
         // Crear una instancia de la interfaz de la API utilizando Retrofit
         calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
+        // Inicializar las APIs utilizando Retrofit
+        calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
+        calendarioSintomaApi = retrofitService.getRetrofit().create(CalendarioSintomaApi.class);
 
-        // Hacer la llamada a la API para obtener el calendario seleccionado
-        Call<Calendario> call2 = calendarioApi.getByCodCalendario(codCalendario);
-
-        call2.enqueue(new Callback<Calendario>() {
-            @Override
-            public void onResponse(Call<Calendario> call2, Response<Calendario> response) {
-                if (response.isSuccessful()) {
-                    calendarioSeleccionado = response.body();
-                    if (calendarioSeleccionado != null) {
-                        Log.d("MiApp", "Calendario seleccionado encontrado: " + calendarioSeleccionado.getCodCalendario());
-
-                        // Crear una instancia de la interfaz de la API utilizando Retrofit
-                        calendarioSintomaApi = retrofitService.getRetrofit().create(CalendarioSintomaApi.class);
-
-                        // Llamada para obtener todos los CalendarioSintomas que corresponden al codCalendario
-                        Call<List<CalendarioSintoma>> call = calendarioSintomaApi.getByCodCalendarioSintoma(codCalendario);
-
-                        call.enqueue(new Callback<List<CalendarioSintoma>>() {
-                            @Override
-                            public void onResponse(Call<List<CalendarioSintoma>> call, Response<List<CalendarioSintoma>> response) {
-                                if (response.isSuccessful()) {
-                                    List<CalendarioSintoma> calendarioSintomas = response.body();
-                                    Log.d("MiApp", "Tamaño de la lista calendarioSintomas: " + calendarioSintomas.size());
-
-                                    // Ordenar calendarioSintomas por fecha de seguimiento (más reciente primero)
-                                    Collections.sort(calendarioSintomas, new Comparator<CalendarioSintoma>() {
-                                        @Override
-                                        public int compare(CalendarioSintoma cs1, CalendarioSintoma cs2) {
-                                            return cs2.getFechaCalendarioSintoma().compareTo(cs1.getFechaCalendarioSintoma());
-                                        }
-                                    });
-
-
-                                    // Después de obtener la lista de calendarioSintomas
-                                    if (calendarioSintomas != null && !calendarioSintomas.isEmpty()) {
-                                        Set<Integer> codigosSintomasProcesados = new HashSet<>();
-                                        paraSacar1.setVisibility(View.GONE);
-                                        paraSacar2.setVisibility(View.GONE);
-
-                                        for (CalendarioSintoma unCalsintoma : calendarioSintomas) {
-                                            int codSintoma = unCalsintoma.getSintoma().getCodSintoma();
-
-                                            if (!codigosSintomasProcesados.contains(codSintoma)) {
-                                                Log.d("MiApp", "Creando RelativeLayout para el Sintoma: " + codSintoma);
-                                                createRelativeLayoutForSintoma(calendarioSintomas); // Pasar la lista completa
-                                                codigosSintomasProcesados.add(codSintoma);
-                                            }
-                                        }
-                                    } else {
-                                        Log.d("MiApp", "No se encontraron CalendarioSintomas");
-                                    }
-
-
-                                } else {
-                                    Log.d("MiApp", "Error en la solicitud: " + response.message());
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<CalendarioSintoma>> call, Throwable t) {
-                                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
-                            }
-                        });
-
-                        // Crear una instancia de la interfaz de la API utilizando Retrofit
-                        calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
-
-                        // Llamada para obtener todos los CalendarioMedicion que corresponden al codCalendario
-                        Call<List<CalendarioMedicion>> call3 = calendarioMedicionApi.getByCodCalendarioMedicion(codCalendario);
-
-                        call3.enqueue(new Callback<List<CalendarioMedicion>>() {
-                            @Override
-                            public void onResponse(Call<List<CalendarioMedicion>> call3, Response<List<CalendarioMedicion>> response) {
-                                if (response.isSuccessful()) {
-                                    List<CalendarioMedicion> calendarioMediciones = response.body();
-                                    Log.d("MiApp", "Tamaño de la lista calendarioMediciones: " + calendarioMediciones.size());
-
-                                    // Ordenar calendarioMediciones por fecha de seguimiento (más reciente primero)
-                                    Collections.sort(calendarioMediciones, new Comparator<CalendarioMedicion>() {
-                                        @Override
-                                        public int compare(CalendarioMedicion cm1, CalendarioMedicion cm2) {
-                                            return cm2.getFechaCalendarioMedicion().compareTo(cm1.getFechaCalendarioMedicion());
-                                        }
-                                    });
-
-
-                                    // Después de obtener la lista de calendarioMediciones
-                                    if (calendarioMediciones != null && !calendarioMediciones.isEmpty()) {
-                                        Set<Integer> codigosMedicionesProcesadas = new HashSet<>();
-                                        paraSacar1.setVisibility(View.GONE);
-                                        paraSacar2.setVisibility(View.GONE);
-
-                                        for (CalendarioMedicion unaCalMedicion : calendarioMediciones) {
-                                            int codMedicion = unaCalMedicion.getMedicion().getCodMedicion();
-
-                                            if (!codigosMedicionesProcesadas.contains(codMedicion)) {
-                                                Log.d("MiApp", "Creando RelativeLayout para la Medición: " + codMedicion);
-                                                createRelativeLayoutForMedicion(calendarioMediciones); // Pasar la lista completa
-                                                codigosMedicionesProcesadas.add(codMedicion);
-                                            }
-                                        }
-                                    } else {
-                                        Log.d("MiApp", "No se encontraron CalendarioMediciones");
-                                    }
-
-                                } else {
-                                    Log.d("MiApp", "Error en la solicitud: " + response.message());
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<CalendarioMedicion>> call3, Throwable t) {
-                                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
-                            }
-                        });
-
-
-
-                    } else {
-                        Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
-                    }
-                } else {
-                    Log.d("MiApp", "Error en la solicitud: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Calendario> call2, Throwable t) {
-                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
-            }
-        });
-
-
-
+        // Obtener el calendario seleccionado
+        obtenerCalendarioSeleccionado();
 
         Button agregarSeguimientoButton = findViewById(R.id.button_agregarseguimiento);
         agregarSeguimientoButton.setOnClickListener(new View.OnClickListener() {
@@ -253,6 +121,139 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
         }
 
 
+
+    }
+
+    private void obtenerCalendarioSeleccionado() {
+        Call<Calendario> call = calendarioApi.getByCodCalendario(codCalendario);
+        call.enqueue(new Callback<Calendario>() {
+            @Override
+            public void onResponse(Call<Calendario> call, Response<Calendario> response) {
+                if (response.isSuccessful()) {
+                    calendarioSeleccionado = response.body();
+                    if (calendarioSeleccionado != null) {
+                        Log.d("MiApp", "Calendario seleccionado encontrado en MasInfoMedicion: " + calendarioSeleccionado.getCodCalendario());
+                        obtenerCalendarioSintomas();
+                        obtenerCalendarioMediciones();
+                    } else {
+                        Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud en MasInfoMedicion: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<Calendario> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud3: " + t.getMessage());
+            }
+        });
+    }
+
+    private void obtenerCalendarioSintomas(){
+
+        // Llamada para obtener todos los CalendarioSintomas que corresponden al codCalendario
+        Call<List<CalendarioSintoma>> call = calendarioSintomaApi.getByCodCalendarioSintoma(codCalendario);
+
+        call.enqueue(new Callback<List<CalendarioSintoma>>() {
+            @Override
+            public void onResponse(Call<List<CalendarioSintoma>> call, Response<List<CalendarioSintoma>> response) {
+                if (response.isSuccessful()) {
+                    List<CalendarioSintoma> calendarioSintomas = response.body();
+                    Log.d("MiApp", "Tamaño de la lista calendarioSintomas: " + calendarioSintomas.size());
+
+                    // Ordenar calendarioSintomas por fecha de seguimiento (más reciente primero)
+                    Collections.sort(calendarioSintomas, new Comparator<CalendarioSintoma>() {
+                        @Override
+                        public int compare(CalendarioSintoma cs1, CalendarioSintoma cs2) {
+                            return cs2.getFechaCalendarioSintoma().compareTo(cs1.getFechaCalendarioSintoma());
+                        }
+                    });
+
+
+                    // Después de obtener la lista de calendarioSintomas
+                    if (calendarioSintomas != null && !calendarioSintomas.isEmpty()) {
+                        Set<Integer> codigosSintomasProcesados = new HashSet<>();
+                        paraSacar1.setVisibility(View.GONE);
+                        paraSacar2.setVisibility(View.GONE);
+
+                        for (CalendarioSintoma unCalsintoma : calendarioSintomas) {
+                            int codSintoma = unCalsintoma.getSintoma().getCodSintoma();
+
+                            if (!codigosSintomasProcesados.contains(codSintoma)) {
+                                Log.d("MiApp", "Creando RelativeLayout para el Sintoma: " + codSintoma);
+                                createRelativeLayoutForSintoma(calendarioSintomas); // Pasar la lista completa
+                                codigosSintomasProcesados.add(codSintoma);
+                            }
+                        }
+                    } else {
+                        Log.d("MiApp", "No se encontraron CalendarioSintomas");
+                    }
+
+
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CalendarioSintoma>> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+                Log.d("MiApp", "no entra ");
+
+            }
+        });
+    }
+
+    private void obtenerCalendarioMediciones(){
+
+        // Llamada para obtener todos los CalendarioMedicion que corresponden al codCalendario
+        Call<List<CalendarioMedicion>> call3 = calendarioMedicionApi.getByCodCalendarioMedicion(codCalendario);
+
+        call3.enqueue(new Callback<List<CalendarioMedicion>>() {
+            @Override
+            public void onResponse(Call<List<CalendarioMedicion>> call3, Response<List<CalendarioMedicion>> response) {
+                if (response.isSuccessful()) {
+                    List<CalendarioMedicion> calendarioMediciones = response.body();
+                    Log.d("MiApp", "Tamaño de la lista calendarioMediciones: " + calendarioMediciones.size());
+
+                    // Ordenar calendarioMediciones por fecha de seguimiento (más reciente primero)
+                    Collections.sort(calendarioMediciones, new Comparator<CalendarioMedicion>() {
+                        @Override
+                        public int compare(CalendarioMedicion cm1, CalendarioMedicion cm2) {
+                            return cm2.getFechaCalendarioMedicion().compareTo(cm1.getFechaCalendarioMedicion());
+                        }
+                    });
+
+
+                    // Después de obtener la lista de calendarioMediciones
+                    if (calendarioMediciones != null && !calendarioMediciones.isEmpty()) {
+                        Set<Integer> codigosMedicionesProcesadas = new HashSet<>();
+                        paraSacar1.setVisibility(View.GONE);
+                        paraSacar2.setVisibility(View.GONE);
+
+                        for (CalendarioMedicion unaCalMedicion : calendarioMediciones) {
+                            int codMedicion = unaCalMedicion.getMedicion().getCodMedicion();
+
+                            if (!codigosMedicionesProcesadas.contains(codMedicion)) {
+                                Log.d("MiApp", "Creando RelativeLayout para la Medición: " + codMedicion);
+                                createRelativeLayoutForMedicion(calendarioMediciones); // Pasar la lista completa
+                                codigosMedicionesProcesadas.add(codMedicion);
+                            }
+                        }
+                    } else {
+                        Log.d("MiApp", "No se encontraron CalendarioMediciones");
+                    }
+
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CalendarioMedicion>> call3, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
 
     }
 
@@ -372,7 +373,8 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                         Intent intent = new Intent(AgregarSeguimientoActivity.this, MasInfoSintomaActivity.class);
                         intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                         intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
-
+                        intent.putExtra("codCalendarioSintomaid", unCalsintoma.getCodCalendarioSintoma());
+                        intent.putExtra("sintomaid",unCalsintoma.getSintoma().getCodSintoma());
                         // Iniciar la actividad MasInfoSintomaActivity
                         startActivity(intent);
                     }

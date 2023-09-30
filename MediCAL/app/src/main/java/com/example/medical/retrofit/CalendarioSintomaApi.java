@@ -1,6 +1,7 @@
 package com.example.medical.retrofit;
 
 import com.example.medical.model.Calendario;
+import com.example.medical.model.CalendarioMedicion;
 import com.example.medical.model.CalendarioSintoma;
 import com.example.medical.model.Sintoma;
 
@@ -19,6 +20,11 @@ public interface CalendarioSintomaApi {
 
     @GET("/calendariosintoma/calendario/{codCalendario}")
     Call<List<CalendarioSintoma>> getByCodCalendarioSintoma(@Path("codCalendario") int codCalendario);
+    @POST("/calendariosintoma/eliminar")
+    Call<CalendarioSintoma> eliminarCalendarioSintoma(@Body CalendarioSintoma calendarioSintoma);
+
+    @GET("/calendariosintoma/sintoma/{codSintoma}")
+    Call<List<CalendarioSintoma>> getByCodSintoma(@Path("codSintoma") int codSintoma);
 
 
     @POST("/calendariosintoma/save")

@@ -1472,7 +1472,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                                 String mesMedicion = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
                                 mesMedicion = mesMedicion.substring(0, mesMedicion.length() - 1); // Elimina el último carácter (el punto)
                                 mesMedicion = mesMedicion.substring(0, 1).toUpperCase() + mesMedicion.substring(1); // Convierte la primera letra en mayúscula
-                                if (mesMedicion.equalsIgnoreCase(mesInicio) || mesMedicion.equalsIgnoreCase(mesFin)) {
+                                if (mesMedicion.equalsIgnoreCase(mesInicio) || mesMedicion.equalsIgnoreCase(mesFin) && (diaMedicion >= diaFin + 30)) {
                                     // Tanto el día como el mes coinciden con el rango de fechas
                                     // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
                                     RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
