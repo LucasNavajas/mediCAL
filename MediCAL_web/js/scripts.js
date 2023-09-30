@@ -6,6 +6,7 @@
       firebase.auth().signOut().then(function() {
         // Cierre de sesión exitoso
         console.log("Cierre de sesión exitoso");
+        localStorage.removeItem("usuario");
         window.location.href = "n1_inicio_sesion.html";
       }).catch(function(error) {
         // Ocurrió un error durante el cierre de sesión

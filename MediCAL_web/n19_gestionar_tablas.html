@@ -386,6 +386,78 @@
         #popup-dialog-baja .popup-content, #popup-dialog-baja .popup-buttons, #popup-dialog-baja .accept-button {
             order: 2;
         }
+
+
+             #popup-dialog-cerrar-sesion {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+         #popup-dialog-cerrar-sesion h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+         #popup-dialog-cerrar-sesion h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons,  #popup-dialog-cerrar-sesion .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons,  #popup-dialog-cerrar-sesion .accept-button {
+            order: 2;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-buttons{
+          justify-content: center;
+         }
   </style>
 </head>
 
@@ -410,14 +482,14 @@
             </a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="window.location.href='n4_ayuda_y_soporte.html'">
               <i class="bi bi-question-circle"></i>
               Ayuda y soporte
             </a>
           </li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" href="#" onclick="signOut()">
+            <a class="dropdown-item" href="#" onclick="openDialog('popup-dialog-cerrar-sesion')">
               <i class="bi bi-box-arrow-left"></i>
               Cerrar sesión
             </a>
@@ -515,6 +587,17 @@
     </table>
   
   </main>
+
+    <div id="popup-dialog-cerrar-sesion" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea cerrar sesión de esta cuenta?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-cerrar-sesion')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-cerrar-sesion'); signOut();">ACEPTAR</button>
+        </div>
+    </div>
+
 <div id="popup-overlay" class="popup-overlay"></div>
 
     <div id="popup-dialog-baja" class="popup-content">
@@ -1503,64 +1586,11 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="js/firebaseLoginAdminSistema.js"></script>
   <script src="js/scripts.js"></script>
+  <script src="js/scriptsDialogPopup.js"></script>
 
 
 
     <script>
-        // JavaScript aquí
-        function openDialog(id) {
-            var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById(id);
-            overlay.style.display = "block";
-            overlay.style.opacity = "1";
-            dialog.style.display = "block";
-        }
-
-        function openDialogModificar(id, index) {
-            var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById(id);
-            setearValoresAModificar(id, index);
-            overlay.style.display = "block";
-            overlay.style.opacity = "1";
-            dialog.style.display = "block";
-        }
-
-        function openDialogBaja(id, idInstancia, index, esto) {
-          var overlay = document.getElementById("popup-overlay");
-          var dialog = document.getElementById(id);
-          var aceptar = dialog.querySelector(".accept-button");
-          var aceptarNuevo = aceptar.cloneNode(true);
-          aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
-
-          // Define el nuevo controlador de eventos para el botón "aceptar"
-          function handleAceptarClick() {
-              eliminarInstancia(idInstancia);
-              toggleDeleteRow(index, esto);
-          }
-
-          // Agrega el nuevo controlador de eventos
-          aceptarNuevo.addEventListener("click", handleAceptarClick);
-
-          overlay.style.display = "block";
-          overlay.style.opacity = "1";
-          dialog.style.display = "block";
-      }
-
-        function closeDialog(id) {
-            var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById(id);
-            overlay.style.display = "none";
-            overlay.style.opacity = "0";
-            dialog.style.display = "none";
-        }
-
-        function cancelDialog(id) {
-            var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById(id);
-            overlay.style.display = "none";
-            overlay.style.opacity = "0";
-            dialog.style.display = "none";
-        }
 
       function limitarCaracteresConsejo(event) {
             const input = event.target;

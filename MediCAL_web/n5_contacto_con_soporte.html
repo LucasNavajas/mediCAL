@@ -43,14 +43,109 @@
         display: flex;
         justify-content: space-between;
       }
+
+              /* Estilos CSS aquí */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        .popup-content h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .popup-content h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .popup-content .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .popup-content .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .popup-content .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        .popup-content .popup-buttons .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        .popup-content .popup-buttons .accept-button {
+            order: 2;
+        }
+
+        .copiado-mensaje {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: var(--first-color);
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
     </style>
   </head>
   <body>
     <!--Barra de arriba, ícono de configuración y el menú desplegable -->
     <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
       <div class="container-fluid d-flex justify-content-between align-items-center">
-        <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
-          MediCAL | Administrador Institución
+        <a class="navbar-brand" id="tituloPerfil" href="#" style="font-weight: 600; font-size: 12pt;">
+          MediCAL |
         </a>
         <div class="dropdown">
           <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,14 +160,14 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="#" onclick="window.location.href='n4_ayuda_y_soporte.html'">
                 <i class="bi bi-question-circle"></i>
                 Ayuda y soporte
               </a>
             </li>
             <li class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="#" id="cerrar_sesion" onclick="openDialog('popup-dialog-cerrar-sesion')">
                 <i class="bi bi-box-arrow-left"></i>
                 Cerrar sesión
               </a>
@@ -86,7 +181,7 @@
     <main class="pt-5">
     
       <!--flecha atras-->
-      <a href="#" class="btn-back">
+      <a href="javascript:history.back()" class="btn-back">
         <i class="bi bi-arrow-left"></i>
       </a>
       <!--Titulo-->
@@ -106,16 +201,73 @@
         Email: nuestrocomunicacionsoporte@dominio.com
         </p>
         <div class="btn-containerbox">
-          <button type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: auto; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Copiar</button>
-          <button type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: auto; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Contáctenos</button>
+          <button type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: auto; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;" onclick="copiarAlPortapapeles('nuestrocomunicacionsoporte@dominio.com')">Copiar</button>
+          <button type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: auto; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;"><a href="mailto:correo@ejemplo.com" class="btn-contactenos" style="color:white; text-decoration: none; cursor:pointer;">Contactenos</a></button>
         </div>
       </div>
     </main>
 
+    <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog-cerrar-sesion" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea cerrar sesión de esta cuenta?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-cerrar-sesion')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-cerrar-sesion'); signOut();">ACEPTAR</button>
+        </div>
+    </div>
+
+     <div id="copiado-mensaje" class="copiado-mensaje">El correo ha sido copiado al portapapeles</div>
     <script 
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
       crossorigin="anonymous"
     ></script>
+
+        <!--llamo el archivo de javascript-->
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/firebaseLoginAdminSistema.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/scriptsDialogPopup.js"></script>
+    <script>
+        var usuario = localStorage.getItem('usuario');
+
+        // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
+        var usuarioJson = JSON.parse(usuario);
+        var titulo = document.getElementById("tituloPerfil");
+        titulo.textContent = titulo.textContent + " " + usuarioJson.perfil.nombrePerfil
+
+      function mostrarMensajeCopiado() {
+            const mensaje = document.getElementById("copiado-mensaje");
+            mensaje.style.display = "block";
+
+            // Ocultar el mensaje después de 3 segundos (3000 milisegundos)
+            setTimeout(function () {
+                mensaje.style.display = "none";
+            }, 3000);
+        } 
+
+      function copiarAlPortapapeles(texto) {
+  // Verifica si el navegador admite la API Clipboard
+      if (!navigator.clipboard) {
+        console.error("La API Clipboard no está disponible en este navegador.");
+        return;
+      }
+
+      // Usa la API Clipboard para copiar el texto al portapapeles
+      navigator.clipboard.writeText(texto)
+        .then(() => {
+          console.log("Texto copiado al portapapeles correctamente.");
+          mostrarMensajeCopiado();
+        })
+        .catch((error) => {
+          console.error("Error al copiar el texto al portapapeles:", error);
+        });
+    }
+    </script>
   </body>
 </html>
