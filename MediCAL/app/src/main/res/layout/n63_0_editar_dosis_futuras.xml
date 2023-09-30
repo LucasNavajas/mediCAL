@@ -630,7 +630,7 @@
 
                         <EditText
                             android:id="@+id/indicaciones"
-                            android:inputType="textMultiLine"
+                            android:inputType="text"
                             android:maxLength="300"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -682,11 +682,23 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"/>
 
+                    <TextView
+                        android:id="@+id/descripcion_recordatorio_receta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"
+                        android:textSize="19sp"
+                        android:textColor="@color/gris_medical"
+                        android:layout_below="@+id/recordatorio_receta"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"/>
+
                     <LinearLayout
                         android:id="@+id/cambiar_recordatorio_receta"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/recordatorio_receta"
+                        android:layout_below="@+id/descripcion_recordatorio_receta"
                         android:paddingStart="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginEnd="10dp"
@@ -694,13 +706,7 @@
                         android:visibility="gone"
                         >
 
-                        <TextView
-                            android:id="@+id/descripcion_recordatorio_receta"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"
-                            android:textSize="19sp"
-                            android:textColor="@color/black"/>
+
 
                         <Switch
                             android:id="@+id/activar_recordatorio_receta"

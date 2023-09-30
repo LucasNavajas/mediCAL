@@ -2,6 +2,7 @@ package com.example.medical;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -82,7 +83,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(8); // Cambia el número 4 por el codRecordatorio deseado
 
         ImageView btnCerrar = findViewById(R.id.boton_cerrar);
         if (btnCerrar != null) {
@@ -123,7 +124,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             });
         }
     }
-
     private void inicializarBotones() {
         ImageButton desplegableFrecuencia = findViewById(R.id.desplegable_frecuencia);
         TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
@@ -292,12 +292,17 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     String textoIngresado = indicaciones.getText().toString();
                     indicaciones.setHint(textoIngresado); // Establece el texto ingresado como hint
                     indicaciones.setText(""); // Limpia el texto del EditText
-                    indicaciones.clearFocus(); // Desenfoca el EditText para deseleccionarlo
+
+                    // Oculta el teclado virtual
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                     return true; // Indica que el evento ha sido manejado
                 }
                 return false; // Indica que el evento no ha sido manejado
             }
         });
+
 
         desplegableInstrucciones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,10 +344,18 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         desplegableRecarga.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TextView descripcion = findViewById(R.id.descripcion_recordatorio_receta);
                 if (cambiarRecarga.getVisibility() == View.GONE) {
+                    descripcion.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.black));
                     desplegableRecarga.setImageResource(R.drawable.boton_desplegable_arriba);
                     cambiarRecarga.setVisibility(View.VISIBLE);
+                    if (recordatorioRecarga.isChecked()) {
+                        agregarInventario.setVisibility(View.VISIBLE);
+                    } else {
+                        agregarInventario.setVisibility(View.GONE);
+                    }
                 } else {
+                    descripcion.setTextColor(ContextCompat.getColor(EditarDosisFuturasActivity.this, R.color.gris_medical));
                     cambiarRecarga.setVisibility(View.GONE);
                     agregarInventario.setVisibility(View.GONE);
                     desplegableRecarga.setImageResource(R.drawable.boton_desplegable);
@@ -1280,7 +1293,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         EditText textEditConcentracion = popupView.findViewById(R.id.textEdit_Concentracion);
         ImageView botonMenos = popupView.findViewById(R.id.imagen_boton_menos);
         ImageView botonMas = popupView.findViewById(R.id.imagen_boton_mas);
-        textEditConcentracion.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         Spinner concentracionSpinner = popupView.findViewById(R.id.concentracion_spinner);
         ArrayAdapter<String> concentracionAdapter;
@@ -1292,9 +1304,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         // Configura el adaptador para el Spinner
         concentracionSpinner.setAdapter(concentracionAdapter);
 
-        // Establece el valor inicial en el EditText (formato "00.00")
-        float valorInicial = 0.00f;
-        textEditConcentracion.setText(String.format("%05.2f", valorInicial));
 
         PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -1321,10 +1330,17 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         botonMenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float valorActual = Float.parseFloat(textEditConcentracion.getText().toString());
-                if (valorActual > 00.00f) { // Verifica si el valor actual es mayor que 0.00
-                    valorActual -= 01.00f;
-                    textEditConcentracion.setText(String.format("%05.2f", valorActual));
+                if(textEditConcentracion.getText().toString().equals("")){
+                    textEditConcentracion.setText("0.00");
+                }
+                else{
+                    if(Float.parseFloat(textEditConcentracion.getText().toString())<=1) {
+                        textEditConcentracion.setText("0.00");
+                    }
+                    else{
+                        float valorC = Float.parseFloat(textEditConcentracion.getText().toString()) - 1;
+                        textEditConcentracion.setText(Float.toString(valorC));
+                    }
                 }
             }
         });
@@ -1334,17 +1350,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         botonMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtener el valor actual del EditText como una cadena
-                String valorActualStr = textEditConcentracion.getText().toString();
-
-                // Parsear el valor actual a un número decimal (float)
-                float valorActual = Float.parseFloat(valorActualStr);
-
-                // Incrementar el valor en 1.00
-                valorActual += 1.00f;
-
-                // Actualizar el valor del EditText con el nuevo valor formateado
-                textEditConcentracion.setText(String.format("%05.2f", valorActual));
+                if (textEditConcentracion.getText().toString().equals("")) {
+                    textEditConcentracion.setText("1.00");
+                } else {
+                    float valorC = Float.parseFloat(textEditConcentracion.getText().toString()) + 1;
+                    textEditConcentracion.setText(Float.toString(valorC));
+                }
             }
         });
 
