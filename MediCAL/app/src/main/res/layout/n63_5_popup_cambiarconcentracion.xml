@@ -122,30 +122,39 @@
         android:orientation="horizontal"
         >
 
-        <!--boton cancelar-->
-        <TextView
-            android:id="@+id/cancelar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CANCELAR"
-            android:gravity="center"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/verdeTextos"
-            android:textSize="22sp"
-            android:layout_weight="1"
-            />
-        <!--boton aceptar-->
-        <TextView
-            android:id="@+id/aceptar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ACEPTAR"
-            android:gravity="center"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/verdeTextos"
-            android:textSize="22sp"
-            android:layout_weight="1"
-            />
+            android:orientation="horizontal"
+           >
+
+            <TextView
+                android:id="@+id/cancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="CANCELAR"
+                android:textColor="@color/verdeTextos"
+                android:textSize="22sp"
+                android:layout_marginStart="20dp"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:gravity="start"/>
+
+            <TextView
+                android:id="@+id/aceptar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="ACEPTAR"
+                android:textColor="@color/verdeTextos"
+                android:textSize="22sp"
+                android:layout_marginEnd="20dp"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:gravity="end"/>
+
+        </LinearLayout>
     </LinearLayout>
     <View
         android:id="@+id/dim_view"
