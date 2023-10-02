@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -71,7 +72,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private Recordatorio recordatorio;
     private PopupWindow popupWindow;
     private String nombrefrecuencia;
-    private int keyboardHeight = 0;
+    private float cantreal = 0;
+    private float cantaviso = 0;
+    private float cantrealm = 0;
+    private float cantavisom = 0;
 
     @Override
     public void onBackPressed() {
@@ -83,7 +87,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(8); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
 
         ImageView btnCerrar = findViewById(R.id.boton_cerrar);
         if (btnCerrar != null) {
@@ -124,6 +128,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             });
         }
     }
+    private boolean enterPresionado = false;
+
     private void inicializarBotones() {
         ImageButton desplegableFrecuencia = findViewById(R.id.desplegable_frecuencia);
         TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
@@ -303,7 +309,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             }
         });
 
-
         desplegableInstrucciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,6 +345,40 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 }
             }
         });
+
+        EditText editTextcantrealm = findViewById(R.id.cantreal);
+
+        // cuando toque enter
+        editTextcantrealm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Se presionó la tecla "Done" o "Enter" en el teclado
+                    enterPresionado = true;
+                    String textoIngresado = editTextcantrealm.getText().toString().trim();
+
+                    // Verifica si el texto ingresado es igual a "0"
+                    if (textoIngresado.equals("0") || textoIngresado.isEmpty()) {
+                        // Muestra el popup de aviso
+                        // Muestra un mensaje de error si no se ingresa ninguna cantidad
+                        Toast.makeText(getApplicationContext(), "Por favor, ingrese una cantidad válida", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Convierte el texto ingresado a un número decimal (float)
+                        cantrealm = Float.parseFloat(textoIngresado);
+
+                        // Oculta el teclado virtual
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                        // Llama al método procesarValores con las variables de control y el valor ingresado como argumentos
+                        procesarValores(aceptarPresionado, enterPresionado);
+                        return true; // Indica que el evento ha sido manejado
+                    }
+                }
+                return false; // Indica que el evento no ha sido manejado
+            }
+        });
+
 
         desplegableRecarga.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -437,8 +476,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 String radioinstruccion = instruccion.getNombreInstruccion();
                 String descindicacion = instruccion.getDescInstruccion();
                 int codinventario = 0;
-                int cantreal = 0;
-                int cantaviso = 0;
                 if(inventario != null) {
                     codinventario = inventario.getCodInventario();
                     cantreal = inventario.getCantRealInventario();
@@ -467,24 +504,29 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
     }
 
-    private void mostrarInventario(int codinventario, int cantreal, int cantaviso) {
+    private void mostrarInventario(int codinventario, float cantreal, float cantaviso) {
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
         LinearLayout definirInventario = findViewById(R.id.definir_inventario);
         TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
         EditText editTextCantreal = findViewById(R.id.cantreal);
         TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
 
-        if (codinventario != 0) { // Si hay un código de inventario asociado
-            descripcionRecordatorio.setText("Actualmente tiene " + cantreal + " medicamentos. Se le recordará cuando le queden " + cantaviso + " medicamentos"); // Cambia el texto de descripción
-            editTextCantreal.setHint("Cantidad de medicamentos: " + cantreal); // Establece el valor de cantreal
-           textViewCantaviso.setText("Establecer cuando me queden " + cantaviso + " medicamentos"); // Establece el valor de cantaviso
+        // Formatea las cantidades con el formato "#.###"
+        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+        String cantrealFormateada = decimalFormat.format(cantreal);
+        String cantavisoFormateada = decimalFormat.format(cantaviso);
 
+        if (codinventario != 0) {
+            descripcionRecordatorio.setText("Actualmente tiene " + cantrealFormateada + " medicamentos. Se le recordará cuando le queden " + cantavisoFormateada + " medicamentos");
+            editTextCantreal.setHint("Cantidad de medicamentos: " + cantrealFormateada);
+            textViewCantaviso.setText("Establecer cuando me queden " + cantavisoFormateada + " medicamentos");
         } else {
-            descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga"); // Cambia el texto de descripción
-            editTextCantreal.setHint("Cantidad de medicamentos:"); // Establece el valor de cantreal
+            descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga");
+            editTextCantreal.setHint("Cantidad de medicamentos:");
             textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
         }
     }
+
 
     private void mostrarIndicacion(String descindicacion) {
         EditText indicacionEditText = findViewById(R.id.indicaciones); // Cambia a tu ID real
@@ -1390,6 +1432,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
     }
 
+    private boolean aceptarPresionado = false;
+
     private void popupStockmin() {
         View popupView = getLayoutInflater().inflate(R.layout.n66_1_numero_inventario, null);
 
@@ -1419,29 +1463,39 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
         // Establece OnClickListener para el botón Aceptar
+
         botonAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                aceptarPresionado = true; // Se ha presionado el botón "Aceptar"
+
                 // Obtén el valor ingresado en el EditText
                 String cantidadIngresada = editTextCantidad.getText().toString().trim();
 
                 // Verifica si la cantidad ingresada no está vacía
-                if (!cantidadIngresada.isEmpty()) {
-                    // Convierte la cantidad ingresada a un número entero
-                    int cantidad = Integer.parseInt(cantidadIngresada);
+                if (!cantidadIngresada.isEmpty() && !cantidadIngresada.equals("0")) {
+                    // Convierte la cantidad ingresada a un número flotante
+                    float cantavisomValue = Float.parseFloat(cantidadIngresada);
+                    cantavisom = cantavisomValue;
 
-                    // Guarda el valor ingresado en textViewCantaviso
+                    // Formatea el número para evitar mostrar decimales si es un número entero
+                    String cantidadFormateada = new DecimalFormat("#.###").format(cantavisom);
+
+                    // Guarda el valor formateado en textViewCantaviso
                     TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
-                    textViewCantaviso.setText("Establecer cuando me queden " + cantidad + " medicamentos");
+                    textViewCantaviso.setText("Establecer cuando me queden " + cantidadFormateada + " medicamentos");
 
                     // Cierra el popup
                     popupWindow.dismiss();
+                    // Llama al método procesarValores con las variables de control como argumentos
+                    procesarValores(aceptarPresionado, enterPresionado);
                 } else {
                     // Muestra un mensaje de error si no se ingresa ninguna cantidad
                     Toast.makeText(getApplicationContext(), "Por favor, ingrese una cantidad válida", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         // Establece OnClickListener para el botón Cancelar
         botonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -1450,6 +1504,30 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 popupWindow.dismiss();
             }
         });
+    }
+
+    private void procesarValores(boolean aceptarPresionado, boolean enterPresionado) {
+        TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.###"); // Formato para un decimal
+
+        String cantRealmFormatted = decimalFormat.format(cantrealm);
+        String cantAvisomFormatted = decimalFormat.format(cantavisom);
+        String cantRealFormatted = decimalFormat.format(cantreal);
+        String cantAvisoFormatted = decimalFormat.format(cantaviso);
+
+        if (aceptarPresionado && enterPresionado) {
+            // Caso 1: Si se presiona enter y aceptar
+            descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos"); // Cambia el texto de descripción
+        } else if (enterPresionado) {
+            // Caso 2: Si se presiona enter pero no aceptar
+            descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisoFormatted + " medicamentos"); // Cambia el texto de descripción
+        } else if (aceptarPresionado) {
+            // Caso 3: Si se presiona aceptar pero no enter
+            descripcionRecordatorio.setText("Actualmente tiene " + cantRealFormatted +" medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos"); // Cambia el texto de descripción
+        } else {
+            // Caso 4: Si ninguna de las condiciones anteriores se cumple
+        }
     }
 
 
