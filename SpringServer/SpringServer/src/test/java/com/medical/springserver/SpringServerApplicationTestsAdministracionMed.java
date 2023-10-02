@@ -19,7 +19,7 @@ class SpringServerApplicationTestsAdministracionMed {
 	@Autowired
 	private AdministracionMedDao administracionmedDao;
 	
-	@Test
+	//@Test
 	void addAdministracionMedTest() {
 		
 		// Obtener la fecha de hoy

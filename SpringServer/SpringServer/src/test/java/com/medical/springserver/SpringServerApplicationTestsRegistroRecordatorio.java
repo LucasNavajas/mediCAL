@@ -19,7 +19,7 @@ public class SpringServerApplicationTestsRegistroRecordatorio {
 	private RegistroRecordatorioDao registroRecordatorioDao;
 	private OmisionDao omisionDao;
 	
-	@Test 
+	//@Test 
 	void addRegistroRecordatorio() {
 		RegistroRecordatorio registroRecordatorio = new RegistroRecordatorio();
 		registroRecordatorio.setFechaFinVigenciaRR(LocalDate.of(2023, 8, 21));

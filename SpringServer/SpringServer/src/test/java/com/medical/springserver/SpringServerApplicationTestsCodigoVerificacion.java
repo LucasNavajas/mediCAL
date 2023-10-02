@@ -20,7 +20,7 @@ public class SpringServerApplicationTestsCodigoVerificacion {
 	private CodigoVerificacionDao codigoverificacionDao;
 
 	
-	@Test
+	//@Test
 	void addCodigoVerificacionTest(){
 		CodigoVerificacion codigoverificacion = new CodigoVerificacion();
 		

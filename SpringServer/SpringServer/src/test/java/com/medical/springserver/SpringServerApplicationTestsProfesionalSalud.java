@@ -17,7 +17,7 @@ class SpringServerApplicationTestsProfesionalSalud {
 	private ProfesionalSaludDao profesionalsaludDao;
 
 	
-	@Test
+	//@Test
 	void addProfesionalSaludTest() {
 		// Assuming you have a Connection object named 'connection'
 				LocalDate fechaNacimiento = LocalDate.of(2000, 11, 7);

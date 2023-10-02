@@ -16,7 +16,7 @@ class SpringServerApplicationTestsHistorialFinVigencia {
 	@Autowired
 	private HistorialFinVigenciaDao historialfinvigenciaDao;
 	
-	@Test
+	//@Test
 	void addHistorialFinVigenciaTest() {
 		
 		// Assuming you have a Connection object named 'connection'

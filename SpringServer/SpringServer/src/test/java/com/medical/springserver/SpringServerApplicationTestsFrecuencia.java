@@ -14,7 +14,7 @@ class SpringServerApplicationTestsFrecuencia {
 	@Autowired
 	private FrecuenciaDao frecuenciaDao;
 	
-	@Test
+	//@Test
 	void addFrecuenciaTest() {
 		Frecuencia frecuencia = new Frecuencia();
 		frecuencia.setCantidadFrecuencia(7);

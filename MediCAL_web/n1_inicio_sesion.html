@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   <!--Tipografia Fuente:Inter sacada de google fonts-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,7 +208,7 @@
                     </div>
                     <!--Checkbox recordarme y olvide mi contraseña-->
                     <div class="form-row">
-                      <a href="#" style="margin-top: 7px; font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif; color: var(--first-color);">¿Olvidaste tu contraseña?</a>
+                      <a href="#" onclick="openDialog('popup-dialog-reiniciar-email')" style="margin-top: 7px; font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif; color: var(--first-color);">¿Olvidaste tu contraseña?</a>
                     </div>
 
                     <!--boton de ingresar con autenticación de Firebase -->
@@ -330,6 +331,384 @@
             outline: none;
             border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
         }
+
+                /* Estilos CSS aquí */
+
+        #popup-dialog-reiniciar-email .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-reiniciar-email h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-reiniciar-email label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            margin-right: 5px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-reiniciar-email input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        #popup-dialog-reiniciar-email input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-reiniciar-email ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content,  #popup-dialog-reiniciar-email button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .popup-buttons, #popup-dialog-reiniciar-email .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .popup-buttons, #popup-dialog-reiniciar-email .accept-button {
+            order: 2;
+        }
+
+        /* Estilos para la alerta de correo inválido */
+        #popup-dialog-reiniciar-email .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .alert {
+            display: block;
+        }
+
+            #popup-dialog-ingresar-codigo .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-ingresar-codigo h3 {
+            margin-top: 50px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-ingresar-codigo .popup-content, #popup-dialog-ingresar-codigo .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-ingresar-codigo .popup-content,  #popup-dialog-ingresar-codigo button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /*para los campos de texto del codigo de verificacion*/
+        #popup-dialog-ingresar-codigo .verification-input {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin-right: 10px;
+            background-color: var(--sixth-color); /* Cambiar a amarillo */
+            color: var(--fifth-color); /* Color de texto blanco */
+            border: none; /* Sin borde */
+            border-radius: 4px; /* Borde redondeado */
+        }
+
+        #popup-dialog-ingresar-codigo .verification-input::placeholder {
+            color: var(--fifth-color); /* Color de texto del marcador de posición blanco */
+        }
+
+        #popup-dialog-ingresar-codigo .verification-input[type="text"] {
+            /* Estilos para restringir la entrada a solo números */
+            appearance: textfield;
+        }
+
+        /* Estilos para el botón de flecha */
+        #popup-dialog-ingresar-codigo .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #popup-dialog-ingresar-codigo i {
+            vertical-align: middle;
+        }
+
+            #popup-dialog-cambiar-contrasenia {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+        /*boton*/
+         #popup-dialog-cambiar-contrasenia .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Estilos para el botón de flecha */
+         #popup-dialog-cambiar-contrasenia .btn-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+         #popup-dialog-cambiar-contrasenia i {
+            vertical-align: middle;
+        }
+        
+        /*etiquetas e inputs*/
+        /*campos editables*/
+         #popup-dialog-cambiar-contrasenia label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            margin-right: 5px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-top: 50px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .input-group {
+            position: relative;
+            text-align: left;
+        }
+
+         #popup-dialog-cambiar-contrasenia input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 5px;
+            padding-right: 30px; /* Ajusta el espacio para el ícono */
+            text-align: left;
+        }
+
+         #popup-dialog-cambiar-contrasenia input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+         #popup-dialog-cambiar-contrasenia .toggle-password {
+            position: absolute;
+            top: 35%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+         #popup-dialog-cambiar-contrasenia .toggle-password i {
+            font-size: 20px;
+        }
+         #popup-dialog-cambiar-contrasenia .forgot-password-container {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .forgot-password-link {
+            font-weight: normal;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            color: var(--first-color);
+            display: block;
+            margin: 0;
+        }
+
+         #popup-dialog-cambiar-contrasenia .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .popup-buttons button {
+            border: 2px solid #fff;
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+          #popup-dialog-cambiar-contrasenia .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        /* Estilos para la alerta */
+         #popup-dialog-cambiar-contrasenia .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
+
+            #popup-dialog-contrasenia-modificada {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-contrasenia-modificada h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-contrasenia-modificada .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-contrasenia-modificada button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-contrasenia-modificada button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+          
 </style>
   <div id="loading-overlay" class="loading-overlay hidden">
     <!--logo-->
@@ -391,6 +770,75 @@
             <button onclick="closeDialog('popup-dialog-contrasenia')" style="cursor: pointer;">REGRESAR</button>
         </div>
     </div>
+
+    <div id="popup-dialog-reiniciar-email" class="popup-content">
+        <h3>REINICIAR</h3>
+        
+        <!--Campos editables-->
+        <label for="campo_mail">Email</label>
+        <input type="text" id="campo_mail" placeholder="Ingrese la dirección de correo de su cuenta" style="width: 500px">
+        <div id="email-alert" class="alert"></div>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="closeDialog('popup-dialog-reiniciar-email')">CANCELAR</button>
+            <button class="accept-button" onclick="checkEmail()">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-ingresar-codigo" class="popup-content">
+        <a href="#" class="btn-back" onclick="closeDialog('popup-dialog-ingresar-codigo'); openDialog('popup-dialog-reiniciar-email')">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <h3>Ingrese el código de verificación que recibió por correo electrónico.</h3>
+        
+        <!--inputs del codigo de verificacion-->
+        <input type="text" class="verification-input" id="input1" maxlength="1" pattern="[0-9]" inputmode="numeric" required oninput="moveToNextInput(this, 2)">
+        <input type="text" class="verification-input" id="input2" maxlength="1" pattern="[0-9]" inputmode="numeric" required oninput="moveToNextInput(this, 3)">
+        <input type="text" class="verification-input" id="input3"maxlength="1" pattern="[0-9]" inputmode="numeric" required oninput="moveToNextInput(this, 4)">
+        <input type="text" class="verification-input" id="input4" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+        
+
+        <div class="popup-buttons">
+            <button onclick="validarCodigo();" style="cursor: pointer;border: none;margin-bottom: 0px; border-radius: 100px; background-color: var( --second-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">VALIDAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-codigo-invalido" class="popup-content">
+        <h3>Código No Válido.</h3>
+        <h4>El código ingresado no coincide con el código enviado.</h4>
+
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-codigo-invalido')" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-cambiar-contrasenia" class="popup-content">
+        <a href="#" class="btn-back" onclick="closeDialog('popup-dialog-cambiar-contrasenia')">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!--Campos editables-->
+        <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
+        <div class="input-group">
+            <input type="password" id="campo_contrasenia_nueva" placeholder="Contraseña nueva">
+                <i class="toggle-password fas fa-eye" id="eye-icon-nueva"></i>
+        </div>
+        
+        <div id="alert-container"></div> <!-- Contenedor para la alerta -->
+
+        <!--boton de aceptar-->
+        <div class="popup-buttons">
+            <button onclick="validatePassword()" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+      </div>
+
+  <div id="popup-dialog-contrasenia-modificada" class="popup-content">
+        <h3>Contraseña restablecida correctamente.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-contrasenia-modificada')" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!--codigo para ocultar/mostrar contraseña-->
@@ -411,14 +859,30 @@
 <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
 <!-- Firebase Auth (reemplaza los enlaces con las versiones más recientes si es necesario) -->
 <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
-<script>
 
+<script>
+let codigoVerificacion;
+let codUsuarioContrasenia;
+        function moveToNextInput(input, nextInputIndex) {
+            if (input.value.length === input.maxLength) {
+                const nextInput = document.querySelectorAll('.verification-input')[nextInputIndex - 1];
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        }
         function openDialog(id) {
             var overlay = document.getElementById("popup-overlay");
             var dialog = document.getElementById(id);
             overlay.style.display = "block";
             overlay.style.opacity = "1";
             dialog.style.display = "block";
+            var inputElements = dialog.querySelectorAll('input');
+
+            // Itera sobre los elementos y establece su valor en una cadena vacía
+            inputElements.forEach(function(input) {
+                input.value = '';
+            });
         }
 
         function closeDialog(id) {
@@ -428,6 +892,155 @@
             overlay.style.opacity = "0";
             dialog.style.display = "none";
         }
+
+  async function checkEmail() {
+  try {
+    const emailInput = document.getElementById("campo_mail");
+    const email = emailInput.value;
+    const emailAlert = document.getElementById("email-alert");
+
+    const emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
+
+    if (!emailPattern.test(email)) {
+      emailAlert.innerText = "Correo electrónico no válido";
+      return;
+    }
+
+    const response = await fetch(`http://localhost:8080/usuario/mail/${email}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.perfil && (data.perfil.codPerfil === 2 || data.perfil.codPerfil === 3)) {
+      emailAlert.innerText = "";
+
+
+      const resultadoUsuarioSaveResponse = await fetch(`http://localhost:8080/usuario/set-cod-verificacion/${data.codUsuario}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!resultadoUsuarioSaveResponse.ok) {
+        throw new Error('Error de red en la solicitud POST para usuario/save.');
+      }
+
+      const resultadoUsuarioSave = await resultadoUsuarioSaveResponse.json();
+
+      const sendCodigoResponse = await fetch('http://localhost:8080/email/sendCodigo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          to: resultadoUsuarioSave.mailUsuario,
+          codigo: resultadoUsuarioSave.codigoVerificacion.codVerificacion
+        })
+      });
+
+      if (!sendCodigoResponse.ok) {
+        throw new Error('Error en la solicitud POST para email/sendCodigo');
+      }
+      codigoVerificacion = resultadoUsuarioSave.codigoVerificacion.codVerificacion;
+      codUsuarioContrasenia = resultadoUsuarioSave.codUsuario;
+      closeDialog('popup-dialog-reiniciar-email');
+      openDialog('popup-dialog-ingresar-codigo');
+    } else {
+      emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+function validarCodigo() {
+  // Obtener los valores de los 4 inputs
+  var input1 = document.getElementById("input1").value;
+  var input2 = document.getElementById("input2").value;
+  var input3 = document.getElementById("input3").value;
+  var input4 = document.getElementById("input4").value;
+
+  // Concatenar los valores de los inputs para formar la cadena
+  var codigoIngresado = input1 + input2 + input3 + input4;
+
+  // Definir la cadena a la que deseas comparar
+  var codigoEsperado = codigoVerificacion; // Reemplaza con el código esperado
+
+  // Verificar si el código ingresado es igual al código esperado
+  if (codigoIngresado === codigoEsperado) {
+    closeDialog("popup-dialog-ingresar-codigo");
+    openDialog("popup-dialog-cambiar-contrasenia");
+  } else {
+    closeDialog("popup-dialog-ingresar-codigo");
+    openDialog("popup-dialog-codigo-invalido");
+  }
+}
+
+        /*verificar cantidad de caracteres de la contraseña*/
+function validatePassword() {
+    var passwordInput = document.getElementById("campo_contrasenia_nueva");
+    var password = passwordInput.value;
+
+    // Verificar la longitud de la contraseña
+    if (password.length >= 6 && password.length <= 15) {
+        // Realiza la solicitud POST para modificar la contraseña
+        modificarContrasenia(codUsuarioContrasenia, password);
+    } else {
+        // Contraseña no válida, muestra un mensaje de error
+        var errorMessage = document.createElement("div");
+        errorMessage.classList.add("alert");
+        errorMessage.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
+        var alertContainer = document.getElementById("alert-container");
+
+        // Limpia los mensajes de error anteriores y muestra el nuevo mensaje
+        alertContainer.innerHTML = "";
+        alertContainer.appendChild(errorMessage);
+        passwordInput.focus();
+    }
+}
+
+function modificarContrasenia(codUsuario, nuevaContrasenia) {
+    // Define los datos que deseas enviar en la solicitud POST
+
+    // Realiza la solicitud POST utilizando fetch
+    fetch(`http://localhost:8080/usuario/modificarContrasenia/${codUsuario}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: nuevaContrasenia
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            console.log('Contraseña modificada con éxito');
+                    // Contraseña válida, se cierra el diálogo
+            closeDialog('popup-dialog-cambiar-contrasenia');
+            openDialog("popup-dialog-contrasenia-modificada");
+
+        } else {
+            // Ocurrió un error al modificar la contraseña
+            console.error('Error al modificar la contraseña');
+            closeDialog('popup-dialog-cambiar-contrasenia');
+        }
+    })
+    .catch(error => {
+        // Manejar errores de red u otros errores
+        console.error('Error:', error);
+        closeDialog('popup-dialog-cambiar-contrasenia');
+    });
+}
 
   const firebaseConfig = {
     apiKey: "AIzaSyCgcpZYePxoQHoPsQNiJ-Xfk4StvJ8x26g",

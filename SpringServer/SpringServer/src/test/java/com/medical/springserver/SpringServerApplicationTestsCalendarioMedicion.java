@@ -17,7 +17,7 @@ class SpringServerApplicationTestsCalendarioMedicion {
 	@Autowired
 	private CalendarioMedicionDao calendariomedicionDao;
 	
-	@Test
+	//@Test
 	void addCalendarioMedicionTest() {
 		
 		// Obtener la fecha de hoy

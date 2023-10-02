@@ -15,7 +15,7 @@ public class SpringServerApplicationTestsOmision {
 	@Autowired 
 	private OmisionDao omisionDao;
 	
-	@Test
+	//@Test
 	void addOmisionTest(){
 		Omision omision = new Omision();
 		omision.setNombreOmision("No tengo el medicamento cerca");

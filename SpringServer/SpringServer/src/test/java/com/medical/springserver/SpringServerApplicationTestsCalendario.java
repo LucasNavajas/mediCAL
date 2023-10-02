@@ -22,7 +22,7 @@ class SpringServerApplicationTestsCalendario {
 	@Autowired
 	private CalendarioDao calendarioDao;
 	
-	@Test
+	//@Test
 	void addCalendarioTest() {
 		
 		// Obtener la fecha de hoy

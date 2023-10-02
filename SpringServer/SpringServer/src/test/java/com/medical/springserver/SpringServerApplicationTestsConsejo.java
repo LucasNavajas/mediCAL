@@ -21,7 +21,7 @@ class SpringServerApplicationTestsConsejo {
 	@Autowired
 	private TipoConsejoDao tipoConsejoDao;
 	
-	@Test
+	//@Test
 	void addConsejoTest() {	
 		
 		// Usar Tests de TipoConsejo

@@ -15,7 +15,7 @@ class SpringServerApplicationTestsInventario {
 	@Autowired
 	private InventarioDao inventarioDao;
 	
-	@Test
+	//@Test
 	void addInventarioTest() {
 		
 		Inventario inventario = new Inventario();

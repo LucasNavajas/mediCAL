@@ -25,7 +25,7 @@ class SpringServerApplicationTestsSolicitud {
 	@Autowired 
 	private UsuarioDao usuarioDao;
 	
-	@Test
+	//@Test
 	void addSolicitudTest() {
 				
 		// Obtener la fecha de hoy

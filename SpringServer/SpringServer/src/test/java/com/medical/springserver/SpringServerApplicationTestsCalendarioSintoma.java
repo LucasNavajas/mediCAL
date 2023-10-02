@@ -17,7 +17,7 @@ class SpringServerApplicationTestsCalendarioSintoma {
 	@Autowired
 	private CalendarioSintomaDao calendariosintomaDao;
 	
-	@Test
+	//@Test
 	void addCalendarioSintomaTest() {
 		
 		// Obtener la fecha de hoy

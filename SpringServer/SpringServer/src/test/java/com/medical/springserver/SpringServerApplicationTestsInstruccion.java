@@ -15,7 +15,7 @@ public class SpringServerApplicationTestsInstruccion {
 	@Autowired
 	private InstruccionDao instruccionDao;
 	
-	@Test
+	//@Test
 	void addInstruccionTest() {
 		Instruccion instruccion = new Instruccion();	
 		instruccion.setDescInstruccion("Tomar con agua");

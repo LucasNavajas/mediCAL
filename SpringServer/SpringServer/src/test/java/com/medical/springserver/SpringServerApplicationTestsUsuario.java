@@ -157,7 +157,7 @@ class SpringServerApplicationTestsUsuario {
 		admin.setUsuarioUnico("Medical");
 		admin.setMailUsuario("medicalutnfrm@gmail.com");
 		admin.setPerfil(perfilDao.findByCodPerfil(2));
-		usuarioDao.save(admin);
+		usuarioDao.saveConHash(admin);
 	}
 	
 

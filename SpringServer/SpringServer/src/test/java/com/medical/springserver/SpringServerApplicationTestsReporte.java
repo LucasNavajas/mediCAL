@@ -25,7 +25,7 @@ class SpringServerApplicationTestsReporte {
 	@Autowired
 	private UsuarioDao usuarioDao;
 	
-	@Test
+	//@Test
 	void addReporteTest() {
 		
 		

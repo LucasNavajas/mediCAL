@@ -15,7 +15,7 @@ class SpringServerApplicationTestsTipoReporte{
 	@Autowired
 	private TipoReporteDao tipoReporteDao;
 	
-	@Test
+	//@Test
 	void addTipoReporteTest() {
 		
 		

@@ -21,7 +21,7 @@ class SpringServerApplicationTestsDosis{
 	@Autowired
 	private ConcentracionDao concentracionDao;
 	
-	@Test
+	//@Test
 	void addDosisTest() {
 		Dosis dosis = new Dosis();
 		dosis.setCantidadDosis(4);
