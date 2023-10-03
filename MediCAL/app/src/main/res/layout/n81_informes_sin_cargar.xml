@@ -137,7 +137,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_siguiente"
+        android:id="@+id/button_agrega_informe"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="90dp"

@@ -165,7 +165,18 @@
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="0dp">
 
-                        <!-- Lista Informes 1 -->
+                        <!-- Contenido -->
+
+                        <!-- RecyclerView para mostrar la lista de reportes -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/listareportes_recyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+
+                        <!-- Lista Informes Anteriores -->
+                        <!--
                         <RelativeLayout
                             android:id="@+id/lista_informes_1"
                             android:layout_width="match_parent"
@@ -186,8 +197,10 @@
                                 android:text="Hoy, 16 July"
                                 android:textSize="25dp"
                                 android:textStyle="bold" />
+                            -->
 
-                            <!-- Informe 1 -->
+                            <!-- Informe 1 Anterior -->
+                            <!--
                             <RelativeLayout
                                 android:id="@+id/rectangle_informe1"
                                 android:layout_width="match_parent"
@@ -206,8 +219,7 @@
                                     android:layout_marginBottom="20dp"
                                     android:src="@drawable/interrogante" />
 
-                                <!-- nombreTipoReporte sería reemplazado por el nombre
-                                del tipo de reporte mostrado -->
+
                                 <TextView
                                     android:id="@+id/texto_informe1"
                                     android:layout_width="match_parent"
@@ -220,8 +232,7 @@
                                     android:textColor="@color/black"
                                     android:textSize="21dp" />
 
-                                <!-- FechaGenerada sería reemplazado por la fecha en que
-                                se generó el reporte mostrado -->
+
                                 <TextView
                                     android:id="@+id/texto2_informe1"
                                     android:layout_width="match_parent"
@@ -236,9 +247,12 @@
                                     android:textColor="@color/black"
                                     android:textSize="21dp" />
 
-                            </RelativeLayout>
 
-                            <!-- Informe 2 -->
+                            </RelativeLayout>
+                            -->
+
+                            <!-- Informe 2 Anterior -->
+                            <!--
                             <RelativeLayout
                                 android:id="@+id/rectangle_informe2"
                                 android:layout_width="match_parent"
@@ -257,8 +271,7 @@
                                     android:layout_marginBottom="20dp"
                                     android:src="@drawable/interrogante" />
 
-                                <!-- nombreTipoReporte sería reemplazado por el nombre
-                                del tipo de reporte mostrado -->
+
                                 <TextView
                                     android:id="@+id/texto_informe2"
                                     android:layout_width="match_parent"
@@ -271,8 +284,7 @@
                                     android:textColor="@color/black"
                                     android:textSize="21dp" />
 
-                                <!-- FechaGenerada sería reemplazado por la fecha en que
-                                se generó el reporte mostrado -->
+
                                 <TextView
                                     android:id="@+id/texto2_informe2"
                                     android:layout_width="match_parent"
@@ -289,243 +301,14 @@
 
                             </RelativeLayout>
 
-                            <!-- Informe 3 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_informe3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/rectangle_informe2"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp">
-
-                                <ImageView
-                                    android:id="@+id/imagen_informe3"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/interrogante" />
-
-                                <!-- nombreTipoReporte sería reemplazado por el nombre
-                                del tipo de reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto_informe3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_toRightOf="@id/imagen_informe3"
-                                    android:text="NombreTipoReporte"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <!-- FechaGenerada sería reemplazado por la fecha en que
-                                se generó el reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto2_informe3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_below="@id/texto_informe3"
-                                    android:layout_alignLeft="@+id/texto_informe3"
-                                    android:text="FechaGenerada"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                            </RelativeLayout>
-
-
                         </RelativeLayout>
+                        -->
 
-                        <!-- Lista Informes 2 -->
-                        <RelativeLayout
-                            android:id="@+id/lista_informes_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_below="@+id/lista_informes_1"
-                            android:background="@drawable/background_rounded_blanco">
-
-                            <TextView
-                                android:id="@+id/texto_fecha_informes2_1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:text="Ayer, 15 July"
-                                android:textSize="25dp"
-                                android:textStyle="bold" />
-
-                            <!-- Informe 1 de Lista 2 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_informe2_1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/texto_fecha_informes2_1"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp">
-
-                                <ImageView
-                                    android:id="@+id/imagen_informe2_1"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/interrogante" />
-
-                                <!-- nombreTipoReporte sería reemplazado por el nombre
-                                del tipo de reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto_informe2_1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_toRightOf="@id/imagen_informe2_1"
-                                    android:text="NombreTipoReporte"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <!-- FechaGenerada sería reemplazado por la fecha en que
-                                se generó el reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto2_informe2_1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_below="@id/texto_informe2_1"
-                                    android:layout_alignLeft="@+id/texto_informe2_1"
-                                    android:text="FechaGenerada"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                            </RelativeLayout>
-
-                            <!-- Informe 2 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_informe2_2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/rectangle_informe2_1"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp">
-
-                                <ImageView
-                                    android:id="@+id/imagen_informe2_2"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/interrogante" />
-
-                                <!-- nombreTipoReporte sería reemplazado por el nombre
-                                del tipo de reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto_informe2_2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_toRightOf="@id/imagen_informe2_2"
-                                    android:text="NombreTipoReporte"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <!-- FechaGenerada sería reemplazado por la fecha en que
-                                se generó el reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto2_informe2_2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_below="@id/texto_informe2_2"
-                                    android:layout_alignLeft="@+id/texto_informe2_2"
-                                    android:text="FechaGenerada"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                            </RelativeLayout>
-
-                            <!-- Informe 3 -->
-                            <RelativeLayout
-                                android:id="@+id/rectangle_informe2_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/rectangle_informe2_2"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp">
-
-                                <ImageView
-                                    android:id="@+id/imagen_informe2_3"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/interrogante" />
-
-                                <!-- nombreTipoReporte sería reemplazado por el nombre
-                                del tipo de reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto_informe2_3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_toRightOf="@id/imagen_informe2_3"
-                                    android:text="NombreTipoReporte"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                                <!-- FechaGenerada sería reemplazado por la fecha en que
-                                se generó el reporte mostrado -->
-                                <TextView
-                                    android:id="@+id/texto2_informe2_3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_below="@id/texto_informe2_3"
-                                    android:layout_alignLeft="@+id/texto_informe2_3"
-                                    android:text="FechaGenerada"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                            </RelativeLayout>
-
-
-                        </RelativeLayout>
 
                     </RelativeLayout>
 
                     <Button
-                        android:id="@+id/button_agregar_informe"
+                        android:id="@+id/button_agrega_informe"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/contenido"

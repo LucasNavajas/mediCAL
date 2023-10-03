@@ -116,7 +116,7 @@
 
                         <!-- Contenido -->
 
-                        <!-- RecyclerView para mostrar la lista de consejos -->
+                        <!-- RecyclerView para mostrar la lista de inventarios -->
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/listainventarios_recyclerview"
                             android:layout_width="match_parent"
