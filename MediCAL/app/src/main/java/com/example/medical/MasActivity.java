@@ -268,6 +268,7 @@ public class MasActivity extends AppCompatActivity {
                 }
                 nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
                 nombre.setText(usuarioInstance.getUsuarioUnico());
+
             }
 
             @Override

@@ -2,6 +2,7 @@ package com.medical.springserver.model.tiporeporte;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.reporte.Reporte;
 
 import jakarta.persistence.Entity;
@@ -18,6 +19,7 @@ public class TipoReporte {
 	private String nombreTipoReporte;
 	
 	@OneToMany (mappedBy = "tipoReporte")
+	@JsonIgnore
 	private List<Reporte> reportes;
 
 	public int getCodTipoReporte() {

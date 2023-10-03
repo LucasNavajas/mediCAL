@@ -18,10 +18,11 @@ class SpringServerApplicationTestsTipoReporte{
 	//@Test
 	void addTipoReporteTest() {
 		
-		
+		/*
 		TipoReporte tipoReporte = new TipoReporte();
 		tipoReporte.setNombreTipoReporte("Medicamentos consumidos");
 		tipoReporteDao.save(tipoReporte);
+		*/
 		
 		
 	}

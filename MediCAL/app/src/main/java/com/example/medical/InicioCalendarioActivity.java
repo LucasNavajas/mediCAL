@@ -73,7 +73,6 @@ import retrofit2.Response;
 
 
 public class InicioCalendarioActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
-
     private LocalDate selectedDate;
     private Calendario calendarioSeleccionado;
     private TextView nombreCalendario;
@@ -468,23 +467,30 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             });
 
             aplazar.setOnClickListener(view -> {
-                RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
-                registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
-                registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
-                    @Override
-                    public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
-                        popupWindow.dismiss();
-                        popUpAplazar(response.body());
-                    }
+                if (registroRecordatorio.getRecordatorio().getFrecuencia() == null && registroRecordatorio.getFechaTomaEsperada().getHour() == 0 && registroRecordatorio.getFechaTomaEsperada().getMinute() == 0) {
+                    RegistroRecordatorio registroNuevo = new RegistroRecordatorio();
+                    registroNuevo.setRecordatorio(registroRecordatorio.getRecordatorio());
+                    registroRecordatorioApi.save(registroNuevo).enqueue(new Callback<RegistroRecordatorio>() {
+                        @Override
+                        public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
+                            popupWindow.dismiss();
+                            popUpAplazar(response.body());
+                        }
 
-                    @Override
-                    public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
-                        popupWindow.dismiss();
-                        dimView.setVisibility(View.GONE);
-                        Toast.makeText(InicioCalendarioActivity.this, "Error al registrar el aplazo", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<RegistroRecordatorio> call, Throwable t) {
+                            popupWindow.dismiss();
+                            dimView.setVisibility(View.GONE);
+                            Toast.makeText(InicioCalendarioActivity.this, "Error al registrar el aplazo", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else{
+                    popupWindow.dismiss();
+                    popUpAplazar(registroRecordatorio);
+                }
             });
+
 
             // Configurar el OnTouchListener para la vista oscura
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -1609,11 +1615,11 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             if (inventarioAsociado.getCantRealInventario() != null && inventarioAsociado.getCantRealInventario() <= inventarioAsociado.getCantAvisoInventario()) {
                 // Primero comprobar si está vacío o no
                 if (inventarioAsociado.getCantRealInventario() == 0) {
-                    View dimView = findViewById(R.id.dim_view);
+                    View dimView = findViewById(R.id.dim_view_inventario);
                     dimView.setVisibility(View.VISIBLE);
                     popupInventarioVacio(inventarioAsociado);
                 } else {
-                    View dimView = findViewById(R.id.dim_view);
+                    View dimView = findViewById(R.id.dim_view_inventario);
                     dimView.setVisibility(View.VISIBLE);
                     popupInventarioAlerta(inventarioAsociado);
                 }
@@ -1637,7 +1643,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         // Configurar animación para oscurecer el fondo
         View rootView = findViewById(android.R.id.content);
 
-        View dimView = findViewById(R.id.dim_view);
+        View dimView = findViewById(R.id.dim_view_inventario);
         dimView.setVisibility(View.VISIBLE);
 
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
@@ -1697,7 +1703,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         // Configurar animación para oscurecer el fondo
         View rootView = findViewById(android.R.id.content);
 
-        View dimView = findViewById(R.id.dim_view);
+        View dimView = findViewById(R.id.dim_view_inventario);
         dimView.setVisibility(View.VISIBLE);
 
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
