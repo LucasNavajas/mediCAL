@@ -516,7 +516,7 @@
     <div class="container">
       <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
       <div class="button-container">
-          <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+          <button id="eliminarCalendariosBtn" onclick="openDialogBajaTodos('popup-dialog-baja')" class="click-animation btn-eliminar hide">
             Eliminar instancias
           </button>
           <button id="revertInstanciasBtn" onclick="restaurarFilasSeleccionadas()" class="click-animation btn-revert hide">
@@ -1640,26 +1640,31 @@
     <!--script para selector fecha fin vigencia, permitiendo hasta 20 años en adelante -->
     <script> 
         $(document).ready(function() {
-        // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
-        var maxDate = new Date();
-        maxDate.setFullYear(maxDate.getFullYear() + 20);
-        maxDate.setDate(maxDate.getDate());
+            // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
+            var maxDate = new Date();
+            maxDate.setFullYear(maxDate.getFullYear() + 20);
+            maxDate.setDate(maxDate.getDate());
 
-        var minDate = new Date();
-        minDate.setFullYear(minDate.getFullYear());
-        minDate.setDate(minDate.getDate());
+            var minDate = new Date();
+            minDate.setFullYear(minDate.getFullYear());
+            minDate.setDate(minDate.getDate());
 
-        $(".campo_fecha").datepicker({
-            dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
-            changeMonth: true, // Permite cambiar el mes
-            changeYear: true, // Permite cambiar el año
-            yearRange: "0:+30", // Rango de años permitidos
-            minDate: minDate, // Fecha mínima permitida, a partir de la fecha actual
-            maxDate: maxDate, // Fecha máxima permitida (20 años en adelante desde la fecha actual, incluyendo la fecha actual)
-            // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
-            showAnim: "fold"
+            // Selecciona todos los campos de fecha con la clase "campo_fecha"
+            $(".campo_fecha").datepicker({
+                dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
+                changeMonth: true, // Permite cambiar el mes
+                changeYear: true, // Permite cambiar el año
+                yearRange: "0:+30", // Rango de años permitidos
+                minDate: minDate, // Fecha mínima permitida, a partir de la fecha actual
+                maxDate: maxDate, // Fecha máxima permitida (20 años en adelante desde la fecha actual, incluyendo la fecha actual)
+                // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
+                showAnim: "fold"
+            });
+
+            // Agrega la propiedad "readonly" a los campos de fecha
+            $(".campo_fecha").attr("readonly", "readonly");
         });
-    });
+
 
 
         function llenarSelectAdministraciones(){
@@ -2138,30 +2143,7 @@ function setearValoresAModificar(id, index){
     }
 }
 
-function formatearStringADate(dateString){
-  // Divide la cadena en partes (mes, día, año) usando el carácter "/"
-  var dateParts = dateString.split('/');
 
-  // El constructor Date espera argumentos en el orden: año, mes (0-11), día
-  // Por lo tanto, resta 1 al mes para ajustar al formato de JavaScript (0-11)
-  var year = parseInt(dateParts[2]);
-  var month = parseInt(dateParts[0]) - 1;
-  var day = parseInt(dateParts[1]);
-
-  // Crea un objeto Date
-  var date = new Date(year, month, day);
-
-  // Obtiene el año en formato de dos dígitos (yy)
-  var yearInTwoDigits = date.getFullYear();
-
-  // Obtiene el día y el mes con ceros a la izquierda si son menores a 10 (dd-mm)
-  var dayWithLeadingZero = (date.getDate() < 10 ? '0' : '') + date.getDate();
-  var monthWithLeadingZero = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
-
-  // Formatea la fecha como "yy-dd-mm"
-  var formattedDate = yearInTwoDigits + '-' + monthWithLeadingZero + '-' + dayWithLeadingZero;
-  return formattedDate;
-}
 
 function editarInstancia(index){
   var lista = document.getElementById("lista_usuarios");
@@ -2369,7 +2351,6 @@ function sendChangesToServer(changes) {
                 // Manejar errores generales
                 console.error('Error:', error);
               });
-            break;
             break;
         default:
             break;

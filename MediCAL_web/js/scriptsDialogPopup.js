@@ -5,6 +5,18 @@
             overlay.style.display = "block";
             overlay.style.opacity = "1";
             dialog.style.display = "block";
+            var spans = document.querySelectorAll('span[id^="contador"]');
+            for (var i = 0; i < spans.length; i++) {
+                var span = spans[i];
+                // Por ejemplo, puedes establecer el contenido del span en su valor original.
+                span.textContent = "300 caracteres restantes";
+            }
+            var inputElements = dialog.querySelectorAll('input, textarea');
+
+            // Itera sobre los elementos y establece su valor en una cadena vacía
+            inputElements.forEach(function(input) {
+                input.value = '';
+            });
         }
 
         function openDialogModificar(id, index) {
@@ -16,13 +28,44 @@
             dialog.style.display = "block";
         }
 
-        function openDialogBaja(id, idInstancia, index, esto) {
+        function openDialogBajaTodos(id){
           var overlay = document.getElementById("popup-overlay");
           var dialog = document.getElementById(id);
           var aceptar = dialog.querySelector(".accept-button");
           var aceptarNuevo = aceptar.cloneNode(true);
           aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+          function handleAceptarClick() {
+              eliminarCalendariosSeleccionados();
+          }
 
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+        }
+
+        function openDialogBaja(id, idInstancia, index, esto) {
+          var overlay = document.getElementById("popup-overlay");
+          var dialog = document.getElementById(id);
+          var aceptar = dialog.querySelector(".accept-button");
+          var inputElements = dialog.querySelectorAll('input, textarea');
+
+            // Itera sobre los elementos y establece su valor en una cadena vacía
+            inputElements.forEach(function(input) {
+                input.value = '';
+            });
+          var aceptarNuevo = aceptar.cloneNode(true);
+          aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+
+          if(window.location.href == "http://localhost:8081/n22_gestionar_perfiles.html"){
+            function agregarMotivo(){
+              openDialogMotivo('popup-dialog-agregar-motivo', idInstancia, index, esto);
+            }
+            aceptarNuevo.addEventListener("click", agregarMotivo);
+          }
+
+          else{
           // Define el nuevo controlador de eventos para el botón "aceptar"
           function handleAceptarClick() {
               eliminarInstancia(idInstancia);
@@ -31,11 +74,44 @@
 
           // Agrega el nuevo controlador de eventos
           aceptarNuevo.addEventListener("click", handleAceptarClick);
+          }
 
           overlay.style.display = "block";
           overlay.style.opacity = "1";
           dialog.style.display = "block";
       }
+
+        function openDialogMotivo(id, idInstancia, index, esto) {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById(id);
+            var perfil = document.getElementById("campo_perfil");
+            var motivo = document.getElementById("campo_motivo");
+            var spans = document.querySelectorAll('span[id^="contador"]');
+            for (var i = 0; i < spans.length; i++) {
+                var span = spans[i];
+                // Por ejemplo, puedes establecer el contenido del span en su valor original.
+                span.textContent = "300 caracteres restantes";
+            }
+            const tabla = document.querySelector("table");
+            const fila = tabla.rows[index+1];
+            console.log(fila);
+            perfil.value = fila.cells[6].textContent;
+
+            var aceptar = dialog.querySelector("#eliminar-button-motivo");
+            var aceptarNuevo = aceptar.cloneNode(true);
+            function handleAceptarClick() {
+
+              crearJSONPerfilBaja(idInstancia, motivo.value);
+              toggleDeleteRow(index, esto);
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+            aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+        }
 
         function closeDialog(id) {
             var overlay = document.getElementById("popup-overlay");

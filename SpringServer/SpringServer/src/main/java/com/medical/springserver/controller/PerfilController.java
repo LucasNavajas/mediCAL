@@ -30,4 +30,15 @@ public class PerfilController {
 	public Perfil findByCodPerfil(@PathVariable int codPerfil) {
 		return perfilDao.findByCodPerfil(codPerfil);
 	}
+	
+	@PutMapping("/perfil/baja/{codPerfil}")
+	public Perfil bajaPerfil(@PathVariable int codPerfil) {
+	    return perfilDao.bajaPerfil(codPerfil);
+	}
+
+	@PutMapping("/perfil/recuperar/{codPerfil}")
+	public Perfil recuperarPerfil(@PathVariable int codPerfil) {
+	    return perfilDao.recuperarPerfil(codPerfil);
+	}
+
 }

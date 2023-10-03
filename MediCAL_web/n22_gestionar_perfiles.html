@@ -96,6 +96,586 @@
       display: none;
     }
 
+            .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        .popup-content h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .popup-content h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .popup-content .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .popup-content .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .popup-content .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        .popup-content .popup-buttons .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        .popup-content .popup-buttons .accept-button {
+            order: 2;
+        }
+
+            #popup-dialog-alta {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-alta h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-alta label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-alta input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        #popup-dialog-alta input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-alta ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        #popup-dialog-alta select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-alta .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-alta .camp-table td, #popup-dialog-alta .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-alta .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-alta tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-alta tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-alta .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-alta .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    #popup-dialog-alta .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+#popup-dialog-alta .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+#popup-dialog-alta input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+#popup-dialog-alta textarea {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            resize: none; /* Prevent textarea from being resizable */
+        }
+
+
+/* Estilos para el span que contiene los iconos */
+#popup-dialog-alta .input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    #popup-dialog-alta .icon-check,
+    #popup-dialog-alta .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    #popup-dialog-alta .icon-error {
+      color: red;
+    }
+
+/*boton guardar*/
+#popup-dialog-alta .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+
+
+        #popup-dialog-agregar-motivo {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-agregar-motivo h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-agregar-motivo label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-agregar-motivo textarea {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            resize: none; /* Prevent textarea from being resizable */
+        }
+
+        #popup-dialog-agregar-motivo textarea:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-agregar-motivo ::placeholder {
+            color: var(--seventh-color);
+        }
+
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-agregar-motivo .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-agregar-motivo .camp-table td, #popup-dialog-agregar-motivo .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-agregar-motivo .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-agregar-motivo tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-agregar-motivo tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-agregar-motivo .column-one {
+        width: 20%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-agregar-motivo .column-two {
+        width: 80%; /* Anchura de la columna dos */
+        text-align: left;
+        padding: 2px;
+    }
+
+/*boton eliminar*/
+#popup-dialog-agregar-motivo .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+
+
+       #popup-dialog-modif {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+       #popup-dialog-modif h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-modif label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-modif input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        #popup-dialog-modif input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        #popup-dialog-modif select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-modif .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-modif .camp-table td, #popup-dialog-modif .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-modif .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-modif tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-modif tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-modif .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-modif .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    #popup-dialog-modif .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+#popup-dialog-modif .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+#popup-dialog-modif .input-group input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+#popup-dialog-modif textarea {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            resize: none; /* Prevent textarea from being resizable */
+        }
+
+
+/* Estilos para el span que contiene los iconos */
+#popup-dialog-modif .input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    #popup-dialog-modif .icon-check,
+    #popup-dialog-modif .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    #popup-dialog-modif .icon-error {
+      color: red;
+    }
+/*boton guardar*/
+#popup-dialog-modif .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
   </style>
 </head>
 
@@ -120,14 +700,14 @@
             </a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="window.location.href='n4_ayuda_y_soporte.html'">
               <i class="bi bi-question-circle"></i>
               Ayuda y soporte
             </a>
           </li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="openDialog('popup-dialog-cerrar-sesion')">
               <i class="bi bi-box-arrow-left"></i>
               Cerrar sesión
             </a>
@@ -154,13 +734,13 @@
     <div class="container">
       <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
       <div class="button-container">
-          <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+          <button id="eliminarCalendariosBtn" onclick="openDialogBajaTodos('popup-dialog-baja')" class="click-animation btn-eliminar hide">
             Eliminar perfiles
           </button>
           <button id="revertInstanciasBtn" onclick="restaurarFilasSeleccionadas()" class="click-animation btn-revert hide">
             Restablecer perfiles
           </button>
-          <button type="submit" class="click-animation btn-agregar">
+          <button type="submit" class="click-animation btn-agregar" onclick="openDialog('popup-dialog-alta')">
             Agregar perfil
           </button>
       </div>
@@ -211,342 +791,301 @@
             </div>
         </th>
       </tr>
-      <!--fila 1-->
-      <tr>
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td>0001</td>
-        <td>Administrador Institución</td>
-        <td> - </td>
-        <td>02/04/2023</td>
-        <td></td>
-        <td></td>
-        <td>
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(0, this)"></i>
-          </div>
-        </td>
-      </tr>
-      <!--fila 2-->
-      <tr>
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td>0002</td>
-        <td>Enfermero</td>
-        <td> - </td>
-        <td>03/04/2023</td>
-        <td></td>
-        <td></td>
-        <td>
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(1, this)"></i>
-          </div>
-        </td>
-      </tr>
-      <!--fila 3-->
-      <tr>
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td>0003</td>
-        <td>Usuario Particular</td>
-        <td> - </td>
-        <td>05/04/2023</td>
-        <td></td>
-        <td></td>
-        <td>
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(2, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(2, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(2, this)"></i>
-          </div>
-        </td>
-      </tr>
-      <!--fila 4-->
-      <tr>
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td>0004</td>
-        <td>Auxiliar de Enfermería</td>
-        <td> perfil de prueba </td>
-        <td>02/04/2023</td>
-        <td>Eliminado por administrador del sistema</td>
-        <td>03/04/2023</td>
-        <td>
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(3, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(3, this)"></i>
-          </div>
-        </td>
-      </tr>
-      
       
     </table>
   </main>
+<div id="popup-overlay" class="popup-overlay"></div>
+<div id="popup-dialog-alta" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-alta')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Perfil</h3>
+        
+        <table class="camp-table">
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_alta">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_nombre_alta" placeholder="Nombre del perfil" style="width: 100%;" oninput="checkName('campo_nombre_alta', 'username-alert-alta', 30)">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert-alta" class="alert"></div>
+                </td>
+            </tr>
 
+            <tr>
+                <td class="column-one">
+                    <label for="campo_descripcion_alta">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_descripcion_alta" placeholder="Descripción del perfil" style="width: 100%;" oninput="checkName('campo_descripcion_alta', 'username-alert-descripcion-alta', 100)">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert-descripcion-alta" class="alert"></div>
+                </td>
+            </tr>
+
+            <!-- Permite elegir una fecha de fin vigencia en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_alta">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_alta" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" onchange="habilitarMotivo('campo_fechaFV_alta', 'campo_motivo_alta')">
+                </td>
+            </tr>
+            
+            <!-- Permite ingresar un motivo en caso de querer planear su baja, pero puede ser null -->
+            <tr>
+                <td class="column-one">
+                    <label for="campo_motivo_alta">Motivo</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_motivo_alta" disabled placeholder="Escriba el motivo de eliminación del usuario" oninput="limitarCaracteres(event, 'contadorCaracteres_alta')" rows="4" wrap="soft" ></textarea>
+                    <span id="contadorCaracteres_alta" style="display: block; text-align: left; margin-top: 10px;">300 caracteres restantes</span>
+                </td>
+            </tr>
+          
+        </table>
+
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONPerfil();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+<div id="popup-dialog-baja" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea dar la baja a este perfil?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-baja')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-baja')">ACEPTAR</button>
+        </div>
+    </div>
+
+        <div id="popup-dialog-agregar-motivo" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-agregar-motivo')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Eliminar Perfil</h3>
+        
+        <table class="camp-table">
+            <tr>
+                <td class="column-one">
+                    <label for="campo_usuario">Perfil</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_perfil" placeholder="Nombre del Perfil" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_motivo">Motivo</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_motivo" placeholder="Escriba el motivo de eliminación del perfil" oninput="limitarCaracteres(event, 'contadorCaracteres_motivo')" rows="4" wrap="soft"></textarea>
+                    <span id="contadorCaracteres_motivo" style="text-align: left; margin-top: 50px;">300 caracteres restantes</span>
+                </td>
+                
+            </tr>
+            
+        </table>
+<!--boton eliminar-->
+<div class="button-container">
+    <form method="POST">
+      <div class="form-group">
+        <button id="eliminar-button-motivo" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Eliminar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+    <div id="popup-dialog-nombre-perfil" class="popup-content">
+        <h3>El perfil que desea guardar no tiene nombre.</h3>
+        
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-nombre-perfil')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-nombre-perfil')">ACEPTAR</button>
+        </div>
+    </div>
+
+
+    <div id="popup-dialog-modif" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modif')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Perfil</h3>
+        
+        <table class="camp-table">
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_modif">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_nombre_modif" placeholder="Nombre del perfil" style="width: 100%;" oninput="checkName('campo_nombre_modif', 'username-alert-modif', 30)">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_descripcion_modif">Descripción</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_descripcion_modif" placeholder="Descripción del perfil" style="width: 100%;" oninput="checkName('campo_descripcion_modif', 'username-alert-descripcion-modif', 100)">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert-descripcion-modif" class="alert"></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_codigo_modif">Código</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_codigo_modif" placeholder="012 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fechaFV_modif">Fecha Fin Vigencia </label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_fechaFV_modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" onchange="habilitarMotivo('campo_fechaFV_modif', 'campo_motivo_modif')">
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_motivo_modif">Motivo</label>
+                </td>
+                <td class="column-two">
+                    <textarea id="campo_motivo_modif" disabled placeholder="Escriba el motivo de eliminación del usuario" oninput="limitarCaracteres(event, 'contadorCaracteres_modif')" rows="4" wrap="soft"></textarea>
+                    <span id="contadorCaracteres_modif" style="display: block; text-align: left; margin-top: 10px;"></span>
+                </td>
+                
+            </tr>
+          
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONPerfilModificado();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <!-- jQuery UI -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+
+  <!-- Estilos de jQuery UI (si los necesitas) -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="js/firebaseLoginAdminSistema.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/scriptsDialogPopup.js"></script>
   <script>
-    function toggleSearch(index) {
-      var container = document.getElementById('searchContainer' + index);
-      container.classList.toggle('active');
-      var input = container.querySelector('.search-input');
-      if (container.classList.contains('active')) {
-        input.focus();
-      } else {
-        input.value = '';
-        filterTable();
-      }
-    }
 
-   
-    // Función para mostrar la fila como eliminada si existe un motivo o fecha de fin vigencia
-    // No funciona
-    /*    
-    function toggleDeletedRowsVisibility() {
-        // Obtener todas las filas de la tabla
-        const tableRows = document.querySelectorAll('tr');
+$(document).ready(function() {
+    // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
+    var maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 20);
+    maxDate.setDate(maxDate.getDate());
 
-        // Recorrer todas las filas (excluyendo la primera fila de cabecera)
-        for (let i = 1; i < tableRows.length; i++) {
-            const row = tableRows[i];
+    var minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear());
+    minDate.setDate(minDate.getDate());
 
-            // Obtener el contenido de las columnas "Motivo Fin Vigencia" y "Fecha Fin Vigencia"
-            const motivoCell = row.querySelector('.motivo');
-            const fechaFinVigenciaCell = row.querySelector('.fecha-fin-vigencia');
+    // Selecciona todos los campos de fecha con la clase "campo_fecha"
+    $(".campo_fecha").datepicker({
+        dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
+        changeMonth: true, // Permite cambiar el mes
+        changeYear: true, // Permite cambiar el año
+        yearRange: "0:+30", // Rango de años permitidos
+        minDate: minDate, // Fecha mínima permitida, a partir de la fecha actual
+        maxDate: maxDate, // Fecha máxima permitida (20 años en adelante desde la fecha actual, incluyendo la fecha actual)
+        // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
+        showAnim: "fold"
+    });
 
-            // Obtener el texto contenido en las celdas
-            const motivoText = motivoCell.innerText;
-            const fechaFinVigenciaText = fechaFinVigenciaCell.innerText;
+    // Agrega la propiedad "readonly" a los campos de fecha
+    $(".campo_fecha").attr("readonly", "readonly");
+});
 
-            // Verificar si alguna de las celdas contiene algo
-            if (motivoText !== '' || fechaFinVigenciaText !== '') {
-                // Si alguna celda contiene algo, marcamos la fila como "deleted-row"
-                row.classList.add('deleted-row');
+
+        function checkName(idCampo, idAlert, length) {
+            var nameInput = document.getElementById(idCampo);
+            var name = nameInput.value;
+            var nameAlert = document.getElementById(idAlert);
+    
+            if (name.length > length) {
+                nameAlert.innerText = "Ingresar campo en "+ length +" caracteres.";
+                nameInput.value = name.substring(0, length); // Corta el texto hasta los primeros 30 caracteres
             } else {
-                // Si ambas celdas están vacías, asegurémonos de eliminar la clase "deleted-row" si existe.
-                row.classList.remove('deleted-row');
+                nameAlert.innerText = "";
             }
         }
-    }
-    */
-   
 
-    function toggleDeleteButtonVisibility() {
-        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
-        var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
-        eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+  function limitarCaracteres(event, id) {
+            const input = event.target;
+            const maxLength = 300;
+            const currentLength = input.value.length;
+            const remainingChars = maxLength - currentLength;
 
-    }
-
-    function toggleRevertButtonVisibility() {
-        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
-        var revertInstanciasBtn = document.getElementById('revertInstanciasBtn');
-        revertInstanciasBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
-    }
-
-
-
-    function toggleRowSelection(checkbox) {
-        var tableRow = checkbox.closest('tr');
-        if (checkbox.checked) {
-            tableRow.classList.add('clicked');
-        } else {
-            tableRow.classList.remove('clicked');
-        }
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-        toggleDeletedRowsVisibility();
-    }
-
-    function toggleSelectAll() {
-        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
-        var selectAllCheckbox = document.getElementById('selectAll');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = selectAllCheckbox.checked;
-            toggleRowSelection(checkboxes[i]);
-        }
-    }
-
-    
-    
-    // Función para restaurar fila
-    function toggleRestoreRow(row, icon) {
-        var revertIcon= icon;
-        var deleteIcon = revertIcon.previousElementSibling;
-        //var editIcon = deleteIcon.previousElementSibling;
-
-        revertIcon.classList.toggle('hide');
-        deleteIcon.classList.toggle('hide');
-        //editIcon.classList.toggle('hide');
-
-        var tableRow = revertIcon.closest('tr');
-        tableRow.classList.remove('deleted-row');
-
-        var checkbox = tableRow.querySelector('.rowCheckbox');
-        checkbox.style.display = 'inline-block';
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-        toggleDeletedRowsVisibility();
-    }
-    
-    
-    // Función para restaurar varias filas
-    function restaurarFilasSeleccionadas() {
-        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
-        //var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            var checkbox = checkboxes[i];
-            var tableRow = checkbox.closest('tr');
-            var revertIcon = tableRow.querySelector('.revert-icon');
-            var deleteIcon = tableRow.querySelector('.delete-icon');
-            //var editIcon = tableRow.querySelector('.edit-icon');
-
-            deleteIcon.classList.remove('hide');
-            //editIcon.classList.remove('hide');
-            revertIcon.classList.add('hide');
-            tableRow.classList.remove('deleted-row');
-            //checkbox.style.display = 'inline-block';
-        }
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-        toggleDeletedRowsVisibility();
-    }
-
-
-    // Función para eliminar fila
-    function toggleDeleteRow(row, icon) {
-        var deleteIcon = icon;
-        //var editIcon = deleteIcon.previousElementSibling;
-        var revertIcon = deleteIcon.nextElementSibling;
-
-        deleteIcon.classList.toggle('hide');
-        //editIcon.classList.toggle('hide');
-        revertIcon.classList.toggle('hide');
-
-        var tableRow = deleteIcon.closest('tr');
-        tableRow.classList.toggle('deleted-row');
-        tableRow.classList.remove('clicked');
-
-        //var checkbox = tableRow.querySelector('.rowCheckbox');
-        //checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-        toggleDeletedRowsVisibility();
-    }
-    
-
-    // Función para eliminar varias filas
-    function eliminarCalendariosSeleccionados() {
-        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            var checkbox = checkboxes[i];
-            var tableRow = checkbox.closest('tr');
-            var deleteIcon = tableRow.querySelector('.delete-icon');
-            //var editIcon = tableRow.querySelector('.edit-icon');
-            var revertIcon = tableRow.querySelector('.revert-icon');
-
-            deleteIcon.classList.add('hide');
-            //editIcon.classList.add('hide');
-            revertIcon.classList.remove('hide')
-            tableRow.classList.add('deleted-row');
-
-        }
-
-        // Eliminar el fondo gris de las filas eliminadas
-        var deletedRows = document.querySelectorAll('.deleted-row');
-        for (var j = 0; j < deletedRows.length; j++) {
-            deletedRows[j].classList.remove('clicked');
-        }
-        
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-        toggleDeletedRowsVisibility();
-    }
-
-
-    
-
-
-    window.onload = function () {
-        var cells = document.getElementsByTagName('td');
-        for (var i = 0; i < cells.length; i++) {
-            cells[i].addEventListener('click', function () {
-            this.setAttribute('tabindex', '0');
-            this.focus();
-            });
-            cells[i].addEventListener('blur', function () {
-            this.removeAttribute('tabindex');
-            });
-        }
-
-        var inputs = document.getElementsByClassName('search-input');
-        for (var j = 0; j < inputs.length; j++) {
-            inputs[j].addEventListener('input', function () {
-            filterTable();
-            });
-        }
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-        toggleDeletedRowsVisibility();
-    };
-
-    function filterTable() {
-      var table = document.getElementsByTagName('table')[0];
-      var rows = table.getElementsByTagName('tr');
-
-      for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
-        var shouldDisplayRow = true;
-
-        var cells = row.getElementsByTagName('td');
-        for (var j = 1; j < cells.length - 1; j++) { // Start from 1 to skip the checkbox column
-          var cell = cells[j];
-          var searchInput = document.getElementById('search' + (j - 1)); // Adjust the search input index
-
-            if (searchInput) {
-                var searchText = searchInput.value.toUpperCase();
-                var cellText = cell.textContent || cell.innerText;
-
-                // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
-                if (j === 4 && searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
-                // Obtener el valor del campo de fecha
-                var selectedDate = $(searchInput).datepicker('getDate');
-
-                // Formatear la fecha en el formato "dd/mm/yyyy"
-                searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
-                }
-
-                if (cellText.toUpperCase().indexOf(searchText) === -1) {
-                shouldDisplayRow = false;
-                break;
-                }
+            if (remainingChars >= 0) {
+                document.getElementById(id).textContent = remainingChars + ' caracteres restantes';
+            } else {
+                // Si excede el límite, cortamos el texto en 300 caracteres
+                input.value = input.value.slice(0, maxLength);
+                document.getElementById(id).textContent = '0 caracteres restantes';
             }
-            
         }
-
-        row.style.display = shouldDisplayRow ? '' : 'none';
-      }
-    }
-
-   
     // Inicializar el selector de fecha en los campos con clase "datepicker"
     $(document).ready(function () {
       $(".datepicker").datepicker({
@@ -557,6 +1096,179 @@
         filterTable(); // Filtrar la tabla cuando cambie el valor del campo de fecha
       });
     });
+function habilitarMotivo(idFV, idMotivo){
+  // Obtén una referencia a los elementos de entrada
+var fechaFVAltaInput = document.getElementById(idFV);
+var motivoAltaInput = document.getElementById(idMotivo);
+
+  // Verifica si el valor del input "campo_fechaFV_alta" no está vacío
+  if (fechaFVAltaInput.value !== "") {
+    // Si no está vacío, habilita el input "campo_motivo_alta"
+    motivoAltaInput.removeAttribute("disabled");
+  } else {
+    // Si está vacío, deshabilita el input "campo_motivo_alta"
+    motivoAltaInput.setAttribute("disabled", "disabled");
+  }
+
+}
+
+function setearValoresAModificar(id, index){
+  const contenedor = document.getElementById(id);
+  const tabla = document.querySelector("table");
+  const fila = tabla.rows[index+1];
+  var nombre = contenedor.querySelector("#campo_nombre_modif");
+  var descripcion = contenedor.querySelector("#campo_descripcion_modif");
+  var codigo = contenedor.querySelector("#campo_codigo_modif");
+  var fechaFV = contenedor.querySelector("#campo_fechaFV_modif");
+  var motivo = contenedor.querySelector("#campo_motivo_modif");
+
+  codigo.value = fila.cells[1].textContent;
+  descripcion.value = fila.cells[2].textContent;
+  if(fila.cells[4].textContent !== "-"){
+    fechaFV.value = formatearStringADate(fila.cells[4].textContent);
+    motivo.value = fila.cells[5].textContent;
+  }
+  else{
+    fechaFV.value = "";
+    motivo.value = "";
+  }
+  nombre.value = fila.cells[6].textContent;
+
+
+}
+function cargarTabla(){
+    fetch(`http://localhost:8080/perfil/get-all`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                }
+                return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+              })
+              .then(data => {
+                // Hacer algo con los datos de la respuesta
+                console.log(data);
+                reemplazarFilasConJSON(data);
+
+              })
+              .catch(error => {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
+            }
+      cargarTabla();
+      function sendChangesToServer(changes){
+        return fetch('http://localhost:8080/perfil/save', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(changes)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                closeDialog('popup-dialog-alta');
+                closeDialog('popup-dialog-baja');
+                closeDialog('popup-dialog-modif');
+                cargarTabla();
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
+      }
+
+          function openDialogNombreP(id, json) {
+          var overlay = document.getElementById("popup-overlay");
+          var dialog = document.getElementById(id);
+          var aceptar = dialog.querySelector(".accept-button");
+          var aceptarNuevo = aceptar.cloneNode(true);
+          aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+        
+          function handleAceptarClick() {
+              sendChangesToServer(json);
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+      }
+      function editarInstancia(index){
+        openDialogModificar("popup-dialog-modif", index);
+      }
+
+      function crearJSONPerfilBaja(id, motivo){
+        var fechaActual = new Date();
+        var jsonObject = {
+          codPerfil: id,
+          motivoFinVigenciaP: motivo,
+          fechaFinVigenciaP: fechaActual
+
+        };
+        sendChangesToServer(jsonObject);
+
+      }
+
+      function crearJSONPerfil(){
+        fechaActual = new Date();
+        nombre = document.getElementById("campo_nombre_alta").value;
+        descripcion = document.getElementById("campo_descripcion_alta").value;
+        fechaFV = document.getElementById("campo_fechaFV_alta").value;
+        motivo = document.getElementById("campo_motivo_alta").value;
+
+        var jsonObject = {
+          fechaAltaPerfil : fechaActual,
+          descPerfil : descripcion,
+          fechaFinVigenciaP : fechaFV,
+          nombrePerfil : nombre,
+          motivoFinVigenciaP : motivo
+        };
+
+        if(nombre === ""){
+          closeDialog('popup-dialog-alta');
+          openDialogNombreP('popup-dialog-nombre-perfil', jsonObject);
+        }
+        else{
+          sendChangesToServer(jsonObject);
+        }
+      }
+
+      function crearJSONPerfilModificado(){
+        codigo = document.getElementById("campo_codigo_modif").value;
+        nombre = document.getElementById("campo_nombre_modif").value;
+        descripcion = document.getElementById("campo_descripcion_modif").value;
+        fechaFV = document.getElementById("campo_fechaFV_modif").value;
+        motivo = document.getElementById("campo_motivo_modif").value;
+
+        var jsonObject = {
+          codPerfil : codigo,
+          descPerfil : descripcion,
+          fechaFinVigenciaP : fechaFV,
+          nombrePerfil : nombre,
+          motivoFinVigenciaP : motivo
+        };
+
+        if(nombre === ""){
+          closeDialog('popup-dialog-modif');
+          openDialogNombreP('popup-dialog-nombre-perfil', jsonObject);
+        }
+        else{
+          sendChangesToServer(jsonObject);
+        }
+      }
+
   </script>
 
 </body>

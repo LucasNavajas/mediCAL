@@ -462,6 +462,31 @@ function toggleRevertButtonVisibility() {
     function eliminarInstancia(idInstancia){
 
     var lista = document.getElementById("lista_usuarios");
+    if(lista==null){
+      if(window.location.href == "http://localhost:8081/n22_gestionar_perfiles.html"){
+        fetch(`http://localhost:8080/perfil/baja/${idInstancia}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  actualizar(idInstancia, data);
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+      }
+    }
+    else{
     var valorSeleccionado = lista.value;
 
     switch (valorSeleccionado) {
@@ -643,12 +668,38 @@ function toggleRevertButtonVisibility() {
                     
             break;
     }
+  }
 
 }
 
 function recuperarInstancia(idInstancia){
 
     var lista = document.getElementById("lista_usuarios");
+        if(lista==null){
+      if(window.location.href == "http://localhost:8081/n22_gestionar_perfiles.html"){
+        fetch(`http://localhost:8080/perfil/recuperar/${idInstancia}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  actualizar(idInstancia, data);
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+      }
+    }
+    else{
     var valorSeleccionado = lista.value;
 
     switch (valorSeleccionado) {
@@ -830,6 +881,7 @@ function recuperarInstancia(idInstancia){
                     
             break;
     }
+  }
 
 }
 
@@ -875,3 +927,27 @@ function actualizarFila(fila, nuevosDatos) {
   }
 }
 
+function formatearStringADate(dateString){
+  // Divide la cadena en partes (mes, día, año) usando el carácter "/"
+  var dateParts = dateString.split('/');
+
+  // El constructor Date espera argumentos en el orden: año, mes (0-11), día
+  // Por lo tanto, resta 1 al mes para ajustar al formato de JavaScript (0-11)
+  var year = parseInt(dateParts[2]);
+  var month = parseInt(dateParts[0]) - 1;
+  var day = parseInt(dateParts[1]);
+
+  // Crea un objeto Date
+  var date = new Date(year, month, day);
+
+  // Obtiene el año en formato de dos dígitos (yy)
+  var yearInTwoDigits = date.getFullYear();
+
+  // Obtiene el día y el mes con ceros a la izquierda si son menores a 10 (dd-mm)
+  var dayWithLeadingZero = (date.getDate() < 10 ? '0' : '') + date.getDate();
+  var monthWithLeadingZero = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+
+  // Formatea la fecha como "yy-dd-mm"
+  var formattedDate = yearInTwoDigits + '-' + monthWithLeadingZero + '-' + dayWithLeadingZero;
+  return formattedDate;
+}
