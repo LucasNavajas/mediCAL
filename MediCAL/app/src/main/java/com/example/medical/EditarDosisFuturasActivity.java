@@ -2,14 +2,9 @@ package com.example.medical;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -370,8 +365,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                        // Llama al método procesarValores con las variables de control y el valor ingresado como argumentos
-                        procesarValores(aceptarPresionado, enterPresionado);
+                        // Llama al método con las variables de control y el valor ingresado como argumentos
+                        MostrarDescInventario(aceptarPresionado, enterPresionado);
                         return true; // Indica que el evento ha sido manejado
                     }
                 }
@@ -1487,8 +1482,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
                     // Cierra el popup
                     popupWindow.dismiss();
-                    // Llama al método procesarValores con las variables de control como argumentos
-                    procesarValores(aceptarPresionado, enterPresionado);
+                    // Llama al método con las variables de control como argumentos
+                    MostrarDescInventario(aceptarPresionado, enterPresionado);
                 } else {
                     // Muestra un mensaje de error si no se ingresa ninguna cantidad
                     Toast.makeText(getApplicationContext(), "Por favor, ingrese una cantidad válida", Toast.LENGTH_SHORT).show();
@@ -1506,7 +1501,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
     }
 
-    private void procesarValores(boolean aceptarPresionado, boolean enterPresionado) {
+    private void MostrarDescInventario(boolean aceptarPresionado, boolean enterPresionado) {
         TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
 
         DecimalFormat decimalFormat = new DecimalFormat("#.###"); // Formato para un decimal
@@ -1518,13 +1513,27 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         if (aceptarPresionado && enterPresionado) {
             // Caso 1: Si se presiona enter y aceptar
-            descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos"); // Cambia el texto de descripción
+            descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos."); // Cambia el texto de descripción
         } else if (enterPresionado) {
-            // Caso 2: Si se presiona enter pero no aceptar
-            descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisoFormatted + " medicamentos"); // Cambia el texto de descripción
+            // Caso 2: Si se presiona enter pero no aceptar osea cambia la cant real
+            if (!cantAvisoFormatted.equals("0")) {
+                // Si cantAvisoFormatted no es igual a "0", muestra el mensaje original
+                descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisoFormatted + " medicamentos."); // Cambia el texto de descripción
+            } else {
+                // Si cantAvisoFormatted es igual a "0", muestra un mensaje indicando que se debe elegir una cantidad de aviso
+                descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos.\nEstablezca la cantidad de stock mínimo."); // Cambia el texto de descripción
+            }
         } else if (aceptarPresionado) {
             // Caso 3: Si se presiona aceptar pero no enter
-            descripcionRecordatorio.setText("Actualmente tiene " + cantRealFormatted +" medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos"); // Cambia el texto de descripción
+
+            //
+            if (!cantRealFormatted.equals("0")) {
+                // Si cantRealFormatted no es igual a "0", muestra el mensaje original
+                descripcionRecordatorio.setText("Actualmente tiene " + cantRealFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos."); // Cambia el texto de descripción
+            } else {
+                // Si cantRealFormatted es igual a "0", muestra un mensaje indicando que se debe elegir una cantidad real
+                descripcionRecordatorio.setText("Establezca la cantidad actual de medicamentos.\nSe le recordará cuando le queden " + cantAvisomFormatted + " medicamentos."); // Cambia el texto de descripción
+            }
         } else {
             // Caso 4: Si ninguna de las condiciones anteriores se cumple
         }
