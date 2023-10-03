@@ -128,7 +128,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private TextView perfilUsuario;
     private int codCalendarioseleccionado;
     public boolean notificacionActiva = false;
-    public boolean notificacionInventario = false;
+    public int notificacionInventario = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -816,10 +816,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 allRegistros = response.body();
                 setView();
                 progressBar.setVisibility(View.GONE);
-                if (notificacionInventario==false) {
-                    View dimView = findViewById(R.id.dim_view);
-                    dimView.setVisibility(View.GONE);
-                }
+                View dimView = findViewById(R.id.dim_view);
+                dimView.setVisibility(View.GONE);
                 loadNotificaciones(codCalendarioseleccionado);
             }
 
@@ -1631,7 +1629,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popupInventarioAlerta(Inventario inventario) {
-        notificacionInventario = true;
+        notificacionInventario++;
         View popupView = getLayoutInflater().inflate(R.layout.n88_1_popup_recordatorio_existencias, null);
 
         // Crear la instancia de PopupWindow
@@ -1684,14 +1682,17 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                dimView.setVisibility(View.GONE);
+                notificacionInventario--;
+                if (notificacionInventario == 0) {
+                    dimView.setVisibility(View.GONE);
+                }
             }
         });
     }
 
 
     private void popupInventarioVacio(Inventario inventario) {
-        notificacionInventario = true;
+        notificacionInventario++;
         View popupView = getLayoutInflater().inflate(R.layout.n88_3_popup_inventario_vacio, null);
 
         // Crear la instancia de PopupWindow
@@ -1752,7 +1753,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                dimView.setVisibility(View.GONE);
+                notificacionInventario--;
+                if (notificacionInventario == 0) {
+                    dimView.setVisibility(View.GONE);
+                }
             }
         });
     }

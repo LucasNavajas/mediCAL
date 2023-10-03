@@ -14,7 +14,12 @@
   <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
   <!--referencio el archivo de estilos-->
-  <link rel="stylesheet" href="css/style.css"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="css/style.css" />
+      <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
   <!--Iconito de la pestaña-->
   <link rel="icon" href="img/Icono_MediCAL_Web.png">
   <style>
@@ -188,6 +193,181 @@
             order: 2;
         }
 
+
+
+        #popup-dialog-editar-perfil {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-editar-perfil h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-editar-perfil label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-editar-perfil input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        #popup-dialog-editar-perfil input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        #popup-dialog-editar-perfil select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-editar-perfil .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-editar-perfil .camp-table td, #popup-dialog-editar-perfil .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-editar-perfil .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-editar-perfil tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-editar-perfil tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-editar-perfil .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-editar-perfil .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    #popup-dialog-editar-perfil .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+#popup-dialog-editar-perfil .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+#popup-dialog-editar-perfil .input-group input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+/* Estilos para el span que contiene los iconos */
+#popup-dialog-editar-perfil .input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    #popup-dialog-editar-perfil .icon-check,
+    #popup-dialog-editar-perfil .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    #popup-dialog-editar-perfil .icon-error {
+      color: red;
+    }
+/*boton guardar*/
+#popup-dialog-editar-perfil .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
 </style>
   
 </head>
@@ -195,7 +375,7 @@
 <!--Barra de arriba, ícono de configuración y el menú desplegable -->
   <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+      <a class="navbar-brand" href="#" onclick="window.location.href='n18_pantalla_principal_admin_sistema.html'" style="font-weight: 600; font-size: 12pt;">
         MediCAL | Administrador del Sistema
       </a>
       <div class="dropdown">
@@ -205,7 +385,7 @@
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
           <!--opciones del dropdown-->
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="openDialogModificar('popup-dialog-editar-perfil', 0)">
               <i class="bi bi-pencil-square"></i>
               Editar perfil
             </a>
@@ -267,6 +447,143 @@
         </div>
     </div>
 
+    <div id="popup-dialog-editar-perfil" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-editar-perfil')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Editar Usuario</h3>
+        
+        <table class="camp-table">
+            <tr>
+                <td class="column-one">
+                    <label for="campo_usuario">Usuario</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_usuario" placeholder="Usuarioejemplo123" style="width: 100%;" oninput="checkUsername()">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre">Nombre del Usuario</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre" placeholder="Nombre usuario" style="width: 100%;" oninput="checkName()">
+                    <div id="name-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_apellido">Apellido del Usuario</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_apellido" placeholder="Apellido usuario" style="width: 100%; text-align: left;" oninput="checkLastName()">
+                    <div id="lastname-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_genero">Género</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_genero">
+                            <option value="" disabled selected>Seleccionar género</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="No binario">No binario</option>
+                            <option value="Agenero">Agénero</option>
+                            <option value="Bigenero">Bigénero</option>
+                            <option value="Hombre Trans">Hombre Trans</option>
+                            <option value="Mujer Trans">Mujer Trans</option>
+                            <option value="Queer">Queer</option>
+                            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_email">Dirección de correo electrónico</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_email" placeholder="correoejemplo@dominio.com" style="width: 100%;" oninput="checkEmail()">
+                    <div id="email-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_telefono">Teléfono</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_telefono" placeholder="0000000000" style="width: 100%;" oninput="checkPhone()">
+                    <div id="phone-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fnacimiento">Fecha de nacimiento</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fnacimiento" class="campo_fecha" placeholder="Seleccione la fecha de nacimiento" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_contraseña">Contraseña</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_contraseña" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña()">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="contraseña-alert" class="alert"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+
+                </td>
+                <td class="column-two">
+                    <div class="row form-group">
+                        <a onclick="openPopup()" style="text-align:left; margin:15px 5px;font-weight: normal;font-size: 18px;font-family: 'Inter', sans-serif; color: var(--first-color);">Restablecer contraseña</a>
+                      </div>
+                </td>
+            </tr>
+
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javaScript:modificarUsuarioAdmin();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
   <!--Pie de pagina-->
   <footer class="footer-bg">
     <div class="container text-center">
@@ -281,12 +598,60 @@
   <script src="js/scripts.js"></script>
   <script src="js/scriptsDialogPopup.js"></script>
   <script>
-    // Para recuperar el objeto JSON de sessionStorage más tarde
+    $(document).ready(function() {
+            // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
+            var maxDate = new Date();
+            maxDate.setFullYear(maxDate.getFullYear() + 20);
+            maxDate.setDate(maxDate.getDate());
+
+            var minDate = new Date();
+            minDate.setFullYear(minDate.getFullYear());
+            minDate.setDate(minDate.getDate());
+
+            // Selecciona todos los campos de fecha con la clase "campo_fecha"
+            $(".campo_fecha").datepicker({
+                dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
+                changeMonth: true, // Permite cambiar el mes
+                changeYear: true, // Permite cambiar el año
+                yearRange: "0:+30", // Rango de años permitidos
+                minDate: minDate, // Fecha mínima permitida, a partir de la fecha actual
+                maxDate: maxDate, // Fecha máxima permitida (20 años en adelante desde la fecha actual, incluyendo la fecha actual)
+                // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
+                showAnim: "fold"
+            });
+
+            // Agrega la propiedad "readonly" a los campos de fecha
+            $(".campo_fecha").attr("readonly", "readonly");
+                // Para recuperar el objeto JSON de sessionStorage más tarde
+        });
+
     var usuario = localStorage.getItem('usuario');
 
     // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
     var usuarioJson = JSON.parse(usuario);
     document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
+
+    function setearValoresAModificar(id, index){
+      const contenedor = document.getElementById(id);
+      var usuarioUnico = contenedor.querySelector("#campo_usuario");
+      var nombreUsuario = contenedor.querySelector("#campo_nombre");
+      var apellido = contenedor.querySelector("#campo_apellido");
+      var mail = contenedor.querySelector("#campo_email");
+      var fechaNac = contenedor.querySelector("#campo_fnacimiento");
+      var contrasenia = contenedor.querySelector("#campo_contraseña");
+      var telefono = contenedor.querySelector("#campo_telefono");
+      var genero = contenedor.querySelector("#campo_genero");
+
+      usuarioUnico.value = usuarioJson.usuarioUnico;
+      nombreUsuario.value = usuarioJson.nombreUsuario;
+      apellido.value = usuarioJson.apellidoUsuario;
+      mail.value = usuarioJson.mailUsuario;
+      fechaNac.value = usuarioJson.fechaNacimientoUsuario;
+      telefono.value = usuarioJson.telefonoUsuario;
+      if(usuarioJson.generoUsuario!== null){
+        genero.value=usuarioJson.generoUsuario;
+      }
+    }
 
   </script>
 </body>
