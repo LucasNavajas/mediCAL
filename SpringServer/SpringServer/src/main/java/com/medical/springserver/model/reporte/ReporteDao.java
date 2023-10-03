@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.inventario.Inventario;
+
 @Service
 public class ReporteDao {
 	@Autowired
@@ -21,6 +23,10 @@ public class ReporteDao {
 	    List<Reporte> reporte = new ArrayList<>();
 	    streamableReporte.forEach(reporte::add);
 	    return reporte;
+	}
+	
+	public List<Reporte> findByCodUsuario(int codUsuario) {
+		return repository.findByCodUsuario(codUsuario);
 	}
 	
 	public void delete(Reporte reporte) {

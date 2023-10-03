@@ -1,7 +1,6 @@
 package com.medical.springserver.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import com.medical.springserver.model.inventario.Inventario;
 import com.medical.springserver.model.reporte.Reporte;
 import com.medical.springserver.model.reporte.ReporteDao;
 
@@ -26,4 +25,10 @@ public class ReporteController {
 	public Reporte save(@RequestBody Reporte reporte){
 		return reporteDao.save(reporte);
 	}
+	
+	@GetMapping("/reporte/usuario/{codUsuario}")
+	public List<Reporte> getByCodUsuario(@PathVariable int codUsuario) {
+	    return reporteDao.findByCodUsuario(codUsuario);
+	}
+	
 }

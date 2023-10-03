@@ -1,7 +1,6 @@
 package com.medical.springserver.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import com.medical.springserver.model.reporte.Reporte;
 import com.medical.springserver.model.tiporeporte.TipoReporte;
 import com.medical.springserver.model.tiporeporte.TipoReporteDao;
 
@@ -26,4 +25,10 @@ public class TipoReporteController {
 	public TipoReporte save(@RequestBody TipoReporte tipoReporte){
 		return tipoReporteDao.save(tipoReporte);
 	}
+	
+	@GetMapping("/tipoReporte/reporte/{nroReporte}")
+	public TipoReporte getByNroReporte(@PathVariable int nroReporte) {
+	    return tipoReporteDao.findByNroReporte(nroReporte);
+	}
+	
 }

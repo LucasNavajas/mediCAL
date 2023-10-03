@@ -21,5 +21,4 @@ public interface ReporteApi {
     @GET("/reporte/usuario/{codUsuario}")
     Call<List<Reporte>>getByCodUsuario(@Path("codUsuario") int codUsuario);
 
-
 }

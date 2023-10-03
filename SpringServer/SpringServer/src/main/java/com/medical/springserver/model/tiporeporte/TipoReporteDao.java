@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.reporte.Reporte;
+
 @Service
 public class TipoReporteDao {
 	@Autowired
@@ -21,6 +23,10 @@ public class TipoReporteDao {
 	    List<TipoReporte> tipoReporte = new ArrayList<>();
 	    streamableTipoReporte.forEach(tipoReporte::add);
 	    return tipoReporte;
+	}	
+	
+	public TipoReporte findByNroReporte(int nroReporte) {
+		return repository.findByNroReporte(nroReporte);
 	}
 	
 	public void delete(TipoReporte tipoReporte) {

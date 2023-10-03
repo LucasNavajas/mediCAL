@@ -61,10 +61,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     // Biblioteca para crear archivos de Excel
-    implementation 'org.apache.poi:poi:5.0.0'
-    implementation 'org.apache.poi:poi-ooxml:5.0.0'
-
-
-
+    //implementation 'org.apache.poi:poi:5.0.0'
+    //implementation 'org.apache.poi:poi-ooxml:5.0.0'
 
 }

@@ -72,11 +72,15 @@ public class InformesActivity extends AppCompatActivity {
         codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
         codCalendarioSeleccionado = intent1.getIntExtra("calendarioSeleccionadoid", 0);
 
-        agregarInforme.setOnClickListener(view ->{
-            agregarInformeNuevo();
+        agregarInforme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InformesActivity.this, GenerarReporteActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+                startActivity(intent);
+            }
         });
-
-
 
 
         OnDataLoadedListener onDataLoadedListener = new OnDataLoadedListener() {
@@ -201,8 +205,14 @@ public class InformesActivity extends AppCompatActivity {
                 Toast.makeText(InformesActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
             }
 
-            agregarInforme.setOnClickListener(view -> {
-                agregarInformeNuevo();
+            agregarInforme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(InformesActivity.this, GenerarReporteActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+                    startActivity(intent);
+                }
             });
 
             botonVolver.setOnClickListener(new View.OnClickListener() {
@@ -214,11 +224,6 @@ public class InformesActivity extends AppCompatActivity {
         }
     }
 
-
-    private void agregarInformeNuevo() {
-        // Falta
-
-    }
 
     @SuppressLint("WrongViewCast")
     private void inicializarVariables () {
