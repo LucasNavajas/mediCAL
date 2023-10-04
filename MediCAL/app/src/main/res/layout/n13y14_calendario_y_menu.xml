@@ -348,6 +348,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/seccionmedicamentos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -355,6 +356,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp">
                 <ImageButton
+                    android:id="@+id/seccionmedicamentosimagen"
                     android:layout_width="40dp"
                     android:layout_height="50dp"
                     android:src="@drawable/pastilla"

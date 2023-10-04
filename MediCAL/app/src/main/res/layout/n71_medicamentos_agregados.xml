@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    tools:context=".MedicamentosActivity"
+    android:background="@drawable/background"
+    tools:openDrawer="start">
 
+    <!-- Contenido Principal -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/cabecera">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/menu_button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/user_blanco"
-        android:padding="8dp"
-        android:clickable="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="Abrir menú"
-        />
+        <ImageView
+            android:id="@+id/menu_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/user_blanco"
+            android:padding="8dp"
+            android:clickable="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="Abrir menú"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,307 +42,413 @@
             android:layout_alignTop="@id/menu_button"
             android:layout_alignBottom="@id/menu_button"
             android:fontFamily="@font/inter_medium"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            tools:ignore="DuplicateIds" />
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gris"
+            android:layout_marginTop="120dp"
+            android:layout_above="@+id/botones">
+
+
+            <RelativeLayout
+                android:id="@+id/recordatoriosaca"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gris"
+                android:layout_centerHorizontal="true" />
+
+            <!--Scroll de todo el contenido del rectangulo blanco-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/contenido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Contenido -->
+
+                    <!-- RecyclerView para mostrar la lista de recordartorios -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listarecordatorios_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/nombre_usuario" />
+
+
+                </LinearLayout>
+            </ScrollView> <!--Fin del scroll-->
+
+        </RelativeLayout>
+
+        <!-- Botones Inferiores -->
+        <LinearLayout
+            android:id="@+id/botones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+
+            <LinearLayout
+                android:id="@+id/inicio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:id="@+id/imageninicio"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/casa_inicio"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inicio"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:id="@+id/imagenconsejos"
+                    android:layout_width="45dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/consejos"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consejos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/medicamentos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:id="@+id/medicamentosImagen"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/pastilla"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicamentos"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:id="@+id/masimagen"
+                    android:layout_width="48dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/mas"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitCenter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Más"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/inter_regular"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
-    <ScrollView
+
+    <View
+        android:id="@+id/dim_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/cabecera"
-        android:background="@color/white"
-        android:layout_above="@id/botones">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+        android:background="#99000000"
+        android:visibility="gone"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medicamentos activos"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="@color/verdeTextos"
-                android:textSize="26sp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"/>
-
-            <RelativeLayout
-                android:id="@+id/medicamento1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:id="@+id/nombre_medicamento1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NombreMedicamento"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/black"
-                    android:textSize="21sp"/>
-                <TextView
-                    android:id="@+id/concentracion_medicamento1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="concentr."
-                    android:layout_toEndOf="@+id/nombre_medicamento1"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-                <TextView
-                    android:id="@+id/proximo_recordatorio_medicamento1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Próximo recordatorio:"
-                    android:layout_below="@+id/nombre_medicamento1"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-
-                <TextView
-                    android:id="@+id/inventario_medicamento1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quedan xx presentación"
-                    android:layout_below="@+id/proximo_recordatorio_medicamento1"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/inventario_medicamento1"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/gris" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/medicamento2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:id="@+id/nombre_medicamento2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NombreMedicamento"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/black"
-                    android:textSize="21sp"/>
-                <TextView
-                    android:id="@+id/concentracion_medicamento2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="concentr."
-                    android:layout_toEndOf="@+id/nombre_medicamento2"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-                <TextView
-                    android:id="@+id/proximo_recordatorio_medicamento2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Próximo recordatorio:"
-                    android:layout_below="@+id/nombre_medicamento2"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-
-                <TextView
-                    android:id="@+id/inventario_medicamento2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quedan xx presentación"
-                    android:layout_below="@+id/proximo_recordatorio_medicamento2"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/inventario_medicamento2"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/gris" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/medicamento3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:id="@+id/nombre_medicamento3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NombreMedicamento"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/black"
-                    android:textSize="21sp"/>
-                <TextView
-                    android:id="@+id/concentracion_medicamento3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="concentr."
-                    android:layout_toEndOf="@+id/nombre_medicamento3"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-                <TextView
-                    android:id="@+id/proximo_recordatorio_medicamento3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Próximo recordatorio:"
-                    android:layout_below="@+id/nombre_medicamento3"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-
-                <TextView
-                    android:id="@+id/inventario_medicamento3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quedan xx presentación"
-                    android:layout_below="@+id/proximo_recordatorio_medicamento3"
-                    android:fontFamily="@font/inter_medium"
-                    android:textColor="@color/gris_medical"
-                    android:textSize="21sp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/inventario_medicamento3"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/gris" />
-
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </ScrollView>
-    <LinearLayout
-        android:id="@+id/botones"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
+    <!-- Menú hamburguesa -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
         >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/casa_inicio"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/menu_button_nav"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/user"
+                android:padding="8dp"
+                android:clickable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Abrir menú" />
 
             <TextView
+                android:id="@+id/nombre_usuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inicio"
+                android:text="NombreUsuario"
+                android:textSize="22sp"
                 android:textColor="@color/black"
-                android:textSize="13sp"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/inter_regular"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
-            <ImageButton
-                android:layout_width="45dp"
-                android:layout_height="50dp"
-                android:src="@drawable/consejos"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"/>
-
+                android:layout_toEndOf="@id/menu_button_nav"
+                android:layout_alignTop="@id/menu_button_nav"
+                android:layout_alignBottom="@id/menu_button_nav"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter_medium" />
             <TextView
+                android:id="@+id/perfil_usuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Consejos"
+                android:text="Usuario Particular"
+                android:textSize="18sp"
                 android:textColor="@color/black"
-                android:textSize="13sp"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/inter_regular"/>
-        </LinearLayout>
+                android:layout_toEndOf="@id/menu_button_nav"
+                android:layout_alignTop="@id/menu_button_nav"
+                android:layout_alignBottom="@id/menu_button_nav"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="45dp"
+                android:fontFamily="@font/inter_medium" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:src="@drawable/pastilla"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp"
+                android:background="@color/gris_medical" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medicamentos"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/inter_regular"/>
-        </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/nombre_usuario"
+                android:layout_marginTop="10dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
-            <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="50dp"
-                android:src="@drawable/mas"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Más"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/inter_regular"/>
-        </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/editar_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+                        <ImageView
+                            android:id="@+id/editar_perfil_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/lapiz_editar"
+                            android:layout_marginStart="20dp"
+                            />
 
-    </LinearLayout>
+                        <TextView
+                            android:id="@+id/editar_perfil_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Editar Perfil"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@id/editar_perfil_imagen"
+                            android:layout_alignTop="@id/editar_perfil_imagen"
+                            android:layout_alignBottom="@id/editar_perfil_imagen"
+                            android:fontFamily="@font/inter_regular" />
 
-</RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/restablecer_contrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/restablecer_contrasenia_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/candado"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:id="@+id/restablecer_contrasenia_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Restablecer Contraseña"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:layout_toEndOf="@id/restablecer_contrasenia_imagen"
+                            />
+
+                    </RelativeLayout>
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/gris_medical" />
+
+                    <!-- Cerrar Sesión -->
+                    <RelativeLayout
+                        android:id="@+id/cerrar_sesion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/cerrar_sesion_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/cerrar_sesion"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/cerrar_sesion_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cerrar sesión"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/cerrar_sesion_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <!-- Ayuda y Soporte -->
+                    <RelativeLayout
+                        android:id="@+id/soporte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/soporte_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/soporte"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/soporte_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ayuda y soporte"
+                            android:textSize="20sp"
+                            android:textColor="@color/black"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/soporte_imagen"
+                            android:fontFamily="@font/inter_regular"
+                            />
+
+                    </RelativeLayout>
+
+                    <!-- Eliminar Cuenta -->
+                    <RelativeLayout
+                        android:id="@+id/eliminar_cuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp" >
+
+                        <ImageView
+                            android:id="@+id/eliminar_cuenta_imagen"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/eliminar"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="25dp"/>
+
+                        <TextView
+                            android:id="@+id/eliminar_cuenta_texto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Eliminar Cuenta"
+                            android:textSize="20sp"
+                            android:textColor="@color/rojoEliminar"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/eliminar_cuenta_imagen"
+                            android:fontFamily="@font/inter_semibold"
+                            />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

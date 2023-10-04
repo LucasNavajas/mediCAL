@@ -88,6 +88,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RelativeLayout calendarioNuevo;
     private RelativeLayout restablecerContrasenia;
     private RelativeLayout contactoNuevo;
+    private LinearLayout medicamentos;
+    private ImageButton medicamentosimagen;
     private List<TextView> textosDia = new ArrayList<>();
     private RetrofitService retrofitService = new RetrofitService();
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
@@ -265,6 +267,27 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 startActivity(intent);
             }
         });
+
+        medicamentosimagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, MedicamentosActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                startActivity(intent);
+            }
+        });
+
+        medicamentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InicioCalendarioActivity.this, MedicamentosActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                startActivity(intent);
+            }
+        });
+
 
         imagenconsejos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -778,6 +801,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         textosDia.add(findViewById(R.id.viernes));
         textosDia.add(findViewById(R.id.sabado));
         textosDia.add(findViewById(R.id.domingo));
+        medicamentos = findViewById(R.id.seccionmedicamentos);
+        medicamentosimagen = findViewById(R.id.seccionmedicamentosimagen);
         cerrarSesion = findViewById(R.id.cerrar_sesion);
         calendarioNuevo = findViewById(R.id.calendario_nuevo);
         contenedorCalendarios = findViewById(R.id.contenedor_calendarios);

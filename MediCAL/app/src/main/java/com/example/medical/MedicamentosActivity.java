@@ -52,7 +52,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 
-public class MasActivity extends AppCompatActivity {
+public class MedicamentosActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
 
@@ -70,9 +70,8 @@ public class MasActivity extends AppCompatActivity {
     private FirebaseUser usuario;
     private ImageButton imageninicio;
     private ImageButton imagenconsejos;
-    private LinearLayout medicamentos;
-    private ImageButton medicamentosimagen;
-
+    private LinearLayout mas;
+    private ImageButton masimagen;
     private TextView perfilUsuario;
 
     private RecyclerView recyclerView;
@@ -94,7 +93,7 @@ public class MasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n24_mas);
+        setContentView(R.layout.n71_medicamentos_agregados);
         Intent intent1 = getIntent();
         codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         Log.d("MiApp", "codCalendario en MasActivity: " + codCalendario); // Agregar este log
@@ -103,57 +102,6 @@ public class MasActivity extends AppCompatActivity {
         Log.d("MiApp", "codUsuario en MasActivity: " + codUsuarioLogeado);
         inicializarVariables();
 
-
-        // Obtén la referencia al RelativeLayout
-        rectangleMedYSintomas = findViewById(R.id.rectangle_med_y_sintomas);
-        rectangleInformes = findViewById(R.id.rectangle_informes);
-        rectangleInventario = findViewById(R.id.rectangle_inventario);
-        rectangleSobreNosotros = findViewById(R.id.rectangle_sobre_nosotros);
-
-        // Configura el OnClickListener para el RelativeLayout
-        rectangleMedYSintomas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Aquí maneja la acción de navegación a AgregarSeguimientoActivity
-                Intent intent = new Intent(MasActivity.this, AgregarSeguimientoActivity.class);
-                intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                startActivity(intent);
-            }
-        });
-
-        rectangleInformes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Aquí maneja la acción de navegación a SobreNosotrosActivity
-                Intent intent = new Intent(MasActivity.this, InformesActivity.class);
-                intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                startActivity(intent);
-            }
-        });
-
-        rectangleInventario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Aquí maneja la acción de navegación a SobreNosotrosActivity
-                Intent intent = new Intent(MasActivity.this, InventarioMedicamentosActivity.class);
-                intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                startActivity(intent);
-            }
-        });
-
-        rectangleSobreNosotros.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Aquí maneja la acción de navegación a SobreNosotrosActivity
-                Intent intent = new Intent(MasActivity.this, SobreNosotrosActivity.class);
-                intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", codCalendario);
-                startActivity(intent);
-            }
-        });
 
 
         menuButton.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +131,7 @@ public class MasActivity extends AppCompatActivity {
         editarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, EditarPerfilUsuarioActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, EditarPerfilUsuarioActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 startActivity(intent);
             }
@@ -192,7 +140,7 @@ public class MasActivity extends AppCompatActivity {
         soporte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MasActivity.this, FAQActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, FAQActivity.class);
                 startActivity(intent);
             }
         });
@@ -200,7 +148,7 @@ public class MasActivity extends AppCompatActivity {
         restablecerContrasenia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, RestablecerContraseniaActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, RestablecerContraseniaActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 startActivity(intent);
 
@@ -213,7 +161,7 @@ public class MasActivity extends AppCompatActivity {
         casa_inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, InicioCalendarioActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, InicioCalendarioActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 startActivity(intent);
 
@@ -223,7 +171,7 @@ public class MasActivity extends AppCompatActivity {
         imageninicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, InicioCalendarioActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, InicioCalendarioActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 startActivity(intent);
 
@@ -233,31 +181,32 @@ public class MasActivity extends AppCompatActivity {
         imagenconsejos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, ConsejosActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, ConsejosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 startActivity(intent);
 
             }
         });
-        medicamentosimagen.setOnClickListener(new View.OnClickListener() {
+        mas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, MedicamentosActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, MasActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
                 startActivity(intent);
             }
         });
 
-        medicamentos.setOnClickListener(new View.OnClickListener() {
+        masimagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MasActivity.this, MedicamentosActivity.class);
+                Intent intent = new Intent(MedicamentosActivity.this, MasActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
                 startActivity(intent);
             }
         });
+
 
 
     }
@@ -268,17 +217,16 @@ public class MasActivity extends AppCompatActivity {
     @SuppressLint("WrongViewCast")
     private void inicializarVariables() {
         nombreUsuario = findViewById(R.id.nombre_usuario);
-        nombre = findViewById(R.id.nombre);
         editarPerfil = findViewById(R.id.editar_perfil);
         restablecerContrasenia = findViewById(R.id.restablecer_contrasenia);
         cerrarSesion = findViewById(R.id.cerrar_sesion);
         soporte = findViewById(R.id.soporte);
         casa_inicio = findViewById(R.id.inicio);
         imageninicio =findViewById(R.id.imageninicio);
-        medicamentos = findViewById(R.id.seccionmedicamentos);
-        medicamentosimagen = findViewById(R.id.medicamentosImagenSeccion);
         imagenconsejos =findViewById(R.id.imagenconsejos);
         menuButton = findViewById(R.id.menu_button);
+        mas = findViewById(R.id.mas);
+        masimagen =findViewById(R.id.masimagen);
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         eliminarCuenta = findViewById(R.id.eliminar_cuenta);
         perfilUsuario = findViewById(R.id.perfil_usuario);
@@ -290,13 +238,12 @@ public class MasActivity extends AppCompatActivity {
                     perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
                 }
                 nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
-                nombre.setText(usuarioInstance.getUsuarioUnico());
 
             }
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-                Toast.makeText(MasActivity.this, "Error al cargar el usuario", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MedicamentosActivity.this, "Error al cargar el usuario", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -412,14 +359,14 @@ public class MasActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     mAuth.signOut();
-                    Intent intent = new Intent(MasActivity.this, BienvenidoActivity.class);
+                    Intent intent = new Intent(MedicamentosActivity.this, BienvenidoActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
                 }
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(MasActivity.this, "Error al eliminar la cuenta, intente nuevamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MedicamentosActivity.this, "Error al eliminar la cuenta, intente nuevamente", Toast.LENGTH_SHORT).show();
                 }
             });
         });

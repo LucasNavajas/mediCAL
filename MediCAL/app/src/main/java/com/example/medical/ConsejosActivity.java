@@ -63,6 +63,8 @@ public class ConsejosActivity extends AppCompatActivity {
         private ImageView menuButtonUsuario;
         private LinearLayout mas;
         private ImageButton masimagen;
+        private LinearLayout medicamentos;
+        private ImageButton medicamentosimagen;
         private ImageButton imageninicio;
         private RelativeLayout editarPerfil;
         private RelativeLayout restablecerContrasenia;
@@ -168,6 +170,26 @@ public class ConsejosActivity extends AppCompatActivity {
                 }
             });
 
+            medicamentosimagen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ConsejosActivity.this, MedicamentosActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                    startActivity(intent);
+                }
+            });
+
+            medicamentos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ConsejosActivity.this, MedicamentosActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                    startActivity(intent);
+                }
+            });
+
             casa_inicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -248,6 +270,8 @@ public class ConsejosActivity extends AppCompatActivity {
             mas = findViewById(R.id.mas);
             masimagen =findViewById(R.id.masimagen);
             imageninicio =findViewById(R.id.casa_inicio);
+            medicamentos = findViewById(R.id.medicamentos);
+            medicamentosimagen = findViewById(R.id.medicamentosImagen);
             casa_inicio = findViewById(R.id.inicio);
             menuButton = findViewById(R.id.menu_button);
             menuButtonUsuario = findViewById(R.id.menu_button_nav);

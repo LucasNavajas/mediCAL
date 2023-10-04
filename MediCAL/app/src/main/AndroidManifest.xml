@@ -121,6 +121,7 @@
         <activity android:name=".FrecuenciaxsemanasActivity"></activity>
         <activity android:name=".ElegirMedicamentoActivity"></activity>
         <activity android:name=".MasActivity"></activity>
+        <activity android:name=".MedicamentosActivity"></activity>
         <activity android:name=".MasInfoSintomaActivity"></activity>
         <activity android:name=".MasInfoMedicionActivity"></activity>
         <activity android:name=".EditarMedicionActivity"></activity>
