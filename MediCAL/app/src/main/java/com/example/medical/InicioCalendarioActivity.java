@@ -1675,7 +1675,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
         omitir.setOnClickListener(view ->{
             popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
         });
 
         // Configurar el OnTouchListener para la vista oscura
@@ -1739,7 +1738,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
         omitir.setOnClickListener(view ->{
             popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
         });
 
         desactivar.setOnClickListener(view ->{

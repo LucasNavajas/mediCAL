@@ -1,10 +1,22 @@
 package com.example.medical;
 
+import static android.content.Intent.ACTION_PICK;
+
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,8 +42,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.medical.model.Concentracion;
 import com.example.medical.model.Dosis;
@@ -44,6 +60,8 @@ import com.example.medical.retrofit.ConcentracionApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -63,10 +81,16 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private ConcentracionApi concentracionApi = retrofitService.getRetrofit().create(ConcentracionApi.class);
     private List<Concentracion> concentracionList;
     private List<String> concentraciones = new ArrayList<String>() {};
+    private boolean tieneFoto = false;
     private LinearLayout cambiarConcentracion;
     private Recordatorio recordatorio;
     private PopupWindow popupWindow;
     private String nombrefrecuencia;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    private ImageView fotoMedicamento;
+    private File capturedPhotoFile;  // Declare the File object
+    private ActivityResultLauncher<Intent> galleryLauncher;
+    private ActivityResultLauncher<String> cameraPermissionLauncher;
     private float cantreal = 0;
     private float cantaviso = 0;
     private float cantrealm = 0;
@@ -82,7 +106,45 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(7); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(2); // Cambia el número 4 por el codRecordatorio deseado
+
+
+        capturedPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_photo.jpg");
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
+        }
+
+        cameraPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        abrirSelectorImagen();
+                    } else {
+                        // Manejar el caso cuando el permiso de cámara es denegado
+                    }
+                });
+
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        Uri selectedImageUri = intent.getData();
+                        if (selectedImageUri != null) {
+                            // Se seleccionó una imagen de la galería
+                            // Establecer la imagen seleccionada en el ImageView
+                            fotoMedicamento.setImageURI(selectedImageUri);
+
+                        } else {
+                            // Load the captured image from the file
+                            Bitmap imgBitmap = BitmapFactory.decodeFile(capturedPhotoFile.getAbsolutePath());
+                            if (imgBitmap != null) {
+                                fotoMedicamento.setImageBitmap(imgBitmap);
+                            }
+                        }
+                    }
+                });
 
         ImageView btnCerrar = findViewById(R.id.boton_cerrar);
         if (btnCerrar != null) {
@@ -126,6 +188,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private boolean enterPresionado = false;
 
     private void inicializarBotones() {
+        fotoMedicamento = findViewById(R.id.imagen_actual);
         ImageButton desplegableFrecuencia = findViewById(R.id.desplegable_frecuencia);
         TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
         ImageButton desplegableHora = findViewById(R.id.desplegable_hora);
@@ -135,6 +198,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         TextView duracionActual = findViewById(R.id.duracion_actual);
         ImageButton desplegableImagen = findViewById(R.id.desplegable_imagen);
         RelativeLayout cambiarImagen = findViewById(R.id.relative_cambiar_imagen);
+        TextView textCambiarImagen = findViewById(R.id.cambiar_imagen);
         ImageButton desplegableConcentracion = findViewById(R.id.desplegable_concentracion);
         cambiarConcentracion = findViewById(R.id.cambiar_concentracion);
         ImageButton desplegableInstrucciones = findViewById(R.id.desplegable_instrucciones);
@@ -152,6 +216,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         EditText dosisEditText = findViewById(R.id.editdosis);
         TextView cambiarconcentracion = findViewById(R.id.establecer_concentracion);
 
+        textCambiarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirSelectorImagen();
+            }
+        });
         desplegableFrecuencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -419,6 +489,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void obtenerDatos(int codRecordatorio) {
         concentracionApi.getAllConcentracion().enqueue(new Callback<List<Concentracion>>() {
             @Override
@@ -444,6 +516,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
                 recordatorio = response.body();
+
+                if(recordatorio.getImagen()!=null){
+                    byte[] decodedBytes = Base64.decode(recordatorio.getImagen(), Base64.DEFAULT);
+                    Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    fotoMedicamento.setImageBitmap(decodedBitmap);
+                    tieneFoto = true;
+                }
                 Medicamento medicamento = recordatorio.getMedicamento();
                 Frecuencia frecuencia = recordatorio.getFrecuencia();
                 Dosis dosis = recordatorio.getDosis();
@@ -498,7 +577,33 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             }
         });
     }
+    private void abrirSelectorImagen() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Si ya tienes el permiso de la cámara, abre el selector de imágenes
+            Intent pickImageIntent = new Intent(ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+            Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", capturedPhotoFile);
+            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+
+            Intent chooserIntent = Intent.createChooser(pickImageIntent, "Seleccionar imagen o tomar una foto");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takePhotoIntent});
+
+            galleryLauncher.launch(chooserIntent);
+        } else {
+            // Si no tienes el permiso, solicítalo
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    public static String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+// Codifica el arreglo de bytes en una cadena Base64.
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
     private void mostrarInventario(int codinventario, float cantreal, float cantaviso) {
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
         LinearLayout definirInventario = findViewById(R.id.definir_inventario);
