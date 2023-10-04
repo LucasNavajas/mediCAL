@@ -82,7 +82,7 @@ class SpringServerApplicationTestsReporte {
 		usuario.setNombreInstitucion("Hospital2");
 		usuario.setNombreUsuario("Lucas");
 		usuario.setTelefonoUsuario("3756409336");
-		usuarioDao.save(usuario);
+		usuarioDao.saveConHash(usuario);
 		reporte.setUsuario(usuario);
 		
 		

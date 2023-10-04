@@ -43,9 +43,59 @@ public class UsuarioDao {
 		return repository.save(usuario);
 	}
 	
-	public Usuario save(Usuario usuario) {
-		return repository.save(usuario);
-	}
+	public Usuario save(Usuario usuario) throws FirebaseAuthException {
+        // Buscar el usuario existente por su código (codUsuario)
+        Usuario existingUsuario = repository.findById(usuario.getCodUsuario()).orElse(null);
+
+        if (existingUsuario != null) {
+            // Actualizar los campos uno por uno
+            if (usuario.getApellidoUsuario() != null && !usuario.getApellidoUsuario().equals("")) {
+                existingUsuario.setApellidoUsuario(usuario.getApellidoUsuario());
+            }
+            if (usuario.getContraseniaUsuario() != null) {
+                existingUsuario.setContraseniaUsuario(usuario.getContraseniaUsuario());
+            }
+            if (usuario.getFechaAltaUsuario() != null) {
+                existingUsuario.setFechaAltaUsuario(usuario.getFechaAltaUsuario());
+            }
+            if (usuario.getFechaNacimientoUsuario() != null) {
+                existingUsuario.setFechaNacimientoUsuario(usuario.getFechaNacimientoUsuario());
+            }
+            if (usuario.getGeneroUsuario() != null) {
+                existingUsuario.setGeneroUsuario(usuario.getGeneroUsuario());
+            }
+            if (usuario.getMailUsuario() != null && !usuario.getMailUsuario().equals(existingUsuario.getMailUsuario())) {
+            	modificarMail(usuario.getCodUsuario() ,existingUsuario.getMailUsuario(), usuario.getMailUsuario());
+            	existingUsuario.setMailUsuario(usuario.getMailUsuario());
+            }
+            if (usuario.getNombreInstitucion() != null) {
+                existingUsuario.setNombreInstitucion(usuario.getNombreInstitucion());
+            }
+            if (usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().equals("")) {
+                existingUsuario.setNombreUsuario(usuario.getNombreUsuario());
+            }
+            if (usuario.getTelefonoUsuario() != null && !usuario.getTelefonoUsuario().equals("")) {
+                existingUsuario.setTelefonoUsuario(usuario.getTelefonoUsuario());
+            }
+            if (usuario.getUsuarioUnico() != null) {
+                existingUsuario.setUsuarioUnico(usuario.getUsuarioUnico());
+            }
+            if (usuario.getToken() != null) {
+                existingUsuario.setToken(usuario.getToken());
+            }
+            if (usuario.getPerfil() != null) {
+            	existingUsuario.setPerfil(usuario.getPerfil());
+            }
+            	existingUsuario.setCodigoVerificacion(usuario.getCodigoVerificacion());
+            
+
+            // Guardar el usuario actualizado
+            return repository.save(existingUsuario);
+        } else {
+            // Si no se encuentra el usuario existente, crea uno nuevo
+            return repository.save(usuario);
+        }
+    }
 	public List<Usuario> getAllUsuarios() {
 	    Streamable<Usuario> streamableUsuarios = Streamable.of(repository.findAll());
 	    List<Usuario> usuarios = new ArrayList<>();
@@ -114,6 +164,21 @@ public class UsuarioDao {
         usuario.setContraseniaUsuario(hashedPassword);
         return repository.save(usuario);
     }
+	
+	public void modificarMail(int codUsuario, String mail ,String nuevoMail) throws FirebaseAuthException{
+        Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
+        Usuario usuario;
+        if (optionalUsuario.isPresent()) {
+            usuario = optionalUsuario.get();
+            usuario.setCodigoVerificacion(null);
+        } else {
+            throw new NoSuchElementException("El usuario no existe.");
+        }
+        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(mail);
+        String uid = userRecord.getUid();
+        UpdateRequest request = new UpdateRequest(uid).setEmail(nuevoMail);
+        UserRecord userRecord2 = FirebaseAuth.getInstance().updateUser(request);
+	}
 	public Usuario obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
 	    List<Usuario> usuariosConMismoUsuario = repository.findByUsuarioUnico(usuarioUnico);
 	    if (usuariosConMismoUsuario.isEmpty()) {
@@ -253,7 +318,7 @@ public class UsuarioDao {
 		
 	}
 
-	public Usuario modificarToken(int codUsuario, String token) {
+	public Usuario modificarToken(int codUsuario, String token) throws FirebaseAuthException {
 		Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
         Usuario usuario;
         if (optionalUsuario.isPresent()) {

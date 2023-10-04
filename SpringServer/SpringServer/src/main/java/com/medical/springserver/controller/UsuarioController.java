@@ -50,6 +50,11 @@ public class UsuarioController {
 		return usuarioDao.saveConHash(usuario);
 	}
 	
+	@PostMapping("/usuario/saveSinHash")
+	public Usuario saveSinHash(@RequestBody Usuario usuario) throws FirebaseAuthException {
+		return usuarioDao.save(usuario);
+	}
+	
 	@GetMapping("/usuario/cod/{codUsuario}")
 	public ResponseEntity<Usuario> getByCodUsuario(@PathVariable int codUsuario){
 		Optional<Usuario> usuarioOptional = usuarioDao.getByCodUsuario(codUsuario);
@@ -124,7 +129,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/usuario/set-cod-verificacion/{codUsuario}")
-    public ResponseEntity<Usuario> setCodVerificacion(@PathVariable int codUsuario) {
+    public ResponseEntity<Usuario> setCodVerificacion(@PathVariable int codUsuario) throws FirebaseAuthException {
         Optional<Usuario> usuarioOptional = usuarioDao.getByCodUsuario(codUsuario);
 
         if (usuarioOptional.isPresent()) {
@@ -174,7 +179,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/usuario/token/{codUsuario}")
-	public Usuario modificarToken(@PathVariable int codUsuario, @RequestBody String  token) {
+	public Usuario modificarToken(@PathVariable int codUsuario, @RequestBody String  token) throws FirebaseAuthException {
 		return usuarioDao.modificarToken(codUsuario, token);
 	}
 }

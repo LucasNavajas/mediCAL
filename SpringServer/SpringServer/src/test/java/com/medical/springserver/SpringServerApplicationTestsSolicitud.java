@@ -70,9 +70,7 @@ class SpringServerApplicationTestsSolicitud {
 		usuario.setNombreInstitucion("Hospital2");
 		usuario.setNombreUsuario("Pedro");
 		usuario.setTelefonoUsuario("3756409336");
-		
-		usuarioDao.save(usuario2);
-		usuarioDao.save(usuario);
+
 		solicitud.setUsuarioControlado(usuario2);
 		solicitud.setUsuarioControlador(usuario);
 		solicitudDao.save(solicitud);

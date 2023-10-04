@@ -136,8 +136,6 @@ class SpringServerApplicationTestsUsuario {
 		System.out.println(usuario.getSolicitudControlado());
 		System.out.println(usuario.getCodigoVerificacion());
 		
-		usuarioDao.save(usuario);
-		
 	}
 	
 	//@Test
