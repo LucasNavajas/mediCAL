@@ -175,15 +175,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 }
             });
         }
-        TextView stockmin = findViewById(R.id.establecer_alerta_inventario);
-        if (stockmin != null) {
-            cambiarHora.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupStockmin();
-                }
-            });
-        }
+
     }
     private boolean enterPresionado = false;
 
