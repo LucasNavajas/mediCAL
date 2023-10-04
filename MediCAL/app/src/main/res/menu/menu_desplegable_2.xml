@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/opcion1_menu2"
+        android:title="Día" />
+    <item
+        android:id="@+id/opcion2_menu2"
+        android:title="Semana" />
+    <item
+        android:id="@+id/opcion3_menu2"
+        android:title="Mes" />
+    <item
+        android:id="@+id/opcion4_menu2"
+        android:title="Año" />
+
+</menu>

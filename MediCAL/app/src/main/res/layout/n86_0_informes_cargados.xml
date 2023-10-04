@@ -80,26 +80,18 @@
             android:layout_marginStart="30dp"
             >
 
+            <!-- Este texto se reemplaza por el filtro de TipoReporte -->
             <TextView
                 android:id="@+id/texto_formato"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"
-                android:text="Adherencia de Formato"
+                android:text="Mostrando: Todos los Reportes"
                 android:textColor="#FFF"
-                android:textSize="22sp"
+                android:textSize="21sp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="-4dp" />
-
-            <ImageView
-                android:id="@+id/imagen_porcentaje"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/porcentaje"
-                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -110,21 +102,21 @@
             android:layout_below="@+id/layout_seguimiento2"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="-20dp"
+            android:layout_marginTop="-25dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="30dp"
             >
 
-            <!-- Estas fechas deberían reemplazarse por un rango
-             según las fechas mostradas -->
+            <!-- Este texto se reemplaza por el filtro de fechas -->
             <TextView
                 android:id="@+id/texto_fechas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"
-                android:text="17-24 de may de 2023"
+                android:text="Sin Filtros de Fechas"
                 android:textColor="#FFF"
                 android:textSize="20sp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="5dp" />
 
@@ -132,7 +124,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -148,8 +139,9 @@
             android:layout_centerHorizontal="true" >
 
             <ScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:id="@+id/contenido"
@@ -307,31 +299,37 @@
 
                     </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/button_agrega_informe"
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/contenido"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="35dp"
-                        android:layout_marginBottom="15dp"
-                        android:background="@drawable/boton_redondo_verde"
-                        android:focusable="false"
-                        android:fontFamily="@font/inter_bold"
-                        android:paddingStart="40dp"
-                        android:paddingEnd="40dp"
-                        android:text="Agregar Informe"
-                        android:textAllCaps="false"
-                        android:textAppearance="@style/CustomButtonText"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+
 
                 </LinearLayout>
 
             </ScrollView>
 
+            <Button
+                android:id="@+id/button_agrega_informe"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="55dp"
+                android:background="@drawable/boton_redondo_verde"
+                android:fontFamily="@font/inter_bold"
+                android:text="Agregar Informe"
+                android:textAllCaps="false"
+                android:textAppearance="@style/CustomButtonText"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/dim_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
 
 </RelativeLayout>

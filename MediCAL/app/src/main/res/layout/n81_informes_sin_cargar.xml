@@ -80,26 +80,45 @@
             android:layout_marginStart="30dp"
             >
 
+            <!-- Este texto se reemplaza por el filtro de TipoReporte -->
             <TextView
                 android:id="@+id/texto_formato"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_regular"
-                android:text="Adherencia de Formato"
+                android:text="Mostrando: Todos los Reportes"
                 android:textColor="#FFF"
-                android:textSize="22sp"
+                android:textSize="21sp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="-4dp" />
 
-            <ImageView
-                android:id="@+id/imagen_porcentaje"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/porcentaje"
-                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_seguimiento3"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@+id/layout_seguimiento2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            >
+
+            <!-- Este texto se reemplaza por el filtro de fechas -->
+            <TextView
+                android:id="@+id/texto_fechas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="Sin Filtros de Fechas"
+                android:textColor="#FFF"
+                android:textSize="20sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="5dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -127,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/imagen_mediciones"
-            android:text="No hay información aún. Intente seleccionar fechas o medicinas diferentes"
+            android:text="No hay información aún. Intente seleccionar fechas o filtros diferentes"
             android:textColor="@color/black"
             android:layout_marginTop="25dp"
             android:textSize="26sp"

@@ -40,7 +40,7 @@ class SpringServerApplicationTestsReporte {
 		reporte.setFechaHasta(fechaHasta);
 	
 		TipoReporte tipoReporte = new TipoReporte();
-		tipoReporte.setNombreTipoReporte("Reporte Medicamentos");
+		tipoReporte.setNombreTipoReporte("Reporte Medicamentos (Todos)");
 	
 		
 		
@@ -48,20 +48,24 @@ class SpringServerApplicationTestsReporte {
 		tipoReporteDao.save(tipoReporte);
 		
 		TipoReporte tipoReporte2 = new TipoReporte();
-		tipoReporte2.setNombreTipoReporte("Reporte Síntomas");
+		tipoReporte2.setNombreTipoReporte("Reporte Medicamento (Uno)");
 		tipoReporteDao.save(tipoReporte2);
 		
 		TipoReporte tipoReporte3 = new TipoReporte();
-		tipoReporte3.setNombreTipoReporte("Reporte Mediciones");
+		tipoReporte3.setNombreTipoReporte("Reporte Síntomas");
 		tipoReporteDao.save(tipoReporte3);
 		
 		TipoReporte tipoReporte4 = new TipoReporte();
-		tipoReporte4.setNombreTipoReporte("Reporte Enfermeros");
+		tipoReporte4.setNombreTipoReporte("Reporte Mediciones");
 		tipoReporteDao.save(tipoReporte4);
 		
 		TipoReporte tipoReporte5 = new TipoReporte();
-		tipoReporte5.setNombreTipoReporte("Reporte Pacientes / Calendarios");
+		tipoReporte5.setNombreTipoReporte("Reporte Enfermeros");
 		tipoReporteDao.save(tipoReporte5);
+		
+		TipoReporte tipoReporte6 = new TipoReporte();
+		tipoReporte6.setNombreTipoReporte("Reporte Pacientes / Calendarios");
+		tipoReporteDao.save(tipoReporte6);
 		
 		
 		LocalDate fechaNacimiento = LocalDate.of(2001, 4, 3);

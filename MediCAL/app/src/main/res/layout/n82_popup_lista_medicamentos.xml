@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_popup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
 
     <TextView
         android:id="@+id/titulo"
@@ -15,13 +17,13 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/inter_semibold"
-        android:text="Mostrar Medicamentos"
+        android:text="Filtro por Tipo Reporte"
         android:textColor="@color/black"
         android:textSize="22sp"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
@@ -29,11 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/inter_regular"
-            android:text="Todos los medicamentos"
+            android:text="Todos los Reportes"
             android:textColor="#000000"
-            android:textSize="22sp"
+            android:textSize="21sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,8 +45,10 @@
             android:id="@+id/imagen_desplegable"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginStart="25dp"
+            android:clickable="true"
+            android:onClick="mostrarMenu1"
             android:src="@drawable/boton_desplegable"
             app:layout_constraintStart_toEndOf="@id/text_medicamento"
             app:layout_constraintTop_toTopOf="@id/text_medicamento"
@@ -52,11 +56,85 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <!-- Este Campo se pone visible cuando el Filtro de Reporte Seleccionado es "Reportes Medicamento (Uno)" -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MedicamentoEspecifico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/textEdit_medicamento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/inter_regular"
+            android:hint="Nombre Medicamento"
+            android:textColorHint="#888888"
+            android:textSize="20sp"
+            tools:ignore="MissingConstraints" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/titulo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Filtro Fecha"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Sin Filtro"
+            android:textColor="#000000"
+            android:textSize="21sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/imagen_desplegable2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="25dp"
+            android:clickable="true"
+            android:onClick="mostrarMenu2"
+            android:src="@drawable/boton_desplegable"
+            app:layout_constraintStart_toEndOf="@id/text_fecha"
+            app:layout_constraintTop_toTopOf="@id/text_fecha"
+            app:layout_constraintBottom_toBottomOf="@id/text_fecha" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="50dp">
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/cancelar"
@@ -66,6 +144,7 @@
             android:text="CANCELAR"
             android:textColor="@color/verdeTextos"
             android:textSize="22sp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="95dp"
             android:clickable="true"
             android:layout_weight="1"
