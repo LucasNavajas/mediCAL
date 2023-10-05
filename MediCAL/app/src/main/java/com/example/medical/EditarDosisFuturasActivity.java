@@ -124,7 +124,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                         // Manejar el caso cuando el permiso de cámara es denegado
                     }
                 });
-
+// SE VE LA FOTO
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
