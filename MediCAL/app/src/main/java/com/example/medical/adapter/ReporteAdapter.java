@@ -53,7 +53,7 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
         // Establecer el nombre del tipoReporte en el TextView tituloTipoReporte
         holder.tituloTipoReporte.setText(nombreTipoReporte);
         holder.fechaGenerada.setText("Generado: " + String.valueOf(fechaGenerada));
-        holder.fechaDesdeHasta.setText("Desde: "+ String.valueOf(fechaDesde) + " - Hasta: " + String.valueOf(fechaHasta));
+        holder.fechaDesdeHasta.setText("Desde: "+ String.valueOf(fechaDesde) + " / \nHasta: " + String.valueOf(fechaHasta));
     }
 
     @Override

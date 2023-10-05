@@ -125,23 +125,30 @@
 
     </RelativeLayout>
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gris"
         android:layout_below="@+id/cabecera">
 
+
+        <!--
         <RelativeLayout
             android:id="@+id/informes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/gris"
             android:layout_centerHorizontal="true" >
+            -->
 
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                >
 
                 <LinearLayout
                     android:id="@+id/contenido"
@@ -167,163 +174,35 @@
                             />
 
 
-                        <!-- Lista Informes Anteriores -->
-                        <!--
-                        <RelativeLayout
-                            android:id="@+id/lista_informes_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/background_rounded_blanco">
-
-                            <TextView
-                                android:id="@+id/texto_fecha_informes1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:text="Hoy, 16 July"
-                                android:textSize="25dp"
-                                android:textStyle="bold" />
-                            -->
-
-                            <!-- Informe 1 Anterior -->
-                            <!--
-                            <RelativeLayout
-                                android:id="@+id/rectangle_informe1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/texto_fecha_informes1"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp">
-
-                                <ImageView
-                                    android:id="@+id/imagen_informe1"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/interrogante" />
-
-
-                                <TextView
-                                    android:id="@+id/texto_informe1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_toRightOf="@id/imagen_informe1"
-                                    android:text="NombreTipoReporte"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-
-                                <TextView
-                                    android:id="@+id/texto2_informe1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_below="@id/texto_informe1"
-                                    android:layout_alignLeft="@+id/texto_informe1"
-                                    android:text="FechaGenerada"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-
-                            </RelativeLayout>
-                            -->
-
-                            <!-- Informe 2 Anterior -->
-                            <!--
-                            <RelativeLayout
-                                android:id="@+id/rectangle_informe2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/rectangle_informe1"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp">
-
-                                <ImageView
-                                    android:id="@+id/imagen_informe2"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:src="@drawable/interrogante" />
-
-
-                                <TextView
-                                    android:id="@+id/texto_informe2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_toRightOf="@id/imagen_informe2"
-                                    android:text="NombreTipoReporte"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-
-                                <TextView
-                                    android:id="@+id/texto2_informe2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="20dp"
-                                    android:layout_below="@id/texto_informe2"
-                                    android:layout_alignLeft="@+id/texto_informe2"
-                                    android:text="FechaGenerada"
-                                    android:textColor="@color/black"
-                                    android:textSize="21dp" />
-
-                            </RelativeLayout>
-
-                        </RelativeLayout>
-                        -->
-
-
                     </RelativeLayout>
-
-
 
                 </LinearLayout>
 
             </ScrollView>
 
-            <Button
-                android:id="@+id/button_agrega_informe"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="55dp"
-                android:background="@drawable/boton_redondo_verde"
-                android:fontFamily="@font/inter_bold"
-                android:text="Agregar Informe"
-                android:textAllCaps="false"
-                android:textAppearance="@style/CustomButtonText"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
 
         </RelativeLayout>
 
-    </RelativeLayout>
+
+
+
+        <Button
+            android:id="@+id/button_agrega_informe"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/boton_redondo_verde"
+            android:fontFamily="@font/inter_bold"
+            android:text="Agregar Informe"
+            android:textAllCaps="false"
+            android:textAppearance="@style/CustomButtonText"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    <!-- </RelativeLayout>  -->
 
     <View
         android:id="@+id/dim_view"

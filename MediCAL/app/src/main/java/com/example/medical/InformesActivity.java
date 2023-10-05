@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 //import org.apache.poi.ss.usermodel.*;
 //import org.apache.poi.ss.util.CellRangeAddress;
 //import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,8 @@ import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
+
+import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,10 +59,11 @@ public class InformesActivity extends AppCompatActivity {
 
     private boolean existenInformes = false; // Variable global para verificar existencia de informes
     private List<Reporte> listaTotalReportes = new ArrayList<>(); // Lista global para almacenar todos los informes de un usuario
+    private List<Reporte> listaTotalReportesOriginal = new ArrayList<>();
     private ReporteAdapter reporteAdapter;
 
-    private String opcionMenu1;
-    private String opcionMenu2;
+    private String opcionMenu1 = "Todos los Reportes";
+    private String opcionMenu2 = "Todo";
     private TextView textoFiltroReporte;
     private TextView textoFiltroFecha;
     private ConstraintLayout MedicamentoEspecifico;
@@ -93,20 +97,12 @@ public class InformesActivity extends AppCompatActivity {
             }
         });
 
-        botonFiltros.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupFiltros();
-            }
-        });
-
-
         OnDataLoadedListener onDataLoadedListener = new OnDataLoadedListener() {
             @Override
             public void onDataLoaded() {
                 Log.d("MiApp", "Llamo al método loadInformes si existen informes: " + existenInformes);
                 if (existenInformes) {
-                    loadInformes(); // Prueba de llamada a loadInformes cuando ya haya recorrido lo asociado al usuario
+                    loadInformes();
                     Log.d("MiApp", "Entró en el if y la variable existenInformes es: " + existenInformes);
                 }
             }
@@ -114,7 +110,13 @@ public class InformesActivity extends AppCompatActivity {
 
         obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener); // Llama a este método para verificar existencia de informes
 
-        //Pasar intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0)) por todas las actividades hacia adelante y cuando se vuelve a mas tambien
+        botonFiltros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupFiltros(codUsuarioLogeado, onDataLoadedListener);
+            }
+        });
+
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,11 +180,14 @@ public class InformesActivity extends AppCompatActivity {
 
                         for (Reporte reporte : reportesAsociados) {
                             listaTotalReportes.add(reporte);
+                            listaTotalReportesOriginal.add(reporte);
                             Log.d("MiApp", "Reporte encontrado con nroReporte: " + reporte.getNroReporte() + ", y tipoReporte: " + reporte.getTipoReporte().getNombreTipoReporte());
                         }
 
-                        listener.onDataLoaded();
-                        Log.d("MiApp", "Ya se ejecutó el listener");
+                        pantallaInformesCargados(listener);
+
+                        //listener.onDataLoaded();
+                        //Log.d("MiApp", "Ya se ejecutó el listener");
 
                     } else {
                         Log.d("MiApp", "No se encontraron reporte asociados al usuario");
@@ -198,14 +203,71 @@ public class InformesActivity extends AppCompatActivity {
         });
     }
 
-    private void loadInformes() {
+    private void pantallaInformesCargados(OnDataLoadedListener listener) {
         if (existenInformes) {
             Log.d("MiApp", "Defino pantalla con informes cargados");
             setContentView(R.layout.n86_0_informes_cargados); // Muestra layout n88 si existen inventarios
 
+            TextView textoFormatoFiltro = findViewById(R.id.texto_formato);
+            TextView textoFormatoFecha = findViewById(R.id.texto_fechas);
+            textoFormatoFiltro.setText("Mostrando: " + opcionMenu1);
+            textoFormatoFecha.setText("Filtro Fecha: " + opcionMenu2);
+
             agregarInforme = findViewById(R.id.button_agrega_informe);
             botonVolver = findViewById(R.id.boton_volver);
             botonFiltros = findViewById(R.id.imagen_menu);
+
+            listener.onDataLoaded();
+            Log.d("MiApp", "Ya se ejecutó el listener");
+
+            // Configurar el RecyclerView
+            /*
+            recyclerView = findViewById(R.id.listareportes_recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            reporteAdapter = new ReporteAdapter(new ArrayList<>()); // Inicializar el adaptador con una lista vacía
+            recyclerView.setAdapter(reporteAdapter);
+
+
+
+            if (listaTotalReportes != null) {
+                // Imprimir el contenido de listaTotalReportes
+                for (Reporte reporte : listaTotalReportes) {
+                    Log.d("MiApp", "Reporte en ListaTotalReportes: " + reporte.toString());
+                }
+                reporteAdapter.setReporteList(listaTotalReportes);
+
+            } else {
+                Toast.makeText(InformesActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
+            }
+            */
+
+            agregarInforme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(InformesActivity.this, GenerarReporteActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+                    startActivity(intent);
+                }
+            });
+
+            botonFiltros.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popupFiltros(codUsuarioLogeado, listener);
+                }
+            });
+
+            botonVolver.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed(); // Volver a la actividad anterior
+                }
+            });
+        }
+    }
+
+    private void loadInformes() {
 
             // Configurar el RecyclerView
             recyclerView = findViewById(R.id.listareportes_recyclerview);
@@ -224,33 +286,10 @@ public class InformesActivity extends AppCompatActivity {
                 Toast.makeText(InformesActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
             }
 
-            agregarInforme.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(InformesActivity.this, GenerarReporteActivity.class);
-                    intent.putExtra("codUsuario", codUsuarioLogeado);
-                    intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
-                    startActivity(intent);
-                }
-            });
 
-            botonFiltros.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    popupFiltros();
-                }
-            });
-
-            botonVolver.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed(); // Volver a la actividad anterior
-                }
-            });
-        }
     }
 
-    private void popupFiltros() {
+    private void popupFiltros(int codUsuarioLogeado, OnDataLoadedListener listener) {
         RetrofitService retrofitService = new RetrofitService();
         Log.d("MiApp","Se llamó a popupFiltros de InformesActivity");
         View popupView = getLayoutInflater().inflate(R.layout.n82_popup_lista_medicamentos, null);
@@ -283,10 +322,13 @@ public class InformesActivity extends AppCompatActivity {
         EditText textoNombreMedicamento = popupView.findViewById(R.id.textEdit_medicamento);
 
         MedicamentoEspecifico = popupView.findViewById(R.id.MedicamentoEspecifico);
+        textoFiltroReporte.setText(opcionMenu1);
+        textoFiltroFecha.setText(opcionMenu2);
 
         // Por defecto las opciones mostradas son:
-        opcionMenu1 = "Todos los Reportes";
-        opcionMenu2 = "Año";
+        // opcionMenu1 = "Todos los Reportes";
+        // opcionMenu2 = "Todo"
+        // Crear una lista temporal para almacenar los informes filtrados
 
         TextView aplicar = popupView.findViewById(R.id.aplicar);
         TextView cancelar = popupView.findViewById(R.id.cancelar);
@@ -307,15 +349,105 @@ public class InformesActivity extends AppCompatActivity {
 
         aplicar.setOnClickListener(view ->{
             Log.d("MiApp", "Se hizo clic en el botón aplicar");
+            LocalDate fechaActual = LocalDate.now();
+            List<Reporte> informesFiltrados = new ArrayList<>();
+
+            // Crear una copia PROFUNDA de la lista original. Se hace para evitar que se realicen cambios al modificar una variable referenciada
+            List<Reporte> listaTotalReportesCopia = new ArrayList<>();
+            for (Reporte reporte : listaTotalReportesOriginal) {
+                Reporte copia = new Reporte();
+                copia.setNroReporte(reporte.getNroReporte());
+                copia.setFechaDesde(reporte.getFechaDesde());
+                copia.setFechaHasta(reporte.getFechaHasta());
+                copia.setFechaGenerada(reporte.getFechaGenerada());
+                copia.setTipoReporte(reporte.getTipoReporte());
+                copia.setUsuario(reporte.getUsuario());
+                listaTotalReportesCopia.add(copia);
+            }
+
+
+            Log.d("MiApp", "La listaTotalReportesOriginal es: " + listaTotalReportesOriginal);
+            Log.d("MiApp", "La listaTotalReportes es : " + listaTotalReportes);
 
             // Hacer un if con cada opción del menú 1 y 2 para modificar la listaTotalReportes con sólo aquellos del filtro
 
-            if (opcionMenu1.equals("Medicamento (Uno)")) {
+            if (opcionMenu1.equals("Todos los Reportes")) {
+                Log.d("MiApp", "Se aplica el filtro de tipoReporte: " + opcionMenu1);
+                informesFiltrados.addAll(listaTotalReportesCopia);
+            } else if (opcionMenu1.equals("Medicamentos (Todos)")) {
+                Log.d("MiApp", "Se aplica el filtro de tipoReporte: " + opcionMenu1);
+                for (Reporte reporte : listaTotalReportesCopia) {
+                    if (reporte.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamentos (Todos)")) {
+                        informesFiltrados.add(reporte);
+                    }
+                }
+            } else if (opcionMenu1.equals("Medicamento (Uno)")) {
+                Log.d("MiApp", "Se aplica el filtro de tipoReporte: " + opcionMenu1);
                 String nombreMedicamento = textoNombreMedicamento.getText().toString();
                 Log.d("MiApp", "Se ingresó el nombre de medicamento: " + nombreMedicamento);
+                for (Reporte reporte : listaTotalReportesCopia) {
+                    if (reporte.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamento (Uno)")) {
+                        informesFiltrados.add(reporte);
+                    }
+                }
+            } else if (opcionMenu1.equals("Síntomas")) {
+                Log.d("MiApp", "Se aplica el filtro de tipoReporte: " + opcionMenu1);
+                for (Reporte reporte : listaTotalReportesCopia) {
+                    if (reporte.getTipoReporte().getNombreTipoReporte().equals("Reporte Síntomas")) {
+                        informesFiltrados.add(reporte);
+                    }
+                }
+            } else if (opcionMenu1.equals("Mediciones")) {
+                Log.d("MiApp", "Se aplica el filtro de tipoReporte: " + opcionMenu1);
+                for (Reporte reporte : listaTotalReportesCopia) {
+                    if (reporte.getTipoReporte().getNombreTipoReporte().equals("Reporte Mediciones")) {
+                        informesFiltrados.add(reporte);
+                    }
+                }
             }
 
-            // Falta
+            if (opcionMenu2.equals("Todo")) {
+                Log.d("MiApp", "Se aplica el filtro de fechas: " + opcionMenu2);
+            } else if (opcionMenu2.equals("Día")) {
+                Log.d("MiApp", "Se aplica el filtro de fechas: " + opcionMenu2);
+                List<Reporte> informesAEliminar = new ArrayList<>();
+                for (Reporte reporte : informesFiltrados) {
+                    if (reporte.getFechaGenerada().isBefore(fechaActual)) {
+                        informesAEliminar.add(reporte);
+                    }
+                }
+                informesFiltrados.removeAll(informesAEliminar);
+            } else if (opcionMenu2.equals("Semana")) {
+                Log.d("MiApp", "Se aplica el filtro de fechas: " + opcionMenu2);
+                List<Reporte> informesAEliminar = new ArrayList<>();
+                for (Reporte reporte : informesFiltrados) {
+                    if (reporte.getFechaGenerada().isBefore(fechaActual.minusDays(7))) {
+                        informesAEliminar.add(reporte);
+                    }
+                }
+                informesFiltrados.removeAll(informesAEliminar);
+            } else if (opcionMenu2.equals("Mes")) {
+                Log.d("MiApp", "Se aplica el filtro de fechas: " + opcionMenu2);
+                List<Reporte> informesAEliminar = new ArrayList<>();
+                for (Reporte reporte : informesFiltrados) {
+                    if (reporte.getFechaGenerada().isBefore(fechaActual.minusDays(30))) {
+                        informesAEliminar.add(reporte);
+                    }
+                }
+                informesFiltrados.removeAll(informesAEliminar);
+            } else if (opcionMenu2.equals("Año")) {
+                List<Reporte> informesAEliminar = new ArrayList<>();
+                for (Reporte reporte : informesFiltrados) {
+                    if (reporte.getFechaGenerada().isBefore(fechaActual.minusDays(365))) {
+                        informesAEliminar.add(reporte);
+                    }
+                }
+                informesFiltrados.removeAll(informesAEliminar);
+            }
+
+            // Reemplazar listaTotalReportes con la lista filtrada
+            listaTotalReportes.clear(); // Limpiar la lista original
+            listaTotalReportes.addAll(informesFiltrados); // Agregar los informes filtrados
 
             // Llamada a loadInformes para cargar los de la nueva lista
             loadInformes();
@@ -399,15 +531,18 @@ public class InformesActivity extends AppCompatActivity {
                 // Maneja las acciones de los elementos del menú aquí
                 switch (item.getItemId()) {
                     case R.id.opcion1_menu2:
-                        opcionMenu2 = "Dia";
+                        opcionMenu2 = "Todo";
                         break;
                     case R.id.opcion2_menu2:
-                        opcionMenu2 = "Semana";
+                        opcionMenu2 = "Día";
                         break;
                     case R.id.opcion3_menu2:
-                        opcionMenu2 = "Mes";
+                        opcionMenu2 = "Semana";
                         break;
                     case R.id.opcion4_menu2:
+                        opcionMenu2 = "Mes";
+                        break;
+                    case R.id.opcion5_menu2:
                         opcionMenu2 = "Año";
                         break;
                     default:

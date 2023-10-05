@@ -2,15 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/opcion1_menu2"
-        android:title="Día" />
+        android:title="Todo" />
     <item
         android:id="@+id/opcion2_menu2"
-        android:title="Semana" />
+        android:title="Día" />
     <item
         android:id="@+id/opcion3_menu2"
-        android:title="Mes" />
+        android:title="Semana" />
     <item
         android:id="@+id/opcion4_menu2"
+        android:title="Mes" />
+    <item
+        android:id="@+id/opcion5_menu2"
         android:title="Año" />
 
 </menu>
