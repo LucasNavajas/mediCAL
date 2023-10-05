@@ -26,9 +26,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medical.model.Calendario;
 import com.example.medical.model.CalendarioMedicion;
+import com.example.medical.model.CalendarioSintoma;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.CalendarioMedicionApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +73,7 @@ import retrofit2.Response;
 
 public class MasInfoMedicionActivity extends AppCompatActivity {
     private int codCalendario;
+    private LocalDateTime primeraFecha;
     private Calendario calendarioSeleccionado;
     private int codCalendarioMedicion;
     private int codMedicion;
@@ -642,9 +654,20 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     if (partesMeses.length == 2) {
                         String año = partesMeses[1].trim(); // Obtiene el año
                         int numeroMes = obtenerNumeroMesDesdeAbreviatura(nombreMesAbreviado);
+                        List<CalendarioMedicion> calendarioMedicionesFiltrados = new ArrayList<>();
                         for (int i = 0; i < 3; i++) {
                             String nombreMesCompleto = obtenerNombreMesCompleto(numeroMes);
                             String textoMes = nombreMesCompleto + " de " + año;
+
+                            for (CalendarioMedicion calendarioMedicionActual : calendarioMediciones) {
+                                LocalDateTime fechaMedicion = calendarioMedicionActual.getFechaCalendarioMedicion();
+                                int mesMedicion = fechaMedicion.getMonthValue();
+                                int añoMedicion = fechaMedicion.getYear();
+                                if (mesMedicion == numeroMes && añoMedicion == Integer.parseInt(año)) {
+                                    calendarioMedicionesFiltrados.add(calendarioMedicionActual);
+                                }
+                            }
+
                             RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
                             int relativeLayoutId = View.generateViewId(); // Generar un ID único para el RelativeLayout
                             relativeLayoutGrafico.setId(relativeLayoutId);
@@ -771,7 +794,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                                 año = Integer.toString(Integer.parseInt(año) + 1);
                             }
                         }
-
+                        crearGrafico(calendarioMedicionesFiltrados);
                     } else {
                         Log.e("MiApp", "Formato de fecha incorrecto: " + fechaHoyTexto);
                     }
@@ -794,6 +817,8 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
             LocalDate inicioSemana = primerDiaDelMes.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
             LocalDate finSemana = inicioSemana.plusDays(6); // Calcula el fin de semana
 
+            List<CalendarioMedicion> calendarioMedicionesFiltradosPorMes = new ArrayList<>();
+
             while (inicioSemana.isBefore(ultimoDiaDelMes) || inicioSemana.isEqual(ultimoDiaDelMes)) {
                 Log.d("MiApp", "entra en el while ");
                 List<CalendarioMedicion> calendarioMedicionesSemana = new ArrayList<>();
@@ -806,6 +831,13 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                             !fechaCalendarioMedicion.toLocalDate().isAfter(finSemana)) {
                         Log.d("MiApp", "entra en el if");
                         calendarioMedicionesSemana.add(calendarioMedicion);
+                    }
+                }
+
+                for (CalendarioMedicion calendarioMedicion : calendarioMedicionesSemana) {
+                    LocalDateTime fechaCalendarioMedicion = calendarioMedicion.getFechaCalendarioMedicion();
+                    if (fechaCalendarioMedicion.getMonth() == mes) {
+                        calendarioMedicionesFiltradosPorMes.add(calendarioMedicion);
                     }
                 }
                 // Si hay al menos una CalendarioMedicion en esta semana, crea un RelativeLayout
@@ -1150,12 +1182,26 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                 inicioSemana = finSemana.plusDays(1);
                 finSemana = inicioSemana.plusDays(6);
             }
+            crearGrafico(calendarioMedicionesFiltradosPorMes);
         } else if (mostrarSemana == false) {
             //btn Año
             // Mapa para almacenar los TextView y sus IDs generados
             Map<TextView, Integer> textViewIds = new HashMap<>();
             fechaHoyTexto = fechaHoyTexto.trim();
             int año = Integer.parseInt(fechaHoyTexto);
+
+            List<CalendarioMedicion> calendarioMedicionesFiltradosPorAño = new ArrayList<>();
+
+            for (CalendarioMedicion calendarioMedicionActual : calendarioMediciones) {
+                LocalDateTime fechaMedicion = calendarioMedicionActual.getFechaCalendarioMedicion();
+                int añoMedicion = fechaMedicion.getYear();
+
+                // Verifica si el año del síntoma coincide con el año actual
+                if (añoMedicion == año) {
+                    calendarioMedicionesFiltradosPorAño.add(calendarioMedicionActual);
+                }
+            }
+
             for (int numeroMes = 1; numeroMes <= 12; numeroMes++) {
                 String nombreMesCompleto = obtenerNombreMesCompleto(numeroMes); // Función para obtener el nombre completo del mes
                 String textoMes = nombreMesCompleto;
@@ -1285,8 +1331,9 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     }
                 });
             }
+            crearGrafico(calendarioMedicionesFiltradosPorAño);
         }
-
+        List<CalendarioMedicion> calendarioMedicionesFiltradosPorSemana = new ArrayList<>();
         // Recorrer la lista de CalendarioMedicion
         for (CalendarioMedicion calendarioMedicion : calendarioMediciones) {
 
@@ -1311,6 +1358,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
 
                             // Verificar si el día actual está dentro del rango
                             if (diaMedicion >= diaInicio && diaMedicion <= diaFin) {
+                                calendarioMedicionesFiltradosPorSemana.add(calendarioMedicion);
                                 String mesInicio = fechaFin.split(" de ")[1];
                                 Log.d("MiApp", "mesInicio: "+mesInicio);
                                 String mesMedicion = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
@@ -1609,6 +1657,9 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                 }
             }
 
+        }
+        if(mostrarSemana==true) {
+            crearGrafico(calendarioMedicionesFiltradosPorSemana);
         }
         // Verificar si se creó algún RelativeLayout
         if (seCreoRelativeLayout == false) {
@@ -1953,6 +2004,82 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void crearGrafico(List<CalendarioMedicion> mediciones) {
+        LineChart lineChart = findViewById(R.id.lineChart);
+        lineChart.clear();
+        lineChart.getDescription().setEnabled(false);
+
+        if (mediciones.isEmpty()) {
+            // Si la lista de mediciones está vacía, muestra un mensaje en el gráfico
+            lineChart.setNoDataText("No hay registros para la fecha");
+            lineChart.setNoDataTextColor(ContextCompat.getColor(this, R.color.black));
+            lineChart.invalidate(); // Actualiza el gráfico
+            return; // Sale de la función
+        } else {
+            ArrayList<Entry> entries = new ArrayList<>();
+
+            // Ordena las mediciones por fecha (si aún no están ordenadas)
+            Collections.sort(mediciones, new Comparator<CalendarioMedicion>() {
+                @Override
+                public int compare(CalendarioMedicion medicion1, CalendarioMedicion medicion2) {
+                    return medicion1.getFechaCalendarioMedicion().compareTo(medicion2.getFechaCalendarioMedicion());
+                }
+            });
+
+            for (int i = 0; i < mediciones.size(); i++) {
+                CalendarioMedicion medicion = mediciones.get(i);
+                LocalDateTime fechaMedicion = medicion.getFechaCalendarioMedicion();
+                float valorMedicion = medicion.getValorCalendarioMedicion(); // Obtener el valor de la medición
+
+                // Usar 'i' como coordenada X para cada medición
+                entries.add(new Entry(i, valorMedicion)); // Agregar un punto por cada medición
+            }
+
+            LineDataSet dataSet = new LineDataSet(entries, "Valor de la medición");
+            dataSet.setColor(ContextCompat.getColor(this, R.color.verdeTextos));
+            dataSet.setValueTextSize(12f);
+            dataSet.setLineWidth(3f);
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(dataSet);
+
+            LineData lineData = new LineData(dataSets);
+
+            lineChart.setData(lineData);
+
+            XAxis xAxis = lineChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setGranularity(1f); // Muestra todos los valores en el eje X
+
+            // Usar una etiqueta personalizada para cada medición en el eje X
+            xAxis.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    // Verificar si el valor está dentro del rango de índices de las mediciones
+                    if (value >= 0 && value < mediciones.size()) {
+                        LocalDateTime fecha = mediciones.get((int) value).getFechaCalendarioMedicion();
+                        int dia = fecha.getDayOfMonth();
+                        int mes = fecha.getMonthValue();
+                        return dia + "/" + mes;
+                    }
+                    return ""; // Devolver una cadena vacía si el valor está fuera de rango
+                }
+            });
+
+            YAxis yAxisLeft = lineChart.getAxisLeft();
+            yAxisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            // No establezcas un valor mínimo en el eje Y si deseas mostrar los valores reales de las mediciones
+            yAxisLeft.setGranularity(1f);
+
+            lineChart.getAxisRight().setEnabled(false);
+
+            lineChart.invalidate();
+        }
+    }
+
+
+
 
 }
 

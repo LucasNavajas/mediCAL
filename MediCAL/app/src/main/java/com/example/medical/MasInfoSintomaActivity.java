@@ -31,6 +31,16 @@ import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.CalendarioMedicionApi;
 import com.example.medical.retrofit.CalendarioSintomaApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +48,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -45,6 +56,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
@@ -52,6 +64,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -231,7 +244,6 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     añoActual[0]--; // Disminuir el año
                     updateFechaHoy(añoActual[0], ""); // Deja el mes en blanco
                     CrearRelativeLayout(calendarioSintomasSelec);
-
                 }
 
             }
@@ -367,7 +379,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                         fechaActualSemana[0] = fechaActualSemanaa;
                         fechaInicioSem[0]= String.valueOf(fechaInicioSemana);
                         fechaFinSem[0]=String.valueOf(fechaFinSemana);
-                        if (fechaInicioSemana=="1" && fechaFinSemana=="1"){
+                        if (fechaInicioSemana.equals("1") && fechaFinSemana.equals("1")){
                             Calendar calendar = Calendar.getInstance();
                             int primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
                             while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
@@ -448,7 +460,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     CrearRelativeLayout(calendarioSintomasSelec);
                 } else  if (mostrarSemana) {
 
-                    if (fechaInicioSemana=="1" && fechaFinSemana=="1"){
+                    if (fechaInicioSemana.equals("1") && fechaFinSemana.equals("1")){
                         Calendar calendar = Calendar.getInstance();
                         int primerDiaSemana = calendar.get(Calendar.DAY_OF_MONTH);
                         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
@@ -598,6 +610,90 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void crearGrafico(List<CalendarioSintoma> sintomas) {
+        LineChart lineChart = findViewById(R.id.lineChart);
+        lineChart.clear();
+        lineChart.getDescription().setEnabled(false);
+        if (sintomas.isEmpty()) {
+            // Si la lista de síntomas está vacía, muestra un mensaje en el gráfico
+            lineChart.setNoDataText("No hay registros para la fecha");
+            lineChart.setNoDataTextColor(ContextCompat.getColor(this, R.color.black));
+            lineChart.invalidate(); // Actualiza el gráfico
+            return; // Sale de la función
+        } else {
+            ArrayList<Entry> entries = new ArrayList<>();
+
+            Collections.sort(sintomas, new Comparator<CalendarioSintoma>() {
+                @Override
+                public int compare(CalendarioSintoma sintoma1, CalendarioSintoma sintoma2) {
+                    return sintoma1.getFechaCalendarioSintoma().compareTo(sintoma2.getFechaCalendarioSintoma());
+                }
+            });
+
+            LocalDateTime primeraFecha = sintomas.get(0).getFechaCalendarioSintoma();
+            LocalDateTime fechaActual = primeraFecha;
+            int cantidadSintomas = 0;
+            int indice = 0;
+
+            for (int i = 0; i < sintomas.size(); i++) {
+                CalendarioSintoma sintoma = sintomas.get(i);
+                LocalDateTime fechaSintoma = sintoma.getFechaCalendarioSintoma();
+
+                if (fechaActual.toLocalDate().isEqual(fechaSintoma.toLocalDate())) {
+                    cantidadSintomas++;
+                } else {
+                    entries.add(new Entry(indice, cantidadSintomas));
+                    fechaActual = fechaSintoma;
+                    cantidadSintomas = 1;
+                    indice++; // Incrementar el índice para la nueva fecha
+                }
+
+                // Si es el último síntoma o estamos en el último ciclo, agregar el punto para ese día
+                if (i == sintomas.size() - 1) {
+                    entries.add(new Entry(indice, cantidadSintomas));
+                }
+            }
+
+            LineDataSet dataSet = new LineDataSet(entries, "Cantidad de registros por día");
+            dataSet.setColor(ContextCompat.getColor(this, R.color.verdeTextos));
+            dataSet.setValueTextSize(12f);
+            dataSet.setLineWidth(3f);
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(dataSet);
+
+            LineData lineData = new LineData(dataSets);
+
+            lineChart.setData(lineData);
+
+            XAxis xAxis = lineChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setGranularity(1f); // Muestra todos los valores en el eje X
+
+            xAxis.setValueFormatter(new IndexAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    LocalDateTime fecha = primeraFecha.plusDays((int) value);
+                    int dia = fecha.getDayOfMonth();
+                    int mes = fecha.getMonthValue();
+                    return dia + "/" + mes;
+                }
+            });
+
+            YAxis yAxisLeft = lineChart.getAxisLeft();
+            yAxisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            yAxisLeft.setAxisMinimum(0f);
+            yAxisLeft.setGranularity(1f);
+
+            lineChart.getAxisRight().setEnabled(false);
+
+            lineChart.invalidate();
+        }
+    }
+
+
+
     private void ObtenerFechaYValor(List<CalendarioSintoma> calendarioSintomas) {
         Log.d("MiApp", "entra: " + calendarioSintomas.size());
         // Recorrer la lista de CalendarioMedicion
@@ -643,9 +739,21 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     if (partesMeses.length == 2) {
                         String año = partesMeses[1].trim(); // Obtiene el año
                         int numeroMes = obtenerNumeroMesDesdeAbreviatura(nombreMesAbreviado);
+                        List<CalendarioSintoma> calendarioSintomasFiltrados = new ArrayList<>();
                         for (int i = 0; i < 3; i++) {
                             String nombreMesCompleto = obtenerNombreMesCompleto(numeroMes);
                             String textoMes = nombreMesCompleto + " de " + año;
+
+                            for (CalendarioSintoma calendarioSintomaActual : calendarioSintomas) {
+                                LocalDateTime fechaSintoma = calendarioSintomaActual.getFechaCalendarioSintoma();
+                                int mesSintoma = fechaSintoma.getMonthValue();
+                                int añoSintoma = fechaSintoma.getYear();
+                                if (mesSintoma == numeroMes && añoSintoma == Integer.parseInt(año)) {
+                                    calendarioSintomasFiltrados.add(calendarioSintomaActual);
+                                }
+                            }
+
+
                             RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
                             int relativeLayoutId = View.generateViewId(); // Generar un ID único para el RelativeLayout
                             relativeLayoutGrafico.setId(relativeLayoutId);
@@ -757,6 +865,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                                 año = Integer.toString(Integer.parseInt(año) + 1);
                             }
                         }
+                        crearGrafico(calendarioSintomasFiltrados);
 
                     } else {
                         Log.e("MiApp", "Formato de fecha incorrecto: " + fechaHoyTexto);
@@ -767,7 +876,8 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             } else {
                 Log.e("MiApp", "Formato de fecha incorrecto: " + fechaHoyTexto);
             }
-        } else if (mostrarMes == true) {
+        }
+        else if (mostrarMes == true) {
             //btnMes
             Map<TextView, Integer> textViewIds = new HashMap<>();
             String[] partesFecha = fechaHoyTexto.split(" ");
@@ -780,6 +890,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             LocalDate inicioSemana = primerDiaDelMes.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
             LocalDate finSemana = inicioSemana.plusDays(6); // Calcula el fin de semana
 
+            List<CalendarioSintoma> calendarioSintomasFiltradosPorMes = new ArrayList<>();
             while (inicioSemana.isBefore(ultimoDiaDelMes) || inicioSemana.isEqual(ultimoDiaDelMes)) {
                 Log.d("MiApp", "entra en el while ");
                 List<CalendarioSintoma> calendarioSintomasSemana = new ArrayList<>();
@@ -792,6 +903,13 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                             !fechaCalendarioSintoma.toLocalDate().isAfter(finSemana)) {
                         Log.d("MiApp", "entra en el if");
                         calendarioSintomasSemana.add(calendarioSintoma);
+                    }
+                }
+
+                for (CalendarioSintoma calendarioSintoma : calendarioSintomasSemana) {
+                    LocalDateTime fechaCalendarioSintoma = calendarioSintoma.getFechaCalendarioSintoma();
+                    if (fechaCalendarioSintoma.getMonth() == mes) {
+                        calendarioSintomasFiltradosPorMes.add(calendarioSintoma);
                     }
                 }
                 // Si hay al menos una CalendarioMedicion en esta semana, crea un RelativeLayout
@@ -1123,12 +1241,25 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                 inicioSemana = finSemana.plusDays(1);
                 finSemana = inicioSemana.plusDays(6);
             }
-        } else if (mostrarSemana == false) {
+            crearGrafico(calendarioSintomasFiltradosPorMes);
+        }
+        else if (mostrarSemana == false) {
             //btn Año
             // Mapa para almacenar los TextView y sus IDs generados
             Map<TextView, Integer> textViewIds = new HashMap<>();
             fechaHoyTexto = fechaHoyTexto.trim();
             int año = Integer.parseInt(fechaHoyTexto);
+            List<CalendarioSintoma> calendarioSintomasFiltradosPorAño = new ArrayList<>();
+
+            for (CalendarioSintoma calendarioSintomaActual : calendarioSintomas) {
+                LocalDateTime fechaSintoma = calendarioSintomaActual.getFechaCalendarioSintoma();
+                int añoSintoma = fechaSintoma.getYear();
+
+                // Verifica si el año del síntoma coincide con el año actual
+                if (añoSintoma == año) {
+                    calendarioSintomasFiltradosPorAño.add(calendarioSintomaActual);
+                }
+            }
             for (int numeroMes = 1; numeroMes <= 12; numeroMes++) {
                 String nombreMesCompleto = obtenerNombreMesCompleto(numeroMes); // Función para obtener el nombre completo del mes
                 String textoMes = nombreMesCompleto;
@@ -1234,13 +1365,15 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     }
                 });
             }
+            crearGrafico(calendarioSintomasFiltradosPorAño);
         }
 
+        List<CalendarioSintoma> calendarioSintomasFiltradosPorSemana = new ArrayList<>();
         // Recorrer la lista de CalendarioMedicion
         for (CalendarioSintoma calendarioSintoma : calendarioSintomas) {
-
             // btnSemana
             if (mostrarSemana == true) {
+
                 Log.d("MiApp", "entra al mostrarSemana: " + calendarioSintomas.size());
                 Log.d("MiApp", "fechaHoyTexto: " + fechaHoyTexto);
                 if (fechaHoyTexto.contains(" - ")) {
@@ -1259,8 +1392,9 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
 
                             // Verificar si el día actual está dentro del rango
                             if (diaSintoma >= diaInicio && diaSintoma <= diaFin) {
+                                calendarioSintomasFiltradosPorSemana.add(calendarioSintoma);
                                 String mesInicio = fechaFin.split(" de ")[1];
-                                Log.d("MiApp", "mesInicio: "+mesInicio);
+                                Log.d("MiApp", "mesInicio: " + mesInicio);
                                 String mesSintoma = calendarioSintoma.getFechaCalendarioSintoma().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
                                 LocalDateTime calendarioSifecha = calendarioSintoma.getFechaCalendarioSintoma();
                                 // Verificar si el mes actual coincide con el mes en fechaHoyTexto
@@ -1318,7 +1452,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                                     textViewValor.setLayoutParams(paramsValor);
                                     textViewValor.setTextColor(ContextCompat.getColor(this, R.color.black));
                                     textViewValor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
-                                    String valorSintoma= "Registro del síntoma" ;
+                                    String valorSintoma = "Registro del síntoma";
                                     textViewValor.setText(valorSintoma);
                                     // Agregar el TextView al RelativeLayout
                                     relativeLayoutGrafico.addView(textViewValor);
@@ -1381,7 +1515,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                             String mesFin = partesFin[1].trim();
 
                             int diaSintoma = calendarioSintoma.getFechaCalendarioSintoma().getDayOfMonth();
-                            if ((diaSintoma >= diaInicio && diaSintoma <= diaFin) || (diaSintoma >= diaInicio && diaSintoma <= diaFin + 30) || (diaSintoma <= diaInicio && diaSintoma<= diaFin)) {
+                            if ((diaSintoma >= diaInicio && diaSintoma <= diaFin) || (diaSintoma >= diaInicio && diaSintoma <= diaFin + 30) || (diaSintoma <= diaInicio && diaSintoma <= diaFin)) {
                                 String mesSintoma = calendarioSintoma.getFechaCalendarioSintoma().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
                                 mesSintoma = mesSintoma.substring(0, mesSintoma.length() - 1); // Elimina el último carácter (el punto)
                                 mesSintoma = mesSintoma.substring(0, 1).toUpperCase() + mesSintoma.substring(1); // Convierte la primera letra en mayúscula
@@ -1485,8 +1619,11 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                         }
                     }
                 }
-            }
 
+            }
+        }
+        if(mostrarSemana==true) {
+            crearGrafico(calendarioSintomasFiltradosPorSemana);
         }
         // Verificar si se creó algún RelativeLayout
         if (seCreoRelativeLayout == false) {
@@ -1519,7 +1656,6 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             layoutPrincipal.addView(relativeLayoutGrafico);
 
         }
-
     }
 
 
@@ -1830,5 +1966,4 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             }
         });
     }
-
 }

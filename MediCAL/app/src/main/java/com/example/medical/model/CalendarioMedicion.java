@@ -7,7 +7,7 @@ public class CalendarioMedicion {
     private int codCalendarioMedicion;
     private LocalDateTime fechaCalendarioMedicion;
     private LocalDate fechaFinVigenciaCM;
-    private Float valorCalendarioMedicion;
+    private float valorCalendarioMedicion;
 
     public int getCodCalendarioMedicion() {
         return codCalendarioMedicion;

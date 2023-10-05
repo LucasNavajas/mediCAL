@@ -76,8 +76,15 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
         calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
         calendarioSintomaApi = retrofitService.getRetrofit().create(CalendarioSintomaApi.class);
 
-        // Obtener el calendario seleccionado
-        obtenerCalendarioSeleccionado();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Obtener el calendario seleccionado
+                obtenerCalendarioSeleccionado();
+            }
+        });
+
+
 
         Button agregarSeguimientoButton = findViewById(R.id.button_agregarseguimiento);
         agregarSeguimientoButton.setOnClickListener(new View.OnClickListener() {
@@ -175,16 +182,7 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                         Set<Integer> codigosSintomasProcesados = new HashSet<>();
                         paraSacar1.setVisibility(View.GONE);
                         paraSacar2.setVisibility(View.GONE);
-
-                        for (CalendarioSintoma unCalsintoma : calendarioSintomas) {
-                            int codSintoma = unCalsintoma.getSintoma().getCodSintoma();
-
-                            if (!codigosSintomasProcesados.contains(codSintoma)) {
-                                Log.d("MiApp", "Creando RelativeLayout para el Sintoma: " + codSintoma);
-                                createRelativeLayoutForSintoma(calendarioSintomas); // Pasar la lista completa
-                                codigosSintomasProcesados.add(codSintoma);
-                            }
-                        }
+                        createRelativeLayoutForSintoma(calendarioSintomas); // Pasar la lista completa
                     } else {
                         Log.d("MiApp", "No se encontraron CalendarioSintomas");
                     }
@@ -227,19 +225,11 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
 
                     // Después de obtener la lista de calendarioMediciones
                     if (calendarioMediciones != null && !calendarioMediciones.isEmpty()) {
-                        Set<Integer> codigosMedicionesProcesadas = new HashSet<>();
                         paraSacar1.setVisibility(View.GONE);
                         paraSacar2.setVisibility(View.GONE);
 
-                        for (CalendarioMedicion unaCalMedicion : calendarioMediciones) {
-                            int codMedicion = unaCalMedicion.getMedicion().getCodMedicion();
+                        createRelativeLayoutForMedicion(calendarioMediciones); // Pasar la lista completa
 
-                            if (!codigosMedicionesProcesadas.contains(codMedicion)) {
-                                Log.d("MiApp", "Creando RelativeLayout para la Medición: " + codMedicion);
-                                createRelativeLayoutForMedicion(calendarioMediciones); // Pasar la lista completa
-                                codigosMedicionesProcesadas.add(codMedicion);
-                            }
-                        }
                     } else {
                         Log.d("MiApp", "No se encontraron CalendarioMediciones");
                     }
