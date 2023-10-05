@@ -365,7 +365,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
             @Override
             public void onFailure(Call<List<RegistroRecordatorio>> call, Throwable t) {
-
+                Toast.makeText(InicioCalendarioActivity.this, "Error con el servidor de base de datos", Toast.LENGTH_SHORT).show();
             }
         });
     }
