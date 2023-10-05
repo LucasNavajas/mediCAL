@@ -40,34 +40,39 @@ public class ElegirDiasActivity extends AppCompatActivity {
 
         siguiente.setOnClickListener(view ->{
             int duracion = numberPicker.getValue();
-            recordatorio.setDuracionRecordatorio(duracion);
-            fechaInicio= LocalDateTime.of(getIntent().getIntExtra("year", 0),
-                    getIntent().getIntExtra("month", 0),
-                    getIntent().getIntExtra("dayOfMonth", 0),
-                    recordatorio.getFechaInicioRecordatorio().getHour(),
-                    recordatorio.getFechaInicioRecordatorio().getMinute());
-            recordatorio.setFechaInicioRecordatorio(fechaInicio);
-            recordatorio.setFechaFinRecordatorio(fechaInicio.plusDays(duracion));
-            recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
-                @Override
-                public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
-                    Intent intent = new Intent (ElegirDiasActivity.this, AgregarDatosObligatoriosActivity.class);
-                    intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
-                    intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
-                    intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
-                    startActivity(intent);
-                }
+            if(duracion>0) {
+                recordatorio.setDuracionRecordatorio(duracion);
+                fechaInicio = LocalDateTime.of(getIntent().getIntExtra("year", 0),
+                        getIntent().getIntExtra("month", 0),
+                        getIntent().getIntExtra("dayOfMonth", 0),
+                        recordatorio.getFechaInicioRecordatorio().getHour(),
+                        recordatorio.getFechaInicioRecordatorio().getMinute());
+                recordatorio.setFechaInicioRecordatorio(fechaInicio);
+                recordatorio.setFechaFinRecordatorio(fechaInicio.plusDays(duracion));
+                recordatorioApi.modificarRecordatorio(recordatorio).enqueue(new Callback<Recordatorio>() {
+                    @Override
+                    public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                        Intent intent = new Intent(ElegirDiasActivity.this, AgregarDatosObligatoriosActivity.class);
+                        intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                        intent.putExtra("presentacionMedId", getIntent().getIntExtra("presentacionMedId", 0));
+                        intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
+                        startActivity(intent);
+                    }
 
-                @Override
-                public void onFailure(Call<Recordatorio> call, Throwable t) {
-                    Toast.makeText(ElegirDiasActivity.this, "Error al agregar duracion al recordatorio", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Recordatorio> call, Throwable t) {
+                        Toast.makeText(ElegirDiasActivity.this, "Error al agregar duracion al recordatorio", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
+
     }
 
     private void inicializarVariables() {
         numberPicker = findViewById(R.id.number_picker);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(365);
         botonVolver = findViewById(R.id.boton_volver);
         siguiente = findViewById(R.id.button_siguiente);
         recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio",0)).enqueue(new Callback<Recordatorio>() {

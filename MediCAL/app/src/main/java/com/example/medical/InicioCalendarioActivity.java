@@ -1694,7 +1694,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         recargar.setOnClickListener(view ->{
             Log.d("MiApp", "Se hizo clic en el botón recargar");
             popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
             popupRecargarInventario(inventario);
         });
 
@@ -1757,7 +1756,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         recargar.setOnClickListener(view ->{
             Log.d("MiApp", "Se hizo clic en el botón recargar");
             popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
             popupRecargarInventario(inventario);
         });
 
@@ -1768,7 +1766,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         desactivar.setOnClickListener(view ->{
             Log.d("MiApp", "Se hizo clic en el botón desactivar inventario");
             popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
             desactivarInventario(inventario);
         });
 

@@ -89,6 +89,7 @@ public class AgregarDuracionRecordatorioActivity extends AppCompatActivity {
             switch(view.getId()){
                 case R.id.text_elegir:
                     Intent intent = new Intent(AgregarDuracionRecordatorioActivity.this, ElegirDiasActivity.class);
+                    intent.putExtra("codRecordatorio", getIntent().getIntExtra("codRecordatorio",0));
                     intent.putExtra("year", getIntent().getIntExtra("year", 0));
                     intent.putExtra("month", getIntent().getIntExtra("month", 0));
                     intent.putExtra("dayOfMonth", getIntent().getIntExtra("dayOfMonth", 0));

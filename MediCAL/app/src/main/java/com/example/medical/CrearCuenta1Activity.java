@@ -118,6 +118,10 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                             else{
                                 lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.rojoError));
                                 errorMailExistente.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                                View dimView = findViewById(R.id.dim_view);
+                                dimView.setVisibility(View.GONE);
+                                habilitarBotones();
                                 return;
                             }
                         } else {
@@ -134,6 +138,10 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                     public void onFailure(Call<Usuario> call, Throwable t) {
                         // Show an error message if the API call fails
                         Toast.makeText(getApplicationContext(), "API CALL ERROR Error retrieving existing user details", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        View dimView = findViewById(R.id.dim_view);
+                        dimView.setVisibility(View.GONE);
+                        habilitarBotones();
                     }
                 });
 
@@ -142,11 +150,17 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
                 if (!camposLlenos(textoUsuario, textoContrasenia, textoMail)) {
                     Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos antes de continuar", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    dimView.setVisibility(View.GONE);
+                    habilitarBotones();
                     return;
                 }
 
                 if (textoUsuario.length() > 30) {
                     ocultarErrores();
+                    progressBar.setVisibility(View.GONE);
+                    dimView.setVisibility(View.GONE);
+                    habilitarBotones();
                     errorLongitudUsuario.setVisibility(View.VISIBLE);
                     lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
                     return;
@@ -154,6 +168,9 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
                 if (usuariosUnicos.contains(textoUsuario) || mailsUnicos.contains(textoUsuario)) {
                     ocultarErrores();
+                    progressBar.setVisibility(View.GONE);
+                    dimView.setVisibility(View.GONE);
+                    habilitarBotones();
                     errorUsuario.setVisibility(View.VISIBLE);
                     lineaInferiorUsuario.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
                     popupInvalido(R.layout.n04_1_popup_usuarioinvalido);
@@ -162,6 +179,9 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
                 if (textoContrasenia.length() < 6 || textoContrasenia.length() > 15) {
                     ocultarErrores();
+                    progressBar.setVisibility(View.GONE);
+                    dimView.setVisibility(View.GONE);
+                    habilitarBotones();
                     errorLongitudContrasenia.setVisibility(View.VISIBLE);
                     lineaInferiorContrasenia.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
                     popupInvalido(R.layout.n04_2_popup_contrasenainvalida);
@@ -170,12 +190,14 @@ public class CrearCuenta1Activity extends AppCompatActivity {
 
                 if (!isValidEmail(textoMail)) {
                     ocultarErrores();
+                    progressBar.setVisibility(View.GONE);
+                    dimView.setVisibility(View.GONE);
+                    habilitarBotones();
                     errorFormatoMail.setVisibility(View.VISIBLE);
                     lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this, R.color.rojoError));
                     return;
                 }
 
-                ocultarErrores();
                 String emailAddress = textoMail;
                 CodigoVerificacion codigoVerificacion = new CodigoVerificacion();
                 Usuario usuario1 = new Usuario();
@@ -209,6 +231,9 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                             public void onFailure(Call<Usuario> call, Throwable t) {
                                 Toast.makeText(CrearCuenta1Activity.this, "Error al crear el usuario", Toast.LENGTH_SHORT).show();
                                 Logger.getLogger(CrearCuenta4Activity.class.getName()).log(Level.SEVERE, "Error ocurred");
+                                progressBar.setVisibility(View.GONE);
+                                dimView.setVisibility(View.GONE);
+                                habilitarBotones();
                             }
                         });
             }

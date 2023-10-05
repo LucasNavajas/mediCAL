@@ -120,9 +120,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/inter_medium"
                 android:textColor="@color/verdeClaro"
-                android:textSize="50sp"
-
-                />
+                android:textSize="50sp" />
 
             <TextView
                 android:layout_width="wrap_content"
