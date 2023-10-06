@@ -49,5 +49,15 @@ public class RecordatorioController {
 	public void crearRegistros(@PathVariable int codRecordatorio) {
 		recordatorioDao.crearRegistros(codRecordatorio);
 	}
+	
+	@PutMapping("/recordatorio/baja/{codRecordatorio}")
+	public void bajaRecordatorio(@PathVariable int codRecordatorio) {
+		recordatorioDao.bajaRecordatorio(codRecordatorio);
+	}
+	
+	@PutMapping("/recordatorio/baja-con-historial/{codRecordatorio}")
+	public void bajaRecordatorioConHistorial(@PathVariable int codRecordatorio) {
+		recordatorioDao.bajaRecordatorioConHistorial(codRecordatorio);
+	}
 
 }

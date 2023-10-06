@@ -1,6 +1,7 @@
 package com.medical.springserver.model.recordatorio;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +119,29 @@ public class RecordatorioDao {
 		    }
 		    
 		}
+
+	public void bajaRecordatorio(int codRecordatorio) {
+		Recordatorio recordatorio = repository.findByCodRecordatorio(codRecordatorio);
+		recordatorio.setFechaFinVigenciaR(LocalDate.now());
+		repository.save(recordatorio);
+		List<RegistroRecordatorio> registros = registroDao.getByCodRecordatorio(codRecordatorio);
+		for (RegistroRecordatorio registro : registros) {
+			registro.setFechaFinVigenciaRR(LocalDate.now());
+			registroDao.save(registro);
+		}
+		
+	}
+
+	public void bajaRecordatorioConHistorial(int codRecordatorio) {
+		Recordatorio recordatorio = repository.findByCodRecordatorio(codRecordatorio);
+		recordatorio.setFechaFinVigenciaR(LocalDate.now());
+		repository.save(recordatorio);
+		List<RegistroRecordatorio> registros = registroDao.getByCodRecordatorioHistorial(codRecordatorio);
+		for (RegistroRecordatorio registro : registros) {
+			registro.setFechaFinVigenciaRR(LocalDate.now());
+			registroDao.save(registro);
+		}
+	}
 
 
 }

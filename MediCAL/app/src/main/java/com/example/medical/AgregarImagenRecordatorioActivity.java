@@ -30,6 +30,7 @@ import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -103,18 +104,14 @@ public class AgregarImagenRecordatorioActivity extends AppCompatActivity {
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                Intent data = result.getData();
-                if (data != null) {
                     try {
                         Bitmap imgBitmap = BitmapFactory.decodeFile(capturedPhotoFile.getAbsolutePath());
-
-                        // Muestra la imagen capturada en un ImageView
-                        fotoRecordatorio.setImageBitmap(imgBitmap);
+                        Bitmap compressedBitmap = compressBitmap(imgBitmap);
+                        fotoRecordatorio.setImageBitmap(compressedBitmap);
                         tieneFoto = true;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
             }
         });
 
@@ -172,6 +169,22 @@ public class AgregarImagenRecordatorioActivity extends AppCompatActivity {
                 Toast.makeText(AgregarImagenRecordatorioActivity.this, "Error al cargar el recordatorio, cierre la aplicación y vuelva a intentarlo", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private Bitmap compressBitmap(Bitmap bitmap) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            // Comprimir la imagen en formato JPEG con una calidad del 80%
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+
+            // Convertir la salida comprimida en un nuevo Bitmap
+            byte[] compressedData = outputStream.toByteArray();
+            return BitmapFactory.decodeByteArray(compressedData, 0, compressedData.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

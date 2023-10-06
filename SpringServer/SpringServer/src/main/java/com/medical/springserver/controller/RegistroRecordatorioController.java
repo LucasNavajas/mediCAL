@@ -43,4 +43,14 @@ public class RegistroRecordatorioController {
 		return registroRecordatorioDao.obtenerRegistrosCalendarioNotificacion(codCalendario);
 	}
 	
+	@PutMapping("/registroRecordatorio/baja/{codRegistroRecordatorio}")
+	public void bajaRegistro(@PathVariable int codRegistroRecordatorio) {
+		registroRecordatorioDao.bajaRegistro(codRegistroRecordatorio);
+	}
+	
+	@GetMapping("/registroRecordatorio/{codRegistroRecordatorio}")
+	public RegistroRecordatorio getByCodRegistroRecordatorio(@PathVariable int codRegistroRecordatorio) {
+		return registroRecordatorioDao.getByCodRegistroRecordatorio(codRegistroRecordatorio);
+	}
+	
 }

@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface RegistroRecordatorioApi {
@@ -23,4 +24,10 @@ public interface RegistroRecordatorioApi {
 
     @GET("/registroRecordatorio/notificacion/{codCalendario}")
     Call<List<RegistroRecordatorio>> obtenerRegistrosCalendarioNotificacion(@Path("codCalendario") int codCalendario);
+
+    @PUT("/registroRecordatorio/baja/{codRegistroRecordatorio}")
+    Call<Void> bajaRegistro(@Path("codRegistroRecordatorio") int codRegistroRecordatorio);
+
+    @GET("/registroRecordatorio/{codRegistroRecordatorio}")
+    Call<RegistroRecordatorio> getByCodRegistroRecordatorio(@Path("codRegistroRecordatorio") int codRegistroRecordatorio);
 }

@@ -22,11 +22,11 @@
 
     <TextView
         android:id="@+id/text_una"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginTop="35dp"
         android:fontFamily="@font/inter_regular"
         android:text="Solamente la dosis seleccionada"
@@ -36,14 +36,14 @@
 
     <TextView
         android:id="@+id/text_todas"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="35dp"
         android:fontFamily="@font/inter_regular"
-        android:text="Todas las dosis futuras"
+        android:text="Todas las dosis"
         android:textColor="#000000"
         android:textSize="22sp"
         />

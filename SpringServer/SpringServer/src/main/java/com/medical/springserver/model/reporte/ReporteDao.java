@@ -37,8 +37,8 @@ public class ReporteDao {
 		repository.delete(reporte);
 	}
 	
-	public Integer deleteByNroReporte(int nroReporte) {
-		return repository.deleteByNroReporte(nroReporte);
+	public void deleteByNroReporte(int nroReporte) {
+		repository.deleteByNroReporte(nroReporte);
 	}
 	
 	

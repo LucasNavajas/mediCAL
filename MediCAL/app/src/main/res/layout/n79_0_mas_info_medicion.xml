@@ -90,37 +90,48 @@
                                 android:orientation="horizontal"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="15dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
                                 android:layout_marginTop="15dp">
 
                                 <Button
                                     android:id="@+id/btnSemana"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:text="Semana"
+                                    android:layout_weight="1"
+                                    android:textSize="12sp"
                                     android:background="@drawable/background_rounded_celeste"
+                                    android:layout_marginEnd="5dp"
                                     android:textColor="#FFFFFF" /> <!-- Establece el color del texto en blanco (#FFFFFF) -->
 
                                 <Button
                                     android:id="@+id/btnMes"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:text="Mes"
+                                    android:layout_weight="1"
+                                    android:textSize="12sp"
+                                    android:layout_marginEnd="5dp"
                                     android:background="@drawable/background_rounded_celeste"/>
 
                                 <Button
                                     android:id="@+id/btn3Mes"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:text="3 meses"
+                                    android:layout_weight="1"
+                                    android:textSize="12sp"
+                                    android:layout_marginEnd="5dp"
                                     android:background="@drawable/background_rounded_celeste"/>
 
                                 <Button
                                     android:id="@+id/btnAnio"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:text="Año"
+                                    android:textSize="12sp"
+                                    android:layout_weight="1"
                                     android:background="@drawable/background_rounded_celeste"/>
 
                             </LinearLayout>
@@ -128,15 +139,15 @@
 
                             <LinearLayout
                                 android:id="@+id/fecha_hoy_seleccionada"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="57dp"
                                 android:layout_below="@+id/dia_sem_mes_anio"
                                 android:layout_alignParentStart="true"
                                 android:layout_centerVertical="true"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginStart="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginEnd="15dp"
                                 android:orientation="horizontal">
 
 
@@ -147,20 +158,18 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_centerVertical="true"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginTop="5dp"
+                                    android:layout_marginTop="8dp"
                                     android:src="@drawable/menor" />
 
                                 <TextView
                                     android:id="@+id/fecha_hoy"
-                                    android:layout_width="277dp"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
                                     android:layout_height="40dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_gravity="center"
                                     android:layout_marginBottom="-10dp"
-
                                     android:fontFamily="@font/inter_medium"
                                     android:text="May"
+                                    android:layout_gravity="center"
                                     android:textAlignment="center"
                                     android:textColor="@color/verdeTextos"
                                     android:textSize="22sp" />
@@ -171,9 +180,7 @@
                                     android:layout_height="20dp"
                                     android:layout_alignParentEnd="true"
                                     android:layout_gravity="center"
-                                    android:layout_marginStart="2dp"
                                     android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="95dp"
                                     android:src="@drawable/mayor" />
 
                             </LinearLayout>

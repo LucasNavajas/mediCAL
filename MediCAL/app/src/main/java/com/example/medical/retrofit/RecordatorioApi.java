@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface RecordatorioApi {
@@ -33,4 +34,10 @@ public interface RecordatorioApi {
 
     @POST("/recordatorio/crear-registros/{codRecordatorio}")
     Call <Void> crearRegistros(@Path("codRecordatorio") int codRecordatorio);
+
+    @PUT("/recordatorio/baja/{codRecordatorio}")
+    Call<Void> bajaRecordatorio(@Path("codRecordatorio") int codRecordatorio);
+
+    @PUT("/recordatorio/baja-con-historial/{codRecordatorio}")
+    Call<Void> bajaRecordatorioConHistorial(@Path("codRecordatorio") int codRecordatorio);
 }

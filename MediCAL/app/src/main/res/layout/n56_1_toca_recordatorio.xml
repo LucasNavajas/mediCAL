@@ -4,17 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@drawable/rounded_background_gray"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gris">
+        android:background="@drawable/rounded_background_gray">
 
         <ImageView
             android:id="@+id/imagen_lapiz"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/lapiz_editar"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -23,8 +25,8 @@
 
         <ImageView
             android:id="@+id/imagen_basurin"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignTop="@id/imagen_lapiz"
             android:layout_marginTop="-5dp"
             android:layout_marginEnd="13dp"
@@ -33,9 +35,10 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@color/white">
 
         <TextView
@@ -47,29 +50,34 @@
             android:fontFamily="@font/inter_semibold"
             android:text="Salbutamol "
             android:textColor="@color/verdeClaro"
-            android:textSize="30sp"
+            android:textSize="40sp"
             android:layout_centerHorizontal="true" />
 
         <ImageView
             android:id="@+id/imagen"
-            android:layout_width="match_parent"
-            android:layout_height="283dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/foto_remedio" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="250dp"
+            android:maxWidth="350dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/foto_remedio"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            />
 
         <TextView
             android:id="@+id/texto_medicinaSal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/imagen"
-            android:layout_marginStart="65dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/inter_semibold"
             android:text="Agendada para 08:00, hoy"
             android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/texto_cant"
@@ -81,7 +89,7 @@
             android:fontFamily="@font/inter_regular"
             android:text="3 Inhalación(es)"
             android:textColor="@android:color/darker_gray"
-            android:textSize="20sp" />
+            android:textSize="26sp" />
 
         <TextView
             android:id="@+id/texto_como"
@@ -93,20 +101,33 @@
             android:fontFamily="@font/inter_regular"
             android:text="Agitar bien antes de inhalar ..."
             android:textColor="@android:color/darker_gray"
-            android:textSize="20sp" />
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/texto_indicaciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/texto_como"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="Indicaciones extra"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="26sp"
+            android:layout_marginBottom="10dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_below="@id/texto_como"
+            android:layout_below="@id/texto_indicaciones"
             android:background="@color/gris" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gris"
+        android:background="@drawable/rounded_background_gray"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -120,14 +141,14 @@
                 android:id="@+id/imagen_omitir"
                 android:layout_width="116dp"
                 android:layout_height="58dp"
-                android:src="@drawable/cruz_roja" />
+                android:src="@drawable/cancelar" />
 
             <TextView
                 android:id="@+id/texto_omitir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OMITIR"
-                android:textColor="@color/verdeClaro"
+                android:textColor="@color/verdeTextos"
                 android:textSize="20sp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="25dp" />
@@ -145,7 +166,7 @@
                 android:id="@+id/imagen_tomar"
                 android:layout_width="89dp"
                 android:layout_height="58dp"
-                android:src="@drawable/tic_verde" />
+                android:src="@drawable/tick" />
 
             <TextView
                 android:id="@+id/texto_tomar"
@@ -153,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:text="TOMAR"
                 android:textSize="20sp"
-                android:textColor="@color/verdeClaro"
+                android:textColor="@color/verdeTextos"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="10dp"/>
 
@@ -176,7 +197,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="APLAZAR"
-                android:textColor="@color/verdeClaro"
+                android:textColor="@color/verdeTextos"
                 android:textSize="20sp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="12dp"/>

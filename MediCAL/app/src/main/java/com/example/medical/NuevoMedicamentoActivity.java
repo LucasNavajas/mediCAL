@@ -144,24 +144,38 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
-                        Uri selectedImageUri = intent.getData();
-                        if (selectedImageUri != null) {
+                        if(result.getData()!=null) {
+                            Intent intent = result.getData();
+                            Uri selectedImageUri = intent.getData();
                             // Se seleccionó una imagen de la galería
                             // Establecer la imagen seleccionada en el ImageView
                             fotoMedicamento.setImageURI(selectedImageUri);
+                        }
 
-                        } else {
+                        else {
                             // Load the captured image from the file
                             Bitmap imgBitmap = BitmapFactory.decodeFile(capturedPhotoFile.getAbsolutePath());
-                            if (imgBitmap != null) {
-                                fotoMedicamento.setImageBitmap(imgBitmap);
-                            }
+                            Bitmap compressedBitmap = compressBitmap(imgBitmap);
+                            fotoMedicamento.setImageBitmap(compressedBitmap);
                         }
                     }
                 });
     }
+    private Bitmap compressBitmap(Bitmap bitmap) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+            // Comprimir la imagen en formato JPEG con una calidad del 80%
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+
+            // Convertir la salida comprimida en un nuevo Bitmap
+            byte[] compressedData = outputStream.toByteArray();
+            return BitmapFactory.decodeByteArray(compressedData, 0, compressedData.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     private void inicializarVariables() {
         botonVolver = findViewById(R.id.boton_volver);
         nombreMedicamento = findViewById(R.id.text_nombreMedicamento);

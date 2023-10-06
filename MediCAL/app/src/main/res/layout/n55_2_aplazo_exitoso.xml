@@ -21,12 +21,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginBottom="20dp"
+
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_below="@id/boton_cerrar"
         android:orientation="vertical"
-        android:gravity="center_vertical|center_horizontal">
+        android:gravity="center_horizontal">
 
         <!-- Nombre del medicamento aplazado -->
         <TextView
@@ -37,6 +37,7 @@
             android:text="Aspirineta"
             android:textColor="@color/white"
             android:textSize="30sp"
+            android:layout_marginBottom="20dp"
             android:textAlignment="center"
             android:inputType="textMultiLine" />
 
