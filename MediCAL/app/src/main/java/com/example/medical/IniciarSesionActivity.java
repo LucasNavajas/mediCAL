@@ -203,6 +203,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
 
     private void popupInvalido(int layoutResId) {
         progressBar.setVisibility(View.GONE);
+        habilitarBotones();
         View popupView = getLayoutInflater().inflate(layoutResId, null);
 
 

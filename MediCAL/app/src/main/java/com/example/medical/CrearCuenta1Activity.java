@@ -280,6 +280,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         lineaInferiorContrasenia = findViewById(R.id.linea_inferior_contrasenia);
         lineaInferiorUsuario = findViewById(R.id.linea_inferior_usuario);
         progressBar = findViewById(R.id.progressBar);
+        mAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -293,7 +294,7 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         errorFormatoMail.setVisibility(View.GONE);
         errorMailExistente.setVisibility(View.GONE);
         lineaInferiorMail.setBackgroundColor(ContextCompat.getColor(CrearCuenta1Activity.this,R.color.gris));
-        mAuth = FirebaseAuth.getInstance();
+
 
     }
 
