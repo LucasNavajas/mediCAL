@@ -126,7 +126,7 @@ public class MasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Aquí maneja la acción de navegación a SobreNosotrosActivity
-                Intent intent = new Intent(MasActivity.this, InformesActivity.class);
+                Intent intent = new Intent(MasActivity.this, ReportesActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);

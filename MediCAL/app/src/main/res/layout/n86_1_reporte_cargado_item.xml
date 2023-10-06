@@ -29,7 +29,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="1dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="45dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
                 android:src="@drawable/reportes_icon" />
@@ -49,6 +49,18 @@
                 android:textStyle="bold" />
 
 
+            <ImageView
+                android:id="@+id/imagen_eliminar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="-40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="1dp"
+                android:layout_toRightOf="@id/texto_fecha_generada"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/eliminar" />
+
+
             <TextView
                 android:id="@+id/texto_fecha_generada"
                 android:layout_width="match_parent"
@@ -66,7 +78,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="-45dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginEnd="1dp"
                 android:layout_toRightOf="@id/texto_fecha_generada"
                 android:layout_marginBottom="20dp"
@@ -93,7 +105,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="-40dp"
-                android:layout_marginTop="105dp"
+                android:layout_marginTop="115dp"
                 android:layout_marginEnd="1dp"
                 android:layout_toRightOf="@id/texto_fecha_desde_hasta"
                 android:layout_marginBottom="20dp"
@@ -104,7 +116,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@color/gris_medical" />
 
     </LinearLayout>

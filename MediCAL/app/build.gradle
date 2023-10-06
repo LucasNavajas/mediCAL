@@ -29,6 +29,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // Revisar ? Se excluye porque da error, revisar si falla algo al quitarse
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+
 }
 
 
@@ -69,5 +75,23 @@ dependencies {
     // Biblioteca para crear archivos de Excel
     //implementation 'org.apache.poi:poi:5.0.0'
     //implementation 'org.apache.poi:poi-ooxml:5.0.0'
+    implementation ('org.apache.poi:poi:5.0.0') {
+        exclude group: 'org.apache.xmlgraphics', module: 'batik-all'
+        exclude group: 'xml-apis', module: 'xml-apis'
+        exclude group: 'commons-logging', module: 'commons-logging-api'
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+        exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
+    }
+    implementation ('org.apache.poi:poi-ooxml:5.0.0') {
+        exclude group: 'org.apache.xmlgraphics', module: 'batik-all'
+        exclude group: 'xml-apis', module: 'xml-apis'
+        exclude group: 'commons-logging', module: 'commons-logging-api'
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+        exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
+    }
 
 }

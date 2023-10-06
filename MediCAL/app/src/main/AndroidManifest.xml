@@ -133,7 +133,7 @@
         <activity android:name=".ElegirDiasActivity"></activity>
         <activity android:name=".AgregarImagenRecordatorioActivity"></activity>
         <activity android:name=".SobreNosotrosActivity"></activity>
-        <activity android:name=".InformesActivity"></activity>
+        <activity android:name=".ReportesActivity"></activity>
         <activity android:name=".InventarioMedicamentosActivity"></activity>
         <activity android:name=".AgregarDatosObligatoriosActivity"></activity>
         <activity android:name=".AgregarInstruccionesActivity"></activity>

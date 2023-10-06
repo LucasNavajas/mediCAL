@@ -25,6 +25,10 @@ public class ReporteDao {
 	    return reporte;
 	}
 	
+	public Reporte findByNroReporte(int nroReporte) {
+		return repository.findByNroReporte(nroReporte);
+	}
+	
 	public List<Reporte> findByCodUsuario(int codUsuario) {
 		return repository.findByCodUsuario(codUsuario);
 	}
@@ -32,5 +36,10 @@ public class ReporteDao {
 	public void delete(Reporte reporte) {
 		repository.delete(reporte);
 	}
+	
+	public Integer deleteByNroReporte(int nroReporte) {
+		return repository.deleteByNroReporte(nroReporte);
+	}
+	
 	
 }

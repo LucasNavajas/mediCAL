@@ -82,17 +82,6 @@
                 android:layout_marginLeft="15dp"
                 android:fontFamily="@font/inter_medium" />
 
-            <ImageView
-                android:id="@+id/desplegable"
-                android:layout_width="20dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="25dp"
-                android:layout_toEndOf="@id/texto_usuario"
-                android:layout_alignTop="@id/texto_usuario"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/boton_desplegable" />
 
         </RelativeLayout>
 
@@ -124,13 +113,13 @@
                 android:background="#888888" />
 
             <TextView
-                android:id="@+id/text_fecha_inicio"
-                android:layout_width="wrap_content"
+                android:id="@+id/texto_fecha_inicial"
+                android:layout_width="match_parent"
                 android:fontFamily="@font/inter_regular"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textEdit_email"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:text="Fecha Inicial"
@@ -138,120 +127,52 @@
                 android:textSize="21sp" />
 
             <TextView
-                android:id="@+id/text_fecha_fin"
-                android:layout_width="wrap_content"
+                android:id="@+id/textEdit_fecha_desde"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/texto_fecha_inicial"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="3dp"
+                android:fontFamily="@font/inter_regular"
+                android:hint="seleccione fecha desde"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/texto_fecha_final"
+                android:layout_width="match_parent"
                 android:fontFamily="@font/inter_regular"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textEdit_email"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="50dp"
+                android:layout_below="@id/textEdit_fecha_desde"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
-                android:layout_toEndOf="@id/text_fecha_inicio"
                 android:text="Fecha Final"
                 android:textColorHint="#888888"
-                android:textSize="21sp"
-                android:gravity="end"/>
-
-
-            <!-- fecha_inicio se reemplazaría por la fecha elegida -->
-            <EditText
-                android:id="@+id/textEdit_fecha_inicio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_fecha_inicio"
-                android:layout_alignLeft="@id/text_fecha_inicio"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/inter_regular"
-                android:hint="fecha_inicio"
-                android:textColorHint="#000000"
-                android:background="@null"
                 android:textSize="21sp" />
 
-            <!-- fecha_fin se reemplazaría por la fecha elegida -->
-            <EditText
-                android:id="@+id/textEdit_fecha_fin"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textEdit_fecha_hasta"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text_fecha_fin"
-                android:layout_alignLeft="@id/text_fecha_fin"
+                android:layout_below="@id/texto_fecha_final"
                 android:layout_marginTop="3dp"
+                android:layout_marginStart="35dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/inter_regular"
-                android:hint="fecha_final"
-                android:textColorHint="#000000"
-                android:background="@null"
-                android:textSize="21sp" />
+                android:hint="seleccione fecha hasta"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:id="@+id/texto_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal"
-                android:gravity="top">
-
-                <CheckBox
-                    android:id="@+id/checkBox1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Síntomas Incluídos"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/texto_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:orientation="horizontal"
-                android:layout_below="@id/texto_1"
-                android:gravity="top">
-
-                <CheckBox
-                    android:id="@+id/checkBox2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"/>
-
-                <TextView
-                    android:id="@+id/texto2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mediciones de Signos Vitales Incluídos"
-                    android:gravity="top"
-                    android:layout_marginTop="7dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/verdeTextos"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="45dp">
 
             <TextView
                 android:id="@+id/texto"
@@ -272,7 +193,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_siguiente"
+        android:id="@+id/button_enviar"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
