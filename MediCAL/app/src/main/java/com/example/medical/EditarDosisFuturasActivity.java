@@ -26,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -57,6 +58,7 @@ import com.example.medical.model.Inventario;
 import com.example.medical.model.Medicamento;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.ConcentracionApi;
+import com.example.medical.retrofit.FrecuenciaApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
@@ -79,8 +81,11 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private ConcentracionApi concentracionApi = retrofitService.getRetrofit().create(ConcentracionApi.class);
+    private FrecuenciaApi frecuenciaApi = retrofitService.getRetrofit().create(FrecuenciaApi.class);
     private List<Concentracion> concentracionList;
     private List<String> concentraciones = new ArrayList<String>() {};
+    private TextView textHecho;
+    private Button botonHecho;
     private boolean tieneFoto = false;
     private LinearLayout cambiarConcentracion;
     private Recordatorio recordatorio;
@@ -95,6 +100,14 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private float cantaviso = 0;
     private float cantrealm = 0;
     private float cantavisom = 0;
+    private Medicamento medicamento;
+    private Frecuencia frecuencia;
+    private Dosis dosis;
+    private Concentracion concentracion;
+    private Instruccion instruccion;
+    private Inventario inventario;
+
+
 
     @Override
     public void onBackPressed() {
@@ -208,6 +221,11 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         TextView cambiardosis = findViewById(R.id.botoncambiardosis);
         EditText dosisEditText = findViewById(R.id.editdosis);
         TextView cambiarconcentracion = findViewById(R.id.establecer_concentracion);
+        textHecho = findViewById(R.id.texto_hecho);
+        botonHecho = findViewById(R.id.button_hecho);
+
+        textHecho.setOnClickListener(hechoOnclick());
+        botonHecho.setOnClickListener(hechoOnclick());
 
         textCambiarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,6 +278,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 // Obtener el valor actual del EditText
                                 int diasduracion = 99999;
+                                recordatorio.setDuracionRecordatorio(diasduracion);
 
                                 // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
                                 mostrarDuracionDias(diasduracion);
@@ -481,6 +500,43 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             }
         });
     }
+
+    private View.OnClickListener hechoOnclick() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
+                    @Override
+                    public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                        Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio modificado", Toast.LENGTH_SHORT).show();
+                        saveFrecuencia();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Recordatorio> call, Throwable t) {
+                        Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio no modificado", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        };
+    }
+
+    private void saveFrecuencia() {
+        frecuenciaApi.save(frecuencia).enqueue(new Callback<Frecuencia>() {
+            @Override
+            public void onResponse(Call<Frecuencia> call, Response<Frecuencia> response) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Frecuencia modificada", Toast.LENGTH_SHORT).show();
+                //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
+                //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
+            }
+
+            @Override
+            public void onFailure(Call<Frecuencia> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Frecuencia no modificada", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private Bitmap compressBitmap(Bitmap bitmap) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -530,12 +586,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     fotoMedicamento.setImageBitmap(decodedBitmap);
                     tieneFoto = true;
                 }
-                Medicamento medicamento = recordatorio.getMedicamento();
-                Frecuencia frecuencia = recordatorio.getFrecuencia();
-                Dosis dosis = recordatorio.getDosis();
-                Concentracion concentracion = dosis.getConcentracion();
-                Instruccion instruccion = recordatorio.getInstruccion();
-                Inventario inventario = recordatorio.getInventario();
+                medicamento = recordatorio.getMedicamento();
+                frecuencia = recordatorio.getFrecuencia();
+                dosis = recordatorio.getDosis();
+                concentracion = dosis.getConcentracion();
+                instruccion = recordatorio.getInstruccion();
+                inventario = recordatorio.getInventario();
 
                 String nombreMedicamento = medicamento.getNombreMedicamento();
                 int diastoma = 0;
@@ -546,8 +602,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 }
                 else{
                     nombreFrecuencia = frecuencia.getNombreFrecuencia();
-                    frecuencia.getDiasTomaF();
-                    frecuencia.getDiasDescansoF();
+                    diastoma = frecuencia.getDiasTomaF();
+                    diasdescanso = frecuencia.getDiasDescansoF();
                 }
 
                 String imagen = recordatorio.getImagen();
@@ -958,6 +1014,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 nombrefrecuencia = "Cada " + selectedValue + " horas"; // Establece nombrefrecuencia con el valor seleccionado
                 // Haz algo con el valor seleccionado, si es necesario
                 mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                frecuencia.setCantidadFrecuencia(selectedValue);
+                frecuencia.setDiasDescansoF(0);
+                frecuencia.setDiasTomaF(0);
+                frecuencia.setNombreFrecuencia(nombrefrecuencia);
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
             }
@@ -1012,6 +1072,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 nombrefrecuencia = "Cada " + selectedValue + " días"; // Establece nombrefrecuencia con el valor seleccionado
                 // Haz algo con el valor seleccionado, si es necesario
                 mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                frecuencia.setCantidadFrecuencia(selectedValue*24);
+                frecuencia.setDiasDescansoF(0);
+                frecuencia.setDiasTomaF(0);
+                frecuencia.setNombreFrecuencia(nombrefrecuencia);
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
             }
@@ -1066,6 +1130,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 nombrefrecuencia = "Cada " + selectedValue + " semanas"; // Establece nombrefrecuencia con el valor seleccionado
                 // Haz algo con el valor seleccionado, si es necesario
                 mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                frecuencia.setCantidadFrecuencia(selectedValue*24*7);
+                frecuencia.setDiasDescansoF(0);
+                frecuencia.setDiasTomaF(0);
+                frecuencia.setNombreFrecuencia(nombrefrecuencia);
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
             }
@@ -1120,6 +1188,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 nombrefrecuencia = "Cada " + selectedValue + " meses"; // Establece nombrefrecuencia con el valor seleccionado
                 // Haz algo con el valor seleccionado, si es necesario
                 mostrarNombreFrecuencia(nombrefrecuencia,0,0);
+                frecuencia.setCantidadFrecuencia(selectedValue*24*30);
+                frecuencia.setDiasDescansoF(0);
+                frecuencia.setDiasTomaF(0);
+                frecuencia.setNombreFrecuencia(nombrefrecuencia);
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
             }
@@ -1181,6 +1253,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 nombrefrecuencia = "Ciclo recurrente"; // Establece nombrefrecuencia con el valor seleccionado
                 // Haz algo con el valor seleccionado, si es necesario
                 mostrarNombreFrecuencia(nombrefrecuencia,selectedValuet,selectedValued);
+                frecuencia.setCantidadFrecuencia(24);
+                frecuencia.setDiasDescansoF(selectedValued);
+                frecuencia.setDiasTomaF(selectedValuet);
+                frecuencia.setNombreFrecuencia(nombrefrecuencia);
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
             }
@@ -1232,6 +1308,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 int horaSeleccionada = timePicker.getHour();
                 int minutosSeleccionados = timePicker.getMinute();
 
+                LocalDateTime fechaRecordatorio = recordatorio.getFechaInicioRecordatorio();
+
+                LocalDateTime fechaHoraRecordatorio = fechaRecordatorio.toLocalDate().atTime(horaSeleccionada, minutosSeleccionados);
                 // Formatear la hora y los minutos en el formato deseado (por ejemplo, "09:03 p. m.")
                 String horaFormateada = String.format(Locale.getDefault(), "%02d:%02d", get12HourFormat(horaSeleccionada), minutosSeleccionados);
                 String horaAmPm = getAmPmString(horaSeleccionada); // Obtener "a. m." o "p. m."
@@ -1242,6 +1321,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 // Haz algo con la hora completa, como mostrarla en un TextView
                 TextView primeratomaTextView = findViewById(R.id.primeratoma); // Cambia el ID según tu diseño
                 primeratomaTextView.setText("Primera administración a las:\n" + horaCompleta);
+                recordatorio.setFechaInicioRecordatorio(fechaHoraRecordatorio);
 
                 // Cerrar el PopupWindow y ocultar el dimView
                 popupWindow.dismiss();
@@ -1254,7 +1334,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                popupCambiarFrecuencia();
             }
         });
     }
@@ -1312,10 +1391,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         botonAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LocalDateTime fechaHoraRecordatorio = recordatorio.getFechaInicioRecordatorio();
                 // Obtener la fecha seleccionada del DatePicker
                 int year = datePicker.getYear();
                 int month = datePicker.getMonth();
                 int dayOfMonth = datePicker.getDayOfMonth();
+
+                LocalDateTime nuevaFechaHora = LocalDateTime.of(year, month+1, dayOfMonth, fechaHoraRecordatorio.getHour(), fechaHoraRecordatorio.getMinute());
 
                 // Crear un objeto LocalDate con la fecha seleccionada
                 LocalDate selectedDate = LocalDate.of(year, month + 1, dayOfMonth); // Sumamos 1 al mes porque en Java enero es 0
@@ -1334,6 +1416,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 // Llamar al método mostrarDuracion y pasar el LocalDateTime y el valor actual de días de duración
                 mostrarDuracionFecha(selectedDateTime);
 
+                recordatorio.setFechaInicioRecordatorio(nuevaFechaHora);
                 // Cerrar el popup y ocultar dimView
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
@@ -1392,7 +1475,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Obtener el valor actual del EditText
                 int diasduracion = Integer.parseInt(textEditDias.getText().toString());
-
+                recordatorio.setDuracionRecordatorio(diasduracion);
 
                 // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
                 mostrarDuracionDias(diasduracion);

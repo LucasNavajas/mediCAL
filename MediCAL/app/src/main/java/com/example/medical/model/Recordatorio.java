@@ -10,7 +10,6 @@ public class Recordatorio {
     private LocalDateTime fechaFinRecordatorio;
     private LocalDate fechaFinVigenciaR;
     private LocalDateTime fechaInicioRecordatorio;
-    private int horarioRecordatorio;
     private String imagen;
     // Relacion con Calendario
     private Calendario calendario;
@@ -73,12 +72,6 @@ public class Recordatorio {
     public void setFechaInicioRecordatorio(LocalDateTime fechaInicioRecordatorio) {
         this.fechaInicioRecordatorio = fechaInicioRecordatorio;
     }
-    public int getHorarioRecordatorio() {
-        return horarioRecordatorio;
-    }
-    public void setHorarioRecordatorio(int horarioRecordatorio) {
-        this.horarioRecordatorio = horarioRecordatorio;
-    }
     public String getImagen() {
         return imagen;
     }
@@ -91,7 +84,7 @@ public class Recordatorio {
         return "Recordatorio [codRecordatorio=" + codRecordatorio + ", duracionRecordatorio=" + duracionRecordatorio
                 + ", fechaAltaRecordatorio=" + fechaAltaRecordatorio + ", fechaFinRecordatorio=" + fechaFinRecordatorio
                 + ", fechaFinVigenciaR=" + fechaFinVigenciaR + ", fechaInicioRecordatorio=" + fechaInicioRecordatorio
-                + ", horarioRecordatorio=" + horarioRecordatorio + ", calendario=" + calendario
+                +  ", calendario=" + calendario
                 + ", registrorecordatorio=" + /*registrorecordatorio + ", inventario=" + inventario + ", instruccion="
                 + instruccion + ", medicamento=" + medicamento + ", dosis=" + dosis + ", frecuencia=" + frecuencia
                 + */"]";

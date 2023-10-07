@@ -71,6 +71,7 @@ public class FrecuenciaxciclosActivity extends AppCompatActivity {
                 Intent intent = new Intent(FrecuenciaxciclosActivity.this, SeleccionarHorarioRecordatorioActivity.class);
                 Frecuencia frecuencia = new Frecuencia();
                 frecuencia.setNombreFrecuencia("Ciclo recurrente");
+                frecuencia.setCantidadFrecuencia(24);
                 frecuencia.setDiasTomaF(numberPickerToma.getValue());
                 frecuencia.setDiasDescansoF(numberPickerDesc.getValue());
                 recordatorioApi.getByCodRecordatorio(getIntent().getIntExtra("codRecordatorio", 0)).enqueue(new Callback<Recordatorio>() {
