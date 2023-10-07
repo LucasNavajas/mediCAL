@@ -53,4 +53,9 @@ public class RegistroRecordatorioController {
 		return registroRecordatorioDao.getByCodRegistroRecordatorio(codRegistroRecordatorio);
 	}
 	
+	@GetMapping("registroRecordatorio/recordatorio/{codRecordatorio}")
+	public List<RegistroRecordatorio> getByCodRecordatorio(@PathVariable int codRecordatorio){
+		return registroRecordatorioDao.getByCodRecordatorio(codRecordatorio);
+	}
+	
 }

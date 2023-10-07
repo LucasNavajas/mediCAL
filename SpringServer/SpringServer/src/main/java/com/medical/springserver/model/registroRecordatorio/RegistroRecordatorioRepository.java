@@ -65,6 +65,6 @@ public interface RegistroRecordatorioRepository extends CrudRepository<RegistroR
 	        "ORDER BY r.fechaTomaEsperada")
 	List<RegistroRecordatorio> obtenerRegistrosPorCodRecordatorioHistorial(
 	        @Param("codRecordatorio") int codRecordatorio
-	);
+	);	
 
 }

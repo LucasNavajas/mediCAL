@@ -85,7 +85,7 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
             // Iniciar CompartirReporteActivity
             view.getContext().startActivity(compartirIntent);
         });
-        holder.imagenCompartir.setOnClickListener(view -> {
+        holder.imagenDescargar.setOnClickListener(view -> {
             Log.d("MiApp", "Se hizo clic en el botón descargar");
             // Crear un Intent para abrir DescargarReporteActivity
             Intent descargarIntent = new Intent(view.getContext(), DescargarReporteActivity.class);

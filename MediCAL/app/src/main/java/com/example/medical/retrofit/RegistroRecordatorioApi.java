@@ -30,4 +30,8 @@ public interface RegistroRecordatorioApi {
 
     @GET("/registroRecordatorio/{codRegistroRecordatorio}")
     Call<RegistroRecordatorio> getByCodRegistroRecordatorio(@Path("codRegistroRecordatorio") int codRegistroRecordatorio);
+
+    @GET("/registroRecordatorio/recordatorio/{codRecordatorio}")
+    Call<List<RegistroRecordatorio>> getByCodRecordatorio(@Path("codRecordatorio") int codRecordatorio);
+
 }

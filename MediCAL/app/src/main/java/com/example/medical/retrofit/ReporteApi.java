@@ -25,7 +25,7 @@ public interface ReporteApi {
     @GET("/reporte/usuario/{codUsuario}")
     Call<List<Reporte>>getByCodUsuario(@Path("codUsuario") int codUsuario);
 
-    @DELETE("/reporte/eliminar/{nroReporte}")
+    @POST("/reporte/eliminar/{nroReporte}")
     Call<Reporte> deleteByNroReporte(@Path("nroReporte") int nroReporte);
 
 }

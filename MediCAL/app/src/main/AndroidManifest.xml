@@ -141,6 +141,8 @@
         <activity android:name=".AgregarInventarioActivity"></activity>
         <activity android:name=".AgregarAlertaInventarioActivity"></activity>
         <activity android:name=".EditarUnaDosisActivity"></activity>
+        <activity android:name=".CompartirReporteActivity"></activity>
+        <activity android:name=".DescargarReporteActivity"></activity>
 
     </application>
 

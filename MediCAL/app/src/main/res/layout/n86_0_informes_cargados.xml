@@ -134,14 +134,14 @@
         android:layout_below="@+id/cabecera">
 
 
-        <!--
+
         <RelativeLayout
             android:id="@+id/informes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/gris"
             android:layout_centerHorizontal="true" >
-            -->
+
 
             <ScrollView
                 android:id="@+id/scrollView"
@@ -202,7 +202,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-    <!-- </RelativeLayout>  -->
+    </RelativeLayout>
 
     <View
         android:id="@+id/dim_view"

@@ -55,6 +55,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
     private RecyclerView recyclerView;
     private int codUsuarioLogeado;
     private int codCalendarioSeleccionado;
+    private View dimView;
 
     private boolean existenInformes = false; // Variable global para verificar existencia de informes
     private List<Reporte> listaTotalReportes = new ArrayList<>(); // Lista global para almacenar todos los informes de un usuario
@@ -70,6 +71,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
     private PopupMenu popupMenu2;
 
     private Object context;
+    private OnDataLoadedListener onDataLoadedListener;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -96,7 +98,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             }
         });
 
-        OnDataLoadedListener onDataLoadedListener = new OnDataLoadedListener() {
+        onDataLoadedListener = new OnDataLoadedListener() {
             @Override
             public void onDataLoaded() {
                 Log.d("MiApp", "Llamo al método loadInformes si existen informes: " + existenInformes);
@@ -176,6 +178,8 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                         Log.d("MiApp", "Reportes Asociados Encontrados");
                         existenInformes = true;
                         Log.d("MiApp", "variable existenInformes: " + existenInformes);
+                        listaTotalReportes.clear();
+                        listaTotalReportesOriginal.clear();
 
                         for (Reporte reporte : reportesAsociados) {
                             listaTotalReportes.add(reporte);
@@ -184,9 +188,6 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                         }
 
                         pantallaInformesCargados(listener);
-
-                        //listener.onDataLoaded();
-                        //Log.d("MiApp", "Ya se ejecutó el listener");
 
                     } else {
                         Log.d("MiApp", "No se encontraron reporte asociados al usuario");
@@ -219,26 +220,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             listener.onDataLoaded();
             Log.d("MiApp", "Ya se ejecutó el listener");
 
-            // Configurar el RecyclerView
-            /*
-            recyclerView = findViewById(R.id.listareportes_recyclerview);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            reporteAdapter = new ReporteAdapter(new ArrayList<>()); // Inicializar el adaptador con una lista vacía
-            recyclerView.setAdapter(reporteAdapter);
-
-
-
-            if (listaTotalReportes != null) {
-                // Imprimir el contenido de listaTotalReportes
-                for (Reporte reporte : listaTotalReportes) {
-                    Log.d("MiApp", "Reporte en ListaTotalReportes: " + reporte.toString());
-                }
-                reporteAdapter.setReporteList(listaTotalReportes);
-
-            } else {
-                Toast.makeText(InformesActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
-            }
-            */
+            dimView = findViewById(R.id.dim_view);
 
             agregarInforme.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -567,7 +549,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         // Configurar animación para oscurecer el fondo
         View rootView = findViewById(android.R.id.content);
 
-        View dimView = findViewById(R.id.dim_view);
+        //View dimView = findViewById(R.id.dim_view);
         dimView.setVisibility(View.VISIBLE);
 
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
@@ -597,8 +579,13 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                 @Override
                 public void onResponse(Call<Reporte> call, Response<Reporte> response) {
                     if (response.isSuccessful()) {
-                            Log.d("MiApp", "Reporte nro: " + nroReporte + " eliminado con éxito");
-                            popupReporteEliminado();
+                        Log.d("MiApp", "Reporte nro: " + nroReporte + " eliminado con éxito");
+                        listaTotalReportesOriginal.remove(reporteApi.getByNroReporte(nroReporte));
+                        listaTotalReportes.remove(reporteApi.getByNroReporte(nroReporte));
+                        popupWindow.dismiss();
+                        dimView.setVisibility(View.GONE);
+                        popupReporteEliminado();
+
                     } else {
                         Log.d("MiApp", "No se pudo eliminar el reporte con nroReporte: " + nroReporte);
                         Log.d("MiApp", "Error en la solicitud de eliminar 'Reporte' " + response.message());
@@ -632,7 +619,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         // Configurar animación para oscurecer el fondo
         View rootView = findViewById(android.R.id.content);
 
-        View dimView = findViewById(R.id.dim_view);
+        //View dimView = findViewById(R.id.dim_view);
         dimView.setVisibility(View.VISIBLE);
 
         Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
@@ -648,6 +635,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         cerrar.setOnClickListener(view ->{
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
+            obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
         });
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
