@@ -676,7 +676,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         // Dibujar el gráfico en la hoja de trabajo
         chart.plot(data);
         // Ajustar el tamaño del gráfico
-        CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+       // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
 
         // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
         String filePath = "/storage/emulated/0/miarchivo.xlsx"; // CambiaR la ruta necesidad  --- REVISAR

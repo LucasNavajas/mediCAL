@@ -2,6 +2,8 @@ package com.example.medical;
 
 import static android.content.Intent.ACTION_PICK;
 
+import static com.example.medical.NuevoMedicamentoActivity.bitmapToBase64;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -59,6 +63,9 @@ import com.example.medical.model.Medicamento;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.retrofit.ConcentracionApi;
 import com.example.medical.retrofit.FrecuenciaApi;
+import com.example.medical.retrofit.DosisApi;
+import com.example.medical.retrofit.InventarioApi;
+import com.example.medical.retrofit.InstruccionApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
@@ -82,6 +89,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private ConcentracionApi concentracionApi = retrofitService.getRetrofit().create(ConcentracionApi.class);
     private FrecuenciaApi frecuenciaApi = retrofitService.getRetrofit().create(FrecuenciaApi.class);
+    private InventarioApi inventarioApi = retrofitService.getRetrofit().create(InventarioApi.class);
+    private DosisApi dosisApi = retrofitService.getRetrofit().create(DosisApi.class);
+    private InstruccionApi instruccionApi = retrofitService.getRetrofit().create(InstruccionApi.class);
     private List<Concentracion> concentracionList;
     private List<String> concentraciones = new ArrayList<String>() {};
     private TextView textHecho;
@@ -107,6 +117,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private Instruccion instruccion;
     private Inventario inventario;
 
+    boolean inventarioActivo = false;
 
 
     @Override
@@ -119,7 +130,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(2); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(1); // Cambia el número 4 por el codRecordatorio deseado
 
 
         capturedPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_photo.jpg");
@@ -148,6 +159,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                             // Se seleccionó una imagen de la galería
                             // Establecer la imagen seleccionada en el ImageView
                             fotoMedicamento.setImageURI(selectedImageUri);
+                            Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
+                            recordatorio.setImagen(bitmapToBase64(imagenBitmap));
                         }
 
                         else {
@@ -155,6 +168,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                             Bitmap imgBitmap = BitmapFactory.decodeFile(capturedPhotoFile.getAbsolutePath());
                             Bitmap compressedBitmap = compressBitmap(imgBitmap);
                             fotoMedicamento.setImageBitmap(compressedBitmap);
+                            Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
+                            recordatorio.setImagen(bitmapToBase64(imagenBitmap));
                         }
                     }
                 });
@@ -352,6 +367,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                                 imm.hideSoftInputFromWindow(dosisEditText.getWindowToken(), 0);
                                 // Quitar el foco del EditText
                                 dosisEditText.clearFocus();
+                                dosis.setCantidadDosis(cantdosis);
                             }
                         }
                     });
@@ -379,7 +395,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                     // Oculta el teclado virtual
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
+                    instruccion.setDescInstruccion(textoIngresado);
                     return true; // Indica que el evento ha sido manejado
                 }
                 return false; // Indica que el evento no ha sido manejado
@@ -496,8 +512,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 } else {
                     agregarInventario.setVisibility(View.GONE);
 
-                }
-            }
+                }         }
         });
     }
 
@@ -505,27 +520,45 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
-                    @Override
-                    public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
-                        Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio modificado", Toast.LENGTH_SHORT).show();
-                        saveFrecuencia();
-                    }
+                if (recordatorio.getInventario() != null) {
 
-                    @Override
-                    public void onFailure(Call<Recordatorio> call, Throwable t) {
-                        Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio no modificado", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    inventarioApi.save(inventario).enqueue(new Callback<Inventario>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
+                        @Override
+                        public void onResponse(Call<Inventario> call, Response<Inventario> response) {
+                            Toast.makeText(EditarDosisFuturasActivity.this, "Inventario modificado", Toast.LENGTH_SHORT).show();
+                            recordatorio.setInventario(response.body());
+                            saveRecordatorio();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Inventario> call, Throwable t) {
+                            Toast.makeText(EditarDosisFuturasActivity.this, "Inventario no modificado", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+            saveRecordatorio();
+                }}};}
+
+    private void saveRecordatorio(){
+        recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
+            @Override
+            public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio modificado", Toast.LENGTH_SHORT).show();
+                saveFrecuencia();
             }
-        };
-    }
 
+            @Override
+            public void onFailure(Call<Recordatorio> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio no modificado", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void saveFrecuencia() {
         frecuenciaApi.save(frecuencia).enqueue(new Callback<Frecuencia>() {
             @Override
             public void onResponse(Call<Frecuencia> call, Response<Frecuencia> response) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Frecuencia modificada", Toast.LENGTH_SHORT).show();
+                saveDosis();
                 //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
                 //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
             }
@@ -537,6 +570,38 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         });
     }
 
+    private void saveDosis() {
+        dosisApi.save(dosis).enqueue(new Callback<Dosis>() {
+            @Override
+            public void onResponse(Call<Dosis> call, Response<Dosis> response) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Dosis modificada", Toast.LENGTH_SHORT).show();
+                saveInstruccion();
+                //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
+                //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
+            }
+
+            @Override
+            public void onFailure(Call<Dosis> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Dosis no modificada", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void saveInstruccion() {
+        instruccionApi.save(instruccion).enqueue(new Callback<Instruccion>() {
+            @Override
+            public void onResponse(Call<Instruccion> call, Response<Instruccion> response) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Instruccion modificada", Toast.LENGTH_SHORT).show();
+                //saveDosis();
+                //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
+                //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
+            }
+
+            @Override
+            public void onFailure(Call<Instruccion> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Instruccion no modificada", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private Bitmap compressBitmap(Bitmap bitmap) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -591,7 +656,9 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 dosis = recordatorio.getDosis();
                 concentracion = dosis.getConcentracion();
                 instruccion = recordatorio.getInstruccion();
-                inventario = recordatorio.getInventario();
+                if (recordatorio.getInventario()!= null){
+                    inventario = recordatorio.getInventario();
+                }
 
                 String nombreMedicamento = medicamento.getNombreMedicamento();
                 int diastoma = 0;
@@ -673,30 +740,57 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         TextView descripcionRecordatorio = findViewById(R.id.descripcion_recordatorio_receta);
         EditText editTextCantreal = findViewById(R.id.cantreal);
         TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
-
+        if (inventario!=null){
+            recordatorioRecarga.setChecked(true);
+        }
         // Formatea las cantidades con el formato "#.###"
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
         String cantrealFormateada = decimalFormat.format(cantreal);
         String cantavisoFormateada = decimalFormat.format(cantaviso);
 
         if (codinventario != 0) {
-            descripcionRecordatorio.setText("Actualmente tiene " + cantrealFormateada + " medicamentos. Se le recordará cuando le queden " + cantavisoFormateada + " medicamentos");
-            editTextCantreal.setHint("Cantidad de medicamentos: " + cantrealFormateada);
-            textViewCantaviso.setText("Establecer cuando me queden " + cantavisoFormateada + " medicamentos");
+            inventarioActivo = true;
+            descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos");
+            editTextCantreal.setHint("Cantidad de medicamentos: " + inventario.getCantRealInventario());
+            textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantAvisoInventario() + " medicamentos");
         } else {
+            inventarioActivo = false;
             descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga");
             editTextCantreal.setHint("Cantidad de medicamentos:");
             textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
         }
+
+        recordatorioRecarga.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    inventarioActivo = true;
+                    descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos");
+                    editTextCantreal.setHint("Cantidad de medicamentos: " + inventario.getCantRealInventario());
+                    textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantAvisoInventario()+ " medicamentos");
+                if (inventario == null){
+                    inventario = new Inventario();
+                }
+                } else {
+                    inventarioActivo = false;
+                    descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga");
+                    editTextCantreal.setHint("Cantidad de medicamentos:");
+                    textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
+                    recordatorio.setInventario(null);
+                }
+            }
+        });
     }
 
 
     private void mostrarIndicacion(String descindicacion) {
         EditText indicacionEditText = findViewById(R.id.indicaciones); // Cambia a tu ID real
         indicacionEditText.setHint(String.valueOf(descindicacion));
+        instruccion.setDescInstruccion(String.valueOf(descindicacion));
     }
 
     private void mostrarInstruccion(String radioinstruccion) {
+        RadioGroup radiog_instrucciones = findViewById(R.id.radio_group_instrucciones);
         RadioButton radioAntesDeComer = findViewById(R.id.radio_antes_de_comer);
         RadioButton radioConLaComida = findViewById(R.id.radio_con_la_comida);
         RadioButton radioDespuesDeComer = findViewById(R.id.radio_despues_de_comer);
@@ -711,6 +805,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         } else {
             radioNoImporta.setChecked(true);
         }
+        radiog_instrucciones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton rb = findViewById(i);
+                instruccion.setNombreInstruccion(rb.getText().toString());
+            }
+        });
     }
 
     private void mostrarConcentracion(float valorconcentracion, String unidadmedidac) {
@@ -1536,7 +1637,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         // Configura el adaptador para el Spinner
         concentracionSpinner.setAdapter(concentracionAdapter);
 
-
         PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         popupWindow.setFocusable(true);
@@ -1617,6 +1717,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 // Cerrar el popup y ocultar dimView
                 popupWindow.dismiss();
                 dimView.setVisibility(View.GONE);
+                dosis.setValorConcentracion(valorActual);
+                int indice = concentracionSpinner.getSelectedItemPosition();
+                dosis.setConcentracion(concentracionList.get(indice));
+
             }
         });
 
@@ -1673,10 +1777,11 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
                     // Guarda el valor formateado en textViewCantaviso
                     TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
-                    textViewCantaviso.setText("Establecer cuando me queden " + cantidadFormateada + " medicamentos");
+                    textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantRealInventario() + " medicamentos");
 
                     // Cierra el popup
                     popupWindow.dismiss();
+                    inventario.setCantAvisoInventario((int)cantavisom);
                     // Llama al método con las variables de control como argumentos
                     MostrarDescInventario(aceptarPresionado, enterPresionado);
                 } else {
@@ -1708,15 +1813,21 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         if (aceptarPresionado && enterPresionado) {
             // Caso 1: Si se presiona enter y aceptar
-            descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos."); // Cambia el texto de descripción
+            inventario.setCantRealInventario((int)cantrealm);
+            descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos."); // Cambia el texto de descripción
+
         } else if (enterPresionado) {
             // Caso 2: Si se presiona enter pero no aceptar osea cambia la cant real
             if (!cantAvisoFormatted.equals("0")) {
                 // Si cantAvisoFormatted no es igual a "0", muestra el mensaje original
-                descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisoFormatted + " medicamentos."); // Cambia el texto de descripción
+                inventario.setCantRealInventario((int)cantrealm);
+                descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos."); // Cambia el texto de descripción
+
             } else {
+                inventario.setCantRealInventario((int)cantrealm);
                 // Si cantAvisoFormatted es igual a "0", muestra un mensaje indicando que se debe elegir una cantidad de aviso
-                descripcionRecordatorio.setText("Actualmente tiene " + cantRealmFormatted + " medicamentos.\nEstablezca la cantidad de stock mínimo."); // Cambia el texto de descripción
+                descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos.\nEstablezca la cantidad de stock mínimo."); // Cambia el texto de descripción
+
             }
         } else if (aceptarPresionado) {
             // Caso 3: Si se presiona aceptar pero no enter
@@ -1724,10 +1835,10 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             //
             if (!cantRealFormatted.equals("0")) {
                 // Si cantRealFormatted no es igual a "0", muestra el mensaje original
-                descripcionRecordatorio.setText("Actualmente tiene " + cantRealFormatted + " medicamentos. Se le recordará cuando le queden " + cantAvisomFormatted + " medicamentos."); // Cambia el texto de descripción
+                descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario()+ " medicamentos."); // Cambia el texto de descripción
             } else {
                 // Si cantRealFormatted es igual a "0", muestra un mensaje indicando que se debe elegir una cantidad real
-                descripcionRecordatorio.setText("Establezca la cantidad actual de medicamentos.\nSe le recordará cuando le queden " + cantAvisomFormatted + " medicamentos."); // Cambia el texto de descripción
+                descripcionRecordatorio.setText("Establezca la cantidad actual de medicamentos.\nSe le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos."); // Cambia el texto de descripción
             }
         } else {
             // Caso 4: Si ninguna de las condiciones anteriores se cumple
