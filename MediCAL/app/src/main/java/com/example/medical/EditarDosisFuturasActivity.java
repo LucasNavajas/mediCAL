@@ -94,6 +94,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private InstruccionApi instruccionApi = retrofitService.getRetrofit().create(InstruccionApi.class);
     private List<Concentracion> concentracionList;
     private List<String> concentraciones = new ArrayList<String>() {};
+    private LinearLayout agregarInventario;
     private TextView textHecho;
     private Button botonHecho;
     private boolean tieneFoto = false;
@@ -130,7 +131,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(1); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(6); // Cambia el número 4 por el codRecordatorio deseado
 
 
         capturedPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_photo.jpg");
@@ -227,7 +228,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         ImageButton desplegableRecarga = findViewById(R.id.desplegable_recordatorio_receta);
         LinearLayout cambiarRecarga = findViewById(R.id.cambiar_recordatorio_receta);
         Switch recordatorioRecarga = findViewById(R.id.activar_recordatorio_receta);
-        LinearLayout agregarInventario = findViewById(R.id.definir_inventario);
+        agregarInventario = findViewById(R.id.definir_inventario);
         TextView aclaracionDuracion = findViewById(R.id.aclaracion_duracion);
         View dividerDuracion = findViewById(R.id.divider_duracion);
         TextView dias = findViewById(R.id.dias);
@@ -497,30 +498,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         });
 
-        recordatorioRecarga.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    agregarInventario.setVisibility(View.VISIBLE);
-                    agregarInventario.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            popupStockmin();
-                        }
-                    });
-
-                } else {
-                    agregarInventario.setVisibility(View.GONE);
-
-                }         }
-        });
     }
 
     private View.OnClickListener hechoOnclick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (recordatorio.getInventario() != null) {
+                if (inventarioActivo && inventario.getCantRealInventario()!=null && inventario.getCantAvisoInventario()!=null) {
 
                     inventarioApi.save(inventario).enqueue(new Callback<Inventario>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
                         @Override
@@ -559,8 +543,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             public void onResponse(Call<Frecuencia> call, Response<Frecuencia> response) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Frecuencia modificada", Toast.LENGTH_SHORT).show();
                 saveDosis();
-                //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
-                //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
             }
 
             @Override
@@ -576,8 +558,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             public void onResponse(Call<Dosis> call, Response<Dosis> response) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Dosis modificada", Toast.LENGTH_SHORT).show();
                 saveInstruccion();
-                //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
-                //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
             }
 
             @Override
@@ -591,9 +571,6 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Instruccion> call, Response<Instruccion> response) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Instruccion modificada", Toast.LENGTH_SHORT).show();
-                //saveDosis();
-                //saveInventario(), despues de cada metodo save, en el onresponse se llama al otro metodo save, para que se ejecute solo si se pudo guardar los otros cambios
-                //En el ultimo metodo save se cierra la actividad y se muestra el iniciocalendario
             }
 
             @Override
@@ -764,19 +741,34 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    inventarioActivo = true;
-                    descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos");
-                    editTextCantreal.setHint("Cantidad de medicamentos: " + inventario.getCantRealInventario());
-                    textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantAvisoInventario()+ " medicamentos");
-                if (inventario == null){
-                    inventario = new Inventario();
-                }
+                    agregarInventario.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popupStockmin();
+                        }
+                    });
+                    if (inventario == null){
+                        inventarioActivo = true;
+                        inventario = new Inventario();
+                        agregarInventario.setVisibility(View.VISIBLE);
+                        descripcionRecordatorio.setText("Actualmente tiene 0" + " medicamentos. Se le recordará cuando le queden " +  " X medicamentos");
+                        editTextCantreal.setHint("Cantidad de medicamentos: 0");
+                        textViewCantaviso.setText("Establecer cuando me queden X" +" medicamentos");
+                    }
+                    else {
+                        inventarioActivo = true;
+                        agregarInventario.setVisibility(View.VISIBLE);
+                        descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos");
+                        editTextCantreal.setHint("Cantidad de medicamentos: " + inventario.getCantRealInventario());
+                        textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantAvisoInventario() + " medicamentos");
+                    }
                 } else {
                     inventarioActivo = false;
                     descripcionRecordatorio.setText("Introduzca la cantidad de medicamento que tiene ahora para obtener un recordatorio de recarga");
                     editTextCantreal.setHint("Cantidad de medicamentos:");
                     textViewCantaviso.setText("Establecer cuando me queden X medicamentos");
                     recordatorio.setInventario(null);
+                    agregarInventario.setVisibility(View.GONE);
                 }
             }
         });
@@ -1777,7 +1769,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
                     // Guarda el valor formateado en textViewCantaviso
                     TextView textViewCantaviso = findViewById(R.id.establecer_alerta_inventario);
-                    textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantRealInventario() + " medicamentos");
+                    textViewCantaviso.setText("Establecer cuando me queden " + inventario.getCantAvisoInventario() + " medicamentos");
 
                     // Cierra el popup
                     popupWindow.dismiss();
@@ -1815,7 +1807,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             // Caso 1: Si se presiona enter y aceptar
             inventario.setCantRealInventario((int)cantrealm);
             descripcionRecordatorio.setText("Actualmente tiene " + inventario.getCantRealInventario() + " medicamentos. Se le recordará cuando le queden " + inventario.getCantAvisoInventario() + " medicamentos."); // Cambia el texto de descripción
-
+            inventarioActivo = true;
         } else if (enterPresionado) {
             // Caso 2: Si se presiona enter pero no aceptar osea cambia la cant real
             if (!cantAvisoFormatted.equals("0")) {

@@ -742,6 +742,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                             String valorConUnidad = textoValores + " " + unidadMedida;
                             if (valorMinimo == Double.MAX_VALUE && valorMaximo == Double.MIN_VALUE) {
                                 textViewValores.setText("No hay datos");
+                                limpiarGrafico();
                             } else {
                                 textViewValores.setText(valorConUnidad);
                             }
@@ -918,6 +919,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     // Muestra el valor en el TextView o "No hay datos" si no hay valores
                     if (calendarioMedicionesSemana.isEmpty()) {
                         textViewValores.setText("No hay datos");
+                        limpiarGrafico();
                     } else {
                         textViewValores.setText(valorConUnidad);
                     }
@@ -1076,6 +1078,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     textViewValores.setTextColor(ContextCompat.getColor(this, R.color.black));
                     textViewValores.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
                     textViewValores.setText("No hay datos");
+                    limpiarGrafico();
                     relativeLayoutGrafico.addView(textViewValores);
 
                     textViewIds.put(textViewFechaHora, textViewId);
@@ -1293,11 +1296,13 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                 String valorConUnidad = textoValores + " " + unidadMedida;
                 if (valorMinimo == Double.MAX_VALUE && valorMaximo == Double.MIN_VALUE) {
                     textViewValores.setText("No hay datos");
+                    limpiarGrafico();
                 } else {
                     if(año == añoMedicion) {
                         textViewValores.setText(valorConUnidad);
                     } else {
                         textViewValores.setText("No hay datos");
+                        limpiarGrafico();
                     }
                 }
                 textViewValores.setLayoutParams(paramsValores);
@@ -1514,6 +1519,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                             int diaFin = Integer.parseInt(partesFin[0].trim());
                             String mesFin = partesFin[1].trim();
 
+
                             // Obtener el día actual de calendarioMedicion
                             int diaMedicion = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
                             if ((diaMedicion >= diaInicio && diaMedicion <= diaFin) || (diaMedicion >= diaInicio && diaMedicion <= diaFin + 30) || (diaMedicion <= diaInicio && diaMedicion<= diaFin)) {
@@ -1521,6 +1527,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                                 mesMedicion = mesMedicion.substring(0, mesMedicion.length() - 1); // Elimina el último carácter (el punto)
                                 mesMedicion = mesMedicion.substring(0, 1).toUpperCase() + mesMedicion.substring(1); // Convierte la primera letra en mayúscula
                                 if (mesMedicion.equalsIgnoreCase(mesInicio) || mesMedicion.equalsIgnoreCase(mesFin) && (diaMedicion >= diaFin + 30)) {
+                                    calendarioMedicionesFiltradosPorSemana.add(calendarioMedicion);
                                     // Tanto el día como el mes coinciden con el rango de fechas
                                     // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
                                     RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
@@ -1685,6 +1692,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
             );
             textViewFechaHora.setText("No hay datos");
+            limpiarGrafico();
             textViewFechaHora.setLayoutParams(paramsFechaHora);
             textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
             textViewFechaHora.setTypeface(null, Typeface.BOLD);
@@ -1695,7 +1703,15 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
 
     }
 
-
+    private void limpiarGrafico() {
+        LineChart lineChart = findViewById(R.id.lineChart);
+        lineChart.clear();
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setNoDataText("No hay registros para la fecha");
+        lineChart.setNoDataTextColor(ContextCompat.getColor(this, R.color.black));
+        lineChart.invalidate(); // Actualiza el gráfico
+        return; // Sale de la función
+    }
     private int obtenerNumeroMesDesdeAbreviatura(String abreviatura) {
         switch (abreviatura.toUpperCase()) {
             case "ENE":

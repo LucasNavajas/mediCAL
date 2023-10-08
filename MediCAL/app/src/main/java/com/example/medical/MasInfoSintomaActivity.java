@@ -812,6 +812,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                             String sitiene = "Registro del síntoma";
                             if (tiene == 0) {
                                 textViewValores.setText("No hay datos");
+                                limpiarGrafico();
                             } else {
                                 textViewValores.setText(sitiene);
                             }
@@ -974,6 +975,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
 
                     if (calendarioSintomasSemana.isEmpty()) {
                         textViewValores.setText("No hay datos");
+                        limpiarGrafico();
                     } else {
                         textViewValores.setText(sitiene);
                     }
@@ -1135,6 +1137,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     textViewValores.setTextColor(ContextCompat.getColor(this, R.color.black));
                     textViewValores.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
                     textViewValores.setText("No hay datos");
+                    limpiarGrafico();
                     relativeLayoutGrafico.addView(textViewValores);
 
                     textViewIds.put(textViewFechaHora, textViewId);
@@ -1326,11 +1329,13 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                 String sitiene = "Registro del síntoma";
                 if (tiene ==0) {
                     textViewValores.setText("No hay datos");
+                    limpiarGrafico();
                 } else {
                     if(año == añoSintoma) {
                         textViewValores.setText(sitiene);
                     } else {
                         textViewValores.setText("No hay datos");
+                        limpiarGrafico();
                     }
                 }
                 textViewValores.setLayoutParams(paramsValores);
@@ -1520,7 +1525,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                                 mesSintoma = mesSintoma.substring(0, mesSintoma.length() - 1); // Elimina el último carácter (el punto)
                                 mesSintoma = mesSintoma.substring(0, 1).toUpperCase() + mesSintoma.substring(1); // Convierte la primera letra en mayúscula
                                 if (mesSintoma.equalsIgnoreCase(mesInicio) || mesSintoma.equalsIgnoreCase(mesFin) && (diaSintoma >= diaFin + 30)) {
-
+                                    calendarioSintomasFiltradosPorSemana.add(calendarioSintoma);
                                     // Tanto el día como el mes coinciden con el rango de fechas
                                     // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
                                     RelativeLayout relativeLayoutGrafico = new RelativeLayout(this);
@@ -1649,6 +1654,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     getResources().getDimensionPixelSize(R.dimen.editar_margin_bottom)
             );
             textViewFechaHora.setText("No hay datos");
+            limpiarGrafico();
             textViewFechaHora.setLayoutParams(paramsFechaHora);
             textViewFechaHora.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
             textViewFechaHora.setTypeface(null, Typeface.BOLD);
@@ -1656,6 +1662,16 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             layoutPrincipal.addView(relativeLayoutGrafico);
 
         }
+    }
+
+    private void limpiarGrafico() {
+        LineChart lineChart = findViewById(R.id.lineChart);
+        lineChart.clear();
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setNoDataText("No hay registros para la fecha");
+        lineChart.setNoDataTextColor(ContextCompat.getColor(this, R.color.black));
+        lineChart.invalidate(); // Actualiza el gráfico
+        return; // Sale de la función
     }
 
 
