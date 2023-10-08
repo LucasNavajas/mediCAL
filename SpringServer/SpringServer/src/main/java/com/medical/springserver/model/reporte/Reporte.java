@@ -20,6 +20,7 @@ public class Reporte {
 	private LocalDate fechaDesde;
 	private LocalDate fechaHasta;
 	private LocalDate fechaGenerada;
+	private String nombreMed;
 	
 	@ManyToOne
 	@JoinColumn (name = "codTipoReporte")
@@ -66,11 +67,19 @@ public class Reporte {
 		this.fechaGenerada = fechaGenerada;
 	}
 
+	public String getNombreMed() {
+		return nombreMed;
+	}
+
+	public void setNombreMed(String nombreMed) {
+		this.nombreMed = nombreMed;
+	}
 
 	@Override
 	public String toString() {
 		return "Reporte [nroReporte=" + nroReporte + ", fechaDesde=" + fechaDesde + ", fechaHasta=" + fechaHasta
-				+ ", fechaGenerada=" + fechaGenerada + ", tipoReporte=" + tipoReporte + ", usuario=" + usuario + "]";
+				+ ", fechaGenerada=" + fechaGenerada + ", nombreMed=" + nombreMed + ", tipoReporte=" + tipoReporte
+				+ ", usuario=" + usuario + "]";
 	}
 
 

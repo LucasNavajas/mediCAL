@@ -8,6 +8,7 @@ public class Reporte {
     private LocalDate fechaDesde;
     private LocalDate fechaHasta;
     private LocalDate fechaGenerada;
+    private String nombreMed;
 
     private TipoReporte tipoReporte;
 
@@ -46,6 +47,9 @@ public class Reporte {
         this.fechaGenerada = fechaGenerada;
     }
 
+    public String getNombreMed() { return nombreMed; }
+
+    public void setNombreMed(String nombreMed) { this.nombreMed = nombreMed; }
 
     @Override
     public String toString() {

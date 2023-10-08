@@ -2,30 +2,21 @@ package com.example.medical.adapter;
 
 import android.content.Intent;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medical.BienvenidoActivity;
+import com.example.medical.AgregarReporteActivity;
 import com.example.medical.CompartirReporteActivity;
 import com.example.medical.DescargarReporteActivity;
-import com.example.medical.InicioCalendarioActivity;
 import com.example.medical.R;
 
 import com.example.medical.model.Reporte;
-
-import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -75,7 +66,11 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
         LocalDate fechaHasta = reporte.getFechaHasta();
 
         // Establecer el nombre del tipoReporte en el TextView tituloTipoReporte
-        holder.tituloTipoReporte.setText(nombreTipoReporte);
+        if(nombreTipoReporte.equals("Reporte Medicamento (Uno)")) {
+            holder.tituloTipoReporte.setText("Reporte Medicamento (" + reporte.getNombreMed()+")");
+        } else {
+            holder.tituloTipoReporte.setText(nombreTipoReporte);
+        }
         holder.fechaGenerada.setText("Generado: " + String.valueOf(fechaGenerada));
         holder.fechaDesdeHasta.setText("Desde: "+ String.valueOf(fechaDesde) + " / \nHasta: " + String.valueOf(fechaHasta));
 

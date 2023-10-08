@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_popup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/button_usuario"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/user"
+                android:padding="8dp"
+                android:clickable="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Abrir menú" />
+
+            <TextView
+                android:id="@+id/texto_usuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elegir Destinatario"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/button_usuario"
+                android:layout_alignTop="@id/button_usuario"
+                android:layout_alignBottom="@id/button_usuario"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/inter_medium" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/textEdit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/inter_regular"
+            android:hint="Email del destinatario"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#888888"
+            android:textSize="23sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:id="@+id/cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="CANCELAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="95dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+        <TextView
+            android:id="@+id/enviar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_regular"
+            android:text="ENVIAR"
+            android:textColor="@color/verdeTextos"
+            android:textSize="22sp"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>

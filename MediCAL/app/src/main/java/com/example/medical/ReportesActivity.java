@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.medical.adapter.ReporteAdapter;
-import com.example.medical.model.Inventario;
-import com.example.medical.model.Recordatorio;
 import com.example.medical.model.Reporte;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.ReporteApi;
@@ -91,7 +89,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         agregarInforme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ReportesActivity.this, GenerarReporteActivity.class);
+                Intent intent = new Intent(ReportesActivity.this, AgregarReporteActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
                 startActivity(intent);
@@ -225,7 +223,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             agregarInforme.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ReportesActivity.this, GenerarReporteActivity.class);
+                    Intent intent = new Intent(ReportesActivity.this, AgregarReporteActivity.class);
                     intent.putExtra("codUsuario", codUsuarioLogeado);
                     intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
                     startActivity(intent);
@@ -268,14 +266,12 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             } else {
                 Toast.makeText(ReportesActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
             }
-
-
     }
 
     private void popupFiltros(int codUsuarioLogeado, OnDataLoadedListener listener) {
         RetrofitService retrofitService = new RetrofitService();
         Log.d("MiApp","Se llamó a popupFiltros de InformesActivity");
-        View popupView = getLayoutInflater().inflate(R.layout.n82_popup_lista_medicamentos, null);
+        View popupView = getLayoutInflater().inflate(R.layout.n82_0_popup_lista_medicamentos, null);
 
         // Crear la instancia de PopupWindow
         PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

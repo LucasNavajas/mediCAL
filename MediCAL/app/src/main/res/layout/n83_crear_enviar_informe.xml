@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="25dp"
             android:clickable="true"
             android:focusable="true">
 
@@ -111,9 +111,9 @@
                         android:id="@+id/textEdit_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="0dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="Email del destinatario"
@@ -121,13 +121,95 @@
                         android:textColorHint="#888888"
                         android:textSize="23sp" />
 
+
                     <TextView
-                        android:id="@+id/texto_fecha_inicial"
+                        android:id="@+id/texto_tipo_reporte"
                         android:layout_width="match_parent"
                         android:fontFamily="@font/inter_regular"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textEdit_email"
                         android:layout_marginTop="8dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@android:color/transparent"
+                        android:text="Tipo Reporte"
+                        android:textColor="@color/black"
+                        android:textColorHint="#000000"
+                        android:textSize="21sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/menu_TipoReporte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/texto_tipo_reporte">
+
+                        <TextView
+                            android:id="@+id/eleccion_tipoReporte"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="35dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="-5dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="Seleccione 'Tipo Reporte'"
+                            android:textColor="@color/gris_medical"
+                            android:textSize="21sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <ImageView
+                            android:id="@+id/imagen_desplegable"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginStart="25dp"
+                            android:clickable="true"
+                            android:onClick="mostrarMenuTipoReporte"
+                            android:src="@drawable/boton_desplegable"
+                            app:layout_constraintStart_toEndOf="@id/eleccion_tipoReporte"
+                            app:layout_constraintTop_toTopOf="@id/eleccion_tipoReporte"
+                            app:layout_constraintBottom_toBottomOf="@id/eleccion_tipoReporte" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Este Campo se pone visible cuando el Filtro de Reporte Seleccionado es "Reportes Medicamento (Uno)" -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/opcionMedicamento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/menu_TipoReporte"
+                        android:layout_marginStart="55dp"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/textEdit_medicamento"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-10dp"
+                            android:layout_marginEnd="80dp"
+                            android:layout_marginBottom="0dp"
+                            android:fontFamily="@font/inter_regular"
+                            android:hint="Nombre Medicamento"
+                            android:textColorHint="#888888"
+                            android:textSize="19sp"
+                            tools:ignore="MissingConstraints"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.0"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/texto_fecha_inicial"
+                        android:layout_width="match_parent"
+                        android:fontFamily="@font/inter_regular"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/opcionMedicamento"
+                        android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:background="@android:color/transparent"
@@ -156,7 +238,7 @@
                         android:fontFamily="@font/inter_regular"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textEdit_fecha_desde"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:background="@android:color/transparent"
@@ -183,7 +265,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp">
+                    android:layout_marginTop="25dp">
 
                     <TextView
                         android:id="@+id/texto"
@@ -196,7 +278,7 @@
                         android:fontFamily="@font/inter_semibold"
                         android:text="Al pulsar Enviar, usted acepta enviar el informe de estado a esta persona por e-mail."
                         android:textColor="@color/rojoError"
-                        android:textSize="20sp"
+                        android:textSize="19sp"
                         />
 
                 </RelativeLayout>
@@ -213,7 +295,7 @@
                 android:layout_marginBottom="90dp"
                 android:background="@drawable/boton_redondo_verde"
                 android:fontFamily="@font/inter_bold"
-                android:text="Enviar"
+                android:text="Crear y Enviar"
                 android:textAllCaps="false"
                 android:textAppearance="@style/CustomButtonText"
                 android:textColor="@color/white"

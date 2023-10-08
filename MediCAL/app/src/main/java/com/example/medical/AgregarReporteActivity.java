@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,11 +16,19 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import org.apache.poi.ss.usermodel.*;
 
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Recordatorio;
@@ -31,13 +40,7 @@ import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
+import com.example.medical.retrofit.UsuarioApi;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,9 +52,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+/*
+import org.apache.poi.xddf.usermodel.chart.AxisCrosses;
+import org.apache.poi.xddf.usermodel.chart.AxisPosition;
+import org.apache.poi.xddf.usermodel.chart.ChartTypes;
+import org.apache.poi.xddf.usermodel.chart.LegendPosition;
+import org.apache.poi.xddf.usermodel.chart.XDDFCategoryAxis;
+import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
+import org.apache.poi.xddf.usermodel.chart.XDDFChartLegend;
+import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
+import org.apache.poi.xddf.usermodel.chart.XDDFDataSourcesFactory;
+import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
+import org.apache.poi.xddf.usermodel.chart.XDDFValueAxis;
+import org.apache.poi.xssf.usermodel.XSSFChart;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTBarChart;
+*/
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -69,26 +91,38 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CompartirReporteActivity extends AppCompatActivity {
+public class AgregarReporteActivity extends AppCompatActivity {
 
     private Object context;
     private RetrofitService retrofitService;
     private int nroReporteSeleccionado;
 
-    private LocalDate fechaDesdeReporte;
-    private LocalDate fechaHastaReporte;
+    private LocalDate fechaReporteDesdeLocalDate;
+    private LocalDate fechaReporteHastaLocalDate;
+    private String fechaReporteDesdeString = "Seleccione 'fecha desde'";
+    private String fechaReporteHastaString = "Seleccione 'fecha hasta'";
+
+    private TextView textoFiltroReporte;
+    private ConstraintLayout MedicamentoEspecifico;
+    private String opcionMenu = "Reporte Medicamentos (Todos)";
+    private PopupMenu popupMenu;
+    private TextView fechaDesde;
+    private TextView fechaHasta;
     private List<RegistroRecordatorio> listaTotalRegistroRecordatorios = new ArrayList<>();
     private String destinatario;
     private int codUsuarioLogeado;
     private int codCalendarioSeleccionado;
     private File file;
     private Message message;
+    private EditText textoNombreMedicamento;
+    private boolean existenRegistros = false; // Variable global para verificar existencia de registrosRecordatorios
+    private OnDataLoadedListener onDataLoadedListener;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n82_1_popup_compartir_informe);
+        setContentView(R.layout.n83_crear_enviar_informe);
         this.context = context;
 
         Intent intent1 = getIntent();
@@ -97,21 +131,64 @@ public class CompartirReporteActivity extends AppCompatActivity {
         codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
 
         EditText emailDestinatario = findViewById(R.id.textEdit_email);
-        TextView botonEnviar = findViewById(R.id.enviar);
-        TextView botonCancelar = findViewById(R.id.cancelar);
+        TextView textoFiltroReporte = findViewById(R.id.eleccion_tipoReporte);
+        textoFiltroReporte.setText(opcionMenu);
+        MedicamentoEspecifico = findViewById(R.id.opcionMedicamento);
+        textoNombreMedicamento = findViewById(R.id.textEdit_medicamento);
+        fechaDesde = findViewById(R.id.textEdit_fecha_desde);
+        fechaHasta = findViewById(R.id.textEdit_fecha_hasta);
+        Button botonEnviar = findViewById(R.id.button_enviar);
+        ImageView botonVolver = findViewById(R.id.boton_volver);
+        ImageView desplegable = findViewById(R.id.imagen_desplegable);
 
-
-        botonEnviar.setOnClickListener(view -> {
-            destinatario = emailDestinatario.getText().toString();
-            if (!esCorreoValido(destinatario)) {
-                Toast.makeText(CompartirReporteActivity.this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
-                obtenerReporte(nroReporteSeleccionado, destinatario);
+        desplegable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mostrarMenu(desplegable);
             }
         });
 
-        botonCancelar.setOnClickListener(new View.OnClickListener() {
+        fechaDesde.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupFechaDesde();
+            }
+        });
+
+        fechaHasta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupFechaHasta();
+            }
+        });
+
+        onDataLoadedListener = new OnDataLoadedListener() {
+            @Override
+            public void onDataLoaded() {
+                Log.d("MiApp", "Llamo al método obtenerTipoDeReporte si existen registrosRecordatorio: " + existenRegistros);
+                if (existenRegistros) {
+                    obtenerTipoDeReporte(opcionMenu, destinatario);
+                    Log.d("MiApp", "Entró en el if y la variable existenInformes es: " + existenRegistros);
+                }
+            }
+        };
+
+        botonEnviar.setOnClickListener(view -> {
+            destinatario = emailDestinatario.getText().toString();
+            if (fechaReporteDesdeString.equals("Seleccione 'fecha desde'")){
+                Toast.makeText(AgregarReporteActivity.this, "Debe Seleccionar una 'fecha desde'", Toast.LENGTH_SHORT).show();
+            } else if (fechaReporteHastaString.equals("Seleccione 'fecha hasta'")) {
+                Toast.makeText(AgregarReporteActivity.this, "Debe Seleccionar una 'fecha hasta'", Toast.LENGTH_SHORT).show();
+            } else if (!esCorreoValido(destinatario)) {
+                Toast.makeText(this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
+                //obtenerReporte(nroReporteSeleccionado, destinatario);
+                obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
+            }
+        });
+
+        botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -120,34 +197,193 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
     }
 
-    private void obtenerReporte(int nroReporteSeleccionado, String destinatario) {
-        RetrofitService retrofitService = new RetrofitService();
-        ReporteApi reporteApi = retrofitService.getRetrofit().create(ReporteApi.class);
+    // Mostrar Menu
+    public void mostrarMenu(View view) {
+        popupMenu = new PopupMenu(this, view); // Asocia el menú con el ImageView
+        getMenuInflater().inflate(R.menu.menu_desplegable_1, popupMenu.getMenu());
 
-        // Hacer la llamada a la API para obtener la clase Reporte asociada al nroReporte
-        Call<Reporte> reporteCall = reporteApi.getByNroReporte(nroReporteSeleccionado);
-        reporteCall.enqueue(new Callback<Reporte>() {
+        // Configura un listener para los elementos del menú
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onResponse(Call<Reporte> call, Response<Reporte> response) {
-                if (response.isSuccessful()) {
-                    Reporte reporteAsociado = response.body();
-                    Log.d("MiApp", "Se obtuvo el reporte relacionado: " + reporteAsociado);
-                    fechaDesdeReporte = reporteAsociado.getFechaDesde();
-                    fechaHastaReporte = reporteAsociado.getFechaHasta();
-                    Usuario usuarioAsociado = reporteAsociado.getUsuario();
-                    obtenerCalendariosUsuario(reporteAsociado, usuarioAsociado, destinatario);
-                } else {
-                    Log.d("MiApp", "Error en la solicitud de obtener 'Reporte': " + response.message());
+            public boolean onMenuItemClick(MenuItem item) {
+                // Maneja las acciones de los elementos del menú aquí
+                switch (item.getItemId()) {
+                    case R.id.opcion2_menu1:
+                        opcionMenu = "Medicamentos (Todos)";
+                        MedicamentoEspecifico.setVisibility(View.GONE);
+                        break;
+                    case R.id.opcion3_menu1:
+                        opcionMenu = "Medicamento (Uno)";
+                        MedicamentoEspecifico.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.opcion4_menu1:
+                        opcionMenu = "Síntomas";
+                        MedicamentoEspecifico.setVisibility(View.GONE);
+                        break;
+                    case R.id.opcion5_menu1:
+                        opcionMenu = "Mediciones";
+                        MedicamentoEspecifico.setVisibility(View.GONE);
+                        break;
+                    default:
+                        return false;
                 }
+                // Actualiza el título de la opción seleccionada en el menú
+                item.setTitle(opcionMenu);
+                textoFiltroReporte.setText(opcionMenu);
+                Log.d("MiApp", "La opción seleccionada del menú es: " + opcionMenu);
+                return true;
             }
+        });
+        // Muestra el PopupMenu
+        popupMenu.show();
+    }
+
+    private void popupFechaDesde() {
+        View popupView = getLayoutInflater().inflate(R.layout.n84_cambio_fecha, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT );
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        DatePicker datePicker = popupView.findViewById(R.id.datePicker);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+
+        cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(Call<Reporte> call, Throwable t) {
-                Log.e("MiApp", "Error en la solicitud de obtener 'Reporte': " + t.getMessage());
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth() + 1;
+                int year = datePicker.getYear();
+
+                fechaReporteDesdeLocalDate = (LocalDate.of(year, month, day));
+                fechaReporteDesdeString = (LocalDate.of(year, month, day).toString());
+                fechaDesde.setText(fechaReporteDesdeString);
+
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
             }
         });
     }
 
-    private void obtenerCalendariosUsuario(Reporte reporteAsociado, Usuario usuarioAsociado, String destinatario){
+    private void popupFechaHasta() {
+        View popupView = getLayoutInflater().inflate(R.layout.n84_cambio_fecha, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, 1000, ViewGroup.LayoutParams.WRAP_CONTENT );
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        DatePicker datePicker = popupView.findViewById(R.id.datePicker);
+        TextView cancelar = popupView.findViewById(R.id.cancelar);
+        TextView aceptar = popupView.findViewById(R.id.aceptar);
+
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                dimView.setVisibility(View.GONE);
+            }
+        });
+
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth() + 1;
+                int year = datePicker.getYear();
+
+                fechaReporteHastaLocalDate = (LocalDate.of(year, month, day));
+                fechaReporteHastaString = (LocalDate.of(year, month, day).toString());
+                fechaHasta.setText(fechaReporteHastaString);
+
+                // Ocultar el PopupWindow
+                popupWindow.dismiss();
+                // Ocultar el fondo oscurecido
+                dimView.setVisibility(View.GONE);
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void obtenerUsuarioLogeado(int codUsuarioLogeado, OnDataLoadedListener listener) {
+        RetrofitService retrofitService = new RetrofitService();
+        UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+        // Hacer la llamada a la API para obtener el usuario seleccionado
+        Call<Usuario> usuarioCall = usuarioApi.getByCodUsuario(codUsuarioLogeado);
+
+        usuarioCall.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    Usuario usuarioSeleccionado = response.body();
+                    if (usuarioSeleccionado != null) {
+                        Log.d("MiApp", "Usuario seleccionado encontrado: " + usuarioSeleccionado.getCodUsuario());
+                        // Realizar llamada para obtener Calendaios del usuario
+                        obtenerCalendariosUsuario(usuarioSeleccionado, listener);
+                    } else {
+                        Log.d("MiApp", "No se encontró el usuario con codUsuario: " + codUsuarioLogeado);
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
+    }
+
+    private void obtenerCalendariosUsuario(Usuario usuarioAsociado, OnDataLoadedListener listener){
         RetrofitService retrofitService = new RetrofitService();
         CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
 
@@ -164,10 +400,10 @@ public class CompartirReporteActivity extends AppCompatActivity {
                         for (Calendario calendario : calendariosAsociados) {
                             // Para cada calendario, obtener las clases "Recordatorio"
                             Log.d("MiApp", "codCalendario encontrado: " + calendario.getCodCalendario());
-                            obtenerRecordatoriosPorCalendario(reporteAsociado, calendario, destinatario);
+                            obtenerRecordatoriosPorCalendario(calendario, listener);
                         }
 
-                        obtenerTipoDeReporte(reporteAsociado, destinatario);
+                        //obtenerTipoDeReporte(reporteAsociado, destinatario);
 
                     } else {
                         Log.d("MiApp", "No se encontraron calendarios asociado al usuario: " + usuarioAsociado);
@@ -183,7 +419,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         });
     }
 
-    private void obtenerRecordatoriosPorCalendario(Reporte reporteAsociado, Calendario calendariosAsociado, String destinatario){
+    private void obtenerRecordatoriosPorCalendario(Calendario calendariosAsociado, OnDataLoadedListener listener){
         RetrofitService retrofitService = new RetrofitService();
         RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
 
@@ -200,7 +436,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                         for (Recordatorio recordatorio : recordatoriosAsociados) {
                             // Para cada recordatorio, obtén las clases "RegistroRecordatorio"
                             Log.d("MiApp", "codRecordatorio encontrado: " + recordatorio.getCodRecordatorio());
-                            obtenerRegistrosPorRecordatorio(reporteAsociado, recordatorio, destinatario);
+                            obtenerRegistrosPorRecordatorio(recordatorio, listener);
                         }
                     } else {
                         Log.d("MiApp", "No se encontraron clases 'Recordatorio' asociadas al calendario " + calendariosAsociado.getNombreCalendario());
@@ -216,7 +452,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         });
     }
 
-    private void obtenerRegistrosPorRecordatorio(Reporte reporteAsociado, Recordatorio recordatorioAsociado, String destinatario){
+    private void obtenerRegistrosPorRecordatorio(Recordatorio recordatorioAsociado, OnDataLoadedListener listener){
         RetrofitService retrofitService = new RetrofitService();
         RegistroRecordatorioApi registroRecordatorioApi = retrofitService.getRetrofit().create(RegistroRecordatorioApi.class);
 
@@ -231,12 +467,14 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (registroRecordatoriosAsociados != null && !registroRecordatoriosAsociados.isEmpty()) {
                         Log.d("MiApp", "RegistrosRecordatorios Asociados Encontrados: ");
                         for (RegistroRecordatorio registroRecordatorio : registroRecordatoriosAsociados) {
-                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaDesdeReporte)
-                                    && registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaHastaReporte)) {
+                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaReporteDesdeLocalDate)
+                                    && registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaReporteHastaLocalDate)) {
                                 Log.d("MiApp", "codRegistroRecordatorio encontrado: " + registroRecordatorio.getCodRegistroRecordatorio());
                                 listaTotalRegistroRecordatorios.add(registroRecordatorio);
                             }
                         }
+                        listener.onDataLoaded();
+                        Log.d("MiApp", "Ya se ejecutó el listener");
                     } else {
                         Log.d("MiApp", "No se encontraron clases 'RegistroRecordatorio' asociadas al recordatorio " + recordatorioAsociado.getCodRecordatorio());
                     }
@@ -254,16 +492,16 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
 
     // Según el tipo de reporte que se haya seleccionado, se hace el llamado a generar ese tipo de Excel
-    private void obtenerTipoDeReporte (Reporte reporteAsociado, String destinatario){
+    private void obtenerTipoDeReporte (String opcionTipoReporte, String destinatario){
         try {
-            if (reporteAsociado.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamentos (Todos)")){
-                generarArchivoExcelMedicamentosTodos(reporteAsociado, destinatario);
-            } else if (reporteAsociado.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamento (Uno)")){
-                generarArchivoExcelMedicamentoUno(reporteAsociado, destinatario);
-            } else if (reporteAsociado.getTipoReporte().getNombreTipoReporte().equals("Reporte Síntomas")){
-                generarArchivoExcelSíntomas(reporteAsociado, destinatario);
-            } else if (reporteAsociado.getTipoReporte().getNombreTipoReporte().equals("Reporte Mediciones")){
-                generarArchivoExcelMediciones(reporteAsociado, destinatario);
+            if (opcionTipoReporte.equals("Medicamentos (Todos)")){
+                generarArchivoExcelMedicamentosTodos(destinatario);
+            } else if (opcionTipoReporte.equals("Medicamento (Uno)")){
+                generarArchivoExcelMedicamentoUno(destinatario);
+            } else if (opcionTipoReporte.equals("Síntomas")){
+                generarArchivoExcelSíntomas(destinatario);
+            } else if (opcionTipoReporte.equals("Mediciones")){
+                generarArchivoExcelMediciones(destinatario);
             }
         } catch (FileNotFoundException e) {
             // Manejo de la excepción FileNotFoundException
@@ -273,7 +511,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
     }
 
 
-    private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws FileNotFoundException {
+    private void generarArchivoExcelMedicamentosTodos(String destinatario) throws FileNotFoundException {
 
         // Crear un nuevo libro de trabajo (workbook) de Excel
         Workbook workbook = new HSSFWorkbook();
@@ -281,14 +519,14 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
         // --- PRIMER HOJA ---
         // Crear una hoja de trabajo 1 (worksheet)
-        Sheet sheet = workbook.createSheet((reporteAsociado.getTipoReporte().getNombreTipoReporte()));
+        Sheet sheet = workbook.createSheet(opcionMenu);
 
         // --- TÍTULO / PRIMER HOJA ---
         // Crear una fila para el título con celdas unificadas
         Row headerRow0 = sheet.createRow(0);
         // Crear una celda que abarque las 6 primeras columnas (índices de 0 a 5)
         Cell Titulocell = headerRow0.createCell(0);
-        Titulocell.setCellValue(reporteAsociado.getTipoReporte().getNombreTipoReporte()); // Título que se verá en las celdas unificadas
+        Titulocell.setCellValue("Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
         // Establecer el estilo para el texto del título
         /*
         CellStyle style0 = workbook.createCellStyle();
@@ -311,15 +549,15 @@ public class CompartirReporteActivity extends AppCompatActivity {
         Row headerRow1 = sheet.createRow(1);
         // Crear celdas datos del reporte
         Cell fechaDesde = headerRow1.createCell(1);
-        fechaDesde.setCellValue("Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
-        if (reporteAsociado.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamento (Uno)")){
+        fechaDesde.setCellValue("Fecha Desde: " + fechaReporteDesdeString);
+        if (opcionMenu.equals("Medicamento (Uno)")){
             Cell fechaHasta = headerRow1.createCell(2);
-            fechaHasta.setCellValue("Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
+            fechaHasta.setCellValue("Fecha Hasta: " + fechaReporteHastaString);
             Cell nombreMed = headerRow1.createCell(3);
-            nombreMed.setCellValue("Medicamento: " + reporteAsociado.getNombreMed());
+            nombreMed.setCellValue("Medicamento: " + textoNombreMedicamento);
         } else {
             Cell fechaHasta = headerRow1.createCell(3);
-            fechaHasta.setCellValue("Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
+            fechaHasta.setCellValue("Fecha Hasta: " + fechaReporteHastaString);
         }
         // Establecer el estilo para el texto de los datos del reporte
         /*
@@ -434,7 +672,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         Row headerRow2_0 = sheet2.createRow(0);
         // Crear una celda que abarque las 6 primeras columnas (índices de 0 a 5)
         Cell Titulocell2 = headerRow2_0.createCell(0);
-        Titulocell2.setCellValue(("Gráfico del " + reporteAsociado.getTipoReporte().getNombreTipoReporte())); // Título que se verá en las celdas unificadas
+        Titulocell2.setCellValue("Gráfico del Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
         // Establecer el estilo para el texto del título
         /*
         CellStyle style2_0 = workbook.createCellStyle();
@@ -455,9 +693,9 @@ public class CompartirReporteActivity extends AppCompatActivity {
         Row headerRow2_1 = sheet2.createRow(1);
         // Crear celdas datos del reporte
         Cell fechaDesde2 = headerRow2_1.createCell(1);
-        fechaDesde2.setCellValue("Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
+        fechaDesde2.setCellValue("Fecha Desde: " + fechaReporteDesdeString);
         Cell fechaHasta2 = headerRow2_1.createCell(3);
-        fechaHasta2.setCellValue("Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
+        fechaHasta2.setCellValue("Fecha Hasta: " + fechaReporteHastaString);
         // Establecer el estilo para el texto de los datos del reporte
         /*
         CellStyle style2_1 = workbook.createCellStyle();
@@ -584,75 +822,33 @@ public class CompartirReporteActivity extends AppCompatActivity {
         // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
         // Ruta del almacenamiento interno en Android para guardar el archivo
         File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        String filePath = dir.getAbsolutePath() + "/miarchivo.xlsx"; // Cambia la extensión si es necesario
+        String filePath = dir.getAbsolutePath() + "/MediCALReporte" + opcionMenu + ".xlsx";
         // Crear el archivo Excel
         file = new File(filePath);
         try {
             FileOutputStream fos = new FileOutputStream(file);
             workbook.write(fos);
             fos.close();
-            enviarReporte(reporteAsociado, destinatario);
+            enviarReporte(destinatario);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    /*
-    private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws IOException, WriteException {
-        // Crear un nuevo libro de trabajo (workbook) de Excel
-        WritableWorkbook workbook = Workbook.createWorkbook(new File("/storage/emulated/0/miarchivo.xls")); // Cambiar la ruta según tus necesidades
-
-        // --- PRIMER HOJA ---
-        // Crear una hoja de trabajo 1 (worksheet)
-        WritableSheet sheet = workbook.createSheet(reporteAsociado.getTipoReporte().getNombreTipoReporte(), 0);
-
-        // --- TÍTULO / PRIMER HOJA ---
-        // Crear una fila para el título con celdas unificadas
-        Label title = new Label(0, 0, reporteAsociado.getTipoReporte().toString());
-        WritableCellFormat titleFormat = new WritableCellFormat(new WritableFont(WritableFont.createFont("Roboto"), 20, WritableFont.BOLD));
-        titleFormat.setAlignment(Alignment.CENTRE);
-        titleFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
-        titleFormat.setBackground(Colour.DARK_BLUE);
-        titleFormat.setWrap(true);
-        title.setCellFormat(titleFormat);
-        sheet.addCell(title);
-        sheet.mergeCells(0, 0, 5, 0);
-
-        // --- DATOS DEL REPORTE / PRIMER HOJA ---
-        // Crear una fila para los datos del reporte
-        Label fechaDesde = new Label(1, 2, "Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
-        Label fechaHasta = new Label(3, 2, "Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
-        sheet.addCell(fechaDesde);
-        sheet.addCell(fechaHasta);
-
-        // Establecer el estilo para el texto de los datos del reporte
-        WritableCellFormat dataFormat = new WritableCellFormat(new WritableFont(WritableFont.createFont("Roboto"), 10));
-        dataFormat.setAlignment(Alignment.LEFT);
-        dataFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
-        dataFormat.setWrap(true);
-        dataFormat.setBackground(Colour.GREY_80_PERCENT);
-
-        fechaDesde.setCellFormat(dataFormat);
-        fechaHasta.setCellFormat(dataFormat);
-
-    }
-    */
-
-    private void generarArchivoExcelMedicamentoUno(Reporte reporteAsociado, String destinatario) {
+    private void generarArchivoExcelMedicamentoUno(String destinatario) {
         // FALTA
     }
 
-    private void generarArchivoExcelSíntomas(Reporte reporteAsociado, String destinatario) {
+    private void generarArchivoExcelSíntomas(String destinatario) {
         // FALTA
     }
 
-    private void generarArchivoExcelMediciones(Reporte reporteAsociado, String destinatario) {
+    private void generarArchivoExcelMediciones(String destinatario) {
         // FALTA
     }
 
 
-    private void enviarReporte(Reporte reporteAsociado, String destinatario) {
+    private void enviarReporte(String destinatario) {
 
         // Configura las propiedades del servidor de correo de Gmail
         Properties properties = new Properties();
@@ -678,7 +874,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(correo));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            message.setSubject("MediCAL - " + reporteAsociado.getTipoReporte().getNombreTipoReporte());
+            message.setSubject("MediCAL - Reporte " + opcionMenu);
 
             // Adjunta el archivo
             MimeBodyPart attachmentPart = new MimeBodyPart();
@@ -695,9 +891,21 @@ public class CompartirReporteActivity extends AppCompatActivity {
             // Configura el contenido del mensaje
             message.setContent(multipart);
 
-            // Envía el mensaje utilizando AsyncTask
-            new EnviarReporteAsyncTask(message).execute();
+            // Crea y ejecuta la tarea asíncrona
+            EnviarReporteAsyncTask enviarReporteAsyncTask = new EnviarReporteAsyncTask(message);
+            enviarReporteAsyncTask.execute();       // UTILIZAR PANTALLA DE CARGA, PORQUE TARDA
 
+            // Espera a que la tarea se complete y obtén el resultado
+            try {
+                boolean envioExitoso = enviarReporteAsyncTask.get(); // Obtiene el resultado de doInBackground
+                if (envioExitoso) {
+                    crearInstanciaReporte();
+                } else {
+                    Toast.makeText(AgregarReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
@@ -721,6 +929,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         public EnviarReporteAsyncTask(Message message) {
             this.message = message;
         }
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
@@ -731,18 +940,27 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 return false; // Error
             }
         }
+        /*
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                Toast.makeText(CompartirReporteActivity.this, "Correo enviado con el archivo adjunto.", Toast.LENGTH_SHORT).show();
-                popupReporteCompartido();
+                Toast.makeText(AgregarReporteActivity.this, "Correo enviado con el archivo adjunto.", Toast.LENGTH_SHORT).show();
+                crearInstanciaReporte();
+                popupReporteCreadoYEnviado();
             } else {
-                Toast.makeText(CompartirReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AgregarReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
             }
         }
+         */
     }
 
-    private void popupReporteCompartido() {
+    private void crearInstanciaReporte(){
+
+
+        popupReporteCreadoYEnviado();
+    }
+
+    private void popupReporteCreadoYEnviado() {
         Log.d("MiApp","Se llamó a popupReporteCompartido");
         View popupView = getLayoutInflater().inflate(R.layout.n86_3_popup_reporte_eliminado, null);
 
@@ -768,12 +986,12 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
         TextView texto = popupView.findViewById(R.id.text_texto);
         ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
-        texto.setText("Reporte Compartido con: " + destinatario);
+        texto.setText("Reporte Creado y Enviado a " + destinatario);
 
         cerrar.setOnClickListener(view ->{
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
-            Intent intent = new Intent(CompartirReporteActivity.this, ReportesActivity.class);
+            Intent intent = new Intent(AgregarReporteActivity.this, ReportesActivity.class);
             intent.putExtra("codUsuario", codUsuarioLogeado);
             intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
             startActivity(intent);
@@ -785,6 +1003,10 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 dimView.setVisibility(View.GONE);
             }
         });
+    }
+
+    public interface OnDataLoadedListener {
+        void onDataLoaded();
     }
 
 
