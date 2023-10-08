@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +21,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook; // Usa XSSFWorkbook para formatos de archivo .xlsx
 
 import com.bumptech.glide.load.DataSource;
 import com.example.medical.model.Calendario;
@@ -45,8 +55,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+/*
 import org.apache.poi.xddf.usermodel.chart.AxisCrosses;
 import org.apache.poi.xddf.usermodel.chart.AxisPosition;
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
@@ -64,6 +76,7 @@ import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTBarChart;
+*/
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -94,6 +107,10 @@ public class CompartirReporteActivity extends AppCompatActivity {
     private TextView fechaDesde;
     private TextView fechaHasta;
     private List<RegistroRecordatorio> listaTotalRegistroRecordatorios = new ArrayList<>();
+    private String destinatario;
+    private int codUsuarioLogeado;
+    private int codCalendarioSeleccionado;
+    private File file;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -104,6 +121,8 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
         Intent intent1 = getIntent();
         nroReporteSeleccionado = intent1.getIntExtra("nroReporte", 0);
+        codCalendarioSeleccionado = intent1.getIntExtra("calendarioSeleccionadoid", 0);
+        codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
 
         EditText emailDestinatario = findViewById(R.id.textEdit_email);
         fechaDesde = findViewById(R.id.textEdit_fecha_desde);
@@ -126,13 +145,15 @@ public class CompartirReporteActivity extends AppCompatActivity {
         });
 
         botonEnviar.setOnClickListener(view -> {
+            destinatario = emailDestinatario.getText().toString();
             if (fechaReporteDesde.equals("Seleccione 'fecha desde'")){
                 Toast.makeText(CompartirReporteActivity.this, "Debe Seleccionar una 'fecha desde'", Toast.LENGTH_SHORT).show();
             } else if (fechaReporteHasta.equals("Seleccione 'fecha hasta'")) {
                 Toast.makeText(CompartirReporteActivity.this, "Debe Seleccionar una 'fecha hasta'", Toast.LENGTH_SHORT).show();
+            } else if (!esCorreoValido(destinatario)) {
+                Toast.makeText(this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
             } else {
-                String destinatario = emailDestinatario.getText().toString();
-                Log.d("MiApp", "Se obtuvo el destinatario: " + destinatario);
+                Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
                 obtenerReporte(nroReporteSeleccionado, destinatario);
             }
         });
@@ -407,11 +428,12 @@ public class CompartirReporteActivity extends AppCompatActivity {
         }
     }
 
+
     private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws FileNotFoundException {
 
         // Crear un nuevo libro de trabajo (workbook) de Excel
-        // Workbook workbook = new XSSFWorkbook();
-        XSSFWorkbook workbook = new XSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
+        //XSSFWorkbook workbook = new XSSFWorkbook();
 
         // --- PRIMER HOJA ---
         // Crear una hoja de trabajo 1 (worksheet)
@@ -428,8 +450,10 @@ public class CompartirReporteActivity extends AppCompatActivity {
         Font font0 = workbook.createFont();
         font0.setBold(true);
         font0.setFontHeightInPoints((short) 20);
-        font0.setColor(IndexedColors.DARK_BLUE.getIndex()); // Color de letra azul
         font0.setFontName("Roboto"); // Fuente Roboto
+        // Establecer el color de fuente en azul (en formato RGB)
+        font0.setColor((short) -16776961);
+        //font0.setColor(IndexedColors.DARK_BLUE.getIndex()); // Azul oscuro; da error
         style0.setFont(font0);
         // Aplicar el estilo a la celda
         Titulocell.setCellStyle(style0);
@@ -527,16 +551,16 @@ public class CompartirReporteActivity extends AppCompatActivity {
             Font font3 = workbook.createFont();
             font3.setBold(false);
             font3.setFontHeightInPoints((short) 11);
-            font3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra blanco
+            font3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra negro
             font3.setFontName("Arial"); // Fuente Arial
             style3.setFont(font3);
             // Aplicar el estilo a las celdas de datos
-            dataCell1.setCellStyle(style2);
-            dataCell2.setCellStyle(style2);
-            dataCell3.setCellStyle(style2);
-            dataCell4.setCellStyle(style2);
-            dataCell5.setCellStyle(style2);
-            dataCell6.setCellStyle(style2);
+            dataCell1.setCellStyle(style3);
+            dataCell2.setCellStyle(style3);
+            dataCell3.setCellStyle(style3);
+            dataCell4.setCellStyle(style3);
+            dataCell5.setCellStyle(style3);
+            dataCell6.setCellStyle(style3);
 
             fila++; // Incrementa el número de fila en cada iteración
         }
@@ -544,8 +568,8 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
         // --- SEGUNDA HOJA ---
         // Crear una hoja de trabajo 2 (worksheet)
-        // Sheet sheet2 = workbook.createSheet("Gráfico");
-        XSSFSheet sheet2 = workbook.createSheet("Gráfico");
+        Sheet sheet2 = workbook.createSheet("Gráfico");
+        //XSSFSheet sheet2 = workbook.createSheet("Gráfico");
 
         // --- TÍTULO / SEGUNDA HOJA ---
         // Crear una fila para el título con celdas unificadas
@@ -647,6 +671,18 @@ public class CompartirReporteActivity extends AppCompatActivity {
             Cell celdaPorcentajeCumplimiento = filaResumen.createCell(1);
             celdaPorcentajeCumplimiento.setCellValue(porcentajeCumplimiento);
 
+            // Establecer el estilo para el texto de los datos
+            CellStyle style2_3 = workbook.createCellStyle();
+            Font font2_3 = workbook.createFont();
+            font2_3.setBold(false);
+            font2_3.setFontHeightInPoints((short) 11);
+            font2_3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra negro
+            font2_3.setFontName("Arial"); // Fuente Arial
+            style2_3.setFont(font2_3);
+            // Aplicar el estilo a las celdas de datos
+            celdaNombreMedicamento.setCellStyle(style2_3);
+            celdaPorcentajeCumplimiento.setCellStyle(style2_3);
+
             filaActual++;
         }
         // Ajustar el ancho de las columnas para que los datos se ajusten
@@ -656,6 +692,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
         // --- GRÁFICO / SEGUNDA HOJA ---
         // Crear Gráfico de barras en la hoja de trabajo
+        /*
         XSSFDrawing drawing = sheet2.createDrawingPatriarch();
         XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 2, 2, 10, 25); // Define las coordenadas del gráfico
         XSSFChart chart = drawing.createChart(anchor);
@@ -676,35 +713,66 @@ public class CompartirReporteActivity extends AppCompatActivity {
         // Dibujar el gráfico en la hoja de trabajo
         chart.plot(data);
         // Ajustar el tamaño del gráfico
-       // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+        // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+        */
 
         // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
-        String filePath = "/storage/emulated/0/miarchivo.xlsx"; // CambiaR la ruta necesidad  --- REVISAR
+        // Ruta del almacenamiento interno en Android para guardar el archivo
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        String filePath = dir.getAbsolutePath() + "/miarchivo.xlsx"; // Cambia la extensión si es necesario
+        // Crear el archivo Excel
         File file = new File(filePath);
-        if (file.exists()) {
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                workbook.write(fos);
-                fos.close();
-                enviarReporte(destinatario);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(this, "El archivo no se encontró.", Toast.LENGTH_SHORT).show();
-        }
-
-        /*
         try {
-            // Guardar el libro de trabajo en un archivo
-            FileOutputStream fileOut = new FileOutputStream(getExternalCacheDir() + "/reporte.xlsx");
-            workbook.write(fileOut);
-            fileOut.close();
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+            enviarReporte(reporteAsociado, destinatario);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
     }
+
+
+    /*
+    private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws IOException, WriteException {
+        // Crear un nuevo libro de trabajo (workbook) de Excel
+        WritableWorkbook workbook = Workbook.createWorkbook(new File("/storage/emulated/0/miarchivo.xls")); // Cambiar la ruta según tus necesidades
+
+        // --- PRIMER HOJA ---
+        // Crear una hoja de trabajo 1 (worksheet)
+        WritableSheet sheet = workbook.createSheet(reporteAsociado.getTipoReporte().getNombreTipoReporte(), 0);
+
+        // --- TÍTULO / PRIMER HOJA ---
+        // Crear una fila para el título con celdas unificadas
+        Label title = new Label(0, 0, reporteAsociado.getTipoReporte().toString());
+        WritableCellFormat titleFormat = new WritableCellFormat(new WritableFont(WritableFont.createFont("Roboto"), 20, WritableFont.BOLD));
+        titleFormat.setAlignment(Alignment.CENTRE);
+        titleFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+        titleFormat.setBackground(Colour.DARK_BLUE);
+        titleFormat.setWrap(true);
+        title.setCellFormat(titleFormat);
+        sheet.addCell(title);
+        sheet.mergeCells(0, 0, 5, 0);
+
+        // --- DATOS DEL REPORTE / PRIMER HOJA ---
+        // Crear una fila para los datos del reporte
+        Label fechaDesde = new Label(1, 2, "Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
+        Label fechaHasta = new Label(3, 2, "Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
+        sheet.addCell(fechaDesde);
+        sheet.addCell(fechaHasta);
+
+        // Establecer el estilo para el texto de los datos del reporte
+        WritableCellFormat dataFormat = new WritableCellFormat(new WritableFont(WritableFont.createFont("Roboto"), 10));
+        dataFormat.setAlignment(Alignment.LEFT);
+        dataFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+        dataFormat.setWrap(true);
+        dataFormat.setBackground(Colour.GREY_80_PERCENT);
+
+        fechaDesde.setCellFormat(dataFormat);
+        fechaHasta.setCellFormat(dataFormat);
+
+    }
+    */
 
     private void generarArchivoExcelMedicamentoUno(Reporte reporteAsociado, String destinatario) {
         // FALTA
@@ -719,35 +787,35 @@ public class CompartirReporteActivity extends AppCompatActivity {
     }
 
 
-    private void enviarReporte(String destinatario) {
+    private void enviarReporte(Reporte reporteAsociado, String destinatario) {
 
-        // FALTA
-
-        // Configura las propiedades del servidor de correo
+        // Configura las propiedades del servidor de correo de Gmail
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.example.com"); // Reemplaza con tu servidor SMTP
-        properties.put("mail.smtp.port", "587"); // Puerto SMTP
-        properties.put("mail.smtp.auth", "true"); // Habilita la autenticación SMTP
-        properties.put("mail.smtp.starttls.enable", "true"); // Habilita STARTTLS
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
 
         // Configura la sesión de correo
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("tu_correo@gmail.com", "tu_contraseña"); // Reemplaza con tus credenciales
+                return new PasswordAuthentication("medicalutnfrm@gmail.com", "MediCALproyectofinal"); // Tu dirección de correo y contraseña de Gmail
             }
         });
 
         try {
             // Crea un mensaje de correo electrónico
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("tu_correo@gmail.com")); // Reemplaza con tu dirección de correo
+            message.setFrom(new InternetAddress("medicalutnfrm@gmail.com")); // Tu dirección de correo Gmail
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            message.setSubject("Informe adjunto");
+            message.setSubject("MediCAL - " + reporteAsociado.getTipoReporte().getNombreTipoReporte());
 
             // Adjunta el archivo
             MimeBodyPart attachmentPart = new MimeBodyPart();
-            attachmentPart.attachFile(new File("/storage/emulated/0/miarchivo.xlsx")); // Ruta al archivo Excel
+            attachmentPart.attachFile(file);
+            //MimeBodyPart attachmentPart = new MimeBodyPart();
+            //attachmentPart.attachFile(new File("/storage/emulated/0/miarchivo.xlsx")); // Ruta al archivo Excel
 
             // Crea el cuerpo del mensaje
             Multipart multipart = new MimeMultipart();
@@ -761,10 +829,66 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
             // Notifica que el correo se envió correctamente
             Toast.makeText(this, "Correo enviado con el archivo adjunto.", Toast.LENGTH_SHORT).show();
+            popupReporteCompartido();
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean esCorreoValido(String correoDestinatario) {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";   // Expresión regular para validar un correo electrónico
+
+        Pattern pattern = Pattern.compile(regex);   // Compila la expresión regular en un patrón
+
+        Matcher matcher = pattern.matcher(correoDestinatario);  // Crea un objeto Matcher
+
+        return matcher.matches();    // Comprueba si la cadena cumple con el patrón
+    }
+
+    private void popupReporteCompartido() {
+        Log.d("MiApp","Se llamó a popupReporteCompartido");
+        View popupView = getLayoutInflater().inflate(R.layout.n86_3_popup_reporte_eliminado, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text_texto);
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+        texto.setText("Reporte Compartido exitosamente con " + destinatario);
+
+        cerrar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            Intent intent = new Intent(CompartirReporteActivity.this, ReportesActivity.class);
+            intent.putExtra("codUsuario", codUsuarioLogeado);
+            intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+            startActivity(intent);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
 

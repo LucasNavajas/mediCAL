@@ -254,6 +254,8 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             recyclerView = findViewById(R.id.listareportes_recyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             reporteAdapter = new ReporteAdapter(new ArrayList<>()); // Inicializar el adaptador con una lista vacía
+            reporteAdapter.setCodCalendarioSeleccionado(codCalendarioSeleccionado);
+            reporteAdapter.setCodUsuarioLogeado(codUsuarioLogeado);
             reporteAdapter.setEliminarReporteListener(this); // Establece el escuchador
             recyclerView.setAdapter(reporteAdapter);
 
@@ -263,7 +265,6 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                     Log.d("MiApp", "Reporte en ListaTotalReportes: " + reporte.toString());
                 }
                 reporteAdapter.setReporteList(listaTotalReportes);
-
             } else {
                 Toast.makeText(ReportesActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
             }

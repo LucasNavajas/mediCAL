@@ -34,6 +34,8 @@ import java.util.List;
 public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteViewHolder>  {
 
     private List<Reporte> reporteList;
+    private int codCalendarioOriginal;
+    private int codUsuarioOriginal;
     private OnEliminarReporteListener eliminarReporteListener;
 
     public ReporteAdapter(List<Reporte> reporteList) {
@@ -51,6 +53,14 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
     public void setReporteList(List<Reporte> reporteList) {
         this.reporteList = reporteList;
         notifyDataSetChanged(); // Notifica al RecyclerView de que los datos han cambiado
+    }
+
+    public void setCodCalendarioSeleccionado(int codigoCalendario) {
+        codCalendarioOriginal = codigoCalendario;
+    }
+
+    public void setCodUsuarioLogeado(int codigoUsuario) {
+        codUsuarioOriginal = codigoUsuario;
     }
 
     @Override
@@ -82,6 +92,8 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
             // Crear un Intent para abrir CompartirReporteActivity
             Intent compartirIntent = new Intent(view.getContext(), CompartirReporteActivity.class);
             compartirIntent.putExtra("nroReporte", reporte.getNroReporte());
+            compartirIntent.putExtra("calendarioSeleccionadoid", codCalendarioOriginal);
+            compartirIntent.putExtra("codUsuario", codUsuarioOriginal);
             // Iniciar CompartirReporteActivity
             view.getContext().startActivity(compartirIntent);
         });
@@ -90,6 +102,8 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
             // Crear un Intent para abrir DescargarReporteActivity
             Intent descargarIntent = new Intent(view.getContext(), DescargarReporteActivity.class);
             descargarIntent.putExtra("nroReporte", reporte.getNroReporte());
+            descargarIntent.putExtra("calendarioSeleccionadoid", codCalendarioOriginal);
+            descargarIntent.putExtra("codUsuario", codUsuarioOriginal);
             // Iniciar DescargarReporteActivity
             view.getContext().startActivity(descargarIntent);
         });
