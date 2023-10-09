@@ -455,6 +455,7 @@ public class MedicamentosActivity extends AppCompatActivity {
                         obtenerRegistrosRecordatorios(codRecordatorios); // Pasar la lista de codRecordatorios como parámetro
                     } else {
                         Log.d("MiApp", "No se encontraron recordatorios para el calendario con codCalendario: " + codCalendario);
+                        createTextViewNoHayActivos(aver);
                     }
                 } else {
                     Log.d("MiApp", "Error en la solicitud de recordatorios por calendario: " + response.message());
@@ -469,6 +470,8 @@ public class MedicamentosActivity extends AppCompatActivity {
     }
 
     private void obtenerRegistrosRecordatorios(List<Integer> codRecordatorios) {
+        final int[] respuestasExitosas = {0}; // Contador para el número de respuestas exitosas
+
         for (Integer codRecordatorio : codRecordatorios) {
             // Llama a la API con el código de recordatorio actual
             Call<List<RegistroRecordatorio>> call = registroRecordatorioApi.getByCodRecordatorio(codRecordatorio);
@@ -482,9 +485,16 @@ public class MedicamentosActivity extends AppCompatActivity {
                         Log.d("Miapp", "registros: " + registros);
                         // Continúa con el procesamiento de los registros aquí
                         procesarRegistros(registros);
+                        respuestasExitosas[0]++; // Incrementa el contador de respuestas exitosas
                     } else {
                         Log.d("MiApp", "Error en la solicitud de registros de recordatorios: " + response.message());
+                    }
 
+                    // Verifica si todas las llamadas han sido procesadas
+                    if (respuestasExitosas[0] == codRecordatorios.size()) {
+                        if (respuestasExitosas[0] > 0) {
+                            createTextViewNoHayActivos(aver);
+                        }
                     }
                 }
 
@@ -492,23 +502,28 @@ public class MedicamentosActivity extends AppCompatActivity {
                 public void onFailure(Call<List<RegistroRecordatorio>> call, Throwable t) {
                     // Maneja el error de la solicitud aquí si ocurre una excepción
                     Log.e("MiApp", "Error en la solicitud de registros de recordatorios: " + t.getMessage());
+
+                    // Verifica si todas las llamadas han sido procesadas
+                    if (respuestasExitosas[0] == codRecordatorios.size()) {
+                        if (respuestasExitosas[0] == 0) {
+                            createTextViewNoHayActivos(aver);
+                        }
+                    }
                 }
             });
         }
-
     }
+
 
     private void procesarRegistros(List<RegistroRecordatorio> registros) {
         TextView nombreCalendarioTextView = findViewById(R.id.nombre_calendario);
         Log.d("MiApp", "entra" + registros);
         nombreCalendarioTextView.setText(calendarioSeleccionado.getNombreCalendario()); // Por ejemplo, establece un nuevo texto
         LinearLayout linearLayout = findViewById(R.id.contenido);
-        boolean hayMedicamentosActivos = false;
+        aver=2;
         if (registros != null && !registros.isEmpty()) {
             for (RegistroRecordatorio registro : registros) {
-                aver=2;
                 if (registro.getOmision() == null && registro.isTomaRegistroRecordatorio() == false) {
-                    hayMedicamentosActivos = true;
                     grupos = new HashMap<>();
                     if (si == 0) {
                         TextView medicamentosActivosTextView = new TextView(this);
@@ -639,7 +654,16 @@ public class MedicamentosActivity extends AppCompatActivity {
                                     inventarioMedicamentoTextView.setText("No le queda " + presentacion);
                                 }
 
-                            } else {
+                            } else if (inventarioMasActual == 0 ) {
+                                if (presentacion.endsWith("a") || presentacion.endsWith("e") || presentacion.endsWith("i") || presentacion.endsWith("o") || presentacion.endsWith("u")) {
+                                    inventarioMedicamentoTextView.setText("No le quedan " + presentacion + (inventarioMasActual != 1 ? "s" : ""));
+                                } else if (presentacion.endsWith("n") || presentacion.endsWith("r") || presentacion.endsWith("l")) {
+                                    inventarioMedicamentoTextView.setText("No le quedan " + presentacion + (inventarioMasActual != 1 ? "es" : ""));
+                                } else if (presentacion.endsWith("y")) {
+                                    inventarioMedicamentoTextView.setText("No le queda " + presentacion);
+                                }
+
+                            }  else {
                                 // Luego, puedes usar inventarioMasActual para establecer el texto en tu TextView
                                 String textoInventario = "Quedan " + inventarioMasActual + " " + presentacion;
 
@@ -649,6 +673,7 @@ public class MedicamentosActivity extends AppCompatActivity {
                                 } else if (presentacion.endsWith("n") || presentacion.endsWith("r") || presentacion.endsWith("l")) {
                                     textoInventario += "es";
                                 } else if (presentacion.endsWith("y")) {
+                                    textoInventario = "Queda " + inventarioMasActual + " " + presentacion;
                                 }
 
                                 inventarioMedicamentoTextView.setText(textoInventario);
@@ -675,17 +700,12 @@ public class MedicamentosActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    // Llama a createTextViewNoHayActivos solo si no hay medicamentos activos
                     aver =2;
                 }
             }
 
-            if (!hayMedicamentosActivos && aver!=2) {
-                createTextViewNoHayActivos(aver);
-            }
         } else {
             Log.d("MiApp", "No se encontraron registros de recordatorios en la respuesta.");
-            createTextViewNoHayActivos(aver);
         }
 
     }
@@ -794,6 +814,7 @@ public class MedicamentosActivity extends AppCompatActivity {
                             inventarioMasActual = cantRealInventario;
                             Log.d("Miapp", "inventarioMasAcual: "+inventarioMasActual);
                         }
+
                     } else {
                         siEsNull=1;
                     }
