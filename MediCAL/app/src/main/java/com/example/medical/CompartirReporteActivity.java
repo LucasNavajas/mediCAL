@@ -2,6 +2,7 @@ package com.example.medical;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,12 +16,16 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medical.adapter.ReporteAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.model.RegistroRecordatorio;
@@ -31,19 +36,59 @@ import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
+import com.github.mikephil.charting.data.ChartData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Chart;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.charts.ChartDataSource;
+import org.apache.poi.ss.usermodel.charts.ChartLegend;
+import org.apache.poi.ss.usermodel.charts.DataSources;
+import org.apache.poi.ss.usermodel.charts.LegendPosition;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xddf.usermodel.chart.ChartTypes;
+import org.apache.poi.xddf.usermodel.chart.XDDFChartData;
+import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
+import org.apache.poi.xddf.usermodel.chart.XDDFDataSourcesFactory;
+import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFChart;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.charts.XSSFChartLegend;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,11 +115,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CompartirReporteActivity extends AppCompatActivity {
-
+    private View mainView; // Referencia a la vista de la actividad principal
     private Object context;
     private RetrofitService retrofitService;
     private int nroReporteSeleccionado;
-
+    private List<Reporte> listaTotalReportes = new ArrayList<>(); // Lista global para almacenar todos los informes de un usuario
+    private List<Reporte> listaTotalReportesOriginal = new ArrayList<>();
+    private int nroCalendariosAsociados;
+    private int nroRecordatoriosAsociados;
+    private int operacionesPendientes;
+    private ReporteAdapter reporteAdapter;
+    private RecyclerView recyclerView;
     private LocalDate fechaDesdeReporte;
     private LocalDate fechaHastaReporte;
     private List<RegistroRecordatorio> listaTotalRegistroRecordatorios = new ArrayList<>();
@@ -84,43 +135,121 @@ public class CompartirReporteActivity extends AppCompatActivity {
     private File file;
     private Message message;
 
+    private Reporte reporteAsociado;
+    private boolean existenRegistros = false; // Variable global para verificar existencia de registrosRecordatorios
+    private OnDataLoadedListener onDataLoadedListener;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.n82_1_popup_compartir_informe);
-        this.context = context;
+        // Obtiene la referencia a la vista de la actividad principal
+        //mainView = getWindow().getDecorView().getRootView();
+        setContentView(R.layout.n86_0_informes_cargados); // Muestra layout n86 si existen informes
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
 
         Intent intent1 = getIntent();
         nroReporteSeleccionado = intent1.getIntExtra("nroReporte", 0);
         codCalendarioSeleccionado = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
+        destinatario = intent1.getStringExtra("destinatario");
+        /*
+        String listaReportesJson = intent1.getStringExtra("listaReportes");
+        // Convierte la cadena JSON de nuevo a la lista de objetos Reporte
+        // Registra el adaptador personalizado antes de deserializar
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        // Deserializa la lista de objetos desde JSON
+        listaReportesTotal = gson.fromJson(listaReportesJson, new TypeToken<List<Reporte>>() {}.getType());*/
 
-        EditText emailDestinatario = findViewById(R.id.textEdit_email);
-        TextView botonEnviar = findViewById(R.id.enviar);
-        TextView botonCancelar = findViewById(R.id.cancelar);
-
-
-        botonEnviar.setOnClickListener(view -> {
-            destinatario = emailDestinatario.getText().toString();
-            if (!esCorreoValido(destinatario)) {
-                Toast.makeText(CompartirReporteActivity.this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
-                obtenerReporte(nroReporteSeleccionado, destinatario);
-            }
-        });
-
-        botonCancelar.setOnClickListener(new View.OnClickListener() {
+        onDataLoadedListener = new OnDataLoadedListener() {
             @Override
-            public void onClick(View v) {
-                onBackPressed();
+            public void onDataLoaded() {
+                Log.d("MiApp", "Llamo al método obtenerTipoDeReporte si existen registrosRecordatorio: " + existenRegistros);
+                if (existenRegistros) {
+                    obtenerTipoDeReporte(reporteAsociado, destinatario);
+                    Log.d("MiApp", "Entró en el if y la variable existenRegistros es: " + existenRegistros);
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
             }
-        });
+        };
+
+        if (nroReporteSeleccionado!=0 && destinatario!=null){
+            Log.d("MiApp", "Llamo a obtenerReporte de CompartirReporteActivity");
+            obtenerReporte(nroReporteSeleccionado);
+            obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
+            //loadInformes();
+        }
 
     }
 
-    private void obtenerReporte(int nroReporteSeleccionado, String destinatario) {
+    // Método para obtener los reportes asociados al usuario
+    private void obtenerReportesDelUsuario(Usuario usuario, OnDataLoadedListener listener) {
+        // Crear una instancia de la interfaz de la API de ReporteApi utilizando Retrofit
+        RetrofitService retrofitService = new RetrofitService();
+        ReporteApi reporteApi = retrofitService.getRetrofit().create(ReporteApi.class);
+
+        // Hacer la llamada a la API para obtener los calendarios asociados al usuario
+        Call<List<Reporte>> reportesCall = reporteApi.getByCodUsuario(usuario.getCodUsuario());
+
+        reportesCall.enqueue(new Callback<List<Reporte>>() {
+            public void onResponse(Call<List<Reporte>> call, Response<List<Reporte>> response) {
+                if (response.isSuccessful()) {
+                    List<Reporte> reportesAsociados = response.body();
+                    if (reportesAsociados != null && !reportesAsociados.isEmpty()) {
+                        Log.d("MiApp", "Reportes Asociados Encontrados");
+                        listaTotalReportes.clear();
+                        listaTotalReportesOriginal.clear();
+
+                        for (Reporte reporte : reportesAsociados) {
+                            listaTotalReportes.add(reporte);
+                            listaTotalReportesOriginal.add(reporte);
+                            Log.d("MiApp", "Reporte encontrado con nroReporte: " + reporte.getNroReporte() + ", y tipoReporte: " + reporte.getTipoReporte().getNombreTipoReporte());
+                        }
+
+                        loadInformes();
+                        //pantallaInformesCargados(listener);
+
+                    } else {
+                        Log.d("MiApp", "No se encontraron reporte asociados al usuario");
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud de reportes: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Reporte>> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud de reportes: " + t.getMessage());
+            }
+        });
+    }
+
+    private void loadInformes() {
+
+        // Configurar el RecyclerView
+        recyclerView = findViewById(R.id.listareportes_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reporteAdapter = new ReporteAdapter(new ArrayList<>()); // Inicializar el adaptador con una lista vacía
+        reporteAdapter.setCodCalendarioSeleccionado(codCalendarioSeleccionado);
+        reporteAdapter.setCodUsuarioLogeado(codUsuarioLogeado);
+        recyclerView.setAdapter(reporteAdapter);
+
+        if (listaTotalReportes != null) {
+            // Imprimir el contenido de listaTotalReportes
+            for (Reporte reporte : listaTotalReportes) {
+                Log.d("MiApp", "Reporte en ListaTotalReportes: " + reporte.toString());
+            }
+            reporteAdapter.setReporteList(listaTotalReportes);
+        } else {
+            Toast.makeText(CompartirReporteActivity.this, "La lista de Reportes está vacía o es nula", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void obtenerReporte(int nroReporteSeleccionado) {
         RetrofitService retrofitService = new RetrofitService();
         ReporteApi reporteApi = retrofitService.getRetrofit().create(ReporteApi.class);
 
@@ -130,12 +259,12 @@ public class CompartirReporteActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Reporte> call, Response<Reporte> response) {
                 if (response.isSuccessful()) {
-                    Reporte reporteAsociado = response.body();
-                    Log.d("MiApp", "Se obtuvo el reporte relacionado: " + reporteAsociado);
-                    fechaDesdeReporte = reporteAsociado.getFechaDesde();
-                    fechaHastaReporte = reporteAsociado.getFechaHasta();
-                    Usuario usuarioAsociado = reporteAsociado.getUsuario();
-                    obtenerCalendariosUsuario(reporteAsociado, usuarioAsociado, destinatario);
+                    Reporte reporte = response.body();
+                    Log.d("MiApp", "Se obtuvo el reporte relacionado: " + reporte);
+                    fechaDesdeReporte = reporte.getFechaDesde();
+                    fechaHastaReporte = reporte.getFechaHasta();
+                    reporteAsociado = reporte;
+                    obtenerTipoDeReporte(reporte, destinatario);
                 } else {
                     Log.d("MiApp", "Error en la solicitud de obtener 'Reporte': " + response.message());
                 }
@@ -147,7 +276,37 @@ public class CompartirReporteActivity extends AppCompatActivity {
         });
     }
 
-    private void obtenerCalendariosUsuario(Reporte reporteAsociado, Usuario usuarioAsociado, String destinatario){
+    private void obtenerUsuarioLogeado(int codUsuarioLogeado, OnDataLoadedListener listener) {
+        RetrofitService retrofitService = new RetrofitService();
+        UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+        // Hacer la llamada a la API para obtener el usuario seleccionado
+        Call<Usuario> usuarioCall = usuarioApi.getByCodUsuario(codUsuarioLogeado);
+
+        usuarioCall.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (response.isSuccessful()) {
+                    Usuario usuarioSeleccionado = response.body();
+                    if (usuarioSeleccionado != null) {
+                        Log.d("MiApp", "Usuario seleccionado encontrado: " + usuarioSeleccionado.getCodUsuario());
+                        // Realizar llamada para obtener Calendaios del usuario
+                        obtenerCalendariosUsuario(usuarioSeleccionado, listener);
+                        obtenerReportesDelUsuario(usuarioSeleccionado, listener);
+                    } else {
+                        Log.d("MiApp", "No se encontró el usuario con codUsuario: " + codUsuarioLogeado);
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
+    }
+
+    private void obtenerCalendariosUsuario(Usuario usuarioAsociado, OnDataLoadedListener listener){
         RetrofitService retrofitService = new RetrofitService();
         CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
 
@@ -161,14 +320,12 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     List<Calendario> calendariosAsociados = response.body();
                     if (calendariosAsociados != null) {
                         Log.d("MiApp", "Se obtuvieron los calendarios relacionados: " + calendariosAsociados);
+                        nroCalendariosAsociados = calendariosAsociados.size();
                         for (Calendario calendario : calendariosAsociados) {
                             // Para cada calendario, obtener las clases "Recordatorio"
                             Log.d("MiApp", "codCalendario encontrado: " + calendario.getCodCalendario());
-                            obtenerRecordatoriosPorCalendario(reporteAsociado, calendario, destinatario);
+                            obtenerRecordatoriosPorCalendario(calendario, listener);
                         }
-
-                        obtenerTipoDeReporte(reporteAsociado, destinatario);
-
                     } else {
                         Log.d("MiApp", "No se encontraron calendarios asociado al usuario: " + usuarioAsociado);
                     }
@@ -183,7 +340,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         });
     }
 
-    private void obtenerRecordatoriosPorCalendario(Reporte reporteAsociado, Calendario calendariosAsociado, String destinatario){
+    private void obtenerRecordatoriosPorCalendario(Calendario calendariosAsociado, OnDataLoadedListener listener){
         RetrofitService retrofitService = new RetrofitService();
         RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
 
@@ -195,12 +352,13 @@ public class CompartirReporteActivity extends AppCompatActivity {
             public void onResponse(Call<List<Recordatorio>> call, Response<List<Recordatorio>> response) {
                 if (response.isSuccessful()) {
                     List<Recordatorio> recordatoriosAsociados = response.body();
+                    nroRecordatoriosAsociados = recordatoriosAsociados.size();
                     if (recordatoriosAsociados != null && !recordatoriosAsociados.isEmpty()) {
                         Log.d("MiApp", "Recordatorios Asociados Encontrados: ");
                         for (Recordatorio recordatorio : recordatoriosAsociados) {
                             // Para cada recordatorio, obtén las clases "RegistroRecordatorio"
                             Log.d("MiApp", "codRecordatorio encontrado: " + recordatorio.getCodRecordatorio());
-                            obtenerRegistrosPorRecordatorio(reporteAsociado, recordatorio, destinatario);
+                            obtenerRegistrosPorRecordatorio(recordatorio, listener);
                         }
                     } else {
                         Log.d("MiApp", "No se encontraron clases 'Recordatorio' asociadas al calendario " + calendariosAsociado.getNombreCalendario());
@@ -216,10 +374,13 @@ public class CompartirReporteActivity extends AppCompatActivity {
         });
     }
 
-    private void obtenerRegistrosPorRecordatorio(Reporte reporteAsociado, Recordatorio recordatorioAsociado, String destinatario){
+    private void obtenerRegistrosPorRecordatorio(Recordatorio recordatorioAsociado, OnDataLoadedListener listener){
         RetrofitService retrofitService = new RetrofitService();
         RegistroRecordatorioApi registroRecordatorioApi = retrofitService.getRetrofit().create(RegistroRecordatorioApi.class);
 
+        // Obtiene la cantidad total de operaciones pendientes
+        operacionesPendientes = nroCalendariosAsociados * nroRecordatoriosAsociados;
+        Log.d("MiApp", "Operaciones pendientes empieza con: " + operacionesPendientes);
         // Hacer la llamada a la API para obtener las clases "Recordatorio" asociadas a un calendario
         Call<List<RegistroRecordatorio>> registroRecordatoriosCall = registroRecordatorioApi.getByCodRecordatorio(recordatorioAsociado.getCodRecordatorio());
 
@@ -231,11 +392,20 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (registroRecordatoriosAsociados != null && !registroRecordatoriosAsociados.isEmpty()) {
                         Log.d("MiApp", "RegistrosRecordatorios Asociados Encontrados: ");
                         for (RegistroRecordatorio registroRecordatorio : registroRecordatoriosAsociados) {
-                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaDesdeReporte)
-                                    && registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaHastaReporte)) {
+                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaDesdeReporte) || registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaHastaReporte)) {
+                                existenRegistros = true;
                                 Log.d("MiApp", "codRegistroRecordatorio encontrado: " + registroRecordatorio.getCodRegistroRecordatorio());
                                 listaTotalRegistroRecordatorios.add(registroRecordatorio);
                             }
+                        }
+                        // Reduce el contador de operaciones pendientes después de procesar cada registro
+                        operacionesPendientes--;
+                        Log.d("MiApp","OperacionesPendientes: " + operacionesPendientes);
+                        // Verifica si se han completado todas las operaciones
+                        if (operacionesPendientes == 0) {
+                            // Todas las operaciones se han completado, ejecuta el listener
+                            listener.onDataLoaded();
+                            Log.d("MiApp", "Ya se ejecutó el listener de operacionesPendientes");
                         }
                     } else {
                         Log.d("MiApp", "No se encontraron clases 'RegistroRecordatorio' asociadas al recordatorio " + recordatorioAsociado.getCodRecordatorio());
@@ -269,375 +439,222 @@ public class CompartirReporteActivity extends AppCompatActivity {
             // Manejo de la excepción FileNotFoundException
             e.printStackTrace(); // Imprime la traza de la excepción para depuración
             Toast.makeText(this, "No se encontró el archivo.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws FileNotFoundException {
-
-        // Crear un nuevo libro de trabajo (workbook) de Excel
-        Workbook workbook = new HSSFWorkbook();
-        //XSSFWorkbook workbook = new XSSFWorkbook();
-
-        // --- PRIMER HOJA ---
-        // Crear una hoja de trabajo 1 (worksheet)
-        Sheet sheet = workbook.createSheet((reporteAsociado.getTipoReporte().getNombreTipoReporte()));
-
-        // --- TÍTULO / PRIMER HOJA ---
-        // Crear una fila para el título con celdas unificadas
-        Row headerRow0 = sheet.createRow(0);
-        // Crear una celda que abarque las 6 primeras columnas (índices de 0 a 5)
-        Cell Titulocell = headerRow0.createCell(0);
-        Titulocell.setCellValue(reporteAsociado.getTipoReporte().getNombreTipoReporte()); // Título que se verá en las celdas unificadas
-        // Establecer el estilo para el texto del título
-        /*
-        CellStyle style0 = workbook.createCellStyle();
-        Font font0 = workbook.createFont();
-        font0.setBold(true);
-        font0.setFontHeightInPoints((short) 20);
-        font0.setFontName("Roboto"); // Fuente Roboto
-        // Establecer el color de fuente en azul (en formato RGB)
-        font0.setColor((short) -16776961);
-        //font0.setColor(IndexedColors.DARK_BLUE.getIndex()); // Azul oscuro; da error
-        style0.setFont(font0);
-        // Aplicar el estilo a la celda
-        Titulocell.setCellStyle(style0);
-        */
-        // Fusionar las celdas de la fila 0, columnas 0 a 5
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-
-        // --- DATOS DEL REPORTE / PRIMER HOJA ---
-        // Crear una fila para los datos del reporte
-        Row headerRow1 = sheet.createRow(1);
-        // Crear celdas datos del reporte
-        Cell fechaDesde = headerRow1.createCell(1);
-        fechaDesde.setCellValue("Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
-        if (reporteAsociado.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamento (Uno)")){
-            Cell fechaHasta = headerRow1.createCell(2);
-            fechaHasta.setCellValue("Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
-            Cell nombreMed = headerRow1.createCell(3);
-            nombreMed.setCellValue("Medicamento: " + reporteAsociado.getNombreMed());
-        } else {
-            Cell fechaHasta = headerRow1.createCell(3);
-            fechaHasta.setCellValue("Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
-        }
-        // Establecer el estilo para el texto de los datos del reporte
-        /*
-        CellStyle style1 = workbook.createCellStyle();
-        Font font1 = workbook.createFont();
-        font1.setBold(true);
-        font1.setFontHeightInPoints((short) 10);
-        font1.setColor(IndexedColors.GREY_80_PERCENT.getIndex()); // Gris oscuro 3
-        font1.setFontName("Roboto"); // Fuente Roboto
-        style1.setFont(font1);
-        // Aplicar el estilo a la celda
-        fechaDesde.setCellStyle(style1);
-        fechaHasta.setCellStyle(style1);
-        */
-
-
-        // --- FILA ENCABEZADOS DE COLUMNAS / PRIMER HOJA ---
-        // Crear una fila para los encabezados de las columnas
-        Row headerRow = sheet.createRow(2);
-        // Crear celdas de encabezados de columnas
-        Cell headerCell1 = headerRow.createCell(0);
-        headerCell1.setCellValue("Tipo");
-        Cell headerCell2 = headerRow.createCell(1);
-        headerCell2.setCellValue("Nombre Medicamento");
-        Cell headerCell3 = headerRow.createCell(2);
-        headerCell3.setCellValue("Fecha Registrado");
-        Cell headerCell4 = headerRow.createCell(3);
-        headerCell4.setCellValue("Programado Para");
-        Cell headerCell5 = headerRow.createCell(4);
-        headerCell5.setCellValue("Valor");
-        Cell headerCell6 = headerRow.createCell(5);
-        headerCell6.setCellValue("Notas");  // En caso de omisión su motivo; en caso de tomado su instruccion
-        // Establecer el estilo para el texto de los encabezados
-        /*
-        CellStyle style2 = workbook.createCellStyle();
-        style2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); // Color de fondo #00afb9
-        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        Font font2 = workbook.createFont();
-        font2.setBold(true);
-        font2.setFontHeightInPoints((short) 11);
-        font2.setColor(IndexedColors.WHITE.getIndex()); // Color de letra blanco
-        font2.setFontName("Arial"); // Fuente Arial
-        style2.setFont(font2);
-        // Aplicar el estilo a las celdas de encabezados
-        headerCell1.setCellStyle(style2);
-        headerCell2.setCellStyle(style2);
-        headerCell3.setCellStyle(style2);
-        headerCell4.setCellStyle(style2);
-        headerCell5.setCellStyle(style2);
-        headerCell6.setCellStyle(style2);
-        */
-
-        // --- DATOS / PRIMER HOJA ---
-        int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
-        for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
-            Log.d("MiApp", "Creando datos de registro, fila: " + fila);
-            Row dataRow = sheet.createRow(fila);    // Se crea CADA FILA de datos, va incrementando
-            // Cada celda se crea dentro de la fila dataRow
-            Cell dataCell1 = dataRow.createCell(0);
-            dataCell1.setCellValue(registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()); // Columna Tipo: nombre de la presentaciónMed
-            Cell dataCell2 = dataRow.createCell(1);
-            dataCell2.setCellValue(registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento()); // Columna Nombre Medicamento
-            Cell dataCell3 = dataRow.createCell(2);
-            if (registroRecordatorio.getFechaTomaReal() == null) {
-                dataCell3.setCellValue(registroRecordatorio.getFechaTomaEsperada().toString()); // Columna Fecha Registrado: fecha toma real (tomados), sino fecha esperada ???
-            } else {
-                dataCell3.setCellValue(registroRecordatorio.getFechaTomaReal().toString()); // Columna Fecha Registrado: fecha toma real (tomados)
-            }
-            Cell dataCell4 = dataRow.createCell(3);
-            dataCell4.setCellValue(registroRecordatorio.getFechaTomaEsperada().toString()); // Columna Programado Para: fecha esperada
-            Cell dataCell5 = dataRow.createCell(4);
-            if (registroRecordatorio.isTomaRegistroRecordatorio()) {
-                dataCell5.setCellValue("Tomado");      // Columna Valor: Tomado si isTomaRegistroRecordatorio = true
-            } else {
-                dataCell5.setCellValue("Omitido");      // Columna Valor: Omitido si isTomaRegistroRecordatorio = false
-            }
-            Cell dataCell6 = dataRow.createCell(5);
-            if (registroRecordatorio.getOmision() != null) {
-                dataCell6.setCellValue("Instrucción: " + registroRecordatorio.getRecordatorio().getInstruccion().toString());    // Columna Notas: Si es un registro tomado, la Instrucción
-            } else {
-                dataCell6.setCellValue("Motivo Omisión: " + registroRecordatorio.getOmision().getNombreOmision());  // Columna Notas: Si es un registro omitido, el Motivo Omisión
-            }
-
-            // Establecer el estilo para el texto de los datos
-            /*
-            CellStyle style3 = workbook.createCellStyle();
-            Font font3 = workbook.createFont();
-            font3.setBold(false);
-            font3.setFontHeightInPoints((short) 11);
-            font3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra negro
-            font3.setFontName("Arial"); // Fuente Arial
-            style3.setFont(font3);
-            // Aplicar el estilo a las celdas de datos
-            dataCell1.setCellStyle(style3);
-            dataCell2.setCellStyle(style3);
-            dataCell3.setCellStyle(style3);
-            dataCell4.setCellStyle(style3);
-            dataCell5.setCellStyle(style3);
-            dataCell6.setCellStyle(style3);
-            */
-            fila++; // Incrementa el número de fila en cada iteración
-        }
-
-
-        // --- SEGUNDA HOJA ---
-        // Crear una hoja de trabajo 2 (worksheet)
-        Sheet sheet2 = workbook.createSheet("Gráfico");
-        //XSSFSheet sheet2 = workbook.createSheet("Gráfico");
-
-        // --- TÍTULO / SEGUNDA HOJA ---
-        // Crear una fila para el título con celdas unificadas
-        Row headerRow2_0 = sheet2.createRow(0);
-        // Crear una celda que abarque las 6 primeras columnas (índices de 0 a 5)
-        Cell Titulocell2 = headerRow2_0.createCell(0);
-        Titulocell2.setCellValue(("Gráfico del " + reporteAsociado.getTipoReporte().getNombreTipoReporte())); // Título que se verá en las celdas unificadas
-        // Establecer el estilo para el texto del título
-        /*
-        CellStyle style2_0 = workbook.createCellStyle();
-        Font font2_0 = workbook.createFont();
-        font2_0.setBold(true);
-        font2_0.setFontHeightInPoints((short) 20);
-        font2_0.setColor(IndexedColors.DARK_BLUE.getIndex()); // Color de letra azul
-        font2_0.setFontName("Roboto"); // Fuente Roboto
-        style2_0.setFont(font2_0);
-        // Aplicar el estilo a la celda
-        Titulocell2.setCellStyle(style2_0);
-        */
-        // Fusionar las celdas de la fila 0, columnas 0 a 5
-        sheet2.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-
-        // --- DATOS DEL REPORTE / SEGUNDA HOJA ---
-        // Crear una fila para los datos del reporte
-        Row headerRow2_1 = sheet2.createRow(1);
-        // Crear celdas datos del reporte
-        Cell fechaDesde2 = headerRow2_1.createCell(1);
-        fechaDesde2.setCellValue("Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
-        Cell fechaHasta2 = headerRow2_1.createCell(3);
-        fechaHasta2.setCellValue("Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
-        // Establecer el estilo para el texto de los datos del reporte
-        /*
-        CellStyle style2_1 = workbook.createCellStyle();
-        Font font2_1 = workbook.createFont();
-        font2_1.setBold(true);
-        font2_1.setFontHeightInPoints((short) 10);
-        font2_1.setColor(IndexedColors.GREY_80_PERCENT.getIndex()); // Gris oscuro 3
-        font2_1.setFontName("Roboto"); // Fuente Roboto
-        style2_1.setFont(font2_1);
-        // Aplicar el estilo a la celda
-        fechaDesde2.setCellStyle(style2_1);
-        fechaHasta2.setCellStyle(style2_1);
-        */
-
-        // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
-        // Crear una fila para los encabezados de las columnas
-        Row headerRow2_2 = sheet2.createRow(2);
-        // Crear celdas de encabezados de columnas
-        Cell headerCell2_1 = headerRow2_2.createCell(0);
-        headerCell2_1.setCellValue("Nombre del Medicamento");
-        Cell headerCell2_2 = headerRow2_2.createCell(1);
-        headerCell2_2.setCellValue("Procentaje de Cumplimiento");
-        Cell headerCell2_3 = headerRow2_2.createCell(2);
-        headerCell2_3.setCellValue("Gráfico de Cumplimiento");
-        // Establecer el estilo para el texto de los encabezados
-        /*
-        CellStyle style2_2 = workbook.createCellStyle();
-        style2_2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); // Color de fondo #00afb9
-        style2_2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        Font font2_2 = workbook.createFont();
-        font2_2.setBold(true);
-        font2_2.setFontHeightInPoints((short) 11);
-        font2_2.setColor(IndexedColors.WHITE.getIndex()); // Color de letra blanco
-        font2_2.setFontName("Arial"); // Fuente Arial
-        style2_2.setFont(font2_2);
-        // Aplicar el estilo a las celdas de encabezados
-        headerCell2_1.setCellStyle(style2_2);
-        headerCell2_2.setCellStyle(style2_2);
-        headerCell2_3.setCellStyle(style2_2);
-        */
-        sheet2.addMergedRegion(new CellRangeAddress(2, 2, 2, 5));
-
-
-        // --- DATOS / SEGUNDA HOJA ---
-        // Crear un mapa para agrupar los registros por nombre de medicamento
-        Map<String, List<RegistroRecordatorio>> medicamentosAgrupados = new HashMap<>();
-        // Agrupar los registros por nombre de medicamento
-        for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
-            String nombreMedicamento = registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento();
-            // Verificar si ya existe una lista para este medicamento en el mapa
-            List<RegistroRecordatorio> registros = medicamentosAgrupados.get(nombreMedicamento);
-            if (registros == null) {
-                registros = new ArrayList<>();
-                medicamentosAgrupados.put(nombreMedicamento, registros);
-            }
-            registros.add(registroRecordatorio);
-        }
-        // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
-        int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
-        for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
-            String nombreMedicamento = entry.getKey();
-            List<RegistroRecordatorio> registros = entry.getValue();
-            int totalRegistros = registros.size();
-            int registrosTomados = 0;
-            for (RegistroRecordatorio registro : registros) {
-                if (registro.isTomaRegistroRecordatorio()) {
-                    registrosTomados++;
-                }
-            }
-            double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0;
-
-            Row filaResumen = sheet2.createRow(filaActual);
-            Cell celdaNombreMedicamento = filaResumen.createCell(0);
-            celdaNombreMedicamento.setCellValue(nombreMedicamento);
-            Cell celdaPorcentajeCumplimiento = filaResumen.createCell(1);
-            celdaPorcentajeCumplimiento.setCellValue(porcentajeCumplimiento);
-
-            // Establecer el estilo para el texto de los datos
-            /*
-            CellStyle style2_3 = workbook.createCellStyle();
-            Font font2_3 = workbook.createFont();
-            font2_3.setBold(false);
-            font2_3.setFontHeightInPoints((short) 11);
-            font2_3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra negro
-            font2_3.setFontName("Arial"); // Fuente Arial
-            style2_3.setFont(font2_3);
-            // Aplicar el estilo a las celdas de datos
-            celdaNombreMedicamento.setCellStyle(style2_3);
-            celdaPorcentajeCumplimiento.setCellStyle(style2_3);
-            */
-            filaActual++;
-        }
-        // Ajustar el ancho de las columnas para que los datos se ajusten
-        //sheet2.autoSizeColumn(0);
-        //sheet2.autoSizeColumn(1);
-
-
-        // --- GRÁFICO / SEGUNDA HOJA ---
-        // Crear Gráfico de barras en la hoja de trabajo
-        /*
-        XSSFDrawing drawing = sheet2.createDrawingPatriarch();
-        XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 2, 2, 10, 25); // Define las coordenadas del gráfico
-        XSSFChart chart = drawing.createChart(anchor);
-        XDDFChartLegend legend = chart.getOrAddLegend(); // Agregar leyenda al gráfico
-        legend.setPosition(LegendPosition.TOP_RIGHT); // Posición de la leyenda
-        // Crear categorías (nombres de medicamentos) y valores (porcentajes) para el gráfico
-        XDDFDataSource<String> nombresCategoria = XDDFDataSourcesFactory.fromStringCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 0, 0));
-        XDDFNumericalDataSource<Double> valores = XDDFDataSourcesFactory.fromNumericCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 1, 1));
-        // Crear un eje de categoría (eje Y) y un eje de valores (eje X)
-        XDDFCategoryAxis categoriaAxis = chart.createCategoryAxis(AxisPosition.LEFT);
-        XDDFValueAxis valorAxis = chart.createValueAxis(AxisPosition.BOTTOM);
-        valorAxis.setCrosses(AxisCrosses.AUTO_ZERO);
-        // Agregar datos al gráfico de barras
-        XDDFChartData data = chart.createData(ChartTypes.BAR, categoriaAxis, valorAxis);
-        data.setVaryColors(true); // Alternar colores de las barras
-        XDDFChartData.Series series = data.addSeries(nombresCategoria, valores);
-        series.setTitle("Porcentaje de Cumplimiento", null);
-        // Dibujar el gráfico en la hoja de trabajo
-        chart.plot(data);
-        // Ajustar el tamaño del gráfico
-        // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
-        */
-
-        // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
-        // Ruta del almacenamiento interno en Android para guardar el archivo
-        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        String filePath = dir.getAbsolutePath() + "/miarchivo.xlsx"; // Cambia la extensión si es necesario
-        // Crear el archivo Excel
-        file = new File(filePath);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            workbook.write(fos);
-            fos.close();
-            enviarReporte(reporteAsociado, destinatario);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
+    private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws IOException {
+        //Acceder a la Plantilla
+        AssetManager assetManager = getAssets();
+        InputStream inputStream = assetManager.open("Reporte_Medicamentos_Todos.xls"); {
+            try {
+                // Libro de Trabajo
+                Workbook workbook = new HSSFWorkbook(inputStream);
 
-    /*
-    private void generarArchivoExcelMedicamentosTodos(Reporte reporteAsociado, String destinatario) throws IOException, WriteException {
-        // Crear un nuevo libro de trabajo (workbook) de Excel
-        WritableWorkbook workbook = Workbook.createWorkbook(new File("/storage/emulated/0/miarchivo.xls")); // Cambiar la ruta según tus necesidades
+                // --- PRIMER HOJA ---
+                Sheet sheet = workbook.getSheetAt(0);
 
-        // --- PRIMER HOJA ---
-        // Crear una hoja de trabajo 1 (worksheet)
-        WritableSheet sheet = workbook.createSheet(reporteAsociado.getTipoReporte().getNombreTipoReporte(), 0);
+                // --- TÍTULO / PRIMER HOJA ---
+                Row headerRow0 = sheet.getRow(0);
+                // Crear una celda que abarque las 6 primeras columnas (índices de 1 a 6, 0 es un margen)
+                Cell Titulocell = headerRow0.getCell(1);
+                Titulocell.setCellValue(reporteAsociado.getTipoReporte().getNombreTipoReporte()); // Título que se verá en las celdas unificadas
 
-        // --- TÍTULO / PRIMER HOJA ---
-        // Crear una fila para el título con celdas unificadas
-        Label title = new Label(0, 0, reporteAsociado.getTipoReporte().toString());
-        WritableCellFormat titleFormat = new WritableCellFormat(new WritableFont(WritableFont.createFont("Roboto"), 20, WritableFont.BOLD));
-        titleFormat.setAlignment(Alignment.CENTRE);
-        titleFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
-        titleFormat.setBackground(Colour.DARK_BLUE);
-        titleFormat.setWrap(true);
-        title.setCellFormat(titleFormat);
-        sheet.addCell(title);
-        sheet.mergeCells(0, 0, 5, 0);
+                // --- DATOS DEL REPORTE / PRIMER HOJA ---
+                // Crear una fila para los datos del reporte
+                Row headerRow1 = sheet.getRow(1);
+                // Crear celdas datos del reporte
+                Cell fechaDesde = headerRow1.getCell(2);
+                fechaDesde.setCellValue(reporteAsociado.getFechaDesde().toString());
+                Cell fechaHasta = headerRow1.getCell(5);
+                fechaHasta.setCellValue(reporteAsociado.getFechaHasta().toString());
 
-        // --- DATOS DEL REPORTE / PRIMER HOJA ---
-        // Crear una fila para los datos del reporte
-        Label fechaDesde = new Label(1, 2, "Fecha Desde: " + reporteAsociado.getFechaDesde().toString());
-        Label fechaHasta = new Label(3, 2, "Fecha Hasta: " + reporteAsociado.getFechaHasta().toString());
-        sheet.addCell(fechaDesde);
-        sheet.addCell(fechaHasta);
 
-        // Establecer el estilo para el texto de los datos del reporte
-        WritableCellFormat dataFormat = new WritableCellFormat(new WritableFont(WritableFont.createFont("Roboto"), 10));
-        dataFormat.setAlignment(Alignment.LEFT);
-        dataFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
-        dataFormat.setWrap(true);
-        dataFormat.setBackground(Colour.GREY_80_PERCENT);
+                // --- FILA ENCABEZADOS DE COLUMNAS / PRIMER HOJA ---
+                // Crear una fila para los encabezados de las columnas
+                Row headerRow = sheet.getRow(2);
+                // Crear celdas de encabezados de columnas
+                Cell headerCell1 = headerRow.getCell(1);
+                headerCell1.setCellValue("Tipo");
+                Cell headerCell2 = headerRow.getCell(2);
+                headerCell2.setCellValue("Nombre Medicamento");
+                Cell headerCell3 = headerRow.getCell(3);
+                headerCell3.setCellValue("Fecha Registrado");
+                Cell headerCell4 = headerRow.getCell(4);
+                headerCell4.setCellValue("Programado Para");
+                Cell headerCell5 = headerRow.getCell(5);
+                headerCell5.setCellValue("Valor");
+                Cell headerCell6 = headerRow.getCell(6);
+                headerCell6.setCellValue("Notas");  // En caso de omisión su motivo; en caso de tomado su instruccion
 
-        fechaDesde.setCellFormat(dataFormat);
-        fechaHasta.setCellFormat(dataFormat);
 
+                // --- DATOS / PRIMER HOJA ---
+                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
+                    Log.d("MiApp", "Creando datos de registro, fila: " + fila);
+                    Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
+                    // Cada celda se crea dentro de la fila dataRow
+                    Cell dataCell1 = dataRow.getCell(1);
+                    dataCell1.setCellValue(registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()); // Columna Tipo: nombre de la presentaciónMed
+                    Cell dataCell2 = dataRow.getCell(2);
+                    dataCell2.setCellValue(registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento()); // Columna Nombre Medicamento
+                    Cell dataCell3 = dataRow.getCell(3);
+                    if (registroRecordatorio.getFechaTomaReal() == null) {
+                        dataCell3.setCellValue(registroRecordatorio.getFechaTomaEsperada().toLocalDate().toString()); // Columna Fecha Registrado: fecha toma real (tomados), sino fecha esperada ???
+                    } else {
+                        dataCell3.setCellValue(registroRecordatorio.getFechaTomaReal().toLocalDate().toString()); // Columna Fecha Registrado: fecha toma real (tomados)
+                    }
+                    Cell dataCell4 = dataRow.getCell(4);
+                    dataCell4.setCellValue(registroRecordatorio.getFechaTomaEsperada().toLocalDate().toString() + " / " + registroRecordatorio.getFechaTomaEsperada().toLocalTime().toString()); // Columna Programado Para: fecha esperada
+                    Cell dataCell5 = dataRow.getCell(5);
+                    if (registroRecordatorio.isTomaRegistroRecordatorio()) {
+                        dataCell5.setCellValue("Tomado");      // Columna Valor: Tomado si isTomaRegistroRecordatorio = true
+                    } else {
+                        dataCell5.setCellValue("Omitido");      // Columna Valor: Omitido si isTomaRegistroRecordatorio = false
+                    }
+                    Cell dataCell6 = dataRow.getCell(6);
+                    if (registroRecordatorio.getOmision()!= null) {
+                        dataCell6.setCellValue("Motivo Omisión: " + registroRecordatorio.getOmision().getNombreOmision());  // Columna Notas: Si es un registro omitido, el Motivo Omisión
+                    } else {
+                        dataCell6.setCellValue("Instrucción: " + registroRecordatorio.getRecordatorio().getInstruccion().getNombreInstruccion() + " - " + registroRecordatorio.getRecordatorio().getInstruccion().getDescInstruccion());    // Columna Notas: Si es un registro tomado, la Instrucción
+                    }
+
+                    fila++; // Incrementa el número de fila en cada iteración
+                }
+
+
+                // --- SEGUNDA HOJA ---
+                // Crear una hoja de trabajo 2 (worksheet)
+                Sheet sheet2 = workbook.getSheetAt(1);
+
+                // --- TÍTULO / SEGUNDA HOJA ---
+                // Crear una fila para el título con celdas unificadas
+                Row headerRow2_0 = sheet2.getRow(0);
+                // Crear una celda que abarque las 6 primeras columnas
+                Cell Titulocell2 = headerRow2_0.getCell(1);
+                Titulocell2.setCellValue(("Gráfico del " + reporteAsociado.getTipoReporte().getNombreTipoReporte())); // Título que se verá en las celdas unificadas
+
+                // --- DATOS DEL REPORTE / SEGUNDA HOJA ---
+                // Crear una fila para los datos del reporte
+                Row headerRow2_1 = sheet2.getRow(1);
+                // Crear celdas datos del reporte
+                Cell fechaDesde2 = headerRow2_1.getCell(3);
+                fechaDesde2.setCellValue(reporteAsociado.getFechaDesde().toString());
+                Cell fechaHasta2 = headerRow2_1.getCell(6);
+                fechaHasta2.setCellValue(reporteAsociado.getFechaHasta().toString());
+
+                // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
+                // Crear una fila para los encabezados de las columnas
+                Row headerRow2_2 = sheet2.getRow(2);
+                // Crear celdas de encabezados de columnas
+                Cell headerCell2_1 = headerRow2_2.getCell(1);
+                headerCell2_1.setCellValue("Nombre del Medicamento");
+                Cell headerCell2_2 = headerRow2_2.getCell(2);
+                headerCell2_2.setCellValue("Procentaje de Cumplimiento");
+                Cell headerCell2_3 = headerRow2_2.getCell(3);
+                headerCell2_3.setCellValue("Gráfico de Cumplimiento");
+
+
+                // --- DATOS / SEGUNDA HOJA ---
+                // Crear un mapa para agrupar los registros por nombre de medicamento
+                Map<String, List<RegistroRecordatorio>> medicamentosAgrupados = new HashMap<>();
+                // Agrupar los registros por nombre de medicamento
+                for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
+                    String nombreMedicamento = registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento();
+                    // Verificar si ya existe una lista para este medicamento en el mapa
+                    List<RegistroRecordatorio> registros = medicamentosAgrupados.get(nombreMedicamento);
+                    if (registros == null) {
+                        registros = new ArrayList<>();
+                        medicamentosAgrupados.put(nombreMedicamento, registros);
+                    }
+                    registros.add(registroRecordatorio);
+                }
+                // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
+                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
+                    String nombreMedicamento = entry.getKey();
+                    List<RegistroRecordatorio> registros = entry.getValue();
+                    int totalRegistros = registros.size();
+                    int registrosTomados = 0;
+                    for (RegistroRecordatorio registro : registros) {
+                        if (registro.isTomaRegistroRecordatorio()) {
+                            registrosTomados++;
+                        }
+                    }
+                    double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0;
+                    // Crear un formato decimal con dos decimales
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    // Formatear el porcentaje con dos decimales y agregar "%"
+                    String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
+
+                    Row filaResumen = sheet2.getRow(filaActual);
+                    Cell celdaNombreMedicamento = filaResumen.getCell(1);
+                    celdaNombreMedicamento.setCellValue(nombreMedicamento);
+                    Cell celdaPorcentajeCumplimiento = filaResumen.getCell(2);
+                    celdaPorcentajeCumplimiento.setCellValue(porcentajeFormateado.toString());
+
+                    filaActual++;
+                }
+
+
+                // --- GRÁFICO / SEGUNDA HOJA ---
+                // Crear un objeto Drawing para la hoja de trabajo
+                /*
+                CreationHelper helper = sheet2.getWorkbook().getCreationHelper();
+                Drawing<?> drawing = sheet2.createDrawingPatriarch();
+                // Crear una ancla para el gráfico
+                ClientAnchor anchor = helper.createClientAnchor();
+                anchor.setCol1(3); // Columna de inicio
+                anchor.setRow1(3); // Fila de inicio
+                anchor.setCol2(8); // Columna de fin
+                anchor.setRow2(15); // Fila de fin
+                // Crear el gráfico de barras en la hoja de trabajo
+                Chart chart = drawing.createChart(anchor);
+                ChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.TOP_RIGHT);
+                // Crear categorías (nombres de medicamentos) y valores (porcentajes) para el gráfico
+                ChartDataSource<String> nombresCategoria = DataSources.fromStringCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 1, 1));
+                ChartDataSource<Number> valores = DataSources.fromNumericCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 2, 2));
+                // Agregar datos al gráfico de barras
+                chart.plot(ChartTypes.BAR, null, nombresCategoria, valores);
+
+
+                // Crear un eje de categoría (eje Y) y un eje de valores (eje X)
+                CategoryAxis categoriaAxis = chart.createCategoryAxis(AxisPosition.LEFT);
+                ValueAxis valorAxis = chart.createValueAxis(AxisPosition.BOTTOM);
+                valorAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                // Agregar datos al gráfico de barras
+                ChartData data = chart.createData(ChartTypes.BAR, categoriaAxis, valorAxis);
+                data.setVaryColors(true); // Alternar colores de las barras
+                ChartData.Series series = data.addSeries(nombresCategoria, valores);
+                series.setTitle("Porcentaje de Cumplimiento", null);
+                // Dibujar el gráfico en la hoja de trabajo
+                chart.plot(data);
+                // Ajustar el tamaño del gráfico
+                // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+                 */
+
+
+                // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
+                // Ruta del almacenamiento interno en Android para guardar el archivo
+                File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                String filePath = dir.getAbsolutePath() + "/MediCALReporte" + reporteAsociado.getTipoReporte().getNombreTipoReporte() + ".xlsx";
+                // Crear el archivo Excel
+                file = new File(filePath);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    workbook.write(fos);
+                    fos.close();
+                    enviarReporte(destinatario);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // Puedes imprimir la traza de la excepción para depurar
+            }
+        }
     }
-    */
 
     private void generarArchivoExcelMedicamentoUno(Reporte reporteAsociado, String destinatario) {
         // FALTA
@@ -652,7 +669,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
     }
 
 
-    private void enviarReporte(Reporte reporteAsociado, String destinatario) {
+    private void enviarReporte(String destinatario) {
 
         // Configura las propiedades del servidor de correo de Gmail
         Properties properties = new Properties();
@@ -678,7 +695,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(correo));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            message.setSubject("MediCAL - " + reporteAsociado.getTipoReporte().getNombreTipoReporte());
+            message.setSubject("MediCAL - Reporte " + reporteAsociado.getTipoReporte().getNombreTipoReporte());
 
             // Adjunta el archivo
             MimeBodyPart attachmentPart = new MimeBodyPart();
@@ -695,23 +712,13 @@ public class CompartirReporteActivity extends AppCompatActivity {
             // Configura el contenido del mensaje
             message.setContent(multipart);
 
-            // Envía el mensaje utilizando AsyncTask
-            new EnviarReporteAsyncTask(message).execute();
+            // Envía el mensaje utilizando AsyncTask en segundo plano
+            new EnviarReporteAsyncTask(message).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public boolean esCorreoValido(String correoDestinatario) {
-        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";   // Expresión regular para validar un correo electrónico
-
-        Pattern pattern = Pattern.compile(regex);   // Compila la expresión regular en un patrón
-
-        Matcher matcher = pattern.matcher(correoDestinatario);  // Crea un objeto Matcher
-
-        return matcher.matches();    // Comprueba si la cadena cumple con el patrón
     }
 
 
@@ -721,6 +728,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
         public EnviarReporteAsyncTask(Message message) {
             this.message = message;
         }
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
@@ -731,60 +739,21 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 return false; // Error
             }
         }
+
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(CompartirReporteActivity.this, "Correo enviado con el archivo adjunto.", Toast.LENGTH_SHORT).show();
-                popupReporteCompartido();
+                setResult(RESULT_OK);
             } else {
                 Toast.makeText(CompartirReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
             }
+            finish(); // Cierra CompartirReporteActivity
         }
     }
 
-    private void popupReporteCompartido() {
-        Log.d("MiApp","Se llamó a popupReporteCompartido");
-        View popupView = getLayoutInflater().inflate(R.layout.n86_3_popup_reporte_eliminado, null);
-
-        // Crear la instancia de PopupWindow
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        // Hacer que el popup sea enfocable (opcional)
-        popupWindow.setFocusable(true);
-
-        // Configurar animación para oscurecer el fondo
-        View rootView = findViewById(android.R.id.content);
-
-        View dimView = findViewById(R.id.dim_view);
-        dimView.setVisibility(View.VISIBLE);
-
-        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
-        popupView.startAnimation(scaleAnimation);
-
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(false);
-        // Mostrar el popup en la ubicación deseada
-        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-
-        TextView texto = popupView.findViewById(R.id.text_texto);
-        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
-        texto.setText("Reporte Compartido con: " + destinatario);
-
-        cerrar.setOnClickListener(view ->{
-            popupWindow.dismiss();
-            dimView.setVisibility(View.GONE);
-            Intent intent = new Intent(CompartirReporteActivity.this, ReportesActivity.class);
-            intent.putExtra("codUsuario", codUsuarioLogeado);
-            intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
-            startActivity(intent);
-        });
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                dimView.setVisibility(View.GONE);
-            }
-        });
+    public interface OnDataLoadedListener {
+        void onDataLoaded();
     }
 
 

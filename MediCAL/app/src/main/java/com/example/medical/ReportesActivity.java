@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import android.view.MenuItem;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,9 +30,13 @@ import androidx.appcompat.app.AppCompatActivity;
 //import org.apache.poi.ss.usermodel.*;
 //import org.apache.poi.ss.util.CellRangeAddress;
 //import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.example.medical.adapter.ReporteAdapter;
 import com.example.medical.model.Reporte;
@@ -37,15 +44,23 @@ import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.UsuarioApi;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReportesActivity extends AppCompatActivity implements ReporteAdapter.OnEliminarReporteListener {
-
+public class ReportesActivity extends AppCompatActivity implements ReporteAdapter.OnEliminarReporteListener, ReporteAdapter.OnCompartirReporteListener {
     private RetrofitService retrofitService;
+    private ActivityResultLauncher<Intent> compartirActivityResultLauncher;
+    private LinearLayout progressBar;
     private PopupWindow popupWindow;
+    private String destinatario;
 
     private ImageView botonVolver;
     private ImageView botonFiltros;
@@ -71,12 +86,29 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
     private Object context;
     private OnDataLoadedListener onDataLoadedListener;
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n81_informes_sin_cargar);   // Establece la pantalla 81 como predeterminada en caso que no hayan informes
         this.context = context;
+
+        onDataLoadedListener = new OnDataLoadedListener() {
+            @Override
+            public void onDataLoaded() {
+                Log.d("MiApp", "Llamo al método loadInformes si existen informes: " + existenInformes);
+                if (existenInformes) {
+                    loadInformes();
+                    Log.d("MiApp", "Entró en el if y la variable existenInformes es: " + existenInformes);
+                } else {
+                    progressBar = findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.GONE);
+                    dimView.findViewById(R.id.dim_view);
+                    dimView.setVisibility(View.GONE);
+                }
+            }
+        };
 
         agregarInforme = findViewById(R.id.button_agrega_informe);
         botonVolver = findViewById(R.id.boton_volver);
@@ -96,17 +128,6 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             }
         });
 
-        onDataLoadedListener = new OnDataLoadedListener() {
-            @Override
-            public void onDataLoaded() {
-                Log.d("MiApp", "Llamo al método loadInformes si existen informes: " + existenInformes);
-                if (existenInformes) {
-                    loadInformes();
-                    Log.d("MiApp", "Entró en el if y la variable existenInformes es: " + existenInformes);
-                }
-            }
-        };
-
         obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener); // Llama a este método para verificar existencia de informes
 
         botonFiltros.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +143,20 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                 onBackPressed(); // Volver a la actividad anterior
             }
         });
+
+        compartirActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        // El informe se compartió correctamente, muestra el popup
+                        popupWindow.dismiss();
+                        popupReporteCompartido();
+                    } else {
+                        popupWindow.dismiss();
+                        popupSinRegistros();
+                    }
+                }
+        );
 
         inicializarVariables();
     }
@@ -206,6 +241,9 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             Log.d("MiApp", "Defino pantalla con informes cargados");
             setContentView(R.layout.n86_0_informes_cargados); // Muestra layout n88 si existen inventarios
 
+            progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.GONE);
+
             TextView textoFormatoFiltro = findViewById(R.id.texto_formato);
             TextView textoFormatoFecha = findViewById(R.id.texto_fechas);
             textoFormatoFiltro.setText("Mostrando: " + opcionMenu1);
@@ -255,6 +293,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             reporteAdapter.setCodCalendarioSeleccionado(codCalendarioSeleccionado);
             reporteAdapter.setCodUsuarioLogeado(codUsuarioLogeado);
             reporteAdapter.setEliminarReporteListener(this); // Establece el escuchador
+            reporteAdapter.setCompartirReporteListener(this); // Establece el escuchador
             recyclerView.setAdapter(reporteAdapter);
 
             if (listaTotalReportes != null) {
@@ -492,7 +531,6 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         popupMenu1.show();
     }
 
-
     // Mostrar Menu 2
     public void mostrarMenu2(View view) {
         popupMenu2 = new PopupMenu(this, view); // Asocia el menú con el ImageView
@@ -534,7 +572,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
     }
 
     private void popupEliminarReporte(int nroReporte) {
-        Log.d("MiApp","Se llamó a popupFiltros de InformesActivity");
+        Log.d("MiApp","Se llamó a popupEliminarReporte de ReportesActivity");
         View popupView = getLayoutInflater().inflate(R.layout.n86_2_popup_borrar_reporte, null);
 
         // Crear la instancia de PopupWindow
@@ -643,7 +681,176 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         });
     }
 
+    private void popupCompartirReporte(int nroReporte) {
+        Log.d("MiApp","Se llamó a popupCompartirReporte de ReportesActivity");
+        View popupView = getLayoutInflater().inflate(R.layout.n82_1_popup_compartir_informe, null);
 
+        // Crear la instancia de PopupWindow
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        //View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        EditText emailDestinatario = popupView.findViewById(R.id.textEdit_email);
+        TextView botonEnviar = popupView.findViewById(R.id.enviar);
+        TextView botonCancelar = popupView.findViewById(R.id.cancelar);
+
+        botonEnviar.setOnClickListener(view -> {
+            destinatario = emailDestinatario.getText().toString();
+            if (!esCorreoValido(destinatario)) {
+                Toast.makeText(ReportesActivity.this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
+                dimView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE); // Muestra el indicador de carga
+                // Crear un Intent para abrir CompartirReporteActivity
+                Intent compartirIntent = new Intent(view.getContext(), CompartirReporteActivity.class);
+                compartirIntent.putExtra("nroReporte", nroReporte);
+                compartirIntent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+                compartirIntent.putExtra("codUsuario", codUsuarioLogeado);
+                compartirIntent.putExtra("destinatario", destinatario);
+
+                // Convierte la lista a JSON utilizando Gson
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                        .create();
+                String listaReportesJson = gson.toJson(listaTotalReportes);
+                compartirIntent.putExtra("listaReportes", listaReportesJson);
+                compartirActivityResultLauncher.launch(compartirIntent);
+            }
+        });
+
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public class LocalDateAdapter implements JsonSerializer<LocalDate> {
+        @Override
+        public JsonElement serialize(LocalDate localDate, Type type, JsonSerializationContext jsonSerializationContext) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato deseado para la fecha
+            String formattedDate = localDate.format(formatter);
+            return new JsonPrimitive(formattedDate);
+        }
+    }
+
+    private void popupReporteCompartido() {
+        Log.d("MiApp","Se llamó a popupReporteCompartido");
+        View popupView = getLayoutInflater().inflate(R.layout.n86_3_popup_reporte_eliminado, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text_texto);
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+        texto.setText("Reporte Compartido con: " + destinatario);
+
+        cerrar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void popupSinRegistros() {
+        Log.d("MiApp","Se llamó a popupSinRegistros");
+        View popupView = getLayoutInflater().inflate(R.layout.n86_3_popup_reporte_eliminado, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text_texto);
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+        texto.setText("No existen registros de recordatorio con estos filtros.");
+
+        cerrar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public boolean esCorreoValido(String correoDestinatario) {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";   // Expresión regular para validar un correo electrónico
+
+        Pattern pattern = Pattern.compile(regex);   // Compila la expresión regular en un patrón
+
+        Matcher matcher = pattern.matcher(correoDestinatario);  // Crea un objeto Matcher
+
+        return matcher.matches();    // Comprueba si la cadena cumple con el patrón
+    }
 
     @SuppressLint("WrongViewCast")
     private void inicializarVariables () {
@@ -657,6 +864,11 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
     @Override
     public void onEliminarReporte(int nroReporte) {
         popupEliminarReporte(nroReporte);
+    }
+
+    @Override
+    public void onCompartirReporte(int nroReporte) {
+        popupCompartirReporte(nroReporte);
     }
 
 }

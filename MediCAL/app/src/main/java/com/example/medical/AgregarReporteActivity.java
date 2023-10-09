@@ -2,6 +2,7 @@ package com.example.medical;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -95,6 +98,9 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
     private Object context;
     private RetrofitService retrofitService;
+    private int nroCalendariosAsociados;
+    private int nroRecordatoriosAsociados;
+    private int operacionesPendientes;
     private int nroReporteSeleccionado;
 
     private LocalDate fechaReporteDesdeLocalDate;
@@ -131,7 +137,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
         codUsuarioLogeado = intent1.getIntExtra("codUsuario", 0);
 
         EditText emailDestinatario = findViewById(R.id.textEdit_email);
-        TextView textoFiltroReporte = findViewById(R.id.eleccion_tipoReporte);
+        textoFiltroReporte = findViewById(R.id.eleccion_tipoReporte);
         textoFiltroReporte.setText(opcionMenu);
         MedicamentoEspecifico = findViewById(R.id.opcionMedicamento);
         textoNombreMedicamento = findViewById(R.id.textEdit_medicamento);
@@ -200,7 +206,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     // Mostrar Menu
     public void mostrarMenu(View view) {
         popupMenu = new PopupMenu(this, view); // Asocia el menú con el ImageView
-        getMenuInflater().inflate(R.menu.menu_desplegable_1, popupMenu.getMenu());
+        getMenuInflater().inflate(R.menu.menu_desplegable_0, popupMenu.getMenu());
 
         // Configura un listener para los elementos del menú
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -208,19 +214,19 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 // Maneja las acciones de los elementos del menú aquí
                 switch (item.getItemId()) {
-                    case R.id.opcion2_menu1:
+                    case R.id.opcion1_menu0:
                         opcionMenu = "Medicamentos (Todos)";
                         MedicamentoEspecifico.setVisibility(View.GONE);
                         break;
-                    case R.id.opcion3_menu1:
+                    case R.id.opcion2_menu0:
                         opcionMenu = "Medicamento (Uno)";
                         MedicamentoEspecifico.setVisibility(View.VISIBLE);
                         break;
-                    case R.id.opcion4_menu1:
+                    case R.id.opcion3_menu0:
                         opcionMenu = "Síntomas";
                         MedicamentoEspecifico.setVisibility(View.GONE);
                         break;
-                    case R.id.opcion5_menu1:
+                    case R.id.opcion4_menu0:
                         opcionMenu = "Mediciones";
                         MedicamentoEspecifico.setVisibility(View.GONE);
                         break;
@@ -395,6 +401,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public void onResponse(Call<List<Calendario>> call, Response<List<Calendario>> response) {
                 if (response.isSuccessful()) {
                     List<Calendario> calendariosAsociados = response.body();
+                    nroCalendariosAsociados = calendariosAsociados.size();
                     if (calendariosAsociados != null) {
                         Log.d("MiApp", "Se obtuvieron los calendarios relacionados: " + calendariosAsociados);
                         for (Calendario calendario : calendariosAsociados) {
@@ -431,6 +438,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public void onResponse(Call<List<Recordatorio>> call, Response<List<Recordatorio>> response) {
                 if (response.isSuccessful()) {
                     List<Recordatorio> recordatoriosAsociados = response.body();
+                    nroRecordatoriosAsociados = recordatoriosAsociados.size();
                     if (recordatoriosAsociados != null && !recordatoriosAsociados.isEmpty()) {
                         Log.d("MiApp", "Recordatorios Asociados Encontrados: ");
                         for (Recordatorio recordatorio : recordatoriosAsociados) {
@@ -456,6 +464,8 @@ public class AgregarReporteActivity extends AppCompatActivity {
         RetrofitService retrofitService = new RetrofitService();
         RegistroRecordatorioApi registroRecordatorioApi = retrofitService.getRetrofit().create(RegistroRecordatorioApi.class);
 
+        // Obtiene la cantidad total de operaciones pendientes
+        operacionesPendientes = nroCalendariosAsociados * nroRecordatoriosAsociados;
         // Hacer la llamada a la API para obtener las clases "Recordatorio" asociadas a un calendario
         Call<List<RegistroRecordatorio>> registroRecordatoriosCall = registroRecordatorioApi.getByCodRecordatorio(recordatorioAsociado.getCodRecordatorio());
 
@@ -466,15 +476,22 @@ public class AgregarReporteActivity extends AppCompatActivity {
                     List<RegistroRecordatorio> registroRecordatoriosAsociados = response.body();
                     if (registroRecordatoriosAsociados != null && !registroRecordatoriosAsociados.isEmpty()) {
                         Log.d("MiApp", "RegistrosRecordatorios Asociados Encontrados: ");
+                        existenRegistros = true;
                         for (RegistroRecordatorio registroRecordatorio : registroRecordatoriosAsociados) {
-                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaReporteDesdeLocalDate)
-                                    && registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaReporteHastaLocalDate)) {
+                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaReporteDesdeLocalDate) || registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaReporteHastaLocalDate)) {
                                 Log.d("MiApp", "codRegistroRecordatorio encontrado: " + registroRecordatorio.getCodRegistroRecordatorio());
                                 listaTotalRegistroRecordatorios.add(registroRecordatorio);
                             }
                         }
-                        listener.onDataLoaded();
-                        Log.d("MiApp", "Ya se ejecutó el listener");
+                        // Reduce el contador de operaciones pendientes después de procesar cada registro
+                        operacionesPendientes--;
+                        Log.d("MiApp","OperacionesPendientes: " + operacionesPendientes);
+                        // Verifica si se han completado todas las operaciones
+                        if (operacionesPendientes == 0) {
+                            // Todas las operaciones se han completado, ejecuta el listener
+                            listener.onDataLoaded();
+                            Log.d("MiApp", "Ya se ejecutó el listener de operacionesPendientes");
+                        }
                     } else {
                         Log.d("MiApp", "No se encontraron clases 'RegistroRecordatorio' asociadas al recordatorio " + recordatorioAsociado.getCodRecordatorio());
                     }
@@ -507,331 +524,221 @@ public class AgregarReporteActivity extends AppCompatActivity {
             // Manejo de la excepción FileNotFoundException
             e.printStackTrace(); // Imprime la traza de la excepción para depuración
             Toast.makeText(this, "No se encontró el archivo.", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
 
-    private void generarArchivoExcelMedicamentosTodos(String destinatario) throws FileNotFoundException {
+    private void generarArchivoExcelMedicamentosTodos(String destinatario) throws IOException {
+        //Acceder a la Plantilla
+        AssetManager assetManager = getAssets();
+        InputStream inputStream = assetManager.open("Reporte_Medicamentos_Todos.xls"); {
+            try {
+                // Libro de Trabajo
+                Workbook workbook = new HSSFWorkbook(inputStream);
 
-        // Crear un nuevo libro de trabajo (workbook) de Excel
-        Workbook workbook = new HSSFWorkbook();
-        //XSSFWorkbook workbook = new XSSFWorkbook();
+                // --- PRIMER HOJA ---
+                Sheet sheet = workbook.getSheetAt(0);
 
-        // --- PRIMER HOJA ---
-        // Crear una hoja de trabajo 1 (worksheet)
-        Sheet sheet = workbook.createSheet(opcionMenu);
+                // --- TÍTULO / PRIMER HOJA ---
+                Row headerRow0 = sheet.getRow(0);
+                // Crear una celda que abarque las 6 primeras columnas (índices de 1 a 6, 0 es un margen)
+                Cell Titulocell = headerRow0.getCell(1);
+                Titulocell.setCellValue("Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
 
-        // --- TÍTULO / PRIMER HOJA ---
-        // Crear una fila para el título con celdas unificadas
-        Row headerRow0 = sheet.createRow(0);
-        // Crear una celda que abarque las 6 primeras columnas (índices de 0 a 5)
-        Cell Titulocell = headerRow0.createCell(0);
-        Titulocell.setCellValue("Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
-        // Establecer el estilo para el texto del título
-        /*
-        CellStyle style0 = workbook.createCellStyle();
-        Font font0 = workbook.createFont();
-        font0.setBold(true);
-        font0.setFontHeightInPoints((short) 20);
-        font0.setFontName("Roboto"); // Fuente Roboto
-        // Establecer el color de fuente en azul (en formato RGB)
-        font0.setColor((short) -16776961);
-        //font0.setColor(IndexedColors.DARK_BLUE.getIndex()); // Azul oscuro; da error
-        style0.setFont(font0);
-        // Aplicar el estilo a la celda
-        Titulocell.setCellStyle(style0);
-        */
-        // Fusionar las celdas de la fila 0, columnas 0 a 5
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-
-        // --- DATOS DEL REPORTE / PRIMER HOJA ---
-        // Crear una fila para los datos del reporte
-        Row headerRow1 = sheet.createRow(1);
-        // Crear celdas datos del reporte
-        Cell fechaDesde = headerRow1.createCell(1);
-        fechaDesde.setCellValue("Fecha Desde: " + fechaReporteDesdeString);
-        if (opcionMenu.equals("Medicamento (Uno)")){
-            Cell fechaHasta = headerRow1.createCell(2);
-            fechaHasta.setCellValue("Fecha Hasta: " + fechaReporteHastaString);
-            Cell nombreMed = headerRow1.createCell(3);
-            nombreMed.setCellValue("Medicamento: " + textoNombreMedicamento);
-        } else {
-            Cell fechaHasta = headerRow1.createCell(3);
-            fechaHasta.setCellValue("Fecha Hasta: " + fechaReporteHastaString);
-        }
-        // Establecer el estilo para el texto de los datos del reporte
-        /*
-        CellStyle style1 = workbook.createCellStyle();
-        Font font1 = workbook.createFont();
-        font1.setBold(true);
-        font1.setFontHeightInPoints((short) 10);
-        font1.setColor(IndexedColors.GREY_80_PERCENT.getIndex()); // Gris oscuro 3
-        font1.setFontName("Roboto"); // Fuente Roboto
-        style1.setFont(font1);
-        // Aplicar el estilo a la celda
-        fechaDesde.setCellStyle(style1);
-        fechaHasta.setCellStyle(style1);
-        */
+                // --- DATOS DEL REPORTE / PRIMER HOJA ---
+                // Crear una fila para los datos del reporte
+                Row headerRow1 = sheet.getRow(1);
+                // Crear celdas datos del reporte
+                Cell fechaDesde = headerRow1.getCell(2);
+                fechaDesde.setCellValue(fechaReporteDesdeString);
+                Cell fechaHasta = headerRow1.getCell(5);
+                fechaHasta.setCellValue(fechaReporteHastaString);
 
 
-        // --- FILA ENCABEZADOS DE COLUMNAS / PRIMER HOJA ---
-        // Crear una fila para los encabezados de las columnas
-        Row headerRow = sheet.createRow(2);
-        // Crear celdas de encabezados de columnas
-        Cell headerCell1 = headerRow.createCell(0);
-        headerCell1.setCellValue("Tipo");
-        Cell headerCell2 = headerRow.createCell(1);
-        headerCell2.setCellValue("Nombre Medicamento");
-        Cell headerCell3 = headerRow.createCell(2);
-        headerCell3.setCellValue("Fecha Registrado");
-        Cell headerCell4 = headerRow.createCell(3);
-        headerCell4.setCellValue("Programado Para");
-        Cell headerCell5 = headerRow.createCell(4);
-        headerCell5.setCellValue("Valor");
-        Cell headerCell6 = headerRow.createCell(5);
-        headerCell6.setCellValue("Notas");  // En caso de omisión su motivo; en caso de tomado su instruccion
-        // Establecer el estilo para el texto de los encabezados
-        /*
-        CellStyle style2 = workbook.createCellStyle();
-        style2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); // Color de fondo #00afb9
-        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        Font font2 = workbook.createFont();
-        font2.setBold(true);
-        font2.setFontHeightInPoints((short) 11);
-        font2.setColor(IndexedColors.WHITE.getIndex()); // Color de letra blanco
-        font2.setFontName("Arial"); // Fuente Arial
-        style2.setFont(font2);
-        // Aplicar el estilo a las celdas de encabezados
-        headerCell1.setCellStyle(style2);
-        headerCell2.setCellStyle(style2);
-        headerCell3.setCellStyle(style2);
-        headerCell4.setCellStyle(style2);
-        headerCell5.setCellStyle(style2);
-        headerCell6.setCellStyle(style2);
-        */
-
-        // --- DATOS / PRIMER HOJA ---
-        int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
-        for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
-            Log.d("MiApp", "Creando datos de registro, fila: " + fila);
-            Row dataRow = sheet.createRow(fila);    // Se crea CADA FILA de datos, va incrementando
-            // Cada celda se crea dentro de la fila dataRow
-            Cell dataCell1 = dataRow.createCell(0);
-            dataCell1.setCellValue(registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()); // Columna Tipo: nombre de la presentaciónMed
-            Cell dataCell2 = dataRow.createCell(1);
-            dataCell2.setCellValue(registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento()); // Columna Nombre Medicamento
-            Cell dataCell3 = dataRow.createCell(2);
-            if (registroRecordatorio.getFechaTomaReal() == null) {
-                dataCell3.setCellValue(registroRecordatorio.getFechaTomaEsperada().toString()); // Columna Fecha Registrado: fecha toma real (tomados), sino fecha esperada ???
-            } else {
-                dataCell3.setCellValue(registroRecordatorio.getFechaTomaReal().toString()); // Columna Fecha Registrado: fecha toma real (tomados)
-            }
-            Cell dataCell4 = dataRow.createCell(3);
-            dataCell4.setCellValue(registroRecordatorio.getFechaTomaEsperada().toString()); // Columna Programado Para: fecha esperada
-            Cell dataCell5 = dataRow.createCell(4);
-            if (registroRecordatorio.isTomaRegistroRecordatorio()) {
-                dataCell5.setCellValue("Tomado");      // Columna Valor: Tomado si isTomaRegistroRecordatorio = true
-            } else {
-                dataCell5.setCellValue("Omitido");      // Columna Valor: Omitido si isTomaRegistroRecordatorio = false
-            }
-            Cell dataCell6 = dataRow.createCell(5);
-            if (registroRecordatorio.getOmision() != null) {
-                dataCell6.setCellValue("Instrucción: " + registroRecordatorio.getRecordatorio().getInstruccion().toString());    // Columna Notas: Si es un registro tomado, la Instrucción
-            } else {
-                dataCell6.setCellValue("Motivo Omisión: " + registroRecordatorio.getOmision().getNombreOmision());  // Columna Notas: Si es un registro omitido, el Motivo Omisión
-            }
-
-            // Establecer el estilo para el texto de los datos
-            /*
-            CellStyle style3 = workbook.createCellStyle();
-            Font font3 = workbook.createFont();
-            font3.setBold(false);
-            font3.setFontHeightInPoints((short) 11);
-            font3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra negro
-            font3.setFontName("Arial"); // Fuente Arial
-            style3.setFont(font3);
-            // Aplicar el estilo a las celdas de datos
-            dataCell1.setCellStyle(style3);
-            dataCell2.setCellStyle(style3);
-            dataCell3.setCellStyle(style3);
-            dataCell4.setCellStyle(style3);
-            dataCell5.setCellStyle(style3);
-            dataCell6.setCellStyle(style3);
-            */
-            fila++; // Incrementa el número de fila en cada iteración
-        }
+                // --- FILA ENCABEZADOS DE COLUMNAS / PRIMER HOJA ---
+                // Crear una fila para los encabezados de las columnas
+                Row headerRow = sheet.getRow(2);
+                // Crear celdas de encabezados de columnas
+                Cell headerCell1 = headerRow.getCell(1);
+                headerCell1.setCellValue("Tipo");
+                Cell headerCell2 = headerRow.getCell(2);
+                headerCell2.setCellValue("Nombre Medicamento");
+                Cell headerCell3 = headerRow.getCell(3);
+                headerCell3.setCellValue("Fecha Registrado");
+                Cell headerCell4 = headerRow.getCell(4);
+                headerCell4.setCellValue("Programado Para");
+                Cell headerCell5 = headerRow.getCell(5);
+                headerCell5.setCellValue("Valor");
+                Cell headerCell6 = headerRow.getCell(6);
+                headerCell6.setCellValue("Notas");  // En caso de omisión su motivo; en caso de tomado su instruccion
 
 
-        // --- SEGUNDA HOJA ---
-        // Crear una hoja de trabajo 2 (worksheet)
-        Sheet sheet2 = workbook.createSheet("Gráfico");
-        //XSSFSheet sheet2 = workbook.createSheet("Gráfico");
+                // --- DATOS / PRIMER HOJA ---
+                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
+                    Log.d("MiApp", "Creando datos de registro, fila: " + fila);
+                    Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
+                    // Cada celda se crea dentro de la fila dataRow
+                    Cell dataCell1 = dataRow.getCell(1);
+                    dataCell1.setCellValue(registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()); // Columna Tipo: nombre de la presentaciónMed
+                    Cell dataCell2 = dataRow.getCell(2);
+                    dataCell2.setCellValue(registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento()); // Columna Nombre Medicamento
+                    Cell dataCell3 = dataRow.getCell(3);
+                    if (registroRecordatorio.getFechaTomaReal() == null) {
+                        dataCell3.setCellValue(registroRecordatorio.getFechaTomaEsperada().toLocalDate().toString()); // Columna Fecha Registrado: fecha toma real (tomados), sino fecha esperada ???
+                    } else {
+                        dataCell3.setCellValue(registroRecordatorio.getFechaTomaReal().toLocalDate().toString()); // Columna Fecha Registrado: fecha toma real (tomados)
+                    }
+                    Cell dataCell4 = dataRow.getCell(4);
+                    dataCell4.setCellValue(registroRecordatorio.getFechaTomaEsperada().toLocalDate().toString() + " / " + registroRecordatorio.getFechaTomaEsperada().toLocalTime().toString()); // Columna Programado Para: fecha esperada
+                    Cell dataCell5 = dataRow.getCell(5);
+                    if (registroRecordatorio.isTomaRegistroRecordatorio()) {
+                        dataCell5.setCellValue("Tomado");      // Columna Valor: Tomado si isTomaRegistroRecordatorio = true
+                    } else {
+                        dataCell5.setCellValue("Omitido");      // Columna Valor: Omitido si isTomaRegistroRecordatorio = false
+                    }
+                    Cell dataCell6 = dataRow.getCell(6);
+                    if (registroRecordatorio.getOmision()!= null) {
+                        dataCell6.setCellValue("Motivo Omisión: " + registroRecordatorio.getOmision().getNombreOmision());  // Columna Notas: Si es un registro omitido, el Motivo Omisión
+                    } else {
+                        dataCell6.setCellValue("Instrucción: " + registroRecordatorio.getRecordatorio().getInstruccion().getNombreInstruccion() + " - " + registroRecordatorio.getRecordatorio().getInstruccion().getDescInstruccion());    // Columna Notas: Si es un registro tomado, la Instrucción
+                    }
 
-        // --- TÍTULO / SEGUNDA HOJA ---
-        // Crear una fila para el título con celdas unificadas
-        Row headerRow2_0 = sheet2.createRow(0);
-        // Crear una celda que abarque las 6 primeras columnas (índices de 0 a 5)
-        Cell Titulocell2 = headerRow2_0.createCell(0);
-        Titulocell2.setCellValue("Gráfico del Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
-        // Establecer el estilo para el texto del título
-        /*
-        CellStyle style2_0 = workbook.createCellStyle();
-        Font font2_0 = workbook.createFont();
-        font2_0.setBold(true);
-        font2_0.setFontHeightInPoints((short) 20);
-        font2_0.setColor(IndexedColors.DARK_BLUE.getIndex()); // Color de letra azul
-        font2_0.setFontName("Roboto"); // Fuente Roboto
-        style2_0.setFont(font2_0);
-        // Aplicar el estilo a la celda
-        Titulocell2.setCellStyle(style2_0);
-        */
-        // Fusionar las celdas de la fila 0, columnas 0 a 5
-        sheet2.addMergedRegion(new CellRangeAddress(0, 0, 0, 5));
-
-        // --- DATOS DEL REPORTE / SEGUNDA HOJA ---
-        // Crear una fila para los datos del reporte
-        Row headerRow2_1 = sheet2.createRow(1);
-        // Crear celdas datos del reporte
-        Cell fechaDesde2 = headerRow2_1.createCell(1);
-        fechaDesde2.setCellValue("Fecha Desde: " + fechaReporteDesdeString);
-        Cell fechaHasta2 = headerRow2_1.createCell(3);
-        fechaHasta2.setCellValue("Fecha Hasta: " + fechaReporteHastaString);
-        // Establecer el estilo para el texto de los datos del reporte
-        /*
-        CellStyle style2_1 = workbook.createCellStyle();
-        Font font2_1 = workbook.createFont();
-        font2_1.setBold(true);
-        font2_1.setFontHeightInPoints((short) 10);
-        font2_1.setColor(IndexedColors.GREY_80_PERCENT.getIndex()); // Gris oscuro 3
-        font2_1.setFontName("Roboto"); // Fuente Roboto
-        style2_1.setFont(font2_1);
-        // Aplicar el estilo a la celda
-        fechaDesde2.setCellStyle(style2_1);
-        fechaHasta2.setCellStyle(style2_1);
-        */
-
-        // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
-        // Crear una fila para los encabezados de las columnas
-        Row headerRow2_2 = sheet2.createRow(2);
-        // Crear celdas de encabezados de columnas
-        Cell headerCell2_1 = headerRow2_2.createCell(0);
-        headerCell2_1.setCellValue("Nombre del Medicamento");
-        Cell headerCell2_2 = headerRow2_2.createCell(1);
-        headerCell2_2.setCellValue("Procentaje de Cumplimiento");
-        Cell headerCell2_3 = headerRow2_2.createCell(2);
-        headerCell2_3.setCellValue("Gráfico de Cumplimiento");
-        // Establecer el estilo para el texto de los encabezados
-        /*
-        CellStyle style2_2 = workbook.createCellStyle();
-        style2_2.setFillForegroundColor(IndexedColors.AQUA.getIndex()); // Color de fondo #00afb9
-        style2_2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        Font font2_2 = workbook.createFont();
-        font2_2.setBold(true);
-        font2_2.setFontHeightInPoints((short) 11);
-        font2_2.setColor(IndexedColors.WHITE.getIndex()); // Color de letra blanco
-        font2_2.setFontName("Arial"); // Fuente Arial
-        style2_2.setFont(font2_2);
-        // Aplicar el estilo a las celdas de encabezados
-        headerCell2_1.setCellStyle(style2_2);
-        headerCell2_2.setCellStyle(style2_2);
-        headerCell2_3.setCellStyle(style2_2);
-        */
-        sheet2.addMergedRegion(new CellRangeAddress(2, 2, 2, 5));
-
-
-        // --- DATOS / SEGUNDA HOJA ---
-        // Crear un mapa para agrupar los registros por nombre de medicamento
-        Map<String, List<RegistroRecordatorio>> medicamentosAgrupados = new HashMap<>();
-        // Agrupar los registros por nombre de medicamento
-        for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
-            String nombreMedicamento = registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento();
-            // Verificar si ya existe una lista para este medicamento en el mapa
-            List<RegistroRecordatorio> registros = medicamentosAgrupados.get(nombreMedicamento);
-            if (registros == null) {
-                registros = new ArrayList<>();
-                medicamentosAgrupados.put(nombreMedicamento, registros);
-            }
-            registros.add(registroRecordatorio);
-        }
-        // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
-        int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
-        for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
-            String nombreMedicamento = entry.getKey();
-            List<RegistroRecordatorio> registros = entry.getValue();
-            int totalRegistros = registros.size();
-            int registrosTomados = 0;
-            for (RegistroRecordatorio registro : registros) {
-                if (registro.isTomaRegistroRecordatorio()) {
-                    registrosTomados++;
+                    fila++; // Incrementa el número de fila en cada iteración
                 }
+
+
+                // --- SEGUNDA HOJA ---
+                // Crear una hoja de trabajo 2 (worksheet)
+                Sheet sheet2 = workbook.getSheetAt(1);
+
+                // --- TÍTULO / SEGUNDA HOJA ---
+                // Crear una fila para el título con celdas unificadas
+                Row headerRow2_0 = sheet2.getRow(0);
+                // Crear una celda que abarque las 6 primeras columnas
+                Cell Titulocell2 = headerRow2_0.getCell(1);
+                Titulocell2.setCellValue("Gráfico del Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
+
+                // --- DATOS DEL REPORTE / SEGUNDA HOJA ---
+                // Crear una fila para los datos del reporte
+                Row headerRow2_1 = sheet2.getRow(1);
+                // Crear celdas datos del reporte
+                Cell fechaDesde2 = headerRow2_1.getCell(3);
+                fechaDesde2.setCellValue(fechaReporteDesdeString);
+                Cell fechaHasta2 = headerRow2_1.getCell(6);
+                fechaHasta2.setCellValue(fechaReporteHastaString);
+
+                // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
+                // Crear una fila para los encabezados de las columnas
+                Row headerRow2_2 = sheet2.getRow(2);
+                // Crear celdas de encabezados de columnas
+                Cell headerCell2_1 = headerRow2_2.getCell(1);
+                headerCell2_1.setCellValue("Nombre del Medicamento");
+                Cell headerCell2_2 = headerRow2_2.getCell(2);
+                headerCell2_2.setCellValue("Procentaje de Cumplimiento");
+                Cell headerCell2_3 = headerRow2_2.getCell(3);
+                headerCell2_3.setCellValue("Gráfico de Cumplimiento");
+
+
+                // --- DATOS / SEGUNDA HOJA ---
+                // Crear un mapa para agrupar los registros por nombre de medicamento
+                Map<String, List<RegistroRecordatorio>> medicamentosAgrupados = new HashMap<>();
+                // Agrupar los registros por nombre de medicamento
+                for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
+                    String nombreMedicamento = registroRecordatorio.getRecordatorio().getMedicamento().getNombreMedicamento();
+                    // Verificar si ya existe una lista para este medicamento en el mapa
+                    List<RegistroRecordatorio> registros = medicamentosAgrupados.get(nombreMedicamento);
+                    if (registros == null) {
+                        registros = new ArrayList<>();
+                        medicamentosAgrupados.put(nombreMedicamento, registros);
+                    }
+                    registros.add(registroRecordatorio);
+                }
+                // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
+                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
+                    String nombreMedicamento = entry.getKey();
+                    List<RegistroRecordatorio> registros = entry.getValue();
+                    int totalRegistros = registros.size();
+                    int registrosTomados = 0;
+                    for (RegistroRecordatorio registro : registros) {
+                        if (registro.isTomaRegistroRecordatorio()) {
+                            registrosTomados++;
+                        }
+                    }
+                    double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0;
+                    // Crear un formato decimal con dos decimales
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    // Formatear el porcentaje con dos decimales y agregar "%"
+                    String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
+
+                    Row filaResumen = sheet2.getRow(filaActual);
+                    Cell celdaNombreMedicamento = filaResumen.getCell(1);
+                    celdaNombreMedicamento.setCellValue(nombreMedicamento);
+                    Cell celdaPorcentajeCumplimiento = filaResumen.getCell(2);
+                    celdaPorcentajeCumplimiento.setCellValue(porcentajeFormateado.toString());
+
+                    filaActual++;
+                }
+
+
+                // --- GRÁFICO / SEGUNDA HOJA ---
+                // Crear un objeto Drawing para la hoja de trabajo
+                /*
+                CreationHelper helper = sheet2.getWorkbook().getCreationHelper();
+                Drawing<?> drawing = sheet2.createDrawingPatriarch();
+                // Crear una ancla para el gráfico
+                ClientAnchor anchor = helper.createClientAnchor();
+                anchor.setCol1(3); // Columna de inicio
+                anchor.setRow1(3); // Fila de inicio
+                anchor.setCol2(8); // Columna de fin
+                anchor.setRow2(15); // Fila de fin
+                // Crear el gráfico de barras en la hoja de trabajo
+                Chart chart = drawing.createChart(anchor);
+                ChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.TOP_RIGHT);
+                // Crear categorías (nombres de medicamentos) y valores (porcentajes) para el gráfico
+                ChartDataSource<String> nombresCategoria = DataSources.fromStringCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 1, 1));
+                ChartDataSource<Number> valores = DataSources.fromNumericCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 2, 2));
+                // Agregar datos al gráfico de barras
+                chart.plot(ChartTypes.BAR, null, nombresCategoria, valores);
+
+
+                // Crear un eje de categoría (eje Y) y un eje de valores (eje X)
+                CategoryAxis categoriaAxis = chart.createCategoryAxis(AxisPosition.LEFT);
+                ValueAxis valorAxis = chart.createValueAxis(AxisPosition.BOTTOM);
+                valorAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                // Agregar datos al gráfico de barras
+                ChartData data = chart.createData(ChartTypes.BAR, categoriaAxis, valorAxis);
+                data.setVaryColors(true); // Alternar colores de las barras
+                ChartData.Series series = data.addSeries(nombresCategoria, valores);
+                series.setTitle("Porcentaje de Cumplimiento", null);
+                // Dibujar el gráfico en la hoja de trabajo
+                chart.plot(data);
+                // Ajustar el tamaño del gráfico
+                // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+                 */
+
+
+                // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
+                // Ruta del almacenamiento interno en Android para guardar el archivo
+                File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                String filePath = dir.getAbsolutePath() + "/MediCALReporte" + opcionMenu + ".xlsx";
+                // Crear el archivo Excel
+                file = new File(filePath);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    workbook.write(fos);
+                    fos.close();
+                    enviarReporte(destinatario);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // Puedes imprimir la traza de la excepción para depurar
             }
-            double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0;
-
-            Row filaResumen = sheet2.createRow(filaActual);
-            Cell celdaNombreMedicamento = filaResumen.createCell(0);
-            celdaNombreMedicamento.setCellValue(nombreMedicamento);
-            Cell celdaPorcentajeCumplimiento = filaResumen.createCell(1);
-            celdaPorcentajeCumplimiento.setCellValue(porcentajeCumplimiento);
-
-            // Establecer el estilo para el texto de los datos
-            /*
-            CellStyle style2_3 = workbook.createCellStyle();
-            Font font2_3 = workbook.createFont();
-            font2_3.setBold(false);
-            font2_3.setFontHeightInPoints((short) 11);
-            font2_3.setColor(IndexedColors.BLACK.getIndex()); // Color de letra negro
-            font2_3.setFontName("Arial"); // Fuente Arial
-            style2_3.setFont(font2_3);
-            // Aplicar el estilo a las celdas de datos
-            celdaNombreMedicamento.setCellStyle(style2_3);
-            celdaPorcentajeCumplimiento.setCellStyle(style2_3);
-            */
-            filaActual++;
-        }
-        // Ajustar el ancho de las columnas para que los datos se ajusten
-        //sheet2.autoSizeColumn(0);
-        //sheet2.autoSizeColumn(1);
-
-
-        // --- GRÁFICO / SEGUNDA HOJA ---
-        // Crear Gráfico de barras en la hoja de trabajo
-        /*
-        XSSFDrawing drawing = sheet2.createDrawingPatriarch();
-        XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 2, 2, 10, 25); // Define las coordenadas del gráfico
-        XSSFChart chart = drawing.createChart(anchor);
-        XDDFChartLegend legend = chart.getOrAddLegend(); // Agregar leyenda al gráfico
-        legend.setPosition(LegendPosition.TOP_RIGHT); // Posición de la leyenda
-        // Crear categorías (nombres de medicamentos) y valores (porcentajes) para el gráfico
-        XDDFDataSource<String> nombresCategoria = XDDFDataSourcesFactory.fromStringCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 0, 0));
-        XDDFNumericalDataSource<Double> valores = XDDFDataSourcesFactory.fromNumericCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 1, 1));
-        // Crear un eje de categoría (eje Y) y un eje de valores (eje X)
-        XDDFCategoryAxis categoriaAxis = chart.createCategoryAxis(AxisPosition.LEFT);
-        XDDFValueAxis valorAxis = chart.createValueAxis(AxisPosition.BOTTOM);
-        valorAxis.setCrosses(AxisCrosses.AUTO_ZERO);
-        // Agregar datos al gráfico de barras
-        XDDFChartData data = chart.createData(ChartTypes.BAR, categoriaAxis, valorAxis);
-        data.setVaryColors(true); // Alternar colores de las barras
-        XDDFChartData.Series series = data.addSeries(nombresCategoria, valores);
-        series.setTitle("Porcentaje de Cumplimiento", null);
-        // Dibujar el gráfico en la hoja de trabajo
-        chart.plot(data);
-        // Ajustar el tamaño del gráfico
-        // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
-        */
-
-        // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
-        // Ruta del almacenamiento interno en Android para guardar el archivo
-        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        String filePath = dir.getAbsolutePath() + "/MediCALReporte" + opcionMenu + ".xlsx";
-        // Crear el archivo Excel
-        file = new File(filePath);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            workbook.write(fos);
-            fos.close();
-            enviarReporte(destinatario);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

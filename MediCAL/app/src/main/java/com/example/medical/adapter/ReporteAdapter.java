@@ -28,6 +28,7 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
     private int codCalendarioOriginal;
     private int codUsuarioOriginal;
     private OnEliminarReporteListener eliminarReporteListener;
+    private OnCompartirReporteListener compartirReporteListener;
 
     public ReporteAdapter(List<Reporte> reporteList) {
         this.reporteList = reporteList;
@@ -84,6 +85,10 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
         });
         holder.imagenCompartir.setOnClickListener(view -> {
             Log.d("MiApp", "Se hizo clic en el botón compartir");
+            if (compartirReporteListener != null) {
+                compartirReporteListener.onCompartirReporte(reporte.getNroReporte());
+            }
+            /*
             // Crear un Intent para abrir CompartirReporteActivity
             Intent compartirIntent = new Intent(view.getContext(), CompartirReporteActivity.class);
             compartirIntent.putExtra("nroReporte", reporte.getNroReporte());
@@ -91,6 +96,7 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
             compartirIntent.putExtra("codUsuario", codUsuarioOriginal);
             // Iniciar CompartirReporteActivity
             view.getContext().startActivity(compartirIntent);
+             */
         });
         holder.imagenDescargar.setOnClickListener(view -> {
             Log.d("MiApp", "Se hizo clic en el botón descargar");
@@ -133,8 +139,16 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
         this.eliminarReporteListener = listener;
     }
 
+    public void setCompartirReporteListener(OnCompartirReporteListener listener) {
+        this.compartirReporteListener = listener;
+    }
+
     public interface OnEliminarReporteListener {
         void onEliminarReporte(int nroReporte);
+    }
+
+    public interface OnCompartirReporteListener {
+        void onCompartirReporte(int nroReporte);
     }
 
 }

@@ -36,7 +36,7 @@
                 android:layout_toEndOf="@id/boton_volver"
                 android:layout_marginStart="25dp"
                 android:layout_centerVertical="true"
-                android:text="Compartir Informe de Estado"
+                android:text="Agregar Informe de Estado"
                 android:fontFamily="@font/inter_medium"
                 android:textSize="26sp"
                 android:textColor="#FFF" />

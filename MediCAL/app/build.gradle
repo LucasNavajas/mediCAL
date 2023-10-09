@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.example.medical'
-    compileSdk 33
+    compileSdkVersion 33        // Antes: compileSdk
 
     defaultConfig {
         applicationId "com.example.medical"
@@ -40,10 +40,22 @@ android {
 
 dependencies {
 
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation files('libs/additionnal.jar')
+    //implementation files('libs/poi-3.15.jar')
+    //implementation files('libs/poi-ooxml-3.15.jar')
+    //implementation files('libs/poi-ooxml-schemas-3.15.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -71,10 +83,8 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-
     // Biblioteca para crear archivos de Excel
-    //implementation 'org.apache.poi:poi:5.0.0'
-    //implementation 'org.apache.poi:poi-ooxml:5.0.0'
+    /*
     implementation ('org.apache.poi:poi:5.0.0') {
         exclude group: 'org.apache.xmlgraphics', module: 'batik-all'
         exclude group: 'xml-apis', module: 'xml-apis'
@@ -91,7 +101,29 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-api'
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
-        exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
+        //exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
     }
+    */
 
+    /*implementation ('org.apache.poi:poi-android:4.1.2') {
+        //exclude group: 'org.apache.xmlgraphics', module: 'batik-all'
+        //exclude group: 'xml-apis', module: 'xml-apis'
+        //exclude group: 'commons-logging', module: 'commons-logging-api'
+        //exclude group: 'org.slf4j', module: 'slf4j-api'
+        //exclude group: 'commons-logging', module: 'commons-logging'
+        //exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+        //exclude group: 'org.apache.xmlbeans', module: 'xmlbeans'
+    }*/
+
+    // Excel en Android
+    //implementation 'com.github.nwawsoft:androidxls:1.5.0'
+    implementation 'org.apache.poi:poi:4.1.2'
+    implementation ('org.apache.poi:poi-ooxml:4.1.2')
+    implementation 'org.apache.poi:poi-ooxml-schemas:4.1.2'
+    //implementation 'javax.xml.stream:stax-api:1.0-2'
+
+}
+
+configurations {
+    all*.exclude group: 'javax.xml.stream', module: 'stax-api'
 }

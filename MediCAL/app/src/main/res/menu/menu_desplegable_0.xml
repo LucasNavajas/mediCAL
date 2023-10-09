@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/opcion1_menu0"
+        android:title="Reportes de Medicamentos (Todos)" />
+    <item
+        android:id="@+id/opcion2_menu0"
+        android:title="Reportes de Medicamento (Uno)" />
+    <item
+        android:id="@+id/opcion3_menu0"
+        android:title="Reportes de Síntomas" />
+    <item
+        android:id="@+id/opcion4_menu0"
+        android:title="Reportes de Mediciones" />
+
+</menu>
