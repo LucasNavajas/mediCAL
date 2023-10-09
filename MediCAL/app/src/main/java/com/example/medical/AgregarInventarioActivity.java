@@ -47,6 +47,10 @@ public class AgregarInventarioActivity extends AppCompatActivity {
                     intent.putExtra("nombreMedicamento", getIntent().getStringExtra("nombreMedicamento"));
                     startActivity(intent);
                 }
+                else{
+                    Toast.makeText(AgregarInventarioActivity.this, "Debe agregar una cantidad mayor a 0", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
     }

@@ -97,6 +97,10 @@ public class AgregarAlertaInventarioActivity extends AppCompatActivity {
                             });
 
                         }
+                        else{
+                            Toast.makeText(AgregarAlertaInventarioActivity.this, "Debe agregar un cantidad mayor a 0", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                 });
             }
