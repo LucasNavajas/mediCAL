@@ -94,6 +94,9 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         setContentView(R.layout.n81_informes_sin_cargar);   // Establece la pantalla 81 como predeterminada en caso que no hayan informes
         this.context = context;
 
+        View dimView0 = findViewById(R.id.dim_view);
+        LinearLayout progressBar0 = findViewById(R.id.progressBar);
+
         onDataLoadedListener = new OnDataLoadedListener() {
             @Override
             public void onDataLoaded() {
@@ -102,10 +105,8 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                     loadInformes();
                     Log.d("MiApp", "Entró en el if y la variable existenInformes es: " + existenInformes);
                 } else {
-                    progressBar = findViewById(R.id.progressBar);
-                    progressBar.setVisibility(View.GONE);
-                    dimView.findViewById(R.id.dim_view);
-                    dimView.setVisibility(View.GONE);
+                    progressBar0.setVisibility(View.GONE);
+                    dimView0.setVisibility(View.GONE);
                 }
             }
         };
@@ -152,8 +153,9 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                         popupWindow.dismiss();
                         popupReporteCompartido();
                     } else {
-                        popupWindow.dismiss();
-                        popupSinRegistros();
+                        //popupWindow.dismiss();
+                        Toast.makeText(ReportesActivity.this, "Error al compartir el reporte.", Toast.LENGTH_SHORT).show();
+                        //popupSinRegistros();
                     }
                 }
         );
@@ -224,10 +226,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
 
                     } else {
                         Log.d("MiApp", "No se encontraron reporte asociados al usuario");
-                        dimView = findViewById(R.id.dim_view);
-                        dimView.setVisibility(View.GONE);
-                        progressBar = findViewById(R.id.progressBar);
-                        progressBar.setVisibility(View.GONE);
+                        listener.onDataLoaded();
                     }
                 } else {
                     Log.d("MiApp", "Error en la solicitud de reportes: " + response.message());
@@ -285,6 +284,9 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                     onBackPressed(); // Volver a la actividad anterior
                 }
             });
+
+
+
         }
     }
 
@@ -726,13 +728,6 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                 compartirIntent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
                 compartirIntent.putExtra("codUsuario", codUsuarioLogeado);
                 compartirIntent.putExtra("destinatario", destinatario);
-
-                // Convierte la lista a JSON utilizando Gson
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                        .create();
-                String listaReportesJson = gson.toJson(listaTotalReportes);
-                compartirIntent.putExtra("listaReportes", listaReportesJson);
                 compartirActivityResultLauncher.launch(compartirIntent);
             }
         });

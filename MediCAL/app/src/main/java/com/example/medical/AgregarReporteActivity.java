@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -103,7 +104,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     private Usuario usuarioLogeado;
     private int nroCalendariosAsociados;
     private int nroRecordatoriosAsociados;
-    private int operacionesPendientes;
+    private int operacionesPendientes = -1;
     private int nroReporteSeleccionado;
 
     private LocalDate fechaReporteDesdeLocalDate;
@@ -113,11 +114,12 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
     private TextView textoFiltroReporte;
     private ConstraintLayout MedicamentoEspecifico;
-    private String opcionMenu = "Reporte Medicamentos (Todos)";
+    private String opcionMenu = "Medicamentos (Todos)";
     private PopupMenu popupMenu;
     private TextView fechaDesde;
     private TextView fechaHasta;
     private List<RegistroRecordatorio> listaTotalRegistroRecordatorios = new ArrayList<>();
+    private List<TipoReporte> ListaGlobalTiposDeReportes = new ArrayList<>();
     private String destinatario;
     private int codUsuarioLogeado;
     private int codCalendarioSeleccionado;
@@ -127,6 +129,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     private EditText textoNombreMedicamento;
     private boolean existenRegistros = false; // Variable global para verificar existencia de registrosRecordatorios
     private OnDataLoadedListener onDataLoadedListener;
+    private LinearLayout progressBar;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -150,6 +153,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
         Button botonEnviar = findViewById(R.id.button_enviar);
         ImageView botonVolver = findViewById(R.id.boton_volver);
         ImageView desplegable = findViewById(R.id.imagen_desplegable);
+        progressBar = findViewById(R.id.progressBar);
 
         desplegable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +188,9 @@ public class AgregarReporteActivity extends AppCompatActivity {
         };
 
         botonEnviar.setOnClickListener(view -> {
+            View dimView = findViewById(R.id.dim_view);
+            dimView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             medicamento = textoNombreMedicamento.getText().toString();
             destinatario = emailDestinatario.getText().toString();
             if (fechaReporteDesdeString.equals("Seleccione 'fecha desde'")){
@@ -763,6 +770,8 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
     private void enviarReporte(String destinatario) {
 
+        Log.d("MiApp", "Envío el Reporte");
+
         // Configura las propiedades del servidor de correo de Gmail
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -811,8 +820,8 @@ public class AgregarReporteActivity extends AppCompatActivity {
             // Espera a que la tarea se complete y obtén el resultado
             try {
                 boolean envioExitoso = enviarReporteAsyncTask.get(); // Obtiene el resultado de doInBackground
-                if (envioExitoso) {
-                    crearInstanciaReporte();
+                if (envioExitoso && operacionesPendientes==0) {
+                    obtenerLosTiposDeReportesParametros();
                 } else {
                     Toast.makeText(AgregarReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
                 }
@@ -857,20 +866,13 @@ public class AgregarReporteActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 Toast.makeText(AgregarReporteActivity.this, "Correo enviado con el archivo adjunto.", Toast.LENGTH_SHORT).show();
-                crearInstanciaReporte();
-                popupReporteCreadoYEnviado();
             } else {
                 Toast.makeText(AgregarReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void crearInstanciaReporte(){
-        Reporte nuevoReporte = new Reporte();
-        nuevoReporte.setFechaGenerada(LocalDate.now());
-        nuevoReporte.setFechaDesde(fechaReporteDesdeLocalDate);
-        nuevoReporte.setFechaHasta(fechaReporteHastaLocalDate);
-        nuevoReporte.setUsuario(usuarioLogeado);
+    private void obtenerLosTiposDeReportesParametros (){
 
         RetrofitService retrofitService = new RetrofitService();
         TipoReporteApi tipoReporteApi = retrofitService.getRetrofit().create(TipoReporteApi.class);
@@ -882,12 +884,10 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public void onResponse(Call<List<TipoReporte>> call, Response<List<TipoReporte>> response) {
                 if (response.isSuccessful()) {
                     List<TipoReporte> listaTipoReporte = response.body();
+                    Log.d("MiApp", "Obtengo los Tipos de Reporte: " + listaTipoReporte);
                     if (listaTipoReporte != null) {
-                        for (TipoReporte tipoReporte : listaTipoReporte) {
-                            if (("Reporte "+ opcionMenu).equals(tipoReporte.getNombreTipoReporte())){
-                                nuevoReporte.setTipoReporte(tipoReporte);
-                            }
-                        }
+                        ListaGlobalTiposDeReportes = listaTipoReporte;
+                        crearInstanciaReporte();
                     } else {
                         Log.d("MiApp", "No se encontraron instancias de tipoReporte ");
                     }
@@ -901,9 +901,27 @@ public class AgregarReporteActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void crearInstanciaReporte(){
+        Reporte nuevoReporte = new Reporte();
+        nuevoReporte.setFechaGenerada(LocalDate.now());
+        nuevoReporte.setFechaDesde(fechaReporteDesdeLocalDate);
+        nuevoReporte.setFechaHasta(fechaReporteHastaLocalDate);
+        nuevoReporte.setUsuario(usuarioLogeado);
+
         if (opcionMenu.equals("Medicamento (Uno)")){
             nuevoReporte.setNombreMed(medicamento);
         }
+
+        for (TipoReporte tipoReporte : ListaGlobalTiposDeReportes) {
+            if (("Reporte "+ opcionMenu).equals(tipoReporte.getNombreTipoReporte())){
+                nuevoReporte.setTipoReporte(tipoReporte);
+                Log.d("MiApp","Asigno el Tipo Reporte: "+tipoReporte);
+            }
+        }
+
+        Log.d("MiApp", "Creo instancia de reporte: " + nuevoReporte);
 
         RetrofitService retrofitService2 = new RetrofitService();
         ReporteApi reporteApi = retrofitService2.getRetrofit().create(ReporteApi.class);
@@ -915,6 +933,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public void onResponse(Call<Reporte> call, Response<Reporte> response) {
                 if (response.isSuccessful()) {
                     Log.d("MiApp", "Reporte creado con éxito: " + nuevoReporte);
+                    progressBar.setVisibility(View.GONE);
                     popupReporteCreadoYEnviado();
                 } else {
                     Log.d("MiApp", "Error en la solicitud: " + response.message());
