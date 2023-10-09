@@ -61,6 +61,7 @@ import com.example.medical.model.Instruccion;
 import com.example.medical.model.Inventario;
 import com.example.medical.model.Medicamento;
 import com.example.medical.model.Recordatorio;
+import com.example.medical.model.RegistroRecordatorio;
 import com.example.medical.retrofit.ConcentracionApi;
 import com.example.medical.retrofit.FrecuenciaApi;
 import com.example.medical.retrofit.DosisApi;
@@ -94,6 +95,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
     private InstruccionApi instruccionApi = retrofitService.getRetrofit().create(InstruccionApi.class);
     private List<Concentracion> concentracionList;
     private List<String> concentraciones = new ArrayList<String>() {};
+    private LinearLayout progressBar;
     private LinearLayout agregarInventario;
     private TextView textHecho;
     private Button botonHecho;
@@ -131,7 +133,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n63_0_editar_dosis_futuras);
         inicializarBotones();
-        obtenerDatos(6); // Cambia el número 4 por el codRecordatorio deseado
+        obtenerDatos(getIntent().getIntExtra("codRecordatorio", 0)); // Cambia el número 4 por el codRecordatorio deseado
 
 
         capturedPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_photo.jpg");
@@ -211,6 +213,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
     private void inicializarBotones() {
         fotoMedicamento = findViewById(R.id.imagen_actual);
+        progressBar = findViewById(R.id.progressBar);
         ImageButton desplegableFrecuencia = findViewById(R.id.desplegable_frecuencia);
         TextView cambiarFrecuencia = findViewById(R.id.cambiar_frecuencia);
         ImageButton desplegableHora = findViewById(R.id.desplegable_hora);
@@ -504,12 +507,12 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                habilitarCargando();
                 if (inventarioActivo && inventario.getCantRealInventario()!=null && inventario.getCantAvisoInventario()!=null) {
 
                     inventarioApi.save(inventario).enqueue(new Callback<Inventario>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
                         @Override
                         public void onResponse(Call<Inventario> call, Response<Inventario> response) {
-                            Toast.makeText(EditarDosisFuturasActivity.this, "Inventario modificado", Toast.LENGTH_SHORT).show();
                             recordatorio.setInventario(response.body());
                             saveRecordatorio();
                         }
@@ -517,23 +520,27 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<Inventario> call, Throwable t) {
                             Toast.makeText(EditarDosisFuturasActivity.this, "Inventario no modificado", Toast.LENGTH_SHORT).show();
+                            inhabilitarCargando();
                         }
                     });
                 } else {
             saveRecordatorio();
-                }}};}
+                }
+            }
+        };
+    }
 
     private void saveRecordatorio(){
         recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {//Aca se guardan todos los atributos modificados del recordatorio (duracion, fecha de inicio, fecha de fin e imagen)
             @Override
             public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
-                Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio modificado", Toast.LENGTH_SHORT).show();
                 saveFrecuencia();
             }
 
             @Override
             public void onFailure(Call<Recordatorio> call, Throwable t) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Recordatorio no modificado", Toast.LENGTH_SHORT).show();
+                inhabilitarCargando();
             }
         });
     }
@@ -541,13 +548,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         frecuenciaApi.save(frecuencia).enqueue(new Callback<Frecuencia>() {
             @Override
             public void onResponse(Call<Frecuencia> call, Response<Frecuencia> response) {
-                Toast.makeText(EditarDosisFuturasActivity.this, "Frecuencia modificada", Toast.LENGTH_SHORT).show();
                 saveDosis();
             }
 
             @Override
             public void onFailure(Call<Frecuencia> call, Throwable t) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Frecuencia no modificada", Toast.LENGTH_SHORT).show();
+                inhabilitarCargando();
             }
         });
     }
@@ -556,13 +563,13 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         dosisApi.save(dosis).enqueue(new Callback<Dosis>() {
             @Override
             public void onResponse(Call<Dosis> call, Response<Dosis> response) {
-                Toast.makeText(EditarDosisFuturasActivity.this, "Dosis modificada", Toast.LENGTH_SHORT).show();
                 saveInstruccion();
             }
 
             @Override
             public void onFailure(Call<Dosis> call, Throwable t) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Dosis no modificada", Toast.LENGTH_SHORT).show();
+                inhabilitarCargando();
             }
         });
     }
@@ -570,15 +577,33 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         instruccionApi.save(instruccion).enqueue(new Callback<Instruccion>() {
             @Override
             public void onResponse(Call<Instruccion> call, Response<Instruccion> response) {
-                Toast.makeText(EditarDosisFuturasActivity.this, "Instruccion modificada", Toast.LENGTH_SHORT).show();
+                crearRegistrosNuevos();
             }
 
             @Override
             public void onFailure(Call<Instruccion> call, Throwable t) {
                 Toast.makeText(EditarDosisFuturasActivity.this, "Instruccion no modificada", Toast.LENGTH_SHORT).show();
+                inhabilitarCargando();
             }
         });
     }
+
+    private void crearRegistrosNuevos() {
+        recordatorioApi.crearRegistros(recordatorio.getCodRecordatorio()).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                inhabilitarCargando();
+                popUpAplazado(recordatorio);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(EditarDosisFuturasActivity.this, "Error al modificar los registros del recordatorio", Toast.LENGTH_SHORT).show();
+                inhabilitarCargando();
+            }
+        });
+    }
+
     private Bitmap compressBitmap(Bitmap bitmap) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -909,6 +934,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
             }
         });
         TextView textViewCancelar = popupView.findViewById(R.id.cancelar);
+        TextView textViewSalir = popupView.findViewById(R.id.salir);
 
         textViewCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -921,6 +947,15 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
             }
         });
+        textViewSalir.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            Intent intent = new Intent(EditarDosisFuturasActivity.this, InicioCalendarioActivity.class);
+            intent.putExtra("codCalendario", getIntent().getIntExtra("codCalendario", 0));
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
+
 
     }
 
@@ -1837,5 +1872,99 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
         }
     }
 
+    private void popUpAplazado(Recordatorio recordatorio) {
+        View popupView = getLayoutInflater().inflate(R.layout.n55_2_aplazo_exitoso, null);
 
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        ImageView botonCerrar = popupView.findViewById(R.id.boton_cerrar);
+        TextView nombreMedicamento = popupView.findViewById(R.id.text_nombremedicamento);
+        TextView textoAplazado = popupView.findViewById(R.id.text_tiempoaplazo);
+        nombreMedicamento.setText(recordatorio.getMedicamento().getNombreMedicamento());
+        textoAplazado.setText("Recordatorio modificado exitosamente");
+        botonCerrar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+            Intent intent = new Intent(EditarDosisFuturasActivity.this, InicioCalendarioActivity.class);
+            intent.putExtra("codCalendario", getIntent().getIntExtra("codCalendario", 0));
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+                Intent intent = new Intent(EditarDosisFuturasActivity.this, InicioCalendarioActivity.class);
+                intent.putExtra("codCalendario", getIntent().getIntExtra("codCalendario", 0));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+    public static void setAllViewsEnabled(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+
+            // Deshabilitar vista si es interactuable (Button, EditText, CheckBox, RadioButton)
+            if (view instanceof Button || view instanceof EditText) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ImageView, también puedes deshabilitarlo si es necesario
+            if (view instanceof ImageView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un TextView, también puedes deshabilitarlo si es necesario
+            if (view instanceof TextView) {
+                view.setEnabled(enabled);
+            }
+
+            // Si es un ViewGroup (por ejemplo, LinearLayout, RelativeLayout, etc.), llama de forma recursiva
+            if (view instanceof ViewGroup) {
+                setAllViewsEnabled((ViewGroup) view, enabled);
+            }
+        }
+    }
+    public void habilitarBotones(){
+        ViewGroup layout = findViewById(R.id.drawer_layout);
+        setAllViewsEnabled(layout, true); // Deshabilita todas las vistas
+    }
+    public void inhabilitarBotones(){
+        ViewGroup layout = findViewById(R.id.drawer_layout);
+        setAllViewsEnabled(layout, false); // Deshabilita todas las vistas
+    }
+
+    public void habilitarCargando(){
+        progressBar.setVisibility(View.VISIBLE);
+        View dimView = findViewById(R.id.dim_view_cargando);
+        dimView.setVisibility(View.VISIBLE);
+        inhabilitarBotones();
+    }
+
+    public void inhabilitarCargando(){
+        progressBar.setVisibility(View.GONE);
+        View dimView = findViewById(R.id.dim_view_cargando);
+        dimView.setVisibility(View.GONE);
+        habilitarBotones();
+    }
 }

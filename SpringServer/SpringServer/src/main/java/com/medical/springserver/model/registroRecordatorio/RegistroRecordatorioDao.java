@@ -66,4 +66,11 @@ public class RegistroRecordatorioDao {
 		return repository.findById(codRegistroRecordatorio)
 		        .orElseThrow(() -> new NoSuchElementException("Registro no encontrado"));
 	}
+	
+	public void deleteRegistrosRecordatorio(int codRecordatorio) {
+		List<RegistroRecordatorio> registrosPosteriores = repository.obtenerRegistrosPorCodRecordatorioHistorial(codRecordatorio);
+		for (RegistroRecordatorio registro : registrosPosteriores) {
+			delete(registro);
+		}
+	}
 }

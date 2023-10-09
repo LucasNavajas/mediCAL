@@ -69,6 +69,16 @@ public class RecordatorioDao {
 		    }
 		    int nroRegistro = 1; // Se inicializa el nro_registro en 1 y se va aumentando
 		    LocalDateTime fechaEsperadaToma = recordatorio.getFechaInicioRecordatorio();
+		    List<RegistroRecordatorio> registrosHistorial = registroDao.getByCodRecordatorioHistorial(codRecordatorio);
+
+		    LocalDateTime primeraFechaHistorial = registrosHistorial.isEmpty() ? null : registrosHistorial.get(0).getFechaTomaEsperada();
+		    if (primeraFechaHistorial != null) {
+		    	while(fechaEsperadaToma.isBefore(primeraFechaHistorial.minusSeconds(60)) && frecuencia!=0) {
+		    	System.out.println(fechaEsperadaToma);
+		        fechaEsperadaToma = fechaEsperadaToma.plusHours(frecuencia);
+		    	}
+		        registroDao.deleteRegistrosRecordatorio(codRecordatorio);
+		    }
 		    if(frecuencia==0) {
 		    	fechaEsperadaToma = fechaEsperadaToma.withHour(0).withMinute(0);
 		    	while (fechaEsperadaToma.compareTo(recordatorio.getFechaFinRecordatorio()) < 0) {
@@ -120,6 +130,7 @@ public class RecordatorioDao {
 		    
 		}
 
+	   
 	public void bajaRecordatorio(int codRecordatorio) {
 		Recordatorio recordatorio = repository.findByCodRecordatorio(codRecordatorio);
 		recordatorio.setFechaFinVigenciaR(LocalDate.now());

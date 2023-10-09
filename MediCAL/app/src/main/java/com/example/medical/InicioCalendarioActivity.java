@@ -652,7 +652,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         todasDosis.setOnClickListener(view ->{
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
-            Intent intent = new Intent(InicioCalendarioActivity.this, InicioCalendarioActivity.class);
+            Intent intent = new Intent(InicioCalendarioActivity.this, EditarDosisFuturasActivity.class);
             intent.putExtra("codCalendario", codCalendarioseleccionado);
             intent.putExtra("codRecordatorio", registroRecordatorio.getRecordatorio().getCodRecordatorio());
             startActivity(intent);
@@ -1182,6 +1182,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 progressBar.setVisibility(View.GONE);
                 View dimView = findViewById(R.id.dim_view);
                 dimView.setVisibility(View.GONE);
+                habilitarBotones();
                 loadNotificaciones(codCalendarioseleccionado);
             }
 
