@@ -224,6 +224,10 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
 
                     } else {
                         Log.d("MiApp", "No se encontraron reporte asociados al usuario");
+                        dimView = findViewById(R.id.dim_view);
+                        dimView.setVisibility(View.GONE);
+                        progressBar = findViewById(R.id.progressBar);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } else {
                     Log.d("MiApp", "Error en la solicitud de reportes: " + response.message());

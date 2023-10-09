@@ -2231,10 +2231,22 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         if (inventario != null) {
 
             Log.d("MiApp", "El código del inventario a desactivar es: " + inventario.getCodInventario());
+            Recordatorio recordatorio = inventario.getRecordatorio();
+            recordatorio.setInventario(null);
+            recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
+                @Override
+                public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                    Log.d("MiApp", "Se ha desactivado el inventario");
+                }
 
+                @Override
+                public void onFailure(Call<Recordatorio> call, Throwable t) {
+                    Toast.makeText(InicioCalendarioActivity.this, "Error en la solicitud a la API, intente nuevamente", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             // Colocar cantidad real y de aviso en null para que deje de ser mostrado y deje de generar popups
-            inventarioApi.desactivarInventario(inventario.getCodInventario()).enqueue(new Callback<Void>() {
+            /*inventarioApi.desactivarInventario(inventario.getCodInventario()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
@@ -2252,7 +2264,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(InicioCalendarioActivity.this, "Error en la solicitud a la API, intente nuevamente", Toast.LENGTH_SHORT).show();
                 }
-            });
+            });*/
 
         }
 
