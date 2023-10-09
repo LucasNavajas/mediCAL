@@ -71,7 +71,7 @@
         android:fontFamily="@font/inter_bold"
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
-        android:text="Agregar medicamento"
+        android:text="Agregar recordatorio"
         android:textAllCaps="false"
         android:textAppearance="@style/CustomButtonText"
         android:textColor="@color/white"

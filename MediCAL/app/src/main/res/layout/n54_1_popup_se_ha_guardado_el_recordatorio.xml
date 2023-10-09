@@ -41,7 +41,7 @@
             android:paddingEnd="10dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
-            android:text="Añadir otra medicación    +"
+            android:text="Añadir otro recordatorio   +"
             android:textAllCaps="false"
             android:textAppearance="@style/CustomButtonText"
             android:textColor="@color/white"

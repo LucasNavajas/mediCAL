@@ -31,6 +31,7 @@ import com.example.medical.retrofit.PresentacionMedApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -335,22 +336,31 @@ public class SeleccionarHorarioRecordatorioActivity extends AppCompatActivity {
                 }
             });
 
-            establecer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(!valorDosis.getText().toString().equals("")){
-                        dosis.setCantidadDosis(Float.parseFloat(valorDosis.getText().toString()));
+        establecer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!valorDosis.getText().toString().isEmpty()) {
+                    float cantidadDosis = Float.parseFloat(valorDosis.getText().toString());
+                    if (cantidadDosis > 0) {
+                        dosis.setCantidadDosis(cantidadDosis);
                         popupWindow.dismiss();
                         dimView.setVisibility(View.GONE);
-                        textoDosis.setText(valorDosis.getText().toString());
+                        // Formatea la cantidad de dosis antes de mostrarla en el texto
+                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                        String dosisFormateada = decimalFormat.format(cantidadDosis);
+                        textoDosis.setText(dosisFormateada);
+                    } else {
+                        // Muestra un mensaje de error si la cantidad de dosis es 0
+                        Toast.makeText(SeleccionarHorarioRecordatorioActivity.this, "La cantidad de dosis debe ser mayor que 0", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                        popupWindow.dismiss();
-                        dimView.setVisibility(View.GONE);
-                    }
+                } else {
+                    // Muestra un mensaje de error si el campo de dosis está vacío
+                    Toast.makeText(SeleccionarHorarioRecordatorioActivity.this, "Por favor, ingrese la cantidad de dosis", Toast.LENGTH_SHORT).show();
                 }
-            });
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            }
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
                     dimView.setVisibility(View.GONE);

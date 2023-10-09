@@ -42,7 +42,7 @@ public class FrecuenciaxciclosActivity extends AppCompatActivity {
         numberPickerDesc = findViewById(R.id.number_pickerdesc);
 
         // Configura los valores mínimo y máximo
-        numberPickerToma.setMinValue(0); // Valor mínimo
+        numberPickerToma.setMinValue(1); // Valor mínimo
         numberPickerToma.setMaxValue(90); // Valor máximo
 
         numberPickerDesc.setMinValue(1); // Valor mínimo
