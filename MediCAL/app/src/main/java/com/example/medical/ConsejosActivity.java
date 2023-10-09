@@ -36,6 +36,7 @@ import android.annotation.SuppressLint;
 
 import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.adapter.ConsejoAdapter;
+import com.example.medical.model.Calendario;
 import com.example.medical.model.Consejo;
 import com.example.medical.model.TipoConsejo;
 import com.example.medical.model.Usuario;
@@ -81,6 +82,7 @@ public class ConsejosActivity extends AppCompatActivity {
         private FirebaseAuth mAuth = FirebaseAuth.getInstance();
         private int codUsuarioLogeado;
 
+        private int codCalendario;
 
         @SuppressLint("MissingInflatedId")
         @Override
@@ -88,6 +90,10 @@ public class ConsejosActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.n22_consejos);
             codUsuarioLogeado = getIntent().getIntExtra("codUsuario", 0);
+            RetrofitService retrofitService = new RetrofitService();
+            Intent intent1 = getIntent();
+            codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
+            Log.d("MiApp", "codCalendario en ConsejosActivity: " + codCalendario); // Agregar este log
             inicializarVariables();
 
             recyclerView = findViewById(R.id.listaconsejos_recyclerview);
@@ -155,7 +161,7 @@ public class ConsejosActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(ConsejosActivity.this, MasActivity.class);
                     intent.putExtra("codUsuario", codUsuarioLogeado);
-                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                    intent.putExtra("calendarioSeleccionadoid", codCalendario);
                     startActivity(intent);
                 }
             });
@@ -165,7 +171,7 @@ public class ConsejosActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(ConsejosActivity.this, MasActivity.class);
                     intent.putExtra("codUsuario", codUsuarioLogeado);
-                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                    intent.putExtra("calendarioSeleccionadoid", codCalendario);
                     startActivity(intent);
                 }
             });
@@ -175,7 +181,7 @@ public class ConsejosActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(ConsejosActivity.this, MedicamentosActivity.class);
                     intent.putExtra("codUsuario", codUsuarioLogeado);
-                    intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                    intent.putExtra("calendarioSeleccionadoid", codCalendario);
                     startActivity(intent);
                 }
             });

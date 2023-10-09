@@ -9,6 +9,13 @@
     android:background="@drawable/background"
     tools:openDrawer="start">
 
+    <!-- Contenido principal de la actividad -->
+    <FrameLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Coloca aquí tu contenido principal -->
+
     <!-- Contenido Principal -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/nombre_calendario"
-            android:text="NombreCalendario"
+            android:text=""
             android:textSize="25sp"
             android:layout_marginTop="20dp"
             android:textColor="#FFF"
@@ -56,7 +63,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/recordatoriosaca"
+                android:id="@+id/consejos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/gris"
@@ -71,20 +78,67 @@
                     android:id="@+id/contenido"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
-                    <!-- Contenido -->
+            <!--
+                               <RelativeLayout
+                                   android:id="@+id/medicamento1"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:layout_marginStart="15dp"
+                                   android:layout_marginEnd="15dp"
+                                   android:layout_marginTop="10dp">
+                                   <TextView
+                                       android:id="@+id/nombre_medicamento1"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:text="NombreMedicamento"
+                                       android:fontFamily="@font/inter_medium"
+                                       android:textColor="@color/black"
+                                       android:textSize="21sp"/>
+                                   <TextView
+                                       android:id="@+id/concentracion_medicamento1"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginStart="20dp"
+                                       android:text="concentr."
+                                       android:layout_toEndOf="@+id/nombre_medicamento1"
+                                       android:fontFamily="@font/inter_medium"
+                                       android:textColor="@color/gris_medical"
+                                       android:textSize="21sp"/>
+                                   <TextView
+                                       android:id="@+id/proximo_recordatorio_medicamento1"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:text="Próximo recordatorio:"
+                                       android:layout_below="@+id/nombre_medicamento1"
+                                       android:fontFamily="@font/inter_medium"
+                                       android:textColor="@color/gris_medical"
+                                       android:textSize="21sp"/>
 
-                    <!-- RecyclerView para mostrar la lista de recordartorios -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/listarecordatorios_recyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/nombre_usuario" />
+                                   <TextView
+                                       android:id="@+id/inventario_medicamento1"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:text="Quedan xx presentación"
+                                       android:layout_below="@+id/proximo_recordatorio_medicamento1"
+                                       android:fontFamily="@font/inter_medium"
+                                       android:textColor="@color/gris_medical"
+                                       android:textSize="21sp"/>
 
+                                   <View
+                                       android:id="@+id/linea"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="1dp"
+                                       android:layout_below="@id/inventario_medicamento1"
+                                       android:layout_marginTop="10dp"
+                                       android:background="@color/gris" />
 
-                </LinearLayout>
-            </ScrollView> <!--Fin del scroll-->
+                               </RelativeLayout> -->
+
+                           </LinearLayout>
+                       </ScrollView> <!--Fin del scroll-->
 
         </RelativeLayout>
 
@@ -99,7 +153,7 @@
             >
 
             <LinearLayout
-                android:id="@+id/inicio"
+                android:id="@+id/casa_inicio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -209,13 +263,14 @@
 
     </RelativeLayout>
 
-
     <View
         android:id="@+id/dim_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
         android:visibility="gone"/>
+
+    </FrameLayout>
 
     <!-- Menú hamburguesa -->
     <com.google.android.material.navigation.NavigationView

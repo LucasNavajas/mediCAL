@@ -251,6 +251,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mostrarMes) {
+                    imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
                     String fechaTexto = fechaHoy.getText().toString();
                     String[] partesFecha = fechaTexto.split(" ");
                     String mesAbreviado = partesFecha[0];
@@ -267,9 +268,18 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                     if (!selectedDate.after(currentDate)) {
                         añoActual[0] = selectedDate.get(Calendar.YEAR); // Actualiza el año actual en el arreglo
                         updateFechaHoy(añoActual[0], mesesAbreviados3meses[selectedDate.get(Calendar.MONTH)]);
+                        // Comprueba si el mes seleccionado es igual al mes actual
+                        if (selectedDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH)) {
+                            // Cambia la transparencia de la imagen para hacerla más clara
+                            imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+                        } else {
+                            // Restaura la transparencia original de la imagen
+                            imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
+                        }
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     }
                 } else if (mostrar3Meses) {
+                    imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
                     String fechaTexto = fechaHoy.getText().toString();
                     String[] partesFecha = fechaTexto.split(" ");
                     String mesInicial = partesFecha[0];
@@ -291,6 +301,14 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                             mesFinalIndex -= 12;
                         }
                         updateFechaHoy(año, mesesAbreviados[mesInicialIndex] + " - " + mesesAbreviados[mesFinalIndex]);
+                        // Comprueba si el período de meses incluye el mes actual
+                        if (mesInicialIndex <= mesAc && mesFinalIndex >= mesAc) {
+                            // Cambia la transparencia de la imagen para hacerla más clara
+                            imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+                        } else {
+                            // Restaura la transparencia original de la imagen
+                            imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
+                        }
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     } else if (mesFinalIndex != mesAc){
                         mesInicialIndex += 3;
@@ -303,9 +321,18 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                             mesFinalIndex -= 12;
                         }
                         updateFechaHoy(año, mesesAbreviados[mesInicialIndex] + " - " + mesesAbreviados[mesFinalIndex]);
+                        // Comprueba si el período de meses incluye el mes actual
+                        if (mesInicialIndex <= mesAc && mesFinalIndex >= mesAc) {
+                            // Cambia la transparencia de la imagen para hacerla más clara
+                            imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+                        } else {
+                            // Restaura la transparencia original de la imagen
+                            imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
+                        }
                         CrearRelativeLayout(calendarioMedicionesSelec);
                     }
                 } else if (mostrarSemana) {
+                    imageMayor.setImageAlpha(255);
                     fechaActualSemanaa.add(Calendar.DAY_OF_MONTH, +7);
                     fechaActualSemanaa.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
                     int primerDiaSemana = fechaActualSemanaa.get(Calendar.DAY_OF_MONTH);
@@ -331,6 +358,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                 } else {
                     // Si mostrarMes es falso, aumentar el año solo si no es el año actual
                     int añoActualValor = Calendar.getInstance().get(Calendar.YEAR);
+                    imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
                     Log.e("MiApp", "añoaValorctual" + añoActualValor);
                     Log.e("MiApp", "añoactual" + añoActual);
                     // Establecer las variables de control apropiadas
@@ -340,9 +368,14 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
                         añoActual[0]++; // Aumentar el año
                         updateFechaHoy(añoActual[0], ""); // Dejar el mes en blanco
                         CrearRelativeLayout(calendarioMedicionesSelec);
+                        // Restaura la transparencia original de la imagen si el año seleccionado no es igual al año actual
+                        imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
                     } else {
                         updateFechaHoy(añoActual[0], ""); // Dejar el mes en blanco
                         CrearRelativeLayout(calendarioMedicionesSelec);
+                      // Cambia la transparencia de la imagen si el año seleccionado es igual al año actual
+                        imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+
                     }
                 }
             }
@@ -1522,11 +1555,19 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
 
                             // Obtener el día actual de calendarioMedicion
                             int diaMedicion = calendarioMedicion.getFechaCalendarioMedicion().getDayOfMonth();
+                            Log.d("Miapp","diamedicion: "+diaMedicion);
+                            Log.d("Miapp","diainicio: "+diaInicio);
+                            Log.d("Miapp","diafin: "+diaFin);
                             if ((diaMedicion >= diaInicio && diaMedicion <= diaFin) || (diaMedicion >= diaInicio && diaMedicion <= diaFin + 30) || (diaMedicion <= diaInicio && diaMedicion<= diaFin)) {
                                 String mesMedicion = calendarioMedicion.getFechaCalendarioMedicion().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
                                 mesMedicion = mesMedicion.substring(0, mesMedicion.length() - 1); // Elimina el último carácter (el punto)
                                 mesMedicion = mesMedicion.substring(0, 1).toUpperCase() + mesMedicion.substring(1); // Convierte la primera letra en mayúscula
-                                if (mesMedicion.equalsIgnoreCase(mesInicio) || mesMedicion.equalsIgnoreCase(mesFin) && (diaMedicion >= diaFin + 30)) {
+                             Log.d("Miapp","entra en el si de comparacion de dia ");
+                             Log.d("Miapp","mesmedicion: "+mesMedicion);
+                             Log.d("Miapp","mesinicio: "+mesInicio);
+                             Log.d("Miapp","mesFin: "+mesFin);
+                                if (mesMedicion.equalsIgnoreCase(mesInicio) || mesMedicion.equalsIgnoreCase(mesFin) && (diaMedicion >= diaFin + 30) || mesMedicion.equalsIgnoreCase(mesFin) && (diaMedicion <= diaInicio && diaMedicion<= diaFin)) {
+                                    Log.d("Miapp","entra en el si de comparacion de meses ");
                                     calendarioMedicionesFiltradosPorSemana.add(calendarioMedicion);
                                     // Tanto el día como el mes coinciden con el rango de fechas
                                     // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho
@@ -2069,6 +2110,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
             xAxis.setGranularity(1f); // Muestra todos los valores en el eje X
 
             // Usar una etiqueta personalizada para cada medición en el eje X
+
             xAxis.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value) {

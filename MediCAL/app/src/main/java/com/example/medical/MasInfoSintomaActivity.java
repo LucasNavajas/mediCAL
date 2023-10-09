@@ -253,6 +253,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mostrarMes) {
+                    imageMayor.setImageAlpha(128);
                     String fechaTexto = fechaHoy.getText().toString();
                     String[] partesFecha = fechaTexto.split(" ");
                     String mesAbreviado = partesFecha[0];
@@ -269,9 +270,18 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     if (!selectedDate.after(currentDate)) {
                         añoActual[0] = selectedDate.get(Calendar.YEAR); // Actualiza el año actual en el arreglo
                         updateFechaHoy(añoActual[0], mesesAbreviados3meses[selectedDate.get(Calendar.MONTH)]);
+                        // Comprueba si el mes seleccionado es igual al mes actual
+                        if (selectedDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH)) {
+                            // Cambia la transparencia de la imagen para hacerla más clara
+                            imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+                        } else {
+                            // Restaura la transparencia original de la imagen
+                            imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
+                        }
                         CrearRelativeLayout(calendarioSintomasSelec);
                     }
                 } else if (mostrar3Meses) {
+                    imageMayor.setImageAlpha(128);
                     String fechaTexto = fechaHoy.getText().toString();
                     String[] partesFecha = fechaTexto.split(" ");
                     String mesInicial = partesFecha[0];
@@ -293,6 +303,13 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                             mesFinalIndex -= 12;
                         }
                         updateFechaHoy(año, mesesAbreviados[mesInicialIndex] + " - " + mesesAbreviados[mesFinalIndex]);
+                        if (mesInicialIndex <= mesAc && mesFinalIndex >= mesAc) {
+                            // Cambia la transparencia de la imagen para hacerla más clara
+                            imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+                        } else {
+                            // Restaura la transparencia original de la imagen
+                            imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
+                        }
                         CrearRelativeLayout(calendarioSintomasSelec);
                     } else if (mesFinalIndex != mesAc){
                         mesInicialIndex += 3;
@@ -305,9 +322,17 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                             mesFinalIndex -= 12;
                         }
                         updateFechaHoy(año, mesesAbreviados[mesInicialIndex] + " - " + mesesAbreviados[mesFinalIndex]);
+                        if (mesInicialIndex <= mesAc && mesFinalIndex >= mesAc) {
+                            // Cambia la transparencia de la imagen para hacerla más clara
+                            imageMayor.setImageAlpha(128); // Valor de 128 (semi-transparente), puedes ajustarlo según tus preferencias
+                        } else {
+                            // Restaura la transparencia original de la imagen
+                            imageMayor.setImageAlpha(255); // Valor de 255 (completamente opaco)
+                        }
                         CrearRelativeLayout(calendarioSintomasSelec);
                     }
                 } else if (mostrarSemana) {
+                    imageMayor.setImageAlpha(255);
                     fechaActualSemanaa.add(Calendar.DAY_OF_MONTH, +7);
                     fechaActualSemanaa.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
                     int primerDiaSemana = fechaActualSemanaa.get(Calendar.DAY_OF_MONTH);
@@ -331,6 +356,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    imageMayor.setImageAlpha(128);
                     // Si mostrarMes es falso, aumentar el año solo si no es el año actual
                     int añoActualValor = Calendar.getInstance().get(Calendar.YEAR);
                     Log.e("MiApp", "añoaValorctual" + añoActualValor);
@@ -342,9 +368,11 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                         añoActual[0]++; // Aumentar el año
                         updateFechaHoy(añoActual[0], ""); // Dejar el mes en blanco
                         CrearRelativeLayout(calendarioSintomasSelec);
+                        imageMayor.setImageAlpha(255);
                     } else {
                         updateFechaHoy(añoActual[0], ""); // Dejar el mes en blanco
                         CrearRelativeLayout(calendarioSintomasSelec);
+                        imageMayor.setImageAlpha(128);
                     }
                 }
             }
@@ -1524,7 +1552,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
                                 String mesSintoma = calendarioSintoma.getFechaCalendarioSintoma().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault());
                                 mesSintoma = mesSintoma.substring(0, mesSintoma.length() - 1); // Elimina el último carácter (el punto)
                                 mesSintoma = mesSintoma.substring(0, 1).toUpperCase() + mesSintoma.substring(1); // Convierte la primera letra en mayúscula
-                                if (mesSintoma.equalsIgnoreCase(mesInicio) || mesSintoma.equalsIgnoreCase(mesFin) && (diaSintoma >= diaFin + 30)) {
+                                if (mesSintoma.equalsIgnoreCase(mesInicio) || mesSintoma.equalsIgnoreCase(mesFin) && (diaSintoma >= diaFin + 30) || mesSintoma.equalsIgnoreCase(mesFin) && (diaSintoma <= diaInicio && diaSintoma <= diaFin) ) {
                                     calendarioSintomasFiltradosPorSemana.add(calendarioSintoma);
                                     // Tanto el día como el mes coinciden con el rango de fechas
                                     // Crear un nuevo RelativeLayout con márgenes en los lados izquierdo y derecho

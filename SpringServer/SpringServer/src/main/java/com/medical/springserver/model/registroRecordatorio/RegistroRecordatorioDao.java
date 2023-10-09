@@ -10,10 +10,16 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
+
 @Service
 public class RegistroRecordatorioDao {
 	@Autowired
 	private RegistroRecordatorioRepository repository;
+	
+	public List<RegistroRecordatorio> findByCodRecordatorio(int codRecordatorio){
+		return repository.findByCodRecordatorio(codRecordatorio);
+	}
 	
 	public RegistroRecordatorio save(RegistroRecordatorio registroRecordatorio) {
 		return repository.save(registroRecordatorio);

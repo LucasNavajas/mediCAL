@@ -1,5 +1,6 @@
 package com.example.medical.retrofit;
 
+import com.example.medical.model.CalendarioMedicion;
 import com.example.medical.model.RegistroRecordatorio;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface RegistroRecordatorioApi {
+
 
     @GET("/registroRecordatorio/get-all")
     Call<List<RegistroRecordatorio>> getAllRegistrosRecordatorio();

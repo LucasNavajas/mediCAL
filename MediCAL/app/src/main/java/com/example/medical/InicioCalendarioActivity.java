@@ -278,7 +278,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onClick(View view) {
                 Intent intent = new Intent(InicioCalendarioActivity.this, MedicamentosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                intent.putExtra("calendarioSeleccionadoid", calendarioSeleccionado.getCodCalendario());
                 startActivity(intent);
             }
         });
@@ -288,7 +288,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onClick(View view) {
                 Intent intent = new Intent(InicioCalendarioActivity.this, MedicamentosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                intent.putExtra("calendarioSeleccionadoid",calendarioSeleccionado.getCodCalendario());
                 startActivity(intent);
             }
         });

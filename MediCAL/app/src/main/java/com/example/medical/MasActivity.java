@@ -244,7 +244,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MasActivity.this, MedicamentosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }
         });
@@ -254,7 +254,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MasActivity.this, MedicamentosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
-                intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid", 0));
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
             }
         });

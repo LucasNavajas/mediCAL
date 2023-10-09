@@ -7,9 +7,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
+
 
 @Repository
 public interface RegistroRecordatorioRepository extends CrudRepository<RegistroRecordatorio, Integer>{
+	
+	@Query("SELECT r FROM RegistroRecordatorio r WHERE r.recordatorio.codRecordatorio = :codRecordatorio AND r.fechaFinVigenciaRR IS NULL")
+	List<RegistroRecordatorio> findByCodRecordatorio(@Param("codRecordatorio") Integer codRecordatorio);
+
 
 	@Query("SELECT r FROM RegistroRecordatorio r WHERE " +
 	        "r.recordatorio.calendario.codCalendario = :codCalendario " +

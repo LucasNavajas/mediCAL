@@ -1,7 +1,6 @@
 package com.medical.springserver.controller;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.medical.springserver.NotificationService;
+import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorio;
 import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorioDao;
 
@@ -21,6 +20,12 @@ public class RegistroRecordatorioController {
 	@GetMapping("/registroRecordatorio/get-all")
 	public List<RegistroRecordatorio> getAllRegistrosRecordatorio(){
 		return registroRecordatorioDao.getAllRegistrosRecordatorio();
+	}
+	
+	
+	@GetMapping("/registroRecordatorio/recordatorio/{codRecordatorio}")
+	public List<RegistroRecordatorio> getByCodRecordatorio(@PathVariable int codRecordatorio){
+		return registroRecordatorioDao.findByCodRecordatorio(codRecordatorio);
 	}
 	
 	@PostMapping("registroRecordatorio/save")
@@ -53,9 +58,6 @@ public class RegistroRecordatorioController {
 		return registroRecordatorioDao.getByCodRegistroRecordatorio(codRegistroRecordatorio);
 	}
 	
-	@GetMapping("registroRecordatorio/recordatorio/{codRecordatorio}")
-	public List<RegistroRecordatorio> getByCodRecordatorio(@PathVariable int codRecordatorio){
-		return registroRecordatorioDao.getByCodRecordatorio(codRecordatorio);
-	}
+
 	
 }
