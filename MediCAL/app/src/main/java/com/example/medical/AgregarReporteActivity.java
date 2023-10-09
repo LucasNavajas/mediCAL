@@ -37,12 +37,14 @@ import com.example.medical.model.Calendario;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.model.RegistroRecordatorio;
 import com.example.medical.model.Reporte;
+import com.example.medical.model.TipoReporte;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.TipoReporteApi;
 import com.example.medical.retrofit.UsuarioApi;
 
 import java.io.File;
@@ -98,6 +100,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
     private Object context;
     private RetrofitService retrofitService;
+    private Usuario usuarioLogeado;
     private int nroCalendariosAsociados;
     private int nroRecordatoriosAsociados;
     private int operacionesPendientes;
@@ -120,6 +123,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     private int codCalendarioSeleccionado;
     private File file;
     private Message message;
+    private String medicamento;
     private EditText textoNombreMedicamento;
     private boolean existenRegistros = false; // Variable global para verificar existencia de registrosRecordatorios
     private OnDataLoadedListener onDataLoadedListener;
@@ -180,6 +184,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
         };
 
         botonEnviar.setOnClickListener(view -> {
+            medicamento = textoNombreMedicamento.getText().toString();
             destinatario = emailDestinatario.getText().toString();
             if (fechaReporteDesdeString.equals("Seleccione 'fecha desde'")){
                 Toast.makeText(AgregarReporteActivity.this, "Debe Seleccionar una 'fecha desde'", Toast.LENGTH_SHORT).show();
@@ -371,6 +376,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.isSuccessful()) {
                     Usuario usuarioSeleccionado = response.body();
+                    usuarioLogeado = usuarioSeleccionado;
                     if (usuarioSeleccionado != null) {
                         Log.d("MiApp", "Usuario seleccionado encontrado: " + usuarioSeleccionado.getCodUsuario());
                         // Realizar llamada para obtener Calendaios del usuario
@@ -847,7 +853,6 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 return false; // Error
             }
         }
-        /*
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
@@ -858,13 +863,68 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 Toast.makeText(AgregarReporteActivity.this, "Error al enviar el correo.", Toast.LENGTH_SHORT).show();
             }
         }
-         */
     }
 
     private void crearInstanciaReporte(){
+        Reporte nuevoReporte = new Reporte();
+        nuevoReporte.setFechaGenerada(LocalDate.now());
+        nuevoReporte.setFechaDesde(fechaReporteDesdeLocalDate);
+        nuevoReporte.setFechaHasta(fechaReporteHastaLocalDate);
+        nuevoReporte.setUsuario(usuarioLogeado);
 
+        RetrofitService retrofitService = new RetrofitService();
+        TipoReporteApi tipoReporteApi = retrofitService.getRetrofit().create(TipoReporteApi.class);
+        // Hacer la llamada a la API para obtener el usuario seleccionado
+        Call<List<TipoReporte>> tipoReporteCall = tipoReporteApi.getAllReportes();
 
-        popupReporteCreadoYEnviado();
+        tipoReporteCall.enqueue(new Callback<List<TipoReporte>>() {
+            @Override
+            public void onResponse(Call<List<TipoReporte>> call, Response<List<TipoReporte>> response) {
+                if (response.isSuccessful()) {
+                    List<TipoReporte> listaTipoReporte = response.body();
+                    if (listaTipoReporte != null) {
+                        for (TipoReporte tipoReporte : listaTipoReporte) {
+                            if (("Reporte "+ opcionMenu).equals(tipoReporte.getNombreTipoReporte())){
+                                nuevoReporte.setTipoReporte(tipoReporte);
+                            }
+                        }
+                    } else {
+                        Log.d("MiApp", "No se encontraron instancias de tipoReporte ");
+                    }
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<TipoReporte>> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
+
+        if (opcionMenu.equals("Medicamento (Uno)")){
+            nuevoReporte.setNombreMed(medicamento);
+        }
+
+        RetrofitService retrofitService2 = new RetrofitService();
+        ReporteApi reporteApi = retrofitService2.getRetrofit().create(ReporteApi.class);
+        // Hacer la llamada a la API para obtener el usuario seleccionado
+        Call<Reporte> reporteCall = reporteApi.save(nuevoReporte);
+
+        reporteCall.enqueue(new Callback<Reporte>() {
+            @Override
+            public void onResponse(Call<Reporte> call, Response<Reporte> response) {
+                if (response.isSuccessful()) {
+                    Log.d("MiApp", "Reporte creado con éxito: " + nuevoReporte);
+                    popupReporteCreadoYEnviado();
+                } else {
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<Reporte> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
+            }
+        });
     }
 
     private void popupReporteCreadoYEnviado() {

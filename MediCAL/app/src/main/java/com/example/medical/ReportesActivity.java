@@ -373,6 +373,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                 copia.setFechaDesde(reporte.getFechaDesde());
                 copia.setFechaHasta(reporte.getFechaHasta());
                 copia.setFechaGenerada(reporte.getFechaGenerada());
+                copia.setNombreMed(reporte.getNombreMed());
                 copia.setTipoReporte(reporte.getTipoReporte());
                 copia.setUsuario(reporte.getUsuario());
                 listaTotalReportesCopia.add(copia);
@@ -398,7 +399,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                 String nombreMedicamento = textoNombreMedicamento.getText().toString();
                 Log.d("MiApp", "Se ingresó el nombre de medicamento: " + nombreMedicamento);
                 for (Reporte reporte : listaTotalReportesCopia) {
-                    if (reporte.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamento (Uno)")) {
+                    if (reporte.getTipoReporte().getNombreTipoReporte().equals("Reporte Medicamento (Uno)") && reporte.getNombreMed().equals(nombreMedicamento)) {
                         informesFiltrados.add(reporte);
                     }
                 }
@@ -458,7 +459,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             }
 
             // Reemplazar listaTotalReportes con la lista filtrada
-            listaTotalReportes.clear(); // Limpiar la lista original
+            listaTotalReportes.clear(); // Limpiar la lista
             listaTotalReportes.addAll(informesFiltrados); // Agregar los informes filtrados
 
             // Llamada a loadInformes para cargar los de la nueva lista
