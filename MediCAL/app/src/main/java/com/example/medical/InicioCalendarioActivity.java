@@ -446,8 +446,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
-                        dimView.setVisibility(View.GONE);
                         notificacionActiva = false;
+                        dimView.setVisibility(View.GONE);
                     }
                 });
                 eliminarRecordatorio.setOnClickListener(view ->{
@@ -894,6 +894,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popUpAplazar(RegistroRecordatorio registroRecordatorio, boolean editable) {
+        notificacionActiva = true;
         View popupView = getLayoutInflater().inflate(R.layout.n55_1_popup_aplazar, null);
 
         // Crear la instancia de PopupWindow
@@ -965,6 +966,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
         cancelar.setOnClickListener(view ->{
             popupWindow.dismiss();
+            notificacionActiva=false;
             popUpNotificacion(registroRecordatorio, editable);
         });
 
@@ -972,7 +974,9 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             @Override
             public void onDismiss() {
                 dimView.setVisibility(View.GONE);
+                notificacionActiva = false;
             }
+
         });
     }
 
@@ -992,6 +996,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popUpAplazado(RegistroRecordatorio registro, int minutos) {
+        notificacionActiva = true;
         View popupView = getLayoutInflater().inflate(R.layout.n55_2_aplazo_exitoso, null);
 
         // Crear la instancia de PopupWindow
@@ -1052,6 +1057,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     }
 
     private void popUpOmitir(RegistroRecordatorio registroRecordatorio, boolean editable) {
+        notificacionActiva = true;
         View popupView = getLayoutInflater().inflate(R.layout.n55_3_popup_por_que_se_omitio, null);
 
         // Crear la instancia de PopupWindow
@@ -1079,6 +1085,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
 
         cancelar.setOnClickListener(view ->{
             popupWindow.dismiss();
+            notificacionActiva=false;
             popUpNotificacion(registroRecordatorio, editable);
         });
         aceptar.setOnClickListener(view ->{
@@ -1127,6 +1134,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             @Override
             public void onDismiss() {
                 dimView.setVisibility(View.GONE);
+                notificacionActiva = false;
             }
         });
 
