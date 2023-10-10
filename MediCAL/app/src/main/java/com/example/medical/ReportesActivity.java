@@ -747,15 +747,6 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         });
     }
 
-    public class LocalDateAdapter implements JsonSerializer<LocalDate> {
-        @Override
-        public JsonElement serialize(LocalDate localDate, Type type, JsonSerializationContext jsonSerializationContext) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato deseado para la fecha
-            String formattedDate = localDate.format(formatter);
-            return new JsonPrimitive(formattedDate);
-        }
-    }
-
     private void popupReporteCompartido() {
         Log.d("MiApp","Se llamó a popupReporteCompartido");
         View popupView = getLayoutInflater().inflate(R.layout.n86_3_popup_reporte_eliminado, null);

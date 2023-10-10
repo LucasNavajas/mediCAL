@@ -491,7 +491,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
                         Log.d("MiApp", "RegistrosRecordatorios Asociados Encontrados: ");
                         existenRegistros = true;
                         for (RegistroRecordatorio registroRecordatorio : registroRecordatoriosAsociados) {
-                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaReporteDesdeLocalDate) || registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaReporteHastaLocalDate)) {
+                            if (registroRecordatorio.getFechaTomaEsperada().toLocalDate().isAfter(fechaReporteDesdeLocalDate.minusDays(1)) && registroRecordatorio.getFechaTomaEsperada().toLocalDate().isBefore(fechaReporteHastaLocalDate.plusDays(1))) {
                                 Log.d("MiApp", "codRegistroRecordatorio encontrado: " + registroRecordatorio.getCodRegistroRecordatorio());
                                 listaTotalRegistroRecordatorios.add(registroRecordatorio);
                             }
@@ -590,10 +590,45 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
                 // --- DATOS / PRIMER HOJA ---
                 int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                //int[] ultimaFilaPorColumna = new int[8]; // 8 es el número de columnas procesadas (0 y 7 son los márgenes)
                 for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
                     Log.d("MiApp", "Creando datos de registro, fila: " + fila);
                     Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
-                    // Cada celda se crea dentro de la fila dataRow
+
+                    // Si la celda en la columna 1 es nula o está vacía, crea la fila y las celdas antes de establecer el valor
+                    if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
+                        int ultimaFila = fila - 1;
+                        Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
+                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                            // Crea la fila si no existe
+                            if (dataRow == null) {
+                                dataRow = sheet.createRow(fila);
+                            }
+                            for (int columna = 0; columna < 8; columna++) {
+                                // Verifica si la celda actual es nula y, si lo es, créala antes de copiar el valor
+                                Cell currentCell = dataRow.getCell(columna);
+                                if (currentCell == null) {
+                                    currentCell = dataRow.createCell(columna);
+                                    Log.d("MiApp", "      Entra en el if(currentCell=null), fila: " + fila + ", col = " + columna);
+                                }
+                                // Copia los valores de la fila anterior a las celdas de la fila actual en el rango 0 a 7
+                                Cell celdaAnterior = sheet.getRow(ultimaFila).getCell(columna);
+                                // Verifica si la celda anterior tiene un estilo definido
+                                if (celdaAnterior != null && celdaAnterior.getCellStyle() != null) {
+                                    // Obtiene el estilo de la celda anterior y lo aplica a la nueva
+                                    CellStyle estiloCeldaAnterior = celdaAnterior.getCellStyle();
+                                    CellStyle estiloNuevaCelda = currentCell.getCellStyle();
+                                    estiloNuevaCelda.cloneStyleFrom(estiloCeldaAnterior);
+
+                                    Log.d("MiApp", "      Entra en el if de Style, fila: " + fila + ", col = " + columna);
+                                }
+                                // Establece el valor en la nueva celda
+                                currentCell.setCellValue(celdaAnterior != null ? celdaAnterior.getRichStringCellValue() : null);
+                            }
+                        }
+                    }
+
+                    // Se setean los datos nuevos dentro de la fila dataRow
                     Cell dataCell1 = dataRow.getCell(1);
                     dataCell1.setCellValue(registroRecordatorio.getRecordatorio().getPresentacionMed().getNombrePresentacionMed()); // Columna Tipo: nombre de la presentaciónMed
                     Cell dataCell2 = dataRow.getCell(2);
@@ -609,8 +644,10 @@ public class AgregarReporteActivity extends AppCompatActivity {
                     Cell dataCell5 = dataRow.getCell(5);
                     if (registroRecordatorio.isTomaRegistroRecordatorio()) {
                         dataCell5.setCellValue("Tomado");      // Columna Valor: Tomado si isTomaRegistroRecordatorio = true
+                    } else if (registroRecordatorio.getOmision()!= null){
+                        dataCell5.setCellValue("Omitido");      // Columna Valor: Omitido si isTomaRegistroRecordatorio = false y existe Omisión
                     } else {
-                        dataCell5.setCellValue("Omitido");      // Columna Valor: Omitido si isTomaRegistroRecordatorio = false
+                        dataCell5.setCellValue("No Tomado");      // Columna Valor: No Tomado si isTomaRegistroRecordatorio = false y no existe Omisión (Por si es a Futuro)
                     }
                     Cell dataCell6 = dataRow.getCell(6);
                     if (registroRecordatorio.getOmision()!= null) {
@@ -618,7 +655,6 @@ public class AgregarReporteActivity extends AppCompatActivity {
                     } else {
                         dataCell6.setCellValue("Instrucción: " + registroRecordatorio.getRecordatorio().getInstruccion().getNombreInstruccion() + " - " + registroRecordatorio.getRecordatorio().getInstruccion().getDescInstruccion());    // Columna Notas: Si es un registro tomado, la Instrucción
                     }
-
                     fila++; // Incrementa el número de fila en cada iteración
                 }
 
@@ -632,7 +668,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 Row headerRow2_0 = sheet2.getRow(0);
                 // Crear una celda que abarque las 6 primeras columnas
                 Cell Titulocell2 = headerRow2_0.getCell(1);
-                Titulocell2.setCellValue("Gráfico del Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
+                Titulocell2.setCellValue("Estadísticas del Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
 
                 // --- DATOS DEL REPORTE / SEGUNDA HOJA ---
                 // Crear una fila para los datos del reporte
@@ -671,6 +707,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 }
                 // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
                 int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                Log.d("MiApp", "Comienzo con Hoja 2");
                 for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
                     String nombreMedicamento = entry.getKey();
                     List<RegistroRecordatorio> registros = entry.getValue();
@@ -687,7 +724,41 @@ public class AgregarReporteActivity extends AppCompatActivity {
                     // Formatear el porcentaje con dos decimales y agregar "%"
                     String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
 
+                    // ---
                     Row filaResumen = sheet2.getRow(filaActual);
+                    if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
+                        int ultimaFila = filaActual - 1;
+                        Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
+                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                            // Crea la fila si no existe
+                            if (filaResumen == null) {
+                                filaResumen = sheet.createRow(filaActual);
+                            }
+                            for (int columna = 0; columna < 2; columna++) {
+                                // Verifica si la celda actual es nula y, si lo es, créala antes de copiar el valor
+                                Cell currentCell2 = filaResumen.getCell(columna);
+                                if (currentCell2 == null) {
+                                    currentCell2 = filaResumen.createCell(columna);
+                                    Log.d("MiApp", "      Entra en el if(currentCell=null), fila: " + filaActual + ", col = " + columna);
+                                }
+                                // Copia los valores de la fila anterior a las celdas de la fila actual en el rango 0 a 7
+                                Cell celdaAnterior2 = sheet.getRow(ultimaFila).getCell(columna);
+                                // Verifica si la celda anterior tiene un estilo definido
+                                if (celdaAnterior2 != null && celdaAnterior2.getCellStyle() != null) {
+                                    // Obtiene el estilo de la celda anterior y lo aplica a la nueva
+                                    CellStyle estiloCeldaAnterior2 = celdaAnterior2.getCellStyle();
+                                    CellStyle estiloNuevaCelda2 = currentCell2.getCellStyle();
+                                    estiloNuevaCelda2.cloneStyleFrom(estiloCeldaAnterior2);
+
+                                    Log.d("MiApp", "      Entra en el if de Style, fila: " + filaActual + ", col = " + columna);
+                                }
+                                // Establece el valor en la nueva celda
+                                currentCell2.setCellValue(celdaAnterior2 != null ? celdaAnterior2.getRichStringCellValue() : null);
+                            }
+                        }
+                    }
+
+                    // Se setean los datos nuevos dentro de la fila dataRow
                     Cell celdaNombreMedicamento = filaResumen.getCell(1);
                     celdaNombreMedicamento.setCellValue(nombreMedicamento);
                     Cell celdaPorcentajeCumplimiento = filaResumen.getCell(2);
@@ -987,6 +1058,10 @@ public class AgregarReporteActivity extends AppCompatActivity {
             @Override
             public void onDismiss() {
                 dimView.setVisibility(View.GONE);
+                Intent intent = new Intent(AgregarReporteActivity.this, ReportesActivity.class);
+                intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+                startActivity(intent);
             }
         });
     }
