@@ -54,7 +54,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="-40dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginEnd="1dp"
                 android:layout_toRightOf="@id/texto_fecha_generada"
                 android:layout_marginBottom="20dp"
@@ -75,14 +75,14 @@
 
             <ImageView
                 android:id="@+id/imagen_compartir"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="-45dp"
-                android:layout_marginTop="60dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="-42dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginEnd="1dp"
                 android:layout_toRightOf="@id/texto_fecha_generada"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/compartir_icon" />
+                android:src="@drawable/enviar_icon2" />
 
 
             <TextView
@@ -109,7 +109,8 @@
                 android:layout_marginEnd="1dp"
                 android:layout_toRightOf="@id/texto_fecha_desde_hasta"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/descarga_icon" />
+                android:src="@drawable/descarga_icon"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
