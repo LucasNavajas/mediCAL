@@ -732,11 +732,9 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             }
         });
 
-        botonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        botonCancelar.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
         });
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
