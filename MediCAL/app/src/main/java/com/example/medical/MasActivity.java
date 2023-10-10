@@ -202,6 +202,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MasActivity.this, RestablecerContraseniaActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("codCalendario", codCalendario);
                 startActivity(intent);
 
             }
@@ -215,6 +216,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MasActivity.this, InicioCalendarioActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("codCalendario", codCalendario);
                 startActivity(intent);
 
             }
@@ -225,6 +227,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MasActivity.this, InicioCalendarioActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("codCalendario", codCalendario);
                 startActivity(intent);
 
             }
@@ -235,6 +238,7 @@ public class MasActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MasActivity.this, ConsejosActivity.class);
                 intent.putExtra("codUsuario", codUsuarioLogeado);
+                intent.putExtra("calendarioSeleccionadoid", codCalendario);
                 startActivity(intent);
 
             }

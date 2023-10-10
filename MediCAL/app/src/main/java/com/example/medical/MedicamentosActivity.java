@@ -323,6 +323,22 @@ public class MedicamentosActivity extends AppCompatActivity {
                 dimView.setVisibility(View.GONE);
             }
         });
+        textViewAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                Intent intent = new Intent(MedicamentosActivity.this, BienvenidoActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // Opcional: finaliza la actividad actual si ya no la necesitas en el back stack
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void popupEliminarCuenta() {
@@ -360,6 +376,12 @@ public class MedicamentosActivity extends AppCompatActivity {
         cancelar.setOnClickListener(view -> {
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -412,6 +434,12 @@ public class MedicamentosActivity extends AppCompatActivity {
         cancelar.setOnClickListener(view -> {
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
         });
     }
 
