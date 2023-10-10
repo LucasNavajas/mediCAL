@@ -199,7 +199,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
         onDataLoadedListener2 = new OnDataLoadedListener() {
             @Override
             public void onDataLoaded() throws IOException {
-                Log.d("MiApp", "Llamo al método generarExcelSintomas si existen síntomas: " + listaTotalCalendarioSintomas);
+                Log.d("MiApp", "Llamo al método generarExcelSintomas si existen síntomas: " + listaTotalCalendarioSintomas + " ; o mediciones: " + listaTotalCalendarioMediciones);
                 if (listaTotalCalendarioSintomas!=null && !listaTotalCalendarioSintomas.isEmpty()){
                     generarArchivoExcelSíntomas(destinatario);
                 }
