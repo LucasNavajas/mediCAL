@@ -1232,6 +1232,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 Cell fechaHasta = headerRow1.getCell(5);
                 fechaHasta.setCellValue(fechaReporteHastaString);
                 Cell cantTotal = headerRow1.getCell(7);
+                cantTotal.setCellValue(listaTotalCalendarioSintomas.size());
 
                 // --- DATOS / PRIMER PARTE ---
                 int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
@@ -1296,16 +1297,16 @@ public class AgregarReporteActivity extends AppCompatActivity {
                         sintomasAgrupados.put(nombreSintoma, calSintomas);
                     }
                     calSintomas.add(calendarioSintoma);
-                    cantidadTotal = calSintomas.size();
+                    cantidadTotal += calSintomas.size();
                 }
-                cantTotal.setCellValue(cantidadTotal);
+                //cantTotal.setCellValue(cantidadTotal);
                 // Calcular el porcentaje del total y escribir en la hoja de resumen
                 int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
                 Log.d("MiApp", "Comienzo con Parte 2");
                 for (Map.Entry<String, List<CalendarioSintoma>> entry : sintomasAgrupados.entrySet()) {
                     String nombreSintoma = entry.getKey();
                     List<CalendarioSintoma> calSintomas = entry.getValue();
-                    int totalCalendariosSintomas = calSintomas.size();
+                    int totalCalendariosSintomas = listaTotalCalendarioSintomas.size();
                     int totalSintomasPorNombre = 0;
 
                     for (CalendarioSintoma calendarioSintoma : calSintomas) {
@@ -1497,6 +1498,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 Cell fechaHasta = headerRow1.getCell(4);
                 fechaHasta.setCellValue(fechaReporteHastaString);
                 Cell cantTotal = headerRow1.getCell(8);
+                cantTotal.setCellValue(listaTotalCalendarioMediciones.size());
 
                 // --- DATOS / PRIMER PARTE ---
                 int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
@@ -1565,16 +1567,16 @@ public class AgregarReporteActivity extends AppCompatActivity {
                         medicionesAgrupadas.put(nombreMedicion, calMediciones);
                     }
                     calMediciones.add(calendarioMedicion);
-                    cantidadTotal = calMediciones.size();
+                    cantidadTotal += calMediciones.size();
                 }
-                cantTotal.setCellValue(cantidadTotal);
+                //cantTotal.setCellValue(cantidadTotal);
                 // Calcular el porcentaje del total y escribir en la hoja de resumen
                 int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
                 Log.d("MiApp", "Comienzo con Parte 2");
                 for (Map.Entry<String, List<CalendarioMedicion>> entry : medicionesAgrupadas.entrySet()) {
                     String nombreMedicion = entry.getKey();
                     List<CalendarioMedicion> calMediciones = entry.getValue();
-                    int totalCalendariosMediciones = calMediciones.size();
+                    int totalCalendariosMediciones = listaTotalCalendarioMediciones.size();
                     int totalMedicionesPorNombre = 0;
 
                     for (CalendarioMedicion calendarioMedicion : calMediciones) {
