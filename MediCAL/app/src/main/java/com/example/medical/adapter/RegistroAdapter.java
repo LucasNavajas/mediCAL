@@ -81,7 +81,7 @@ public class RegistroAdapter extends RecyclerView.Adapter<RegistroAdapter.Regist
             holder.indicaciones.setVisibility(View.VISIBLE);
             holder.indicaciones.setText(recordatorio.getInstruccion().getDescInstruccion());
         }
-        if (registroRecordatorio.isTomaRegistroRecordatorio()==false && LocalDateTime.now().isAfter(registroRecordatorio.getFechaTomaEsperada())){
+        if (registroRecordatorio.isTomaRegistroRecordatorio()==false && LocalDateTime.now().isAfter(registroRecordatorio.getFechaTomaEsperada()) || registroRecordatorio.getOmision()!=null){
             holder.imagenRegistro.setImageResource(R.drawable.cancelar);
         }
         else if(registroRecordatorio.isTomaRegistroRecordatorio()){

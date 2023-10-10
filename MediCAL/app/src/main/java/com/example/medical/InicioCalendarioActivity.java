@@ -558,6 +558,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                     } else {
                         registroRecordatorio.setFechaTomaReal(LocalDateTime.now());
                         registroRecordatorio.setTomaRegistroRecordatorio(true);
+                        registroRecordatorio.setOmision(null);
                         disminuirInventario(registroRecordatorio.getRecordatorio());
                         registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
                             @Override
@@ -1092,6 +1093,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                     @Override
                     public void onResponse(Call<Omision> call, Response<Omision> response) {
                         registroRecordatorio.setOmision(response.body());
+                        registroRecordatorio.setFechaTomaReal(null);
+                        registroRecordatorio.setTomaRegistroRecordatorio(false);
                         registroRecordatorioApi.save(registroRecordatorio).enqueue(new Callback<RegistroRecordatorio>() {
                             @Override
                             public void onResponse(Call<RegistroRecordatorio> call, Response<RegistroRecordatorio> response) {
