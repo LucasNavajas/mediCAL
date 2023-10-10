@@ -262,50 +262,41 @@ public class EditarMedicionActivity extends AppCompatActivity {
         });
     }
     private void obtenerCalendarioMedicionConMedicion() {
-        Call<List<CalendarioMedicion>> call5 = calendarioMedicionApi.getByCodMedicion(codMedicion);
-        Log.d("MiApp", "Codigo medicion MasInfoMedicion: " + codMedicion);
-        call5.enqueue(new Callback<List<CalendarioMedicion>>() {
+        Call<CalendarioMedicion> call = calendarioMedicionApi.getByCodCalendarioM(codCalendarioMedicion);
+        Log.d("MiApp", "Codigo medicion MasInfoMedicion: " + codCalendarioMedicion);
+        call.enqueue(new Callback<CalendarioMedicion>() {
 
-            // Dentro del método obtenerCalendarioMedicionConMedicion()
             @Override
-            public void onResponse(Call<List<CalendarioMedicion>> call5, Response<List<CalendarioMedicion>> response) {
+            public void onResponse(Call<CalendarioMedicion> call, Response<CalendarioMedicion> response) {
                 if (response.isSuccessful()) {
-                    List<CalendarioMedicion> calendarioMediciones = response.body();
-                    Log.d("MiApp", "Tamaño de la lista calendarioMediciones en MasInfoMedicion: " + calendarioMediciones.size());
+                    CalendarioMedicion calendarioMedicion = response.body();
+                    Log.d("MiApp", "Fecha de calendarioMedicion: " + calendarioMedicion.getFechaCalendarioMedicion());
 
-                    // Verificar si hay elementos en la lista antes de acceder a ellos
-                    if (!calendarioMediciones.isEmpty()) {
-                        // Supongamos que solo estamos interesados en el primer elemento de la lista
-                        CalendarioMedicion primerCalendarioMedicion = calendarioMediciones.get(0);
+                    idMedicionCal = calendarioMedicion.getCodCalendarioMedicion();
 
-                        // Obtener el nombre de la medicion desde el primer elemento
-                        String nombreMedicion = primerCalendarioMedicion.getMedicion().getNombreMedicion();
+                    // Actualizar el nombre de la medición en el TextView correspondiente
+                    TextView nombreMedicionTextView = findViewById(R.id.texto_editar);
+                    nombreMedicionTextView.setText(calendarioMedicion.getMedicion().getNombreMedicion());
 
-                        idMedicionCal = primerCalendarioMedicion.getCodCalendarioMedicion();
+                    // Obtener el nombre de la unidad desde el objeto calendarioMedicion
+                    String nombreUnidad = calendarioMedicion.getMedicion().getUnidadMedidaMedicion();
 
-                        // Actualizar el nombre de la medición en el TextView correspondiente
-                        TextView nombreMedicionTextView = findViewById(R.id.texto_editar);
-                        nombreMedicionTextView.setText(nombreMedicion);
-                        // Obtener el nombre de la unidad desde el primer elemento
-                        String nombreUnidad = primerCalendarioMedicion.getMedicion().getUnidadMedidaMedicion();
-
-                        // Actualizar el nombre de la unidad en el TextView correspondiente
-                        TextView nombreUnidadTextView = findViewById(R.id.texto_unidad);
-                        nombreUnidadTextView.setText("(" + nombreUnidad + ")");
-                    }
+                    // Actualizar el nombre de la unidad en el TextView correspondiente
+                    TextView nombreUnidadTextView = findViewById(R.id.texto_unidad);
+                    nombreUnidadTextView.setText("(" + nombreUnidad + ")");
                 } else {
                     int statusCode = response.code();
                     Log.d("MiApp", "Código de estado HTTP: " + statusCode);
-
-                    Log.d("MiApp", "Error en la solicitud este: " + response.message());
+                    Log.d("MiApp", "Error en la solicitud: " + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CalendarioMedicion>> call5, Throwable t) {
-                Log.e("MiApp", "Error en la solicitud 52: " + t.getMessage());
+            public void onFailure(Call<CalendarioMedicion> call, Throwable t) {
+                Log.e("MiApp", "Error en la solicitud: " + t.getMessage());
             }
         });
     }
+
 }
 

@@ -521,7 +521,7 @@ public class MedicamentosActivity extends AppCompatActivity {
                     // Verifica si todas las llamadas han sido procesadas
                     if (respuestasExitosas[0] == codRecordatorios.size()) {
                         if (respuestasExitosas[0] > 0) {
-                            createTextViewNoHayActivos(aver);
+
                         }
                     }
                 }
