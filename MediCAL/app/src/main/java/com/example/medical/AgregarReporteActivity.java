@@ -43,6 +43,8 @@ import com.example.medical.model.Reporte;
 import com.example.medical.model.TipoReporte;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.CalendarioMedicionApi;
+import com.example.medical.retrofit.CalendarioSintomaApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.ReporteApi;
@@ -122,6 +124,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     private TextView fechaHasta;
     private List<RegistroRecordatorio> listaTotalRegistroRecordatoriosFiltroMed = new ArrayList<>();
     private List<RegistroRecordatorio> listaTotalRegistroRecordatorios = new ArrayList<>();
+    private List<Calendario> listaTotalDeCalendarios = new ArrayList<>();
     private List<CalendarioSintoma> listaTotalCalendarioSintomas = new ArrayList<>();
     private List<CalendarioMedicion> listaTotalCalendarioMediciones = new ArrayList<>();
     private List<TipoReporte> ListaGlobalTiposDeReportes = new ArrayList<>();
@@ -134,6 +137,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     private EditText textoNombreMedicamento;
     private boolean existenRegistros = false; // Variable global para verificar existencia de registrosRecordatorios
     private OnDataLoadedListener onDataLoadedListener;
+    private OnDataLoadedListener onDataLoadedListener2;
     private LinearLayout progressBar;
 
     @SuppressLint("MissingInflatedId")
@@ -186,16 +190,27 @@ public class AgregarReporteActivity extends AppCompatActivity {
             public void onDataLoaded() {
                 Log.d("MiApp", "Llamo al método obtenerTipoDeReporte si existen registrosRecordatorio: " + existenRegistros);
                 if (existenRegistros) {
-                    obtenerTipoDeReporte(opcionMenu, destinatario);
+                    obtenerTipoDeReporte(opcionMenu, destinatario, onDataLoadedListener2);
                     Log.d("MiApp", "Entró en el if y la variable existenInformes es: " + existenRegistros);
                 }
             }
         };
 
+        onDataLoadedListener2 = new OnDataLoadedListener() {
+            @Override
+            public void onDataLoaded() throws IOException {
+                Log.d("MiApp", "Llamo al método generarExcelSintomas si existen síntomas: " + listaTotalCalendarioSintomas);
+                if (listaTotalCalendarioSintomas!=null && !listaTotalCalendarioSintomas.isEmpty()){
+                    generarArchivoExcelSíntomas(destinatario);
+                }
+                if (listaTotalCalendarioMediciones!=null && !listaTotalCalendarioMediciones.isEmpty()){
+                    generarArchivoExcelMediciones(destinatario);
+                }
+            }
+        };
+
         botonEnviar.setOnClickListener(view -> {
-            View dimView = findViewById(R.id.dim_view);
-            dimView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
+
             medicamento = textoNombreMedicamento.getText().toString();
             destinatario = emailDestinatario.getText().toString();
             if (fechaReporteDesdeString.equals("Seleccione 'fecha desde'")){
@@ -206,7 +221,9 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 Toast.makeText(this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
             } else {
                 Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
-                //obtenerReporte(nroReporteSeleccionado, destinatario);
+                View dimView = findViewById(R.id.dim_view);
+                dimView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
             }
         });
@@ -425,11 +442,10 @@ public class AgregarReporteActivity extends AppCompatActivity {
                         for (Calendario calendario : calendariosAsociados) {
                             // Para cada calendario, obtener las clases "Recordatorio"
                             Log.d("MiApp", "codCalendario encontrado: " + calendario.getCodCalendario());
+                            listaTotalDeCalendarios.add(calendario);
                             obtenerRecordatoriosPorCalendario(calendario, listener);
                         }
-
                         //obtenerTipoDeReporte(reporteAsociado, destinatario);
-
                     } else {
                         Log.d("MiApp", "No se encontraron calendarios asociado al usuario: " + usuarioAsociado);
                     }
@@ -507,7 +523,11 @@ public class AgregarReporteActivity extends AppCompatActivity {
                         // Verifica si se han completado todas las operaciones
                         if (operacionesPendientes == 0) {
                             // Todas las operaciones se han completado, ejecuta el listener
-                            listener.onDataLoaded();
+                            try {
+                                listener.onDataLoaded();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                             Log.d("MiApp", "Ya se ejecutó el listener de operacionesPendientes");
                         }
                     } else {
@@ -527,27 +547,41 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
 
     // Según el tipo de reporte que se haya seleccionado, se hace el llamado a generar ese tipo de Excel
-    private void obtenerTipoDeReporte (String opcionTipoReporte, String destinatario){
+    private void obtenerTipoDeReporte (String opcionTipoReporte, String destinatario, OnDataLoadedListener listener2){
         try {
             if (opcionTipoReporte.equals("Medicamentos (Todos)")){
                 generarArchivoExcelMedicamentosTodos(destinatario);
             } else if (opcionTipoReporte.equals("Medicamento (Uno)")){
+                Log.d("MiApp","Se intenta filtrar por medicamento: "+medicamento);
                 for (RegistroRecordatorio registro : listaTotalRegistroRecordatorios){
                     if (registro.getRecordatorio().getMedicamento().getNombreMedicamento().equals(medicamento)){
                         listaTotalRegistroRecordatoriosFiltroMed.add(registro);
                     }
                 }
-                generarArchivoExcelMedicamentoUno(destinatario);
+                if (listaTotalRegistroRecordatoriosFiltroMed!=null && !listaTotalRegistroRecordatoriosFiltroMed.isEmpty()){
+                    Log.d("MiApp", "Lista de Registros de un Medicamento: "+listaTotalRegistroRecordatoriosFiltroMed);
+                    Log.d("MiApp", "Se cargarán " + listaTotalRegistroRecordatoriosFiltroMed.size() + " cant. de registros con el filtro: " + medicamento);
+                    generarArchivoExcelMedicamentoUno(destinatario);
+                } else {
+                    Log.d("MiApp", "No existen registros con el nombreMedicamento: "+medicamento);
+                    View dimView = findViewById(R.id.dim_view);
+                    dimView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(this, "No existen registros con ese filtro de nombre de medicamento.", Toast.LENGTH_SHORT).show();
+                }
             } else if (opcionTipoReporte.equals("Síntomas")){
-                generarArchivoExcelSíntomas(destinatario);
+                obtenerCalendarioSintomas(listener2);
+                //generarArchivoExcelSíntomas(destinatario);
             } else if (opcionTipoReporte.equals("Mediciones")){
-                generarArchivoExcelMediciones(destinatario);
+                obtenerCalendarioMediciones(listener2);
+                //generarArchivoExcelMediciones(destinatario);
             }
         } catch (FileNotFoundException e) {
             // Manejo de la excepción FileNotFoundException
             e.printStackTrace(); // Imprime la traza de la excepción para depuración
             Toast.makeText(this, "No se encontró el archivo.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
+            Log.d("MiApp","Entra en IOException de obtenerTipoDeReporte");
             throw new RuntimeException(e);
         }
     }
@@ -1123,12 +1157,539 @@ public class AgregarReporteActivity extends AppCompatActivity {
         }
     }
 
-    private void generarArchivoExcelSíntomas(String destinatario) {
-        // FALTA
+
+    private void obtenerCalendarioSintomas(OnDataLoadedListener listener2) throws IOException {
+        for (Calendario calendario : listaTotalDeCalendarios) {
+            RetrofitService retrofitService = new RetrofitService();
+            CalendarioSintomaApi calendarioSintomaApi = retrofitService.getRetrofit().create(CalendarioSintomaApi.class);
+            operacionesPendientes = listaTotalDeCalendarios.size();
+            // Hacer la llamada a la API para obtener las clases "Recordatorio" asociadas a un calendario
+            Call<List<CalendarioSintoma>> calSintomaCall = calendarioSintomaApi.getByCodCalendarioSintoma(calendario.getCodCalendario());
+
+            calSintomaCall.enqueue(new Callback<List<CalendarioSintoma>>() {
+                @Override
+                public void onResponse(Call<List<CalendarioSintoma>> call, Response<List<CalendarioSintoma>> response) {
+                    if (response.isSuccessful()) {
+                        List<CalendarioSintoma> calendarioSintomasAsociados = response.body();
+                        if (calendarioSintomasAsociados != null && !calendarioSintomasAsociados.isEmpty()) {
+                            Log.d("MiApp", "CalendarioSintomas Asociados Encontrados: ");
+                            for (CalendarioSintoma calendarioSintoma : calendarioSintomasAsociados) {
+                                if (calendarioSintoma.getFechaCalendarioSintoma().toLocalDate().isAfter(fechaReporteDesdeLocalDate.minusDays(1))
+                                        && calendarioSintoma.getFechaCalendarioSintoma().toLocalDate().isBefore(fechaReporteHastaLocalDate.plusDays(1))){
+                                    Log.d("MiApp", "codCalendarioSintoma encontrado: " + calendarioSintoma.getCodCalendarioSintoma());
+                                    listaTotalCalendarioSintomas.add(calendarioSintoma);
+                                }
+                            }
+                            operacionesPendientes--;
+                            Log.d("MiApp","OperacionesPendientes: " + operacionesPendientes);
+                            // Verifica si se han completado todas las operaciones
+                            if (operacionesPendientes == 0) {
+                                // Todas las operaciones se han completado, ejecuta el listener
+                                try {
+                                    listener2.onDataLoaded();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                Log.d("MiApp", "Ya se ejecutó el listener de operacionesPendientes");
+                            }
+                        } else {
+                            Log.d("MiApp", "No se encontraron clases 'CalendarioSintoma' asociadas al calendario " + calendario.getNombreCalendario());
+                        }
+                    } else {
+                        Log.d("MiApp", "Error en la solicitud de clases 'CalendarioSintoma': " + response.message());
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<CalendarioSintoma>> call, Throwable t) {
+                    Log.e("MiApp", "Error en la solicitud de clases 'CalendarioSintoma': " + t.getMessage());
+                }
+            });
+        }
+    }
+    private void generarArchivoExcelSíntomas(String destinatario) throws IOException {
+        //Acceder a la Plantilla
+        AssetManager assetManager = getAssets();
+        InputStream inputStream = assetManager.open("Reporte_Sintomas.xls"); {
+            try {
+                // Libro de Trabajo
+                Workbook workbook = new HSSFWorkbook(inputStream);
+
+                // --- PRIMER HOJA ---
+                Sheet sheet = workbook.getSheetAt(0);
+
+                // --- TÍTULO / PRIMER HOJA ---
+                Row headerRow0 = sheet.getRow(0);
+                // Crear una celda que abarque las 7 primeras columnas (índices de 1 a 7, 0 es un margen)
+                Cell Titulocell = headerRow0.getCell(1);
+                Titulocell.setCellValue("Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
+
+                // --- DATOS DEL REPORTE / PRIMER HOJA ---
+                // Crear una fila para los datos del reporte
+                Row headerRow1 = sheet.getRow(1);
+                // Crear celdas datos del reporte
+                Cell fechaDesde = headerRow1.getCell(2);
+                fechaDesde.setCellValue(fechaReporteDesdeString);
+                Cell fechaHasta = headerRow1.getCell(5);
+                fechaHasta.setCellValue(fechaReporteHastaString);
+                Cell cantTotal = headerRow1.getCell(7);
+
+                // --- DATOS / PRIMER PARTE ---
+                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                for (CalendarioSintoma calendarioSintoma : listaTotalCalendarioSintomas) {
+                    Log.d("MiApp", "Creando datos de registro, fila: " + fila);
+                    Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
+
+                    // Si la celda en la columna 1 es nula o está vacía, crea la fila y las celdas antes de establecer el valor
+                    if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
+                        int ultimaFila = fila - 1;
+                        Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
+                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                            // Crea la fila si no existe
+                            if (dataRow == null) {
+                                dataRow = sheet.createRow(fila);
+                            }
+                            for (int columna = 0; columna < 4; columna++) {
+                                // Verifica si la celda actual es nula y, si lo es, créala antes de copiar el valor
+                                Cell currentCell = dataRow.getCell(columna);
+                                if (currentCell == null) {
+                                    currentCell = dataRow.createCell(columna);
+                                    Log.d("MiApp", "      Entra en el if(currentCell=null), fila: " + fila + ", col = " + columna);
+                                }
+                                // Copia los valores de la fila anterior a las celdas de la fila actual en el rango 0 a 7
+                                Cell celdaAnterior = sheet.getRow(ultimaFila).getCell(columna);
+                                // Verifica si la celda anterior tiene un estilo definido
+                                if (celdaAnterior != null && celdaAnterior.getCellStyle() != null) {
+                                    // Obtiene el estilo de la celda anterior y lo aplica a la nueva
+                                    CellStyle estiloCeldaAnterior = celdaAnterior.getCellStyle();
+                                    CellStyle estiloNuevaCelda = currentCell.getCellStyle();
+                                    estiloNuevaCelda.cloneStyleFrom(estiloCeldaAnterior);
+
+                                    Log.d("MiApp", "      Entra en el if de Style, fila: " + fila + ", col = " + columna);
+                                }
+                                // Establece el valor en la nueva celda
+                                currentCell.setCellValue(celdaAnterior != null ? celdaAnterior.getRichStringCellValue() : null);
+                            }
+                        }
+                    }
+
+                    // Se setean los datos nuevos dentro de la fila dataRow
+                    Cell dataCell1 = dataRow.getCell(1);
+                    dataCell1.setCellValue(calendarioSintoma.getSintoma().getNombreSintoma()); // Columna Tipo: nombre del síntoma
+                    Cell dataCell2 = dataRow.getCell(2);
+                    dataCell2.setCellValue(calendarioSintoma.getFechaCalendarioSintoma().toLocalDate().toString() + " / " + calendarioSintoma.getFechaCalendarioSintoma().toLocalTime().toString()); // Columna Fecha Registrado
+
+                    fila++; // Incrementa el número de fila en cada iteración
+                }
+
+
+                // --- DATOS / SEGUNDA PARTE ---
+                // Crear un mapa para agrupar los registros por nombre de medicamento
+                Map<String, List<CalendarioSintoma>> sintomasAgrupados = new HashMap<>();
+                int cantidadTotal = 0;
+                // Agrupar los registros por nombre de medicamento
+                for (CalendarioSintoma calendarioSintoma : listaTotalCalendarioSintomas) {
+                    String nombreSintoma = calendarioSintoma.getSintoma().getNombreSintoma();
+                    // Verificar si ya existe una lista para este medicamento en el mapa
+                    List<CalendarioSintoma> calSintomas = sintomasAgrupados.get(nombreSintoma);
+                    if (calSintomas == null) {
+                        calSintomas = new ArrayList<>();
+                        sintomasAgrupados.put(nombreSintoma, calSintomas);
+                    }
+                    calSintomas.add(calendarioSintoma);
+                    cantidadTotal = calSintomas.size();
+                }
+                cantTotal.setCellValue(cantidadTotal);
+                // Calcular el porcentaje del total y escribir en la hoja de resumen
+                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                Log.d("MiApp", "Comienzo con Parte 2");
+                for (Map.Entry<String, List<CalendarioSintoma>> entry : sintomasAgrupados.entrySet()) {
+                    String nombreSintoma = entry.getKey();
+                    List<CalendarioSintoma> calSintomas = entry.getValue();
+                    int totalCalendariosSintomas = calSintomas.size();
+                    int totalSintomasPorNombre = 0;
+
+                    for (CalendarioSintoma calendarioSintoma : calSintomas) {
+                        if (calendarioSintoma.getSintoma().getNombreSintoma().equals(nombreSintoma)) {
+                            totalSintomasPorNombre++;
+                        }
+                    }
+                    double porcentajeDelTotal = (double) totalSintomasPorNombre / totalCalendariosSintomas * 100.0;
+                    // Crear un formato decimal con dos decimales
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    // Formatear el porcentaje con dos decimales y agregar "%"
+                    String porcentajeFormateado = df.format(porcentajeDelTotal) + "%";
+
+                    // ---
+                    Row filaResumen = sheet.getRow(filaActual);
+                    if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
+                        int ultimaFila = filaActual - 1;
+                        Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
+                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                            // Crea la fila si no existe
+                            if (filaResumen == null) {
+                                filaResumen = sheet.createRow(filaActual);
+                            }
+                            for (int columna = 4; columna < 8; columna++) {
+                                // Verifica si la celda actual es nula y, si lo es, créala antes de copiar el valor
+                                Cell currentCell2 = filaResumen.getCell(columna);
+                                if (currentCell2 == null) {
+                                    currentCell2 = filaResumen.createCell(columna);
+                                    Log.d("MiApp", "      Entra en el if(currentCell=null), fila: " + filaActual + ", col = " + columna);
+                                }
+                                // Copia los valores de la fila anterior a las celdas de la fila actual
+                                Cell celdaAnterior2 = sheet.getRow(ultimaFila).getCell(columna);
+                                // Verifica si la celda anterior tiene un estilo definido
+                                if (celdaAnterior2 != null && celdaAnterior2.getCellStyle() != null) {
+                                    // Obtiene el estilo de la celda anterior y lo aplica a la nueva
+                                    CellStyle estiloCeldaAnterior2 = celdaAnterior2.getCellStyle();
+                                    CellStyle estiloNuevaCelda2 = currentCell2.getCellStyle();
+                                    estiloNuevaCelda2.cloneStyleFrom(estiloCeldaAnterior2);
+
+                                    Log.d("MiApp", "      Entra en el if de Style, fila: " + filaActual + ", col = " + columna);
+                                }
+                                // Establece el valor en la nueva celda
+                                currentCell2.setCellValue(celdaAnterior2 != null ? celdaAnterior2.getRichStringCellValue() : null);
+                            }
+                        }
+                    }
+
+                    // Se setean los datos nuevos dentro de la fila dataRow
+                    Cell celdaNombreSintoma = filaResumen.getCell(4);
+                    celdaNombreSintoma.setCellValue(nombreSintoma);
+                    Cell celdaCantSintoma = filaResumen.getCell(5);
+                    celdaCantSintoma.setCellValue(totalSintomasPorNombre);
+                    Cell celdaPorcentajeDelTotal = filaResumen.getCell(6);
+                    celdaPorcentajeDelTotal.setCellValue(porcentajeFormateado.toString());
+
+                    filaActual++;
+                }
+
+
+                // --- GRÁFICO / SEGUNDA HOJA ---
+                // Crear un objeto Drawing para la hoja de trabajo
+                /*
+                CreationHelper helper = sheet2.getWorkbook().getCreationHelper();
+                Drawing<?> drawing = sheet2.createDrawingPatriarch();
+                // Crear una ancla para el gráfico
+                ClientAnchor anchor = helper.createClientAnchor();
+                anchor.setCol1(3); // Columna de inicio
+                anchor.setRow1(3); // Fila de inicio
+                anchor.setCol2(8); // Columna de fin
+                anchor.setRow2(15); // Fila de fin
+                // Crear el gráfico de barras en la hoja de trabajo
+                Chart chart = drawing.createChart(anchor);
+                ChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.TOP_RIGHT);
+                // Crear categorías (nombres de medicamentos) y valores (porcentajes) para el gráfico
+                ChartDataSource<String> nombresCategoria = DataSources.fromStringCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 1, 1));
+                ChartDataSource<Number> valores = DataSources.fromNumericCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 2, 2));
+                // Agregar datos al gráfico de barras
+                chart.plot(ChartTypes.BAR, null, nombresCategoria, valores);
+
+
+                // Crear un eje de categoría (eje Y) y un eje de valores (eje X)
+                CategoryAxis categoriaAxis = chart.createCategoryAxis(AxisPosition.LEFT);
+                ValueAxis valorAxis = chart.createValueAxis(AxisPosition.BOTTOM);
+                valorAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                // Agregar datos al gráfico de barras
+                ChartData data = chart.createData(ChartTypes.BAR, categoriaAxis, valorAxis);
+                data.setVaryColors(true); // Alternar colores de las barras
+                ChartData.Series series = data.addSeries(nombresCategoria, valores);
+                series.setTitle("Porcentaje de Cumplimiento", null);
+                // Dibujar el gráfico en la hoja de trabajo
+                chart.plot(data);
+                // Ajustar el tamaño del gráfico
+                // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+                 */
+
+
+                // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
+                // Ruta del almacenamiento interno en Android para guardar el archivo
+                File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                String filePath = dir.getAbsolutePath() + "/MediCALReporte" + opcionMenu + ".xlsx";
+                // Crear el archivo Excel
+                file = new File(filePath);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    workbook.write(fos);
+                    fos.close();
+                    enviarReporte(destinatario);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // Puedes imprimir la traza de la excepción para depurar
+            }
+        }
     }
 
-    private void generarArchivoExcelMediciones(String destinatario) {
-        // FALTA
+    private void obtenerCalendarioMediciones(OnDataLoadedListener listener2) throws IOException {
+        for (Calendario calendario : listaTotalDeCalendarios) {
+            RetrofitService retrofitService = new RetrofitService();
+            CalendarioMedicionApi calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
+            operacionesPendientes = listaTotalDeCalendarios.size();
+            // Hacer la llamada a la API para obtener las clases "Recordatorio" asociadas a un calendario
+            Call<List<CalendarioMedicion>> calMedicionCall = calendarioMedicionApi.getByCodCalendarioMedicion(calendario.getCodCalendario());
+
+            calMedicionCall.enqueue(new Callback<List<CalendarioMedicion>>() {
+                @Override
+                public void onResponse(Call<List<CalendarioMedicion>> call, Response<List<CalendarioMedicion>> response) {
+                    if (response.isSuccessful()) {
+                        List<CalendarioMedicion> calendarioMedicionesAsociados = response.body();
+                        if (calendarioMedicionesAsociados != null && !calendarioMedicionesAsociados.isEmpty()) {
+                            Log.d("MiApp", "CalendarioMediciones Asociados Encontrados: ");
+                            for (CalendarioMedicion calendarioMedicion : calendarioMedicionesAsociados) {
+                                if (calendarioMedicion.getFechaCalendarioMedicion().toLocalDate().isAfter(fechaReporteDesdeLocalDate.minusDays(1))
+                                        && calendarioMedicion.getFechaCalendarioMedicion().toLocalDate().isBefore(fechaReporteHastaLocalDate.plusDays(1))) {
+                                    Log.d("MiApp", "codCalendarioMedicion encontrado: " + calendarioMedicion.getCodCalendarioMedicion());
+                                    listaTotalCalendarioMediciones.add(calendarioMedicion);
+                                }
+                            }
+                            operacionesPendientes--;
+                            Log.d("MiApp","OperacionesPendientes: " + operacionesPendientes);
+                            // Verifica si se han completado todas las operaciones
+                            if (operacionesPendientes == 0) {
+                                // Todas las operaciones se han completado, ejecuta el listener
+                                try {
+                                    listener2.onDataLoaded();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                Log.d("MiApp", "Ya se ejecutó el listener de operacionesPendientes");
+                            }
+                        } else {
+                            Log.d("MiApp", "No se encontraron clases 'CalendarioMedicion' asociadas al calendario " + calendario.getNombreCalendario());
+                        }
+                    } else {
+                        Log.d("MiApp", "Error en la solicitud de clases 'CalendarioMedicion': " + response.message());
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<CalendarioMedicion>> call, Throwable t) {
+                    Log.e("MiApp", "Error en la solicitud de clases 'CalendarioMedicion': " + t.getMessage());
+                }
+            });
+        }
+    }
+    private void generarArchivoExcelMediciones(String destinatario) throws IOException {
+        //Acceder a la Plantilla
+        AssetManager assetManager = getAssets();
+        InputStream inputStream = assetManager.open("Reporte_Mediciones.xls"); {
+            try {
+                // Libro de Trabajo
+                Workbook workbook = new HSSFWorkbook(inputStream);
+
+                // --- PRIMER HOJA ---
+                Sheet sheet = workbook.getSheetAt(0);
+
+                // --- TÍTULO / PRIMER HOJA ---
+                Row headerRow0 = sheet.getRow(0);
+                // Crear una celda que abarque las 7 primeras columnas (índices de 1 a 8, 0 es un margen)
+                Cell Titulocell = headerRow0.getCell(1);
+                Titulocell.setCellValue("Reporte " + opcionMenu); // Título que se verá en las celdas unificadas
+
+                // --- DATOS DEL REPORTE / PRIMER HOJA ---
+                // Crear una fila para los datos del reporte
+                Row headerRow1 = sheet.getRow(1);
+                // Crear celdas datos del reporte
+                Cell fechaDesde = headerRow1.getCell(2);
+                fechaDesde.setCellValue(fechaReporteDesdeString);
+                Cell fechaHasta = headerRow1.getCell(4);
+                fechaHasta.setCellValue(fechaReporteHastaString);
+                Cell cantTotal = headerRow1.getCell(8);
+
+                // --- DATOS / PRIMER PARTE ---
+                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                for (CalendarioMedicion calendarioMedicion : listaTotalCalendarioMediciones) {
+                    Log.d("MiApp", "Creando datos de registro, fila: " + fila);
+                    Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
+
+                    // Si la celda en la columna 1 es nula o está vacía, crea la fila y las celdas antes de establecer el valor
+                    if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
+                        int ultimaFila = fila - 1;
+                        Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
+                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                            // Crea la fila si no existe
+                            if (dataRow == null) {
+                                dataRow = sheet.createRow(fila);
+                            }
+                            for (int columna = 0; columna < 5; columna++) {
+                                // Verifica si la celda actual es nula y, si lo es, créala antes de copiar el valor
+                                Cell currentCell = dataRow.getCell(columna);
+                                if (currentCell == null) {
+                                    currentCell = dataRow.createCell(columna);
+                                    Log.d("MiApp", "      Entra en el if(currentCell=null), fila: " + fila + ", col = " + columna);
+                                }
+                                // Copia los valores de la fila anterior a las celdas de la fila actual en el rango 0 a 7
+                                Cell celdaAnterior = sheet.getRow(ultimaFila).getCell(columna);
+                                // Verifica si la celda anterior tiene un estilo definido
+                                if (celdaAnterior != null && celdaAnterior.getCellStyle() != null) {
+                                    // Obtiene el estilo de la celda anterior y lo aplica a la nueva
+                                    CellStyle estiloCeldaAnterior = celdaAnterior.getCellStyle();
+                                    CellStyle estiloNuevaCelda = currentCell.getCellStyle();
+                                    estiloNuevaCelda.cloneStyleFrom(estiloCeldaAnterior);
+
+                                    Log.d("MiApp", "      Entra en el if de Style, fila: " + fila + ", col = " + columna);
+                                }
+                                // Establece el valor en la nueva celda
+                                currentCell.setCellValue(celdaAnterior != null ? celdaAnterior.getRichStringCellValue() : null);
+                            }
+                        }
+                    }
+
+                    // Se setean los datos nuevos dentro de la fila dataRow
+                    Cell dataCell1 = dataRow.getCell(1);
+                    dataCell1.setCellValue(calendarioMedicion.getMedicion().getNombreMedicion()); // Columna Tipo: nombre de la medición
+                    Cell dataCell2 = dataRow.getCell(2);
+                    dataCell2.setCellValue(calendarioMedicion.getValorCalendarioMedicion().toString()); // Columna Valor Medición
+                    Cell dataCell3 = dataRow.getCell(3);
+                    dataCell3.setCellValue(calendarioMedicion.getMedicion().getUnidadMedidaMedicion()); // Columna Unidad de Medida
+                    Cell dataCell4 = dataRow.getCell(4);
+                    dataCell4.setCellValue(calendarioMedicion.getFechaCalendarioMedicion().toLocalDate().toString() + " / " + calendarioMedicion.getFechaCalendarioMedicion().toLocalTime().toString()); // Columna Fecha Registrada
+
+                    fila++; // Incrementa el número de fila en cada iteración
+                }
+
+
+                // --- DATOS / SEGUNDA PARTE ---
+                // Crear un mapa para agrupar los registros por nombre de medicion
+                Map<String, List<CalendarioMedicion>> medicionesAgrupadas = new HashMap<>();
+                int cantidadTotal = 0;
+                // Agrupar los registros por nombre de medicamento
+                for (CalendarioMedicion calendarioMedicion : listaTotalCalendarioMediciones) {
+                    String nombreMedicion = calendarioMedicion.getMedicion().getNombreMedicion();
+                    // Verificar si ya existe una lista para este medicamento en el mapa
+                    List<CalendarioMedicion> calMediciones = medicionesAgrupadas.get(nombreMedicion);
+                    if (calMediciones == null) {
+                        calMediciones = new ArrayList<>();
+                        medicionesAgrupadas.put(nombreMedicion, calMediciones);
+                    }
+                    calMediciones.add(calendarioMedicion);
+                    cantidadTotal = calMediciones.size();
+                }
+                cantTotal.setCellValue(cantidadTotal);
+                // Calcular el porcentaje del total y escribir en la hoja de resumen
+                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                Log.d("MiApp", "Comienzo con Parte 2");
+                for (Map.Entry<String, List<CalendarioMedicion>> entry : medicionesAgrupadas.entrySet()) {
+                    String nombreMedicion = entry.getKey();
+                    List<CalendarioMedicion> calMediciones = entry.getValue();
+                    int totalCalendariosMediciones = calMediciones.size();
+                    int totalMedicionesPorNombre = 0;
+
+                    for (CalendarioMedicion calendarioMedicion : calMediciones) {
+                        if (calendarioMedicion.getMedicion().getNombreMedicion().equals(nombreMedicion)) {
+                            totalMedicionesPorNombre++;
+                        }
+                    }
+                    double porcentajeDelTotal = (double) totalMedicionesPorNombre / totalCalendariosMediciones * 100.0;
+                    // Crear un formato decimal con dos decimales
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    // Formatear el porcentaje con dos decimales y agregar "%"
+                    String porcentajeFormateado = df.format(porcentajeDelTotal) + "%";
+
+                    // ---
+                    Row filaResumen = sheet.getRow(filaActual);
+                    if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
+                        int ultimaFila = filaActual - 1;
+                        Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
+                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                            // Crea la fila si no existe
+                            if (filaResumen == null) {
+                                filaResumen = sheet.createRow(filaActual);
+                            }
+                            for (int columna = 6; columna < 8; columna++) {
+                                // Verifica si la celda actual es nula y, si lo es, créala antes de copiar el valor
+                                Cell currentCell2 = filaResumen.getCell(columna);
+                                if (currentCell2 == null) {
+                                    currentCell2 = filaResumen.createCell(columna);
+                                    Log.d("MiApp", "      Entra en el if(currentCell=null), fila: " + filaActual + ", col = " + columna);
+                                }
+                                // Copia los valores de la fila anterior a las celdas de la fila actual
+                                Cell celdaAnterior2 = sheet.getRow(ultimaFila).getCell(columna);
+                                // Verifica si la celda anterior tiene un estilo definido
+                                if (celdaAnterior2 != null && celdaAnterior2.getCellStyle() != null) {
+                                    // Obtiene el estilo de la celda anterior y lo aplica a la nueva
+                                    CellStyle estiloCeldaAnterior2 = celdaAnterior2.getCellStyle();
+                                    CellStyle estiloNuevaCelda2 = currentCell2.getCellStyle();
+                                    estiloNuevaCelda2.cloneStyleFrom(estiloCeldaAnterior2);
+
+                                    Log.d("MiApp", "      Entra en el if de Style, fila: " + filaActual + ", col = " + columna);
+                                }
+                                // Establece el valor en la nueva celda
+                                currentCell2.setCellValue(celdaAnterior2 != null ? celdaAnterior2.getRichStringCellValue() : null);
+                            }
+                        }
+                    }
+
+                    // Se setean los datos nuevos dentro de la fila dataRow
+                    Cell celdaNombreSintoma = filaResumen.getCell(6);
+                    celdaNombreSintoma.setCellValue(nombreMedicion);
+                    Cell celdaCantSintoma = filaResumen.getCell(7);
+                    celdaCantSintoma.setCellValue(totalMedicionesPorNombre);
+                    Cell celdaPorcentajeDelTotal = filaResumen.getCell(8);
+                    celdaPorcentajeDelTotal.setCellValue(porcentajeFormateado.toString());
+
+                    filaActual++;
+                }
+
+
+                // --- GRÁFICO / SEGUNDA HOJA ---
+                // Crear un objeto Drawing para la hoja de trabajo
+                /*
+                CreationHelper helper = sheet2.getWorkbook().getCreationHelper();
+                Drawing<?> drawing = sheet2.createDrawingPatriarch();
+                // Crear una ancla para el gráfico
+                ClientAnchor anchor = helper.createClientAnchor();
+                anchor.setCol1(3); // Columna de inicio
+                anchor.setRow1(3); // Fila de inicio
+                anchor.setCol2(8); // Columna de fin
+                anchor.setRow2(15); // Fila de fin
+                // Crear el gráfico de barras en la hoja de trabajo
+                Chart chart = drawing.createChart(anchor);
+                ChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.TOP_RIGHT);
+                // Crear categorías (nombres de medicamentos) y valores (porcentajes) para el gráfico
+                ChartDataSource<String> nombresCategoria = DataSources.fromStringCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 1, 1));
+                ChartDataSource<Number> valores = DataSources.fromNumericCellRange(sheet2, new CellRangeAddress(3, filaActual - 1, 2, 2));
+                // Agregar datos al gráfico de barras
+                chart.plot(ChartTypes.BAR, null, nombresCategoria, valores);
+
+
+                // Crear un eje de categoría (eje Y) y un eje de valores (eje X)
+                CategoryAxis categoriaAxis = chart.createCategoryAxis(AxisPosition.LEFT);
+                ValueAxis valorAxis = chart.createValueAxis(AxisPosition.BOTTOM);
+                valorAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+                // Agregar datos al gráfico de barras
+                ChartData data = chart.createData(ChartTypes.BAR, categoriaAxis, valorAxis);
+                data.setVaryColors(true); // Alternar colores de las barras
+                ChartData.Series series = data.addSeries(nombresCategoria, valores);
+                series.setTitle("Porcentaje de Cumplimiento", null);
+                // Dibujar el gráfico en la hoja de trabajo
+                chart.plot(data);
+                // Ajustar el tamaño del gráfico
+                // CTBarChart barChart = chart.getCTChart().getPlotArea().getBarChartArray(0);
+                 */
+
+
+                // --- GUARDAR EL ARCHIVO EXCEL GENERADO ---
+                // Ruta del almacenamiento interno en Android para guardar el archivo
+                File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+                String filePath = dir.getAbsolutePath() + "/MediCALReporte" + opcionMenu + ".xlsx";
+                // Crear el archivo Excel
+                file = new File(filePath);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    workbook.write(fos);
+                    fos.close();
+                    enviarReporte(destinatario);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+               e.printStackTrace(); // Puedes imprimir la traza de la excepción para depurar
+            }
+        }
     }
 
 
@@ -1211,7 +1772,6 @@ public class AgregarReporteActivity extends AppCompatActivity {
 
         return matcher.matches();    // Comprueba si la cadena cumple con el patrón
     }
-
 
     private class EnviarReporteAsyncTask extends AsyncTask<Void, Void, Boolean> {
         Message message;
@@ -1364,7 +1924,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
     }
 
     public interface OnDataLoadedListener {
-        void onDataLoaded();
+        void onDataLoaded() throws IOException;
     }
 
 
