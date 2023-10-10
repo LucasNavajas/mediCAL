@@ -141,7 +141,7 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                     if (calendarioSeleccionado != null) {
                         Log.d("MiApp", "Calendario seleccionado encontrado en MasInfoMedicion: " + calendarioSeleccionado.getCodCalendario());
                         obtenerCalendarioSintomas();
-                        obtenerCalendarioMediciones();
+
                     } else {
                         Log.d("MiApp", "No se encontró el Calendario con codCalendario: " + codCalendario);
                     }
@@ -187,6 +187,7 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
                         Log.d("MiApp", "No se encontraron CalendarioSintomas");
                     }
 
+                    obtenerCalendarioMediciones();
 
                 } else {
                     Log.d("MiApp", "Error en la solicitud: " + response.message());

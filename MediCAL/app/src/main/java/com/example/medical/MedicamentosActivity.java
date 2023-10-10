@@ -100,6 +100,9 @@ public class MedicamentosActivity extends AppCompatActivity {
     private int siEsNull;
     private int aver;
 
+    private LinearLayout progressBar;
+    private View dimView;
+
     private RegistroRecordatorioApi registroRecordatorioApi;
     private Set<String> combinacionesProcesadas;
     private Set<String> combinacionesUnicas;
@@ -268,6 +271,10 @@ public class MedicamentosActivity extends AppCompatActivity {
         menuButtonUsuario = findViewById(R.id.menu_button_nav);
         eliminarCuenta = findViewById(R.id.eliminar_cuenta);
         perfilUsuario = findViewById(R.id.perfil_usuario);
+        progressBar = findViewById(R.id.progressBar);
+        dimView = findViewById(R.id.dim_view);
+        progressBar.setVisibility(View.VISIBLE);
+        dimView.setVisibility(View.VISIBLE);
         usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -492,6 +499,8 @@ public class MedicamentosActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Recordatorio>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                dimView.setVisibility(View.GONE);
                 Log.e("MiApp", "Error en la solicitud de recordatorios por calendario: " + t.getMessage());
             }
         });
@@ -735,7 +744,8 @@ public class MedicamentosActivity extends AppCompatActivity {
         } else {
             Log.d("MiApp", "No se encontraron registros de recordatorios en la respuesta.");
         }
-
+        progressBar.setVisibility(View.GONE);
+        dimView.setVisibility(View.GONE);
     }
 
     private void createTextViewNoHayActivos(int aver) {
