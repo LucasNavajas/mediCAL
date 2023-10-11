@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -24,5 +25,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer>{
 	
 	@Query("SELECT u FROM Usuario u WHERE u.codigoVerificacion.codVerificacion = :codVerificacion")
     Usuario findByCodigoVerificacion(String codVerificacion);
+	
+	@Query("SELECT u FROM Usuario u WHERE u.perfil.codPerfil = :codPerfil")
+    List<Usuario> findByCodPerfil(@Param("codPerfil") int codPerfil);
 
 }

@@ -26,16 +26,17 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codUsuario;
-	private String apellidoUsuario;
+	private String usuarioUnico;
 	private String contraseniaUsuario;
+	private String nombreUsuario;
+	private String apellidoUsuario;
 	private LocalDate fechaAltaUsuario;
 	private LocalDate fechaNacimientoUsuario;
 	private String generoUsuario;
 	private String mailUsuario;
 	private String nombreInstitucion;
-	private String nombreUsuario;
 	private String telefonoUsuario;
-	private String usuarioUnico;
+	
 	private String token;
 	
 	// relacion historial fin vigencia

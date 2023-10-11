@@ -64,6 +64,13 @@
             }
             aceptarNuevo.addEventListener("click", agregarMotivo);
           }
+          else if(window.location.href== "http://localhost:8081/n26_gestionar_usuarios.html"){
+
+             function agregarMotivoUsuario(){
+              openDialogMotivoUsuario('popup-dialog-motivo', idInstancia, index, esto);
+            }
+            aceptarNuevo.addEventListener("click", agregarMotivoUsuario);
+          }
 
           else{
           // Define el nuevo controlador de eventos para el botón "aceptar"
@@ -80,6 +87,38 @@
           overlay.style.opacity = "1";
           dialog.style.display = "block";
       }
+
+      function openDialogMotivoUsuario(id, idInstancia, index, esto) {
+            var overlay = document.getElementById("popup-overlay");
+            var dialog = document.getElementById(id);
+            var usuario = document.getElementById("campo_usuario_baja");
+            var motivo = document.getElementById("campo_motivo_baja");
+            var spans = document.querySelectorAll('span[id^="contador"]');
+            for (var i = 0; i < spans.length; i++) {
+                var span = spans[i];
+                // Por ejemplo, puedes establecer el contenido del span en su valor original.
+                span.textContent = "300 caracteres restantes";
+            }
+            const tabla = document.querySelector("table");
+            const fila = tabla.rows[index+1];
+            usuario.value = fila.cells[2].textContent;
+
+            var aceptar = dialog.querySelector("#eliminar-button-motivo");
+            var aceptarNuevo = aceptar.cloneNode(true);
+            function handleAceptarClick() {
+              eliminarUsuario(fila.cells[1].textContent, motivo.value);
+              toggleDeleteRow(index, esto);
+              closeDialog(id);
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+            aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+        }
+
 
         function openDialogMotivo(id, idInstancia, index, esto) {
             var overlay = document.getElementById("popup-overlay");

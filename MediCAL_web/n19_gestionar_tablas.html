@@ -458,6 +458,122 @@
          #popup-dialog-cerrar-sesion .popup-buttons{
           justify-content: center;
          }
+
+         #popup-dialog-guardado {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-guardado h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-guardado .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-guardado .popup-buttons button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-guardado .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-atras {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+      
+
+        #popup-dialog-atras h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-atras h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-atras .popup-buttons {
+             display: flex;
+            justify-content: space-between; /* Alinea los elementos en los extremos */
+            align-items: center; /* Centra verticalmente */
+            margin-top: 20px;
+        }
+
+        .left-button {
+            order: 1; /* Establece el orden para la parte izquierda */
+            margin-right: auto; /* Empuja todo hacia la izquierda */
+        }
+
+        .right-button {
+             order: 2; /* Establece el orden para la parte derecha */
+             margin-left: auto; /* Empuja todo hacia la derecha */
+        }
+
+        #popup-dialog-atras button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-atras button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
   </style>
 </head>
 
@@ -497,7 +613,7 @@
   <main class="pt-5">
 
     <!--flecha atras-->
-    <a href="n18_pantalla_principal_admin_sistema.html" class="btn-back">
+    <a href="javascript:openDialog('popup-dialog-atras')" class="btn-back">
       <i class="bi bi-arrow-left"></i>
     </a>
     <!--Titulo-->
@@ -589,6 +705,27 @@
         <div class="popup-buttons">
             <button class="cancel-button" onclick="cancelDialog('popup-dialog-cerrar-sesion')">CANCELAR</button>
             <button class="accept-button" onclick="closeDialog('popup-dialog-cerrar-sesion'); signOut();">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-guardado" class="popup-content">
+        <h3>Se han guardado correctamente los cambios ingresados.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-guardado')" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-atras" class="popup-content">
+        <h3>¿Está Seguro?</h3>
+        <h4>Se perderán las modificaciones realizadas que no haya guardado.</h4>
+
+        <div class="popup-buttons">
+           <div class="left-button">
+            <button onclick="cancelDialog('popup-dialog-atras')" style="cursor: pointer;">CANCELAR</button>
+        </div>
+        <div class="right-button">
+            <button onclick="closeDialog('popup-dialog-atras'); window.location.href='n18_pantalla_principal_admin_sistema.html'" style="cursor: pointer;">ACEPTAR</button>
+        </div>
         </div>
     </div>
 
@@ -2196,6 +2333,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-med');
                 closeDialog('popup-dialog-modif-med');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -2220,6 +2358,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-consejo');
                 closeDialog('popup-dialog-modif-consejo');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -2244,6 +2383,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-FAQ');
                 closeDialog('popup-dialog-modif-FAQ');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -2268,6 +2408,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-medicion');
                 closeDialog('popup-dialog-modif-medicion');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -2292,6 +2433,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-sintoma');
                 closeDialog('popup-dialog-modif-sintoma');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -2316,6 +2458,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-adminmed');
                 closeDialog('popup-dialog-modif-adminmed');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales
@@ -2340,6 +2483,7 @@ function sendChangesToServer(changes) {
                 closeDialog('popup-dialog-presmed');
                 closeDialog('popup-dialog-modif-presmed');
                 cambiarTabla();
+                openDialog('popup-dialog-guardado');
               })
               .catch(function (error) {
                 // Manejar errores generales

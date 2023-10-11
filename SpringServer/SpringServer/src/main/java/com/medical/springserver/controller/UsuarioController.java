@@ -178,8 +178,18 @@ public class UsuarioController {
         usuarioDao.eliminarUsuario(codUsuario, motivoFinVigencia);
 	}
 	
+	@PostMapping("/usuario/recuperar/{codUsuario}")
+	public void recuperarUsuario(@PathVariable int codUsuario) throws FirebaseAuthException {
+        usuarioDao.habilitarUsuario(codUsuario);
+	}
+	
 	@PutMapping("/usuario/token/{codUsuario}")
 	public Usuario modificarToken(@PathVariable int codUsuario, @RequestBody String  token) throws FirebaseAuthException {
 		return usuarioDao.modificarToken(codUsuario, token);
+	}
+	
+	@GetMapping("/usuario/get-all/{codPerfil}")
+	public List<Usuario> getAllByCodPerfil(@PathVariable int codPerfil){
+		return usuarioDao.findUsuariosByCodPerfil(codPerfil);
 	}
 }

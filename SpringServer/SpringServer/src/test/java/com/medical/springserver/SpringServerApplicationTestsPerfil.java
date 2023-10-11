@@ -207,7 +207,7 @@ class SpringServerApplicationTestsPerfil {
 			if(i<8 || i>10) {
 				PerfilPermiso perfilPermiso = new PerfilPermiso();
 				perfilPermiso.setPermiso(permisosTotales.get(i));
-				perfilPermiso.setPerfil(perfil);
+				perfilPermiso.setPerfil(perfil4);
 				perfilPermisoDao.save(perfilPermiso);
 			}
 		}

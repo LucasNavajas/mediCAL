@@ -75,120 +75,153 @@
 }
 
 // Función para reemplazar las filas de la tabla con datos JSON
-    function reemplazarFilasConJSON(datosJSON) {
+  function reemplazarFilasConJSON(datosJSON) {
+  var tabla = document.querySelector("table"); // Selecciona la tabla
+  var tbody = tabla.querySelector("tbody"); // Selecciona el cuerpo de la tabla
+  // Limpia el contenido actual del cuerpo de la tabla
+  tbody.innerHTML = "";
+  var mensajeNoExiste = document.getElementById("mensaje-no-existe");
+  if (mensajeNoExiste) {
+    mensajeNoExiste.remove();
+  }
+    // Verifica si el JSON está vacío
+  if (datosJSON.length === 0) {
+    // JSON vacío, crea un mensaje
+    var h1 = document.createElement("h1");
+    h1.textContent = "No existen instancias para la opción seleccionada";
+    // Agrega el mensaje al contenedor deseado (por ejemplo, el div que contiene la tabla)
+    // Aplica estilos CSS para centrar el mensaje
+    h1.style.textAlign = "center";
+    h1.id = "mensaje-no-existe";
+    h1.style.marginTop = "100px";
+    document.body.appendChild(h1);
+  } else {
+  agregarCabeceras(tabla, tbody, datosJSON);
+  // Recorre los datos JSON y crea filas para cada elemento
+  for (var i = 0; i < datosJSON.length; i++) {
+    var medicamento = datosJSON[i];
+    var fila = document.createElement("tr");
 
-      var tabla = document.querySelector("table"); // Selecciona la tabla
-      var tbody = tabla.querySelector("tbody"); // Selecciona el cuerpo de la tabla
-      // Limpia el contenido actual del cuerpo de la tabla
-      tbody.innerHTML = "";
-      agregarCabeceras(tabla, tbody, datosJSON);
-      // Recorre los datos JSON y crea filas para cada elemento
-      for (var i = 0; i < datosJSON.length; i++) {
-        var medicamento = datosJSON[i];
-        var fila = document.createElement("tr");
+    // Celda para el checkbox
+    var checkboxCell = document.createElement("td");
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "rowCheckbox";
+    checkbox.onclick = function () {
+      toggleRowSelection(this);
+    };
+    checkboxCell.appendChild(checkbox);
+    fila.appendChild(checkboxCell);
 
-        // Celda para el checkbox
-        var checkboxCell = document.createElement("td");
-        var checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.className = "rowCheckbox";
-        checkbox.onclick = function () {
-          toggleRowSelection(this);
-        };
-        checkboxCell.appendChild(checkbox);
-        fila.appendChild(checkboxCell);
+    var primerObjeto = datosJSON[0];
+    var propiedades = Object.keys(primerObjeto);
 
-        var primerObjeto = datosJSON[0];
-        var propiedades = Object.keys(primerObjeto);
+    for (var j = 0; j < propiedades.length; j++) {
+      var propiedad = propiedades[j];
+      var celda = document.createElement("td");
+      celda.setAttribute("data-propiedad", propiedad);
 
-
-        for (var j = 0; j < propiedades.length; j++) {
-          var propiedad = propiedades[j];
-          var celda = document.createElement("td");
-		  celda.setAttribute("data-propiedad", propiedad);
-          // Si la propiedad no contiene la subcadena "fecha" y el valor no es nulo ni falso, muestra el primer atributo del objeto
-        if (!propiedad.includes("fecha") && typeof medicamento[propiedad] === "object" && medicamento[propiedad] !== null && medicamento[propiedad] !== false) {
-          celda.textContent = getFirstAttribute(medicamento[propiedad]);
-        } else if (propiedad.includes("fecha") && medicamento[propiedad] !== null) {
-            var partesFecha = medicamento[propiedad].split('-'); // Divide la cadena en partes
-
-		  // Crea un objeto de fecha usando las partes divididas
-		  var fecha = new Date(
-		    parseInt(partesFecha[0]), // Año
-		    parseInt(partesFecha[1]) - 1, // Mes (restamos 1 porque los meses en JavaScript son de 0 a 11)
-		    parseInt(partesFecha[2]) // Día
-		  );
-
-		  celda.textContent = fecha.toLocaleDateString();
+      if (propiedad.startsWith("contra")) {
+        celda.textContent = "********"; // Mostrar asteriscos en lugar del valor real
+      } else if (propiedad === "fechaDesdeFV" || propiedad === "fechaHastaFV" || propiedad === "motivoFV") {
+        // Verificar si la propiedad es una de las propiedades del historial
+        if (medicamento[propiedad] === null || medicamento[propiedad] === "") {
+          celda.textContent = "-";
         } else {
-            // Verifica si la propiedad existe y no es nula ni falsa, de lo contrario, muestra "-"
-            celda.textContent = medicamento[propiedad] !== null && medicamento[propiedad] !== false
-              ? medicamento[propiedad]
-              : "-";
-          }
-
-          fila.appendChild(celda);
+          celda.textContent = medicamento[propiedad];
         }
-
-        // Celda con iconos
-        var iconosCell = document.createElement("td");
-        var iconosDiv = document.createElement("div");
-        iconosDiv.className = "edit-delete-revert-icons";
-
-        var editarIcono = document.createElement("i");
-		editarIcono.className = "bi bi-pencil edit-icon";
-		editarIcono.onclick = (function (index, icono) {
-		  return function () {
-		    editarInstancia(index); // Ajusta el índice del botón de edición
-		  };
-		})(i, editarIcono); // Pasar el valor actual de i y el elemento icono a la IIFE
-		iconosDiv.appendChild(editarIcono);
-
-
-        // Icono de eliminación
-        var eliminarIcono = document.createElement("i");
-		eliminarIcono.className = "bi bi-trash delete-icon";
-		(function (index, fila) {
-		  eliminarIcono.onclick = function () {
-		    // Obtener el valor de la segunda columna de la fila
-		    var idInstancia = fila.cells[1].textContent;
-        openDialogBaja('popup-dialog-baja', idInstancia, index, this);
-
-		  };
-		})(i, fila); // Pasar el valor actual de i a la IIFE
-        iconosDiv.appendChild(eliminarIcono);
-
-        // Icono de reversión
-        var revertirIcono = document.createElement("i");
-		revertirIcono.className = "bi bi-arrow-return-left revert-icon hide";
-
-		(function (index, fila) {
-		  revertirIcono.onclick = function () {
-		  	var idInstancia = fila.cells[1].textContent;
-		    recuperarInstancia(idInstancia);
-		    toggleRestoreRow(index, this); // Ajusta el índice del botón de reversión
-		  };
-		})(i, fila); // Pasar el valor actual de i a la IIFE
-
-		iconosDiv.appendChild(revertirIcono);
-
-        iconosCell.appendChild(iconosDiv);
-        fila.appendChild(iconosCell);
-
-        // Agrega la fila al cuerpo de la tabla
-        tbody.appendChild(fila);
-
-        for (var j = 0; j < propiedades.length; j++) {
-          var propiedad = propiedades[j];
-		  if (propiedad.includes("fechaFin") && medicamento[propiedad] !== null && medicamento[propiedad] <= new Date().toISOString().slice(0, 10)) {
-		    var iconosBorrar = document.querySelectorAll(".bi.bi-trash.delete-icon");
-		    toggleDeleteRow(i, iconosBorrar[i]);
-		    break; // Detiene el bucle una vez que se ha ejecutado toggleDeleteRow
-		  }
-		}
+      } else if (!propiedad.includes("fecha") && typeof medicamento[propiedad] === "object" && medicamento[propiedad] !== null && medicamento[propiedad] !== false) {
+        celda.textContent = getFirstAttribute(medicamento[propiedad]);
+      } else if (propiedad.includes("fecha") && medicamento[propiedad] !== null) {
+        var partesFecha = medicamento[propiedad].split('-');
+        var fecha = new Date(
+          parseInt(partesFecha[0]),
+          parseInt(partesFecha[1]) - 1,
+          parseInt(partesFecha[2])
+        );
+        celda.textContent = fecha.toLocaleDateString();
+      } else {
+        celda.textContent = medicamento[propiedad] !== null && medicamento[propiedad] !== false
+          ? medicamento[propiedad]
+          : "-";
       }
+
+      fila.appendChild(celda);
     }
 
+    // Celda con iconos
+    var iconosCell = document.createElement("td");
+    var iconosDiv = document.createElement("div");
+    iconosDiv.className = "edit-delete-revert-icons";
+
+    var editarIcono = document.createElement("i");
+    editarIcono.className = "bi bi-pencil edit-icon";
+    editarIcono.onclick = (function (index, icono) {
+      return function () {
+        editarInstancia(index);
+      };
+    })(i, editarIcono);
+    iconosDiv.appendChild(editarIcono);
+
+    // Icono de eliminación
+    var eliminarIcono = document.createElement("i");
+    eliminarIcono.className = "bi bi-trash delete-icon";
+    (function (index, fila) {
+      eliminarIcono.onclick = function () {
+        var idInstancia = fila.cells[1].textContent;
+        openDialogBaja('popup-dialog-baja', idInstancia, index, this);
+      };
+    })(i, fila);
+    iconosDiv.appendChild(eliminarIcono);
+
+    // Icono de reversión
+    var revertirIcono = document.createElement("i");
+    revertirIcono.className = "bi bi-arrow-return-left revert-icon hide";
+    (function (index, fila) {
+      revertirIcono.onclick = function () {
+        var idInstancia = fila.cells[1].textContent;
+        recuperarInstancia(idInstancia);
+        toggleRestoreRow(index, this);
+      };
+    })(i, fila);
+
+    iconosDiv.appendChild(revertirIcono);
+    iconosCell.appendChild(iconosDiv);
+    fila.appendChild(iconosCell);
+
+    tbody.appendChild(fila);
+
+    if(window.location.href === 'http://localhost:8081/n26_gestionar_usuarios.html'){
+      var propiedadFechaDesde;
+      for (var j = 0; j < propiedades.length; j++) {
+            var propiedad = propiedades[j];
+            if (propiedad.includes("fechaDesdeFV") && medicamento[propiedad] !== null) {
+              propiedadFechaDesde = propiedad;
+            }
+          }
+
+      for (var j = 0; j < propiedades.length; j++) {
+      var propiedad = propiedades[j];
+      if (propiedad.includes("fechaHasta") && medicamento[propiedad] === null && medicamento[propiedadFechaDesde] <= new Date().toISOString().slice(0, 10) && medicamento[propiedadFechaDesde]!==null) {
+        var iconosBorrar = document.querySelectorAll(".bi.bi-trash.delete-icon");
+        toggleDeleteRow(i, iconosBorrar[i]);
+        break;
+      }
+    }
+    }
+    else{
+    for (var j = 0; j < propiedades.length; j++) {
+      var propiedad = propiedades[j];
+      if (propiedad.includes("fechaFin") && medicamento[propiedad] !== null && medicamento[propiedad] <= new Date().toISOString().slice(0, 10)) {
+        var iconosBorrar = document.querySelectorAll(".bi.bi-trash.delete-icon");
+        toggleDeleteRow(i, iconosBorrar[i]);
+        break;
+      }
+    }
+  }
+  }
+  }
+}
 
 
 function getFirstAttribute(obj) {

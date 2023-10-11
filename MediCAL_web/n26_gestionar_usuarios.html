@@ -39,7 +39,7 @@
       margin-top: 30px;
     }
 
-    .button-container {
+    main .button-container {
       display: flex;
       justify-content: space-between;
       max-width: 100%;
@@ -100,7 +100,414 @@
     .password-field {
       max-width: 149px;
     }
+    .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
 
+
+             #popup-dialog-cerrar-sesion {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+         #popup-dialog-cerrar-sesion h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+         #popup-dialog-cerrar-sesion h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons,  #popup-dialog-cerrar-sesion .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-content,  #popup-dialog-cerrar-sesion .popup-buttons,  #popup-dialog-cerrar-sesion .accept-button {
+            order: 2;
+        }
+
+         #popup-dialog-cerrar-sesion .popup-buttons{
+          justify-content: center;
+         }
+
+         #popup-dialog-guardado {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-guardado h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-guardado .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-guardado .popup-buttons button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-guardado .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-atras {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+      
+
+        #popup-dialog-atras h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-atras h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-atras .popup-buttons {
+             display: flex;
+            justify-content: space-between; /* Alinea los elementos en los extremos */
+            align-items: center; /* Centra verticalmente */
+            margin-top: 20px;
+        }
+
+        .left-button {
+            order: 1; /* Establece el orden para la parte izquierda */
+            margin-right: auto; /* Empuja todo hacia la izquierda */
+        }
+
+        .right-button {
+             order: 2; /* Establece el orden para la parte derecha */
+             margin-left: auto; /* Empuja todo hacia la derecha */
+        }
+
+        #popup-dialog-atras button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-atras button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+                .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #popup-dialog-baja {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+        
+        #popup-dialog-baja .popup-buttons button:nth-child(1) {
+            margin-right: 95px; /* Espacio entre los botones (opcional) */
+            margin-left: -50px; /* Ajustar el margen izquierdo para mover "CANCELAR" a la izquierda */
+        }
+
+
+        #popup-dialog-baja h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-baja h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-baja .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-baja .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-baja .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+
+        #popup-dialog-motivo {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-motivo h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-motivo label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-motivo textarea {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            resize: none; /* Prevent textarea from being resizable */
+        }
+
+       #popup-dialog-motivo textarea:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-motivo ::placeholder {
+            color: var(--seventh-color);
+        }
+
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-motivo .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-motivo td, #popup-dialog-motivo .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-motivo tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-motivo tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-motivo tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-motivo .column-one {
+        width: 20%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-motivo .column-two {
+        width: 80%; /* Anchura de la columna dos */
+        text-align: left;
+        padding: 2px;
+    }
+
+/*boton eliminar*/
+ #popup-dialog-motivo .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
   </style>
 </head>
 
@@ -118,21 +525,14 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
           <!--opciones del dropdown-->
-          <li>
-            <a class="dropdown-item" href="#">
-              <i class="bi bi-pencil-square"></i>
-              Editar perfil
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="window.location.href='n4_ayuda_y_soporte.html'">
               <i class="bi bi-question-circle"></i>
               Ayuda y soporte
             </a>
           </li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="openDialog('popup-dialog-cerrar-sesion')">
               <i class="bi bi-box-arrow-left"></i>
               Cerrar sesión
             </a>
@@ -142,11 +542,56 @@
     </div>
   </nav>
 
+  <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog-cerrar-sesion" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea cerrar sesión de esta cuenta?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-cerrar-sesion')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-cerrar-sesion'); signOut();">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-guardado" class="popup-content">
+        <h3>Se han guardado correctamente los cambios ingresados.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-guardado')" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-atras" class="popup-content">
+        <h3>¿Está Seguro?</h3>
+        <h4>Se perderán las modificaciones realizadas que no haya guardado.</h4>
+
+        <div class="popup-buttons">
+           <div class="left-button">
+            <button onclick="cancelDialog('popup-dialog-atras')" style="cursor: pointer;">CANCELAR</button>
+        </div>
+        <div class="right-button">
+            <button onclick="closeDialog('popup-dialog-atras'); window.location.href='n18_pantalla_principal_admin_sistema.html'" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+        </div>
+    </div>
+
+     <div id="popup-dialog-baja" class="popup-content">
+        <h3>¿Está Seguro?</h3>
+        <h4>¿Desea dar de baja este usuario?</h4>
+
+        <div class="popup-buttons">
+            <button onclick="cancelDialog('popup-dialog-baja')"  style="cursor: pointer;">CANCELAR</button>
+            <button onclick="closeDialog('popup-dialog-baja')"class="accept-button" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+
+
   <!--Pantalla-->
   <main class="pt-5">
 
     <!--flecha atras-->
-    <a href="#" class="btn-back">
+    <a href="javascript:openDialog('popup-dialog-atras')" class="btn-back">
       <i class="bi bi-arrow-left"></i>
     </a>
     <!--Titulo-->
@@ -175,10 +620,8 @@
     <!-- Agregar el texto "Usuario" y la lista desplegable debajo del botón -->
     <div style="text-align: center;">
       <label style="font-size: 18px; font-weight: bold; margin-right: 10px;" for="lista_usuarios">Usuario</label>
-      <select id="lista_usuarios" onchange="filterTable()">
+      <select id="lista_usuarios" onchange="filtrarUsuarios()">
         <option value="todos">Todos</option>
-        <option value="enfermero">Enfermero</option>
-        <option value="particular">Particular</option>
       </select>
     </div>
 
@@ -273,335 +716,254 @@
           </th>
       </tr>
 
-      <!--fila 1-->
-      <tr style="font-size: 12px;">
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td style="font-size: 12px;">JuanP</td>
-        <td style="font-size: 12px;">98256</td>
-        <td style="font-size: 12px;">
-          <!-- Aquí se muestra la contraseña como asteriscos -->
-          <input type="password" value="qwerty" disabled class="password-field" />
-        </td>
-        <td style="font-size: 12px;">Juan</td>
-        <td style="font-size: 12px;">Perez</td>
-        <td style="font-size: 12px;">Hombre</td>
-        <td style="font-size: 12px;">juanperez@gmail.com</td>
-        <td style="font-size: 12px;">261894333</td>
-        <td style="font-size: 12px;">01/04/96</td>
-        <td style="font-size: 12px;">20/07/23</td>
-        <td style="font-size: 12px;"></td>
-        <td style="font-size: 12px;"></td>
-        <td >
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(0, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(0, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(0, this)"></i>
-          </div>
-        </td>
-      </tr>
-      <!--fila 2-->
-      <tr style="font-size: 12px;">
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td style="font-size: 12px;">MariaG</td>
-        <td style="font-size: 12px;">35892</td>
-        <td style="font-size: 12px;">
-          <!-- Aquí se muestra la contraseña como asteriscos -->
-          <input type="password" value="hola25" disabled class="password-field" />
-        </td>
-        <td style="font-size: 12px;">Maria</td>
-        <td style="font-size: 12px;">Gomez</td>
-        <td style="font-size: 12px;">Mujer</td>
-        <td style="font-size: 12px;">mariagomez@gmail.com</td>
-        <td style="font-size: 12px;">2619023569</td>
-        <td style="font-size: 12px;">29/04/98</td>
-        <td style="font-size: 12px;">05/03/22</td>
-        <td style="font-size: 12px;">20/07/23</td>
-        <td style="font-size: 12px;">Baja por Vacaciones</td>
-        <td >
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(1, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(1, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(1, this)"></i>
-          </div>
-        </td>
-      </tr>
-      <!--fila 3-->
-      <tr style="font-size: 12px;">
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-        </td>
-        <td style="font-size: 12px;">mariagonz</td>
-        <td style="font-size: 12px;">12345</td>
-        <td style="font-size: 12px;">
-          <!-- Aquí se muestra la contraseña como asteriscos -->
-          <input type="password" value="argentina122561" disabled class="password-field"  />
-        </td>
-        <td style="font-size: 12px;">Melisa</td>
-        <td style="font-size: 12px;">Gomez</td>
-        <td style="font-size: 12px;">Mujer</td>
-        <td style="font-size: 12px;">melisag@example.com</td>
-        <td style="font-size: 12px;">2617953475</td>
-        <td style="font-size: 12px;">25/03/94</td>
-        <td style="font-size: 12px;">22/09/21</td>
-        <td></td>
-        <td></td>
-        <td>
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(2, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(2, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(2, this)"></i>
-          </div>
-        </td>
-      </tr>
-      <!--fila 4-->
-      <tr style="font-size: 12px;">
-        <td>
-          <input type="checkbox" class="rowCheckbox" onclick="toggleRowSelection(this)" />
-          <td style="font-size: 12px;">joserodri</td>
-          <td style="font-size: 12px;">67890</td>
-          <td style="font-size: 12px;">
-            <!-- Aquí se muestra la contraseña como asteriscos -->
-            <input type="password" value="casa52" disabled class="password-field"  />
-          </td>
-          <td style="font-size: 12px;">José</td>
-          <td style="font-size: 12px;">Rodríguez</td>
-          <td style="font-size: 12px;">Hombre</td>
-          <td style="font-size: 12px;">jose.rodriguez@example.com</td>
-          <td style="font-size: 12px;">2614278234</td>
-          <td style="font-size: 12px;">01/02/97</td>
-          <td style="font-size: 12px;">19/03/22</td>
-          <td></td>
-          <td></td>
-          <td>
-          <div class="edit-delete-revert-icons">
-            <i class="bi bi-pencil edit-icon" onclick="toggleProfileRow(3, this)"></i>
-            <i class="bi bi-trash delete-icon" onclick="toggleDeleteRow(3, this)"></i>
-            <i class="bi bi-arrow-return-left revert-icon hide" onclick="toggleRestoreRow(3, this)"></i>
-          </div>
-        </td>
-      </tr>      
       
     </table>
 
   </main>
 
+      <div id="popup-dialog-motivo" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-motivo')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Eliminar Profesional</h3>
+                <table class="camp-table2">
+            <tr>
+                <td class="column-one2">
+                    <label for="campo_usuario_baja">Usuario</label>
+                </td>
+                <td class="column-two2">
+                    <input type="text" id="campo_usuario_baja" placeholder="usuario123" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one2">
+                    <label for="campo_motivo_baja">Motivo</label>
+                </td>
+                <td class="column-two2">
+                    <textarea id="campo_motivo_baja" placeholder="Escriba el motivo de eliminación del usuario" oninput="limitarCaracteres(event, 'contadorCaracteres_baja')" rows="4" wrap="soft"></textarea>
+                    <span id="contadorCaracteres_baja" style="text-align: left; margin-top: 50px;">300 caracteres restantes</span>
+                </td>
+                
+            </tr>
+            
+        </table>
+
+<!--boton eliminar-->
+<div class="button-container">
+    <form action="" method="POST">
+      <div class="form-group">
+        <button id="eliminar-button-motivo" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Eliminar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <!-- jQuery UI -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+
+  <!-- Estilos de jQuery UI (si los necesitas) -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="js/firebaseLoginAdminSistema.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/scriptsDialogPopup.js"></script>
+
   <script>
-    function toggleSearch(index) {
-      var container = document.getElementById('searchContainer' + index);
-      container.classList.toggle('active');
-      var input = container.querySelector('.search-input');
-      if (container.classList.contains('active')) {
-        input.focus();
-      } else {
-        input.value = '';
-        filterTable();
-      }
-    }
 
-    function toggleDeleteButtonVisibility() {
-        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
-        var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
-        eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
-    }
-
-    function toggleRevertButtonVisibility() {
-        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
-        var revertInstanciasBtn = document.getElementById('revertInstanciasBtn');
-        revertInstanciasBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
-    }
-
-
-
-    function toggleRowSelection(checkbox) {
-        var tableRow = checkbox.closest('tr');
-        if (checkbox.checked) {
-            tableRow.classList.add('clicked');
-        } else {
-            tableRow.classList.remove('clicked');
-        }
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-    }
-
-    function toggleSelectAll() {
-        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox');
-        var selectAllCheckbox = document.getElementById('selectAll');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = selectAllCheckbox.checked;
-            toggleRowSelection(checkboxes[i]);
-        }
-    }
-
-    
-    
-    // Función para restaurar filas
-    function toggleRestoreRow(row, icon) {
-        var revertIcon= icon;
-        var deleteIcon = revertIcon.previousElementSibling;
-        //var editIcon = deleteIcon.previousElementSibling;
-
-        revertIcon.classList.toggle('hide');
-        deleteIcon.classList.toggle('hide');
-        //editIcon.classList.toggle('hide');
-
-        var tableRow = revertIcon.closest('tr');
-        tableRow.classList.remove('deleted-row');
-
-        var checkbox = tableRow.querySelector('.rowCheckbox');
-        checkbox.style.display = 'inline-block';
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-    }
-    
-    
-    
-    function restaurarFilasSeleccionadas() {
-        var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
-        //var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            var checkbox = checkboxes[i];
-            var tableRow = checkbox.closest('tr');
-            var revertIcon = tableRow.querySelector('.revert-icon');
-            var deleteIcon = tableRow.querySelector('.delete-icon');
-            //var editIcon = tableRow.querySelector('.edit-icon');
-
-            deleteIcon.classList.remove('hide');
-            //editIcon.classList.remove('hide');
-            revertIcon.classList.add('hide');
-            tableRow.classList.remove('deleted-row');
-            //checkbox.style.display = 'inline-block';
-        }
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-    }
-
-    
-    function toggleDeleteRow(row, icon) {
-        var deleteIcon = icon;
-        //var editIcon = deleteIcon.previousElementSibling;
-        var revertIcon = deleteIcon.nextElementSibling;
-
-        deleteIcon.classList.toggle('hide');
-        //editIcon.classList.toggle('hide');
-        revertIcon.classList.toggle('hide');
-
-        var tableRow = deleteIcon.closest('tr');
-        tableRow.classList.toggle('deleted-row');
-
-        //var checkbox = tableRow.querySelector('.rowCheckbox');
-        //checkbox.style.display = tableRow.classList.contains('deleted-row') ? 'none' : 'inline-block';
-
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-    }
-    
-
-
-    function eliminarCalendariosSeleccionados() {
-        var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            var checkbox = checkboxes[i];
-            var tableRow = checkbox.closest('tr');
-            var deleteIcon = tableRow.querySelector('.delete-icon');
-            //var editIcon = tableRow.querySelector('.edit-icon');
-            var revertIcon = tableRow.querySelector('.revert-icon');
-
-            deleteIcon.classList.add('hide');
-            //editIcon.classList.add('hide');
-            revertIcon.classList.remove('hide')
-            tableRow.classList.add('deleted-row');
-
-        }
-
-        // Eliminar el fondo gris de las filas eliminadas
-        var deletedRows = document.querySelectorAll('.deleted-row');
-        for (var j = 0; j < deletedRows.length; j++) {
-            deletedRows[j].classList.remove('clicked');
-        }
-        
-        toggleDeleteButtonVisibility();
-        toggleRevertButtonVisibility();
-    }
-
-
-    
-
-
-    window.onload = function () {
-      var cells = document.getElementsByTagName('td');
-      for (var i = 0; i < cells.length; i++) {
-        cells[i].addEventListener('click', function () {
-          this.setAttribute('tabindex', '0');
-          this.focus();
-        });
-        cells[i].addEventListener('blur', function () {
-          this.removeAttribute('tabindex');
-        });
-      }
-
-      var inputs = document.getElementsByClassName('search-input');
-      for (var j = 0; j < inputs.length; j++) {
-        inputs[j].addEventListener('input', function () {
-          filterTable();
-        });
-      }
-
-      toggleDeleteButtonVisibility();
-      toggleRevertButtonVisibility();
-    };
-
-    function filterTable() {
-      var table = document.getElementsByTagName('table')[0];
-      var rows = table.getElementsByTagName('tr');
-
-      for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
-        var shouldDisplayRow = true;
-
-        var cells = row.getElementsByTagName('td');
-        for (var j = 1; j < cells.length - 1; j++) { // Start from 1 to skip the checkbox column
-          var cell = cells[j];
-          var searchInput = document.getElementById('search' + (j - 1)); // Adjust the search input index
-
-            if (searchInput) {
-                var searchText = searchInput.value.toUpperCase();
-                var cellText = cell.textContent || cell.innerText;
-
-                // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
-                if (j === 4 && searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
-                // Obtener el valor del campo de fecha
-                var selectedDate = $(searchInput).datepicker('getDate');
-
-                // Formatear la fecha en el formato "dd/mm/yyyy"
-                searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
-                }
-
-                if (cellText.toUpperCase().indexOf(searchText) === -1) {
-                shouldDisplayRow = false;
-                break;
-                }
+$(document).ready(function() {
+    // Realizar una solicitud GET a localhost:8080/perfil/get-all
+    $.get("http://localhost:8080/perfil/get-all", function(data) {
+        // Iterar a través de los resultados
+        data.forEach(function(perfil) {
+            // Excluir el perfil "Administrador del Sistema"
+            if (perfil.nombrePerfil !== "Administrador del Sistema") {
+                // Agregar una opción al select
+                $("#lista_usuarios").append($("<option>").val(perfil.codPerfil).text(perfil.nombrePerfil));
             }
-            
+        });
+
+    });
+    // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
+    var maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 20);
+    maxDate.setDate(maxDate.getDate());
+
+    var minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear());
+    minDate.setDate(minDate.getDate());
+
+    // Selecciona todos los campos de fecha con la clase "campo_fecha"
+    $(".campo_fecha").datepicker({
+        dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
+        changeMonth: true, // Permite cambiar el mes
+        changeYear: true, // Permite cambiar el año
+        yearRange: "0:+30", // Rango de años permitidos
+        minDate: minDate, // Fecha mínima permitida, a partir de la fecha actual
+        maxDate: maxDate, // Fecha máxima permitida (20 años en adelante desde la fecha actual, incluyendo la fecha actual)
+        // Agregamos la opción showAnim para mostrar el calendario desplegado con un efecto de plegado (fold)
+        showAnim: "fold"
+    });
+
+    // Agrega la propiedad "readonly" a los campos de fecha
+    $(".campo_fecha").attr("readonly", "readonly");
+});
+
+
+function limitarCaracteres(event, id) {
+            const input = event.target;
+            const maxLength = 300;
+            const currentLength = input.value.length;
+            const remainingChars = maxLength - currentLength;
+
+            if (remainingChars >= 0) {
+                document.getElementById(id).textContent = remainingChars + ' caracteres restantes';
+            } else {
+                // Si excede el límite, cortamos el texto en 300 caracteres
+                input.value = input.value.slice(0, maxLength);
+                document.getElementById(id).textContent = '0 caracteres restantes';
+            }
         }
-
-        row.style.display = shouldDisplayRow ? '' : 'none';
+function cargarTabla() {
+  fetch(`http://localhost:8080/usuario/get-all`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa
       }
-    }
+      return response.json();
+    })
+    .then((data) => {
+      // Hacer algo con los datos de la respuesta
+      console.log(data);
+      cargarHistorialParaUsuarios(data); // Llama a la función para cargar el historial
+    })
+    .catch((error) => {
+      // Manejar errores generales
+      console.error('Error:', error);
+    });
+}
 
+function filtrarUsuarios() {
+  var selectElement = document.getElementById("lista_usuarios");
+  var selectedValue = selectElement.value;
+
+  switch (selectedValue) {
+    case "todos":
+      fetch(`http://localhost:8080/usuario/get-all`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Hacer algo con los datos de la respuesta
+          console.log(data);
+          cargarHistorialParaUsuarios(data); // Llama a la función para cargar el historial
+        })
+        .catch((error) => {
+          // Manejar errores generales
+          console.error('Error:', error);
+        });
+      break;
+    default:
+    fetch(`http://localhost:8080/usuario/get-all/${selectedValue}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Hacer algo con los datos de la respuesta
+          console.log(data);
+          cargarHistorialParaUsuarios(data); // Llama a la función para cargar el historial
+        })
+        .catch((error) => {
+          // Manejar errores generales
+          console.error('Error:', error);
+        });
+      break;
+  }
+}
+  function cargarHistorialParaUsuarios(usuarios) {
+    if(usuarios.length===0){
+      reemplazarFilasConJSON(usuarios);
+    }
+    else{
+  const usuariosConHistorial = [];
+  const usuariosFiltrados = usuarios.filter((usuario) => usuario.perfil.codPerfil !== 2);
+  // Recorre la lista de usuarios
+  usuariosFiltrados.forEach((usuario) => {
+    // Elimina las propiedades no deseadas
+    delete usuario.codVerificacion;
+    delete usuario.token;
+
+    const { codUsuario } = usuario;
+    fetch(`http://localhost:8080/historialfinvigencia/${codUsuario}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error de red.');
+        }
+        return response.json();
+      })
+      .then((historial) => {
+        // Si el historial es una lista no vacía, obtén el último elemento
+        const ultimoHistorial = historial.length > 0 ? historial[historial.length - 1] : null;
+
+        // Agrega las propiedades al usuario o valores vacíos si no hay historial
+        usuario.fechaDesdeFV = ultimoHistorial ? ultimoHistorial.fechaDesdeFV : '';
+        usuario.fechaHastaFV = ultimoHistorial ? ultimoHistorial.fechaHastaFV : '';
+        usuario.motivoFV = ultimoHistorial ? ultimoHistorial.motivoFV : '';
+        
+        usuariosConHistorial.push(usuario);
+
+        // Si todos los usuarios tienen su historial cargado, reemplaza las filas en la tabla
+        if (usuariosConHistorial.length === usuariosFiltrados.length) {
+          reemplazarFilasConJSON(usuariosConHistorial);
+        }
+      })
+      .catch((error) => {
+        console.error('Error al cargar historial:', error);
+      });
+  });
+}
+}
+
+
+
+      cargarTabla();
    
+
+
     // Inicializar el selector de fecha en los campos con clase "datepicker"
     $(document).ready(function () {
       $(".datepicker").datepicker({
@@ -612,6 +974,28 @@
         filterTable(); // Filtrar la tabla cuando cambie el valor del campo de fecha
       });
     });
+
+
+function eliminarUsuario(id, motivo) {
+  const url = `http://localhost:8080/usuario/eliminar/${id}`;
+
+  // Datos a enviar, incluyendo el motivo como parte del cuerpo de la solicitud
+  const data = JSON.stringify(motivo);
+
+  $.ajax({
+    url: url,
+    type: 'POST',
+    data: data,
+    contentType: 'application/json',
+    success: function (data) {
+      // La solicitud fue exitosa, puedes manejar la respuesta aquí si es necesario.
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error('Error:', textStatus, errorThrown);
+      // Manejar errores generales aquí.
+    },
+  });
+}
 
   </script>
 </body>

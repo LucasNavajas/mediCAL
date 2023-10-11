@@ -27,5 +27,20 @@ public class PerfilPermisoDao {
 		repository.delete(perfilpermiso);
 	}
 	
+	public List<PerfilPermiso> obtenerPorCodigoPerfil(int codPerfil){
+		return repository.findByCodigoPerfil(codPerfil);
+	}
+	
+	public void guardarLista(List<PerfilPermiso> perfilPermisos) {
+        repository.saveAll(perfilPermisos);
+    }
+	
+	public void eliminarPorCodigoPerfil(int codPerfil) {
+        List<PerfilPermiso> permisosAntiguos = obtenerPorCodigoPerfil(codPerfil);
+        for(PerfilPermiso permiso : permisosAntiguos) {
+        	delete(permiso);
+        }
+    }
+	
 }
 

@@ -1,6 +1,7 @@
 package com.medical.springserver.model.usuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -311,12 +312,53 @@ public class UsuarioDao {
             }
             UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuario.getMailUsuario());
             String uid = userRecord.getUid();
-            FirebaseAuth.getInstance().deleteUser(uid);
+            userRecord = FirebaseAuth.getInstance().updateUser(new UserRecord.UpdateRequest(uid).setDisabled(true));
         } else {
             throw new NoSuchElementException("El usuario no existe.");
         }
 		
 	}
+	
+	
+	public void habilitarUsuario(int codUsuario) throws FirebaseAuthException {
+	    Optional<Usuario> usuarioOpt = repository.findByCodUsuario(codUsuario);
+	    
+	    if (usuarioOpt.isPresent()) {
+	        Usuario usuario = usuarioOpt.get();
+	        
+	        // Buscar el último historial de fin de vigencia
+	        HistorialFinVigencia ultimoHistorial = findLastHistorialByUsuarioCod(codUsuario);
+	        
+	        // Verificar si el último historial ya tiene una fecha de finalización
+	        if (ultimoHistorial != null && ultimoHistorial.getFechaHastaFV() == null) {
+	            // Establecer la fecha de finalización en la fecha actual
+	            ultimoHistorial.setFechaHastaFV(LocalDate.now());
+	            historialRepository.save(ultimoHistorial);
+	        }
+	        
+	        // Habilitar la cuenta en Firebase
+	        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuario.getMailUsuario());
+	        String uid = userRecord.getUid();
+	        userRecord = FirebaseAuth.getInstance().updateUser(new UserRecord.UpdateRequest(uid).setDisabled(false));
+	    } else {
+	        throw new NoSuchElementException("El usuario no existe.");
+	    }
+	}
+	
+	public HistorialFinVigencia findLastHistorialByUsuarioCod(int codUsuario) {
+	    List<HistorialFinVigencia> historiales = historialRepository.findHistorialByUsuarioCod(codUsuario);
+	    
+	    if (historiales.isEmpty()) {
+	        return null; // No hay historiales para el usuario
+	    } else {
+	        // Ordena la lista de historiales por nroHistorialFV en orden ascendente
+	        historiales.sort(Comparator.comparingInt(HistorialFinVigencia::getNroHistorialFV));
+	        
+	        // El último historial estará en el último elemento de la lista después de ordenar
+	        return historiales.get(historiales.size() - 1);
+	    }
+	}
+
 
 	public Usuario modificarToken(int codUsuario, String token) throws FirebaseAuthException {
 		Optional<Usuario> optionalUsuario = repository.findByCodUsuario(codUsuario);
@@ -329,4 +371,8 @@ public class UsuarioDao {
             throw new NoSuchElementException("El usuario no existe.");
         }
 	}
+	
+	public List<Usuario> findUsuariosByCodPerfil(int codPerfil) {
+        return repository.findByCodPerfil(codPerfil);
+    }
 }
