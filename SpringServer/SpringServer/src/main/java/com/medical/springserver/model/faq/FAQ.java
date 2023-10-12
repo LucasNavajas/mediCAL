@@ -2,10 +2,13 @@ package com.medical.springserver.model.faq;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.lang.Override;
+
 //Comentario de prueba github
 @Entity
 public class FAQ {
@@ -13,7 +16,9 @@ public class FAQ {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codFAQ;
 	private LocalDate fechaActualizacionFAQ;
+	@Column(length = 1000)
 	private String preguntatFAQ;
+	@Column(length = 1000)
 	private String respuestaFAQ;
 	private LocalDate fechaFinVigenciaFAQ;
 
