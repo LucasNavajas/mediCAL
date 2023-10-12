@@ -35,7 +35,24 @@
           var aceptarNuevo = aceptar.cloneNode(true);
           aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
           function handleAceptarClick() {
-              eliminarCalendariosSeleccionados();
+              openDialogMotivo('popup-dialog-agregar-motivo');
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+        }
+
+        function openDialogBajaTodosUsuarios(id){
+          var overlay = document.getElementById("popup-overlay");
+          var dialog = document.getElementById(id);
+          var aceptar = dialog.querySelector(".accept-button");
+          var aceptarNuevo = aceptar.cloneNode(true);
+          aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+          function handleAceptarClick() {
+              openDialogMotivoUsuario('popup-dialog-motivo');
           }
 
           // Agrega el nuevo controlador de eventos
@@ -99,6 +116,52 @@
                 // Por ejemplo, puedes establecer el contenido del span en su valor original.
                 span.textContent = "300 caracteres restantes";
             }
+
+            if(index === undefined || index === null || index === ""){
+            usuario.value ="Usuarios seleccionados";
+            var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+
+            var aceptar = dialog.querySelector("#eliminar-button-motivo");
+            var aceptarNuevo = aceptar.cloneNode(true);
+            function handleAceptarClick() {
+            for (var i = 0; i < checkboxes.length; i++) {
+              var checkbox = checkboxes[i];
+              var tableRow = checkbox.closest('tr');
+              eliminarUsuario(tableRow.cells[1].textContent, motivo.value);
+              var deleteIcon = tableRow.querySelector('.delete-icon');
+              var revertIcon = tableRow.querySelector('.revert-icon');
+              
+              // Buscar el atributo "data-propiedad" que contiene "cod"
+              var tds = tableRow.querySelectorAll('td[data-propiedad*="cod"]');
+              
+                if (tds.length > 0) {
+                  // Tomar el valor del primer td encontrado con "data-propiedad" que contiene "cod"
+                  var idInstancia = tds[0].textContent;
+                  
+                }
+
+                deleteIcon.classList.add('hide');
+                revertIcon.classList.remove('hide');
+                tableRow.classList.add('deleted-row');
+              }
+
+              // Eliminar el fondo gris de las filas eliminadas
+              var deletedRows = document.querySelectorAll('.deleted-row');
+              for (var j = 0; j < deletedRows.length; j++) {
+                deletedRows[j].classList.remove('clicked');
+              }
+
+          }
+
+            // Agrega el nuevo controlador de eventos
+            aceptarNuevo.addEventListener("click", handleAceptarClick);
+            aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+
+            }
+            else{
             const tabla = document.querySelector("table");
             const fila = tabla.rows[index+1];
             usuario.value = fila.cells[2].textContent;
@@ -117,6 +180,7 @@
             overlay.style.display = "block";
             overlay.style.opacity = "1";
             dialog.style.display = "block";
+          }
         }
 
 
@@ -131,9 +195,56 @@
                 // Por ejemplo, puedes establecer el contenido del span en su valor original.
                 span.textContent = "300 caracteres restantes";
             }
+
+            if(index === undefined || index === null || index === ""){
+            perfil.value ="Perfiles seleccionados";
+            var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
+
+            var aceptar = dialog.querySelector("#eliminar-button-motivo");
+            var aceptarNuevo = aceptar.cloneNode(true);
+            function handleAceptarClick() {
+            for (var i = 0; i < checkboxes.length; i++) {
+              var checkbox = checkboxes[i];
+              var tableRow = checkbox.closest('tr');
+              crearJSONPerfilBaja(tableRow.cells[1].textContent, motivo.value)
+              var deleteIcon = tableRow.querySelector('.delete-icon');
+              var revertIcon = tableRow.querySelector('.revert-icon');
+              
+              // Buscar el atributo "data-propiedad" que contiene "cod"
+              var tds = tableRow.querySelectorAll('td[data-propiedad*="cod"]');
+              
+                if (tds.length > 0) {
+                  // Tomar el valor del primer td encontrado con "data-propiedad" que contiene "cod"
+                  var idInstancia = tds[0].textContent;
+                  
+                }
+
+                deleteIcon.classList.add('hide');
+                revertIcon.classList.remove('hide');
+                tableRow.classList.add('deleted-row');
+              }
+
+              // Eliminar el fondo gris de las filas eliminadas
+              var deletedRows = document.querySelectorAll('.deleted-row');
+              for (var j = 0; j < deletedRows.length; j++) {
+                deletedRows[j].classList.remove('clicked');
+              }
+
+          }
+
+            // Agrega el nuevo controlador de eventos
+            aceptarNuevo.addEventListener("click", handleAceptarClick);
+            aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+
+            
+            }
+            
+            else{
             const tabla = document.querySelector("table");
             const fila = tabla.rows[index+1];
-            console.log(fila);
             perfil.value = fila.cells[6].textContent;
 
             var aceptar = dialog.querySelector("#eliminar-button-motivo");
@@ -150,7 +261,9 @@
             overlay.style.display = "block";
             overlay.style.opacity = "1";
             dialog.style.display = "block";
+          }
         }
+
 
         function closeDialog(id) {
             var overlay = document.getElementById("popup-overlay");

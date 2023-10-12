@@ -2,6 +2,7 @@ package com.medical.springserver.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.medical.springserver.model.profesionalsalud.ProfesionalSalud;
 import com.medical.springserver.model.profesionalsalud.ProfesionalSaludDao;
 
@@ -23,7 +24,12 @@ public class ProfesionalSaludController {
 	}
 	
 	@PostMapping("/profesionalsalud/save")
-	public ProfesionalSalud save(@RequestBody ProfesionalSalud profesionalsalud){
+	public ProfesionalSalud save(@RequestBody ProfesionalSalud profesionalsalud) throws FirebaseAuthException{
 		return profesionalsaludDao.save(profesionalsalud);
+	}
+	
+	@PostMapping("/profesionalsalud/save-desde-admin")
+	public ProfesionalSalud saveAdmin(@RequestBody ProfesionalSalud profesionalsalud) {
+		return profesionalsaludDao.saveAdmin(profesionalsalud);
 	}
 }

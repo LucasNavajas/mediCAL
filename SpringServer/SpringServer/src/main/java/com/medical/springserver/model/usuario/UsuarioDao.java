@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.UserRecord.CreateRequest;
 import com.google.firebase.auth.UserRecord.UpdateRequest;
 import com.medical.springserver.model.estadosolicitud.EstadoSolicitud;
 import com.medical.springserver.model.estadosolicitud.EstadoSolicitudDao;
@@ -54,7 +55,7 @@ public class UsuarioDao {
                 existingUsuario.setApellidoUsuario(usuario.getApellidoUsuario());
             }
             if (usuario.getContraseniaUsuario() != null) {
-                existingUsuario.setContraseniaUsuario(usuario.getContraseniaUsuario());
+                modificarContrasenia(usuario.getCodUsuario(), usuario.getContraseniaUsuario());
             }
             if (usuario.getFechaAltaUsuario() != null) {
                 existingUsuario.setFechaAltaUsuario(usuario.getFechaAltaUsuario());
@@ -69,9 +70,7 @@ public class UsuarioDao {
             	modificarMail(usuario.getCodUsuario() ,existingUsuario.getMailUsuario(), usuario.getMailUsuario());
             	existingUsuario.setMailUsuario(usuario.getMailUsuario());
             }
-            if (usuario.getNombreInstitucion() != null) {
                 existingUsuario.setNombreInstitucion(usuario.getNombreInstitucion());
-            }
             if (usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().equals("")) {
                 existingUsuario.setNombreUsuario(usuario.getNombreUsuario());
             }
@@ -320,7 +319,7 @@ public class UsuarioDao {
 	}
 	
 	
-	public void habilitarUsuario(int codUsuario) throws FirebaseAuthException {
+	public Usuario habilitarUsuario(int codUsuario) throws FirebaseAuthException {
 	    Optional<Usuario> usuarioOpt = repository.findByCodUsuario(codUsuario);
 	    
 	    if (usuarioOpt.isPresent()) {
@@ -340,6 +339,7 @@ public class UsuarioDao {
 	        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuario.getMailUsuario());
 	        String uid = userRecord.getUid();
 	        userRecord = FirebaseAuth.getInstance().updateUser(new UserRecord.UpdateRequest(uid).setDisabled(false));
+	        return usuario;
 	    } else {
 	        throw new NoSuchElementException("El usuario no existe.");
 	    }
@@ -375,4 +375,18 @@ public class UsuarioDao {
 	public List<Usuario> findUsuariosByCodPerfil(int codPerfil) {
         return repository.findByCodPerfil(codPerfil);
     }
+
+	public Usuario altaAdmin(Usuario usuario) {
+		CreateRequest request = new CreateRequest()
+	            .setEmail(usuario.getMailUsuario())
+	            .setPassword(usuario.getContraseniaUsuario())
+	            .setEmailVerified(true);
+		try {
+	        UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
+	        System.out.println("Successfully created new user: " + userRecord.getUid());
+	    } catch (Exception e) {
+	        System.err.println("Error creating user: " + e.getMessage());
+	    }
+		return saveConHash(usuario);
+	}
 }

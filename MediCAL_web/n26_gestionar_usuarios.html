@@ -508,6 +508,354 @@
     margin-right: auto; /* Cambiado a 'auto' */
     margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
 }
+
+         #popup-dialog-alta-usuario {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-alta-usuario h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-alta-usuario label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-alta-usuario input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        #popup-dialog-alta-usuario input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-alta-usuario ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        #popup-dialog-alta-usuario select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-alta-usuario .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-alta-usuario .camp-table td, #popup-dialog-alta-usuario .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-alta-usuario .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-alta-usuario tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-alta-usuario tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-alta-usuario .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-alta-usuario .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    #popup-dialog-alta-usuario .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+#popup-dialog-alta-usuario .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+#popup-dialog-alta-usuario .input-group input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+/* Estilos para el span que contiene los iconos */
+#popup-dialog-alta-usuario .input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    #popup-dialog-alta-usuario .icon-check,
+    #popup-dialog-alta-usuario .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    #popup-dialog-alta-usuario .icon-error {
+      color: red;
+    }
+/*boton guardar*/
+#popup-dialog-alta-usuario .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+
+        #popup-dialog-modificar-usuario {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-modificar-usuario h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-modificar-usuario label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-modificar-usuario input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+        margin-top: 15px;
+        }
+
+        #popup-dialog-modificar-usuario input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-modificar-usuario ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        /* Estilo para el menú desplegable */
+        #popup-dialog-modificar-usuario select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-modificar-usuario .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-modificar-usuario .camp-table td, #popup-dialog-modificar-usuario .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-modificar-usuario .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-modificar-usuario tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-modificar-usuario tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-modificar-usuario .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-modificar-usuario .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+    /*alertas e iconitos*/
+
+    #popup-dialog-modificar-usuario .alert {
+    color: red;
+    outline: none;
+    font-weight: 400px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+    padding: 0px;
+    max-width: 100%;
+}
+/* Estilos para el input-group */
+#popup-dialog-modificar-usuario .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos para el input */
+#popup-dialog-modificar-usuario .input-group input {
+    flex: 1;
+    border-radius: 0px;
+    padding: 0px;
+}
+
+/* Estilos para el span que contiene los iconos */
+#popup-dialog-modificar-usuario .input-group .input-group-text {
+    background-color: transparent;
+    border: none;
+    align-items: right;
+    color: green;
+    padding: 0; /* Eliminamos el padding para que el span no tenga un espacio adicional */
+}
+
+
+    #popup-dialog-modificar-usuario .icon-check,
+    #popup-dialog-modificar-usuario .icon-error {
+      color: green;
+      margin-left:0px;
+      margin-right: -25px;
+
+    }
+
+    #popup-dialog-modificar-usuario .icon-error {
+      color: red;
+    }
+/*boton guardar*/
+#popup-dialog-modificar-usuario .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
   </style>
 </head>
 
@@ -604,13 +952,13 @@
     <div class="container">
       <!-- Contenedor de botones con espacio entre ellos y ancho igual al de la tabla -->
       <div class="button-container">
-          <button id="eliminarCalendariosBtn" onclick="eliminarCalendariosSeleccionados()" class="click-animation btn-eliminar hide">
+          <button id="eliminarCalendariosBtn" onclick="openDialogBajaTodosUsuarios('popup-dialog-baja')" class="click-animation btn-eliminar hide">
             Eliminar instancias
           </button>
           <button id="revertInstanciasBtn" onclick="restaurarFilasSeleccionadas()" class="click-animation btn-revert hide">
             Restablecer instancias
           </button>
-          <button type="submit" class="click-animation btn-agregar">
+          <button type="submit" class="click-animation btn-agregar" onclick="openDialog('popup-dialog-alta-usuario')">
             Agregar instancia
           </button>
       </div>
@@ -758,6 +1106,335 @@
   </div>
     </div>
 
+    <div id="popup-dialog-alta-usuario" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-alta-usuario')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Agregar Usuario</h3>
+        
+        <table class="camp-table">
+            <tr>
+                <td class="column-one">
+                    <label for="campo_usuario_alta">Usuario</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_usuario_alta" placeholder="Usuarioejemplo123" style="width: 100%;" oninput="checkUsername('campo_usuario_alta', 'username-alert-alta', 'guardar-button-alta', 'username-match-icon', 'username-mismatch-icon')">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+                <tr>
+                    <td class="column-one">
+                        <label for="campo_tipo_usuario_alta">Perfil de Usuario</label>
+                    </td>
+                    <td class="column-two">
+                        <div style="display: flex; justify-content: flex-start; width: 100%;">
+                            <select id="campo_tipo_usuario_alta">
+                                <option value="" disabled selected>Seleccionar prefil del usuario</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_institucion_alta">Nombre Institución</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_institucion_alta" placeholder=" Hospital_01" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+            
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_dni_alta">Documento de identidad</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_dni_alta" placeholder="00000000" style="width: 100%;" oninput="checkDni('campo_dni_alta', 'dni-alert-alta', 'guardar-button-alta')">
+                    <div id="dni-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_matricula_alta">Matrícula</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_matricula_alta" placeholder="00000" style="width: 100%;" oninput="checkMatricula('campo_matricula_alta', 'matricula-alert-alta', 'guardar-button-alta')">
+                    <div id="matricula-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_alta">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_alta" placeholder="Nombre usuario" style="width: 100%;" oninput="checkName('campo_nombre_alta', 'name-alert-alta', 'guardar-button-alta')">
+                    <div id="name-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_apellido_alta">Apellido</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_apellido_alta" placeholder="Apellido usuario" style="width: 100%; text-align: left;" oninput="checkLastName('campo_apellido_alta', 'lastname-alert-alta', 'guardar-button-alta')">
+                    <div id="lastname-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_genero_alta">Género</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_genero_alta">
+                            <option value="" disabled selected>Seleccionar género</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="No binario">No binario</option>
+                            <option value="Agenero">Agénero</option>
+                            <option value="Bigenero">Bigénero</option>
+                            <option value="Hombre Trans">Hombre Trans</option>
+                            <option value="Mujer Trans">Mujer Trans</option>
+                            <option value="Queer">Queer</option>
+                            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_email_alta">Dirección de correo electrónico</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_email_alta" placeholder="correoejemplo@dominio.com" style="width: 100%;" oninput="checkEmail('campo_email_alta', 'email-alert-alta', 'guardar-button-alta')">
+                    <div id="email-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_telefono_alta">Teléfono</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_telefono_alta" placeholder="0000000000" style="width: 100%;" oninput="checkPhone('campo_telefono_alta', 'phone-alert-alta', 'guardar-button-alta')">
+                    <div id="phone-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fnacimiento_alta">Fecha de nacimiento</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fnacimiento_alta" class="campo_fecha" placeholder="Seleccione la fecha de nacimiento" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="column-one">
+                    <label for="campo_contraseña_alta">Contraseña</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_contraseña_alta" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña('campo_contraseña_alta', 'contraseña-alert-alta', 'guardar-button-alta', 'password-match-icon', 'password-mismatch-icon')">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="contraseña-alert-alta" class="alert"></div>
+                </td>
+            </tr>
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONUsuario();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button-alta" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+     <div id="popup-dialog-modificar-usuario" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modificar-usuario')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Usuario</h3>
+        
+        <table class="camp-table">
+          <tr>
+                <td class="column-one">
+                    <label for="campo_cod_modif">Codigo Usuario</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_cod_modif" placeholder="123" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_usuario_modif">Usuario</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_usuario_modif" placeholder="Usuarioejemplo123" style="width: 100%;" oninput="checkUsername('campo_usuario_modif', 'username-alert-modif', 'guardar-button', 'username-match-icon-modif', 'username-mismatch-icon-modif')">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="username-match-icon-modif" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="username-mismatch-icon-modif" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="username-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="column-one">
+                        <label for="campo_tipo_usuario_modif">Perfil de Usuario</label>
+                    </td>
+                    <td class="column-two">
+                        <div style="display: flex; justify-content: flex-start; width: 100%;">
+                            <select id="campo_tipo_usuario_modif" disabled>
+                                <option value="" disabled selected>Seleccionar prefil del usuario</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_institucion_modif">Nombre Institución</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_institucion_modif" placeholder=" Hospital_01" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+            
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_dni_modif">Documento de identidad</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_dni_modif" placeholder="00000000" style="width: 100%;" oninput="checkDni('campo_dni_modif', 'dni-alert-modif', 'guardar-button')">
+                    <div id="dni-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_matricula_modif">Matrícula</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_matricula_modif" placeholder="00000" style="width: 100%;" oninput="checkMatricula('campo_matricula_modif', 'matricula-alert-modif', 'guardar-button')">
+                    <div id="matricula-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_nombre_modif">Nombre</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_nombre_modif" placeholder="Nombre usuario" style="width: 100%;" oninput="checkName('campo_nombre_modif', 'name-alert-modif', 'guardar-button')">
+                    <div id="name-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_apellido_modif">Apellido</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_apellido_modif" placeholder="Apellido usuario" style="width: 100%; text-align: left;" oninput="checkLastName('campo_apellido_modif', 'lastname-alert-modif', 'guardar-button')">
+                    <div id="lastname-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_genero_modif">Género</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_genero_modif">
+                            <option value="" disabled selected>Seleccionar género</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="No binario">No binario</option>
+                            <option value="Agenero">Agénero</option>
+                            <option value="Bigenero">Bigénero</option>
+                            <option value="Hombre Trans">Hombre Trans</option>
+                            <option value="Mujer Trans">Mujer Trans</option>
+                            <option value="Queer">Queer</option>
+                            <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_email_modif">Dirección de correo electrónico</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_email_modif" placeholder="correoejemplo@dominio.com" style="width: 100%;" oninput="checkEmail('campo_email_modif', 'email-alert-modif', 'guardar-button')">
+                    <div id="email-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_telefono_modif">Teléfono</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_telefono_modif" placeholder="0000000000" style="width: 100%;" oninput="checkPhone('campo_telefono_modif', 'phone-alert-modif', 'guardar-button')">
+                    <div id="phone-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fnacimiento_modif">Fecha de nacimiento</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fnacimiento_modif" class="campo_fecha" placeholder="Seleccione la fecha de nacimiento" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_contraseña_modif">Contraseña</label>
+                </td>
+                <td class="column-two">
+                    <div class="input-group">
+                        <input type="text" id="campo_contraseña_modif" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña('campo_contraseña_modif', 'campo_contraseña_modif', 'guardar-button', 'password-match-icon-modif', 'password-mismatch-icon-modif')">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle-fill icon-check" id="password-match-icon-modif" style="display: none;"></i>
+                                <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon-modif" style="display: none;"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="contraseña-alert-modif" class="alert"></div>
+                </td>
+            </tr>
+        </table>
+<!--boton guardar-->
+<div class="button-container">
+    <form action="javascript:crearJSONUsuarioModificado();" method="POST">
+      <div class="form-group">
+        <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+      </div>
+    </form>
+  </div>
+    </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
@@ -780,6 +1457,70 @@
   <script>
 
 $(document).ready(function() {
+
+  var selectPerfil = $("#campo_tipo_usuario_alta");
+    var campoNombreInstitucion = $("#campo_institucion_alta");
+    var campoDNI = $("#campo_dni_alta");
+    var campoMatricula = $("#campo_matricula_alta");
+
+    // Agregar un controlador de eventos al campo de selección de perfil
+    selectPerfil.on("change", function() {
+        var perfilSeleccionado = selectPerfil.val();
+
+        // Verificar el valor seleccionado y habilitar/deshabilitar los campos en consecuencia
+        if (perfilSeleccionado === "3" || perfilSeleccionado === "4") {
+            campoNombreInstitucion.prop("disabled", false);
+            campoDNI.prop("disabled", false);
+            campoMatricula.prop("disabled", false);
+            campoNombreInstitucion.attr("placeholder", "Ingrese el nombre de la institucion");
+            campoDNI.attr("placeholder", "Ingrese el DNI");
+            campoMatricula.attr("placeholder", "Ingrese la matrícula");
+        } else {
+            campoNombreInstitucion.prop("disabled", true);
+            campoDNI.prop("disabled", true);
+            campoMatricula.prop("disabled", true);
+            campoNombreInstitucion.val("");
+            campoDNI.val("");
+            campoMatricula.val("");
+            campoNombreInstitucion.attr("placeholder", "No es perfil de institución");
+            campoDNI.attr("placeholder", "No es perfil de institución");
+            campoMatricula.attr("placeholder", "No es perfil de institución");
+        }
+    });
+
+
+    var selectPerfil2 = $("#campo_tipo_usuario_modif");
+    var campoNombreInstitucion2 = $("#campo_institucion_modif");
+    var campoDNI2 = $("#campo_dni_modif");
+    var campoMatricula2 = $("#campo_matricula_modif");
+
+    // Agregar un controlador de eventos al campo de selección de perfil
+    selectPerfil2.on("change", function() {
+        var perfilSeleccionado2 = selectPerfil2.val();
+
+        // Verificar el valor seleccionado y habilitar/deshabilitar los campos en consecuencia
+        if (perfilSeleccionado2 === "3" || perfilSeleccionado2 === "4") {
+            campoNombreInstitucion2.prop("disabled", false);
+            campoDNI2.prop("disabled", false);
+            campoMatricula2.prop("disabled", false);
+            campoNombreInstitucion2.attr("placeholder", "Ingrese el nombre de la institucion");
+            campoDNI2.attr("placeholder", "Ingrese el DNI");
+            campoMatricula2.attr("placeholder", "Ingrese la matrícula");
+        } else {
+            campoNombreInstitucion2.prop("disabled", true);
+            campoDNI2.prop("disabled", true);
+            campoMatricula2.prop("disabled", true);
+            campoNombreInstitucion2.val("");
+            campoDNI2.val("");
+            campoMatricula2.val("");
+            campoNombreInstitucion2.attr("placeholder", "No es perfil de institución");
+            campoDNI2.attr("placeholder", "No es perfil de institución");
+            campoMatricula2.attr("placeholder", "No es perfil de institución");
+        }
+    });
+
+    // Llamar al controlador de eventos al cargar la página para manejar el estado inicial
+    selectPerfil.trigger("change");
     // Realizar una solicitud GET a localhost:8080/perfil/get-all
     $.get("http://localhost:8080/perfil/get-all", function(data) {
         // Iterar a través de los resultados
@@ -794,11 +1535,9 @@ $(document).ready(function() {
     });
     // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
     var maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() + 20);
-    maxDate.setDate(maxDate.getDate());
 
     var minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear());
+    minDate.setFullYear(minDate.getFullYear()-100);
     minDate.setDate(minDate.getDate());
 
     // Selecciona todos los campos de fecha con la clase "campo_fecha"
@@ -815,9 +1554,77 @@ $(document).ready(function() {
 
     // Agrega la propiedad "readonly" a los campos de fecha
     $(".campo_fecha").attr("readonly", "readonly");
+
+    $.get("http://localhost:8080/perfil/get-all", function(data) {
+    var selectTipoUsuarioAlta = $("#campo_tipo_usuario_alta");
+    var selectTipoUsuarioModif = $("#campo_tipo_usuario_modif");
+    $.each(data, function(index, perfil) {
+        if (perfil.codPerfil !== 2) {
+            selectTipoUsuarioAlta.append($("<option>", {
+                value: perfil.codPerfil,
+                text: perfil.nombrePerfil
+            }));
+            selectTipoUsuarioModif.append($("<option>", {
+                value: perfil.codPerfil,
+                text: perfil.nombrePerfil
+            }));
+        }
+    });
+}).fail(function(error) {
+    console.error("Error al obtener los perfiles:", error);
+});
 });
 
+var usuariosExistentes = [];
+var mailsExistentes = [];
+fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       usuariosExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
 
+
+fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       mailsExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+function editarInstancia(index){
+  openDialogModificar("popup-dialog-modificar-usuario", index);
+}
 function limitarCaracteres(event, id) {
             const input = event.target;
             const maxLength = 300;
@@ -855,6 +1662,165 @@ function cargarTabla() {
       console.error('Error:', error);
     });
 }
+
+function checkUsername(id, idalert, guardar, matchid, mismatchid) {
+    var usernameInput = document.getElementById(id);
+    var username = usernameInput.value;
+    var usernameMatchIcon = document.getElementById(matchid);
+    var usernameMismatchIcon = document.getElementById(mismatchid);
+    var usernameAlert = document.getElementById(idalert);
+    var guardarButton = document.getElementById(guardar);
+
+    if (username.length > 30) {
+        // Si el usuario supera los 30 caracteres, truncamos el valor del campo a 30 caracteres
+        usernameInput.value = username.substring(0, 30);
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
+        guardarButton.disabled = true;
+    } else if (usuariosExistentes.includes(username)) {
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
+        guardarButton.disabled = true;
+    } else if(username.length<1){
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "Ingrese un nombre de usuario.";
+        guardarButton.disabled = true;
+    }
+    else{
+        usernameMatchIcon.style.display = "inline-block";
+        usernameMismatchIcon.style.display = "none";
+        usernameAlert.innerText = "";
+        guardarButton.disabled = false;
+    }
+}
+
+function checkContraseña(id, idalert, guardar, matchid, mismatchid) {
+    var contrasenaInput = document.getElementById(id);
+    var contrasena = contrasenaInput.value;
+    var contrasenaAlert = document.getElementById(idalert);
+    var passwordMatchIcon = document.getElementById(matchid);
+    var passwordMismatchIcon = document.getElementById(mismatchid);
+    var guardarButton = document.getElementById(guardar);
+
+    if (contrasena.length > 15) {
+        contrasenaAlert.innerText = "La contraseña puede tener como máximo 15 caracteres.";
+        contrasenaInput.value = contrasena.substring(0, 15); // Corta el texto hasta los primeros 16 caracteres
+        guardarButton.disabled = true;
+        passwordMatchIcon.style.display = "none";
+        passwordMismatchIcon.style.display = "inline-block";
+    } else if (contrasena.length < 6 || contrasena.length > 15) {
+        contrasenaAlert.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
+        guardarButton.disabled = true;
+        passwordMatchIcon.style.display = "none";
+        passwordMismatchIcon.style.display = "inline-block";
+    } else {
+        contrasenaAlert.innerText = "";
+        guardarButton.disabled = false;
+        passwordMatchIcon.style.display = "inline-block";
+        passwordMismatchIcon.style.display = "none";
+
+    }
+}
+        function checkName(id, idalert, guardar) {
+            var nameInput = document.getElementById(id);
+            var name = nameInput.value;
+            var nameAlert = document.getElementById(idalert);
+    
+            if (name.length > 30) {
+                nameAlert.innerText = "Ingresar nombre del profesional en 30 caracteres.";
+                nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                nameAlert.innerText = "";
+            }
+        }
+    
+        function checkLastName(id, idalert, guardar) {
+            var lastNameInput = document.getElementById(id);
+            var lastName = lastNameInput.value;
+            var lastNameAlert = document.getElementById(idalert);
+    
+            if (lastName.length > 30) {
+                lastNameAlert.innerText = "Ingresar apellido del profesional en 30 caracteres.";
+                lastNameInput.value = lastName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                lastNameAlert.innerText = "";
+            }
+        }
+    
+        function checkDni(id, idalert, guardar) {
+            var dniInput = document.getElementById(id);
+            var dni = dniInput.value;
+            var dniAlert = document.getElementById(idalert);
+            var guardarButton = document.getElementById(guardar);
+    
+            var dniPattern = /^[0-9]{7,8}$/; // Patrón para validar el dni 7 u 8 dígitos
+    
+            if (!dniPattern.test(dni)) {
+                guardarButton.disabled = true;
+                dniAlert.innerText = "Documento Nacional de Identidad inválido.\nIngrese los dígitos sin espacios ni puntos.";
+            } else {
+                guardarButton.disabled = false;
+                dniAlert.innerText = "";
+            }
+        }
+    
+        function checkPhone(id, idalert, guardar) {
+            var phoneInput = document.getElementById(id);
+            var phone = phoneInput.value;
+            var phoneAlert = document.getElementById(idalert);
+            var guardarButton = document.getElementById(guardar);
+    
+            var phonePattern = /^\d{10,16}$/; // Patrón para validar el formato de números de teléfono (10 a 16 dígitos)
+    
+            if (!phonePattern.test(phone)) {
+                phoneAlert.innerText = "Número de teléfono no válido.";
+                guardarButton.disabled = true;
+            } else {
+                guardarButton.disabled = false;
+                phoneAlert.innerText = "";
+            }
+        }
+    
+        function checkMatricula(id, idalert, guardar) {
+            var matriculaInput = document.getElementById(id);
+            var matricula = matriculaInput.value;
+            var matriculaAlert = document.getElementById(idalert);
+            var guardarButton = document.getElementById(guardar);
+            var matriculaPattern = /^\d{4,6}$/; // Patrón para validar el formato de números de matriculas (4 a 6 dígitos)
+    
+            if (!matriculaPattern.test(matricula)) {
+                matriculaAlert.innerText = "Número de matrícula inválido.\nIngrese los dígitos sin espacios ni puntos.";
+                guardarButton.disabled = true;
+            } else {
+                matriculaAlert.innerText = "";
+                guardarButton.disabled = false;
+            }
+        }   
+    
+        function checkEmail(id, idalert, guardar) {
+            var emailInput = document.getElementById(id);
+            var email = emailInput.value;
+            var emailAlert = document.getElementById(idalert);
+            var guardarButton = document.getElementById(guardar);
+    
+            var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
+    
+            if (!emailPattern.test(email)) {
+                emailAlert.innerText = "Correo electrónico no válido.";
+                guardarButton.disabled = true;
+            } else if(mailsExistentes.includes(email)){
+                emailAlert.innerText = "Este correo ya está en uso, ingrese uno diferente.";
+                guardarButton.disabled = true;
+            }
+            else{
+                emailAlert.innerText = "";
+                guardarButton.disabled = false;
+            }
+        }
+
 
 function filtrarUsuarios() {
   var selectElement = document.getElementById("lista_usuarios");
@@ -919,7 +1885,7 @@ function filtrarUsuarios() {
   // Recorre la lista de usuarios
   usuariosFiltrados.forEach((usuario) => {
     // Elimina las propiedades no deseadas
-    delete usuario.codVerificacion;
+    delete usuario.codigoVerificacion;
     delete usuario.token;
 
     const { codUsuario } = usuario;
@@ -943,11 +1909,17 @@ function filtrarUsuarios() {
         usuario.fechaDesdeFV = ultimoHistorial ? ultimoHistorial.fechaDesdeFV : '';
         usuario.fechaHastaFV = ultimoHistorial ? ultimoHistorial.fechaHastaFV : '';
         usuario.motivoFV = ultimoHistorial ? ultimoHistorial.motivoFV : '';
-        
+       // Verifica si el JSON de usuario tiene la propiedad 'dni' y asigna su valor, o lo deja vacío
+        usuario.dni = usuario.hasOwnProperty('dni') ? usuario.dni : null;
+
+        // Verifica si el JSON de usuario tiene la propiedad 'matricula' y asigna su valor, o lo deja vacío
+        usuario.matricula = usuario.hasOwnProperty('matricula') ? usuario.matricula : null;
+
         usuariosConHistorial.push(usuario);
 
         // Si todos los usuarios tienen su historial cargado, reemplaza las filas en la tabla
         if (usuariosConHistorial.length === usuariosFiltrados.length) {
+          usuariosConHistorial.sort((a, b) => a.codUsuario - b.codUsuario);
           reemplazarFilasConJSON(usuariosConHistorial);
         }
       })
@@ -957,9 +1929,6 @@ function filtrarUsuarios() {
   });
 }
 }
-
-
-
       cargarTabla();
    
 
@@ -997,7 +1966,241 @@ function eliminarUsuario(id, motivo) {
   });
 }
 
+function crearJSONUsuario(){
+  var usuario = document.getElementById("campo_usuario_alta").value;
+  var perfil = document.getElementById("campo_tipo_usuario_alta").value;
+  var institucion = document.getElementById("campo_institucion_alta").value;
+  var dni = document.getElementById("campo_dni_alta").value;
+  var matricula = document.getElementById("campo_matricula_alta").value;
+  var nombre = document.getElementById("campo_nombre_alta").value;
+  var apellido = document.getElementById("campo_apellido_alta").value;
+  var genero = document.getElementById("campo_genero_alta").value;
+  var email = document.getElementById("campo_email_alta").value;
+  var telefono = document.getElementById("campo_telefono_alta").value;
+  var fechaNac = document.getElementById("campo_fnacimiento_alta").value;
+  var contrasenia = document.getElementById("campo_contraseña_alta").value;
+  var fechaHoy = new Date();
+
+  if(perfil == "3" || perfil == "4"){
+    var jsonUsuarioSalud = {
+    usuarioUnico : usuario,
+    perfil : {
+      codPerfil : perfil
+    },
+    nombreInstitucion : institucion,
+    dni : dni,
+    matricula : matricula,
+    nombreUsuario : nombre,
+    apellidoUsuario : apellido,
+    generoUsuario : genero,
+    mailUsuario : email,
+    telefonoUsuario : telefono,
+    contraseniaUsuario: contrasenia,
+    fechaAltaUsuario: fechaHoy,
+    fechaNacimientoUsuario : fechaNac
+  };
+  guardarProfesional(jsonUsuarioSalud);
+
+  }
+  else{
+    var jsonUsuario = {
+    usuarioUnico : usuario,
+    perfil : {
+      codPerfil : perfil
+    },
+    nombreUsuario : nombre,
+    apellidoUsuario : apellido,
+    generoUsuario : genero,
+    mailUsuario : email,
+    telefonoUsuario : telefono,
+    contraseniaUsuario: contrasenia,
+    fechaAltaUsuario: fechaHoy,
+    fechaNacimientoUsuario : fechaNac
+  };
+  console.log(jsonUsuario);
+  guardarUsuario(jsonUsuario);
+  }
+}
+
+function crearJSONUsuarioModificado(){
+  var perfil = document.getElementById("campo_tipo_usuario_modif").value;
+  var codigo = document.getElementById("campo_cod_modif").value;
+  var usuario = document.getElementById("campo_usuario_modif").value;
+  var institucion = document.getElementById("campo_institucion_modif").value;
+  var dni = document.getElementById("campo_dni_modif").value;
+  var matricula = document.getElementById("campo_matricula_modif").value;
+  var nombre = document.getElementById("campo_nombre_modif").value;
+  var apellido = document.getElementById("campo_apellido_modif").value;
+  var genero = document.getElementById("campo_genero_modif").value;
+  var email = document.getElementById("campo_email_modif").value;
+  var telefono = document.getElementById("campo_telefono_modif").value;
+  var fechaNac = document.getElementById("campo_fnacimiento_modif").value;
+  var contrasenia = document.getElementById("campo_contraseña_modif").value;
+  var fechaHoy = new Date();
+
+  if(perfil == "3" || perfil == "4"){
+    var jsonUsuarioSalud = {
+    codUsuario : codigo,
+    usuarioUnico : usuario,
+    nombreInstitucion : institucion,
+    dni : dni,
+    matricula : matricula,
+    nombreUsuario : nombre,
+    apellidoUsuario : apellido,
+    generoUsuario : genero,
+    mailUsuario : email,
+    telefonoUsuario : telefono,
+    fechaAltaUsuario: fechaHoy,
+    fechaNacimientoUsuario : fechaNac
+  };
+  console.log(jsonUsuarioSalud);
+  modificarProfesional(jsonUsuarioSalud);
+
+  }
+  else{
+    var jsonUsuario = {
+    codUsuario : codigo,
+    usuarioUnico : usuario,
+    nombreUsuario : nombre,
+    apellidoUsuario : apellido,
+    generoUsuario : genero,
+    mailUsuario : email,
+    telefonoUsuario : telefono,
+    fechaAltaUsuario: fechaHoy,
+    fechaNacimientoUsuario : fechaNac
+  };
+  modificarUsuario(jsonUsuario);
+  }
+}
+  function guardarProfesional(json){
+    var url = "http://localhost:8080/profesionalsalud/save-desde-admin";
+
+    // Realizar la solicitud AJAX
+    $.ajax({
+        type: "POST",
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
+        success: function (data) {
+            console.log("Profesional de salud guardado exitosamente:", data);
+            closeDialog('popup-dialog-alta-usuario');
+            closeDialog('popup-dialog-modificar-usuario');
+            cargarTabla();
+        },
+        error: function (error) {
+            console.error("Error al guardar el profesional de salud:", error);
+        }
+    });
+  }
+
+  function modificarUsuario(json){
+    var url = "http://localhost:8080/usuario/save";
+
+    // Realizar la solicitud AJAX
+    $.ajax({
+        type: "POST",
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
+        success: function (data) {
+            console.log("Usuario guardado exitosamente:", data);
+            closeDialog('popup-dialog-alta-usuario');
+            closeDialog('popup-dialog-modificar-usuario');
+            cargarTabla();
+        },
+        error: function (error) {
+            console.error("Error al guardar el usuario:", error);
+        }
+    });
+  }
+
+  function modificarProfesional(json){
+    var url = "http://localhost:8080/profesionalsalud/save";
+
+    // Realizar la solicitud AJAX
+    $.ajax({
+        type: "POST",
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
+        success: function (data) {
+            console.log("Usuario guardado exitosamente:", data);
+            closeDialog('popup-dialog-alta-usuario');
+            closeDialog('popup-dialog-modificar-usuario');
+            cargarTabla();
+        },
+        error: function (error) {
+            console.error("Error al guardar el usuario:", error);
+        }
+    });
+  }
+
+
+
+    function guardarUsuario(json){
+    var url = "http://localhost:8080/usuario/alta-desde-admin";
+
+    // Realizar la solicitud AJAX
+    $.ajax({
+        type: "POST",
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
+        success: function (data) {
+            console.log("Usuario guardado exitosamente:", data);
+            closeDialog('popup-dialog-alta-usuario');
+            closeDialog('popup-dialog-modificar-usuario');
+            cargarTabla();
+        },
+        error: function (error) {
+            console.error("Error al guardar el usuario:", error);
+        }
+    });
+  }
+
+function setearValoresAModificar(id, index){
+  const contenedor = document.getElementById(id);
+  const tabla = document.querySelector("table");
+  const fila = tabla.rows[index+1];
+  var codigo = document.getElementById("campo_cod_modif");
+  var usuario = document.getElementById("campo_usuario_modif");
+  var perfil = document.getElementById("campo_tipo_usuario_modif");
+  var institucion = document.getElementById("campo_institucion_modif");
+  var dni = document.getElementById("campo_dni_modif");
+  var matricula = document.getElementById("campo_matricula_modif");
+  var nombre = document.getElementById("campo_nombre_modif");
+  var apellido = document.getElementById("campo_apellido_modif");
+  var genero = document.getElementById("campo_genero_modif");
+  var email = document.getElementById("campo_email_modif");
+  var telefono = document.getElementById("campo_telefono_modif");
+  var fechaNac = document.getElementById("campo_fnacimiento_modif");
+
+  codigo.value = fila.cells[1].textContent;
+  usuario.value = fila.cells[2].textContent;
+  nombre.value = fila.cells[4].textContent;
+  apellido.value = fila.cells[5].textContent;
+  fechaNac.value = formatearStringADate(fila.cells[7].textContent);
+  genero.value = fila.cells[8].textContent;
+  email.value = fila.cells[9].textContent;
+  if(fila.cells[12].textContent =="3" || fila.cells[12].textContent == "4"){
+    institucion.value = fila.cells[10].textContent;
+    dni.value= fila.cells[16].textContent;
+    matricula.value = fila.cells[17].textContent;
+  }
+  else{
+    institucion.placeholder= "No es perfil de institución";
+    dni.placeholder= "No es perfil de institución";
+    matricula.placeholder= "No es perfil de institución";
+  }
+  telefono.value = fila.cells[11].textContent;
+  perfil.value = fila.cells[12].textContent;
+
+
+
+
+}
   </script>
+}
 </body>
 
 </html>

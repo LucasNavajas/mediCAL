@@ -239,7 +239,18 @@
                     <div id="username-alert" class="alert"></div>
                 </td>
             </tr>
-
+                <tr>
+                    <td class="column-one">
+                        <label for="campo_tipo_usuario">Perfil de Usuario</label>
+                    </td>
+                    <td class="column-two">
+                        <div style="display: flex; justify-content: flex-start; width: 100%;">
+                            <select id="campo_tipo_usuario">
+                                <option value="" disabled selected>Seleccionar prefil del usuario</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
             <tr>
                 <td class="column-one">
                     <label for="campo_usuario">Nombre Institución</label>
@@ -258,6 +269,15 @@
                 <td class="column-two">
                     <input type="text" id="campo_dni" placeholder="00000000" style="width: 100%;" oninput="checkDni()">
                     <div id="dni-alert" class="alert"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-one">
+                    <label for="campo_matricula">Matrícula</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_matricula" placeholder="00000" style="width: 100%;" oninput="checkMatricula()">
+                    <div id="matricula-alert" class="alert"></div>
                 </td>
             </tr>
             <tr>
@@ -327,15 +347,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td class="column-one">
-                    <label for="campo_matricula">Matrícula</label>
-                </td>
-                <td class="column-two">
-                    <input type="text" id="campo_matricula" placeholder="00000" style="width: 100%;" oninput="checkMatricula()">
-                    <div id="matricula-alert" class="alert"></div>
-                </td>
-            </tr>
+            
             <tr>
                 <td class="column-one">
                     <label for="campo_contraseña">Contraseña</label>

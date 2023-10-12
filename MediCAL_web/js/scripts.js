@@ -708,7 +708,7 @@ function toggleRevertButtonVisibility() {
 function recuperarInstancia(idInstancia){
 
     var lista = document.getElementById("lista_usuarios");
-        if(lista==null){
+      if(lista==null){
       if(window.location.href == "http://localhost:8081/n22_gestionar_perfiles.html"){
         fetch(`http://localhost:8080/perfil/recuperar/${idInstancia}`, {
                 method: 'PUT',
@@ -733,6 +733,29 @@ function recuperarInstancia(idInstancia){
       }
     }
     else{
+      if(window.location.href == "http://localhost:8081/n26_gestionar_usuarios.html"){
+          fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  actualizar(idInstancia, data);
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+      }
+      else{
     var valorSeleccionado = lista.value;
 
     switch (valorSeleccionado) {
@@ -915,10 +938,15 @@ function recuperarInstancia(idInstancia){
             break;
     }
   }
+  }
 
 }
 
 function actualizar(idInstancia, data){
+  if(window.location.href === "http://localhost:8081/n26_gestionar_usuarios.html"){
+    location.reload();
+  }
+  else{
   var tabla = document.querySelector("table");
   var filas = tabla.querySelectorAll("tbody tr");
 	for (var i = 0; i < filas.length; i++) {
@@ -928,6 +956,7 @@ function actualizar(idInstancia, data){
 	        break; // Deja de buscar después de encontrar la fila
 	      }
 	}
+}
 }
 
 function actualizarFila(fila, nuevosDatos) {

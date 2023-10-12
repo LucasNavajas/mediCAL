@@ -179,8 +179,8 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/usuario/recuperar/{codUsuario}")
-	public void recuperarUsuario(@PathVariable int codUsuario) throws FirebaseAuthException {
-        usuarioDao.habilitarUsuario(codUsuario);
+	public Usuario recuperarUsuario(@PathVariable int codUsuario) throws FirebaseAuthException {
+        return usuarioDao.habilitarUsuario(codUsuario);
 	}
 	
 	@PutMapping("/usuario/token/{codUsuario}")
@@ -191,5 +191,10 @@ public class UsuarioController {
 	@GetMapping("/usuario/get-all/{codPerfil}")
 	public List<Usuario> getAllByCodPerfil(@PathVariable int codPerfil){
 		return usuarioDao.findUsuariosByCodPerfil(codPerfil);
+	}
+	
+	@PostMapping("/usuario/alta-desde-admin")
+	public Usuario altaAdmin(@RequestBody Usuario usuario){
+		return usuarioDao.altaAdmin(usuario);
 	}
 }
