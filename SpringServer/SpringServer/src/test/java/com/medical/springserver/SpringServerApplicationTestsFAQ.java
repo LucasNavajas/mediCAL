@@ -25,23 +25,27 @@ class SpringServerApplicationTestsFAQ {
 		
 		FAQ faq1 = new FAQ();
 		faq1.setFechaActualizacionFAQ(fechaHoy);
-		faq1.setPreguntatFAQ("¿Cómo protege Google mi privacidad y mantiene mi información segura?");
-		faq1.setRespuestaFAQ("La seguridad de su información y la garantía de que podrá acceder a ella cuando lo necesite son nuestras prioridades.");
+		faq1.setPreguntatFAQ("¿Cómo puedo crear una cuenta en la aplicación MediCAL?");
+		faq1.setRespuestaFAQ("Para crear una cuenta en MediCAL, abre la aplicación móvil y selecciona el botón \"CREAR CUENTA\" en la pantalla de inicio. Asegúrate de aceptar los Términos y Condiciones de Uso y la Política de Privacidad, y proporciona la información requerida, incluyendo un nombre de usuario único, una contraseña y un correo electrónico válido. Una vez validada la cuenta, podrás comenzar a utilizar la aplicación.");
 		faqDao.save(faq1);
 		
 		FAQ faq2 = new FAQ();
 		faq2.setFechaActualizacionFAQ(fechaHoy);
-		faq2.setPreguntatFAQ("¿Cómo puedo eliminar información acerca de mí de los resultados de búsqueda de Google?");
-		faq2.setRespuestaFAQ("Los resultados de búsqueda de Google reflejan el contenido disponible públicamente en la Web. Los motores de búsqueda no pueden eliminar contenido de la Web directamente.");
+		faq2.setPreguntatFAQ("¿Qué debo hacer si olvidé mi contraseña para iniciar sesión en MediCAL?");
+		faq2.setRespuestaFAQ("Si olvidaste tu contraseña, selecciona la opción \"¿Olvidaste tu contraseña?\" en la pantalla de inicio de sesión. Ingresa tu correo electrónico asociado a la cuenta y sigue las instrucciones para recibir un código de verificación. Luego, valida el código recibido y establece una nueva contraseña para acceder a tu cuenta.");
 		faqDao.save(faq2);
 		
 		FAQ faq3 = new FAQ();
 		faq3.setFechaActualizacionFAQ(fechaHoy);
-		faq3.setPreguntatFAQ("¿Mis consultas de búsqueda se envían a los sitios web cuando hago clic en los resultados de Búsqueda de Google?");
-		faq3.setRespuestaFAQ("En algunos casos, sí. Cuando hace clic en un resultado de la Búsqueda de Google, el navegador web también puede enviar la dirección de Internet (URL) de la página de los resultados de la búsqueda a la página web de destino como la URL de referencia.");
-		
+		faq3.setPreguntatFAQ("¿Cómo puedo asociar un medicamento y establecer un recordatorio en la aplicación MediCAL?");
+		faq3.setRespuestaFAQ("Para asociar un medicamento y establecer un recordatorio, selecciona el botón \"AGREGAR RECORDATORIO\" desde la pantalla principal. Sigue los pasos para vincular el medicamento, establecer la forma de administración, la frecuencia y el horario de la dosis. También puedes agregar instrucciones, imágenes y configurar recordatorios de recarga si es necesario. Una vez configurado, el recordatorio estará activo en tu calendario.");
 		faqDao.save(faq3);
 		
+		FAQ faq4 = new FAQ();
+		faq4.setFechaActualizacionFAQ(fechaHoy);
+		faq4.setPreguntatFAQ("¿Puedo editar o eliminar un recordatorio una vez que lo he establecido en MediCAL?");
+		faq4.setRespuestaFAQ("Sí, puedes editar o eliminar un recordatorio en cualquier momento. Ve a la sección de recordatorios, selecciona el recordatorio que deseas modificar y elige la opción correspondiente para realizar cambios. Si deseas eliminarlo, selecciona la opción de eliminar y confirma la acción. Recuerda que cualquier modificación se reflejará en tu calendario de MediCAL.");
+		faqDao.save(faq4);
 		
 	}
 	
