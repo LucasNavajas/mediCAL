@@ -87,7 +87,7 @@
                 android:id="@+id/error_nombre2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Debe ingresar un nombre de usuario único"
+                android:text="Debe ingresar el nombre"
                 android:fontFamily="@font/inter_regular"
                 android:textColor="@color/rojoError"
                 android:layout_below="@id/textEdit_nombre_usuario"
@@ -118,7 +118,16 @@
             android:textColorHint="#000000"
             android:textSize="24sp"
             android:inputType="text"/>
-
+            <TextView
+                android:id="@+id/error_apellido2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Debe ingresar el apellido"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/rojoError"
+                android:layout_below="@id/textEdit_apellido_usuario"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"/>
         <TextView
             android:id="@+id/error_apellido"
             android:layout_width="wrap_content"
@@ -126,7 +135,7 @@
             android:text="El apellido ingresado debe contener menos de 30 caracteres"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/rojoError"
-            android:layout_below="@id/textEdit_apellido_usuario"
+            android:layout_below="@+id/error_apellido2"
             android:layout_marginStart="20dp"
             android:visibility="gone"/>
 

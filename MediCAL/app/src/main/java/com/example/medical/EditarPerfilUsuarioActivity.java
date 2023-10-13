@@ -57,6 +57,8 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     private LocalDate fechaNacimiento;
 
     private TextView errorNombre;
+    private TextView errorNombre2;
+    private TextView errorApellido2;
     private TextView errorApellido;
     private TextView error_Telefono;
 
@@ -85,21 +87,36 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                 errorNombre.setVisibility(View.VISIBLE);
                 return;
             }
+            if(nuevoNombre.length() == 0){
+                errorNombre2.setVisibility(View.VISIBLE);
+                return;
+            }
             if(nuevoApellido.length()>30){
+                errorNombre2.setVisibility(View.GONE);
                 errorNombre.setVisibility(View.GONE);
                 errorApellido.setVisibility(View.VISIBLE);
                 return;
             }
-            if(nuevoTelefono.length()>30){
+            if(nuevoApellido.length()==0){
+                errorNombre2.setVisibility(View.GONE);
                 errorNombre.setVisibility(View.GONE);
                 errorApellido.setVisibility(View.GONE);
+                errorApellido2.setVisibility(View.VISIBLE);
+                return;
+            }
+            if(nuevoTelefono.length()>30){
+                errorNombre2.setVisibility(View.GONE);
+                errorNombre.setVisibility(View.GONE);
+                errorApellido.setVisibility(View.GONE);
+                errorApellido2.setVisibility(View.GONE);
                 error_Telefono.setVisibility(View.VISIBLE);
                 return;
             }
-
+            errorNombre2.setVisibility(View.GONE);
             errorNombre.setVisibility(View.GONE);
             errorApellido.setVisibility(View.GONE);
             error_Telefono.setVisibility(View.GONE);
+            errorApellido2.setVisibility(View.GONE);
 
             guardarCambios();
 
@@ -380,7 +397,9 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         textEditEmail = findViewById(R.id.textEdit_email);
         textEditTelefono = findViewById(R.id.textEdit_telefono);
         errorNombre = findViewById(R.id.error_nombre);
+        errorNombre2 = findViewById(R.id.error_nombre2);
         errorApellido = findViewById(R.id.error_apellido);
+        errorApellido2 = findViewById(R.id.error_apellido2);
         error_Telefono = findViewById(R.id.error_telefono);
 
         textEditGenero = findViewById(R.id.textEdit_Mujer);
