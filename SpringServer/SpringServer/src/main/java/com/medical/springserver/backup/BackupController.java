@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -63,8 +64,9 @@ public class BackupController {
         try {
             // Leer el archivo SQL
             InputStream inputStream = sqlFile.getInputStream();
-            byte[] sqlBytes = inputStream.readAllBytes();
-            String sqlScript = new String(sqlBytes);
+            byte[] sqlBytes = sqlFile.getBytes(); // Usar la codificación por defecto
+            String sqlScript = new String(sqlBytes, "UTF-8"); // Especificar la codificación aquí
+
 
             // Establecer la conexión con la base de datos (MySQL en este caso)
             String url = "jdbc:mysql://localhost:3306/SpringServerDB";

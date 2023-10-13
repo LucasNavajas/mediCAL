@@ -201,4 +201,9 @@ public class UsuarioController {
 	public Usuario altaAdmin(@RequestBody Usuario usuario){
 		return usuarioDao.altaAdmin(usuario);
 	}
+	
+	@PutMapping("/usuario/verificar-mail-existente/{mail}")
+	public void verificarMailExistente(@PathVariable String mail) throws FirebaseAuthException {
+		usuarioDao.verificarMailExistente(mail);
+	}
 }

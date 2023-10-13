@@ -385,6 +385,21 @@ public class CrearCuenta1Activity extends AppCompatActivity {
         });
     }
     public void registrarUsuario(String email, String password) {
+        usuarioApi.verificarMailExistente(email).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                register(email, password);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(CrearCuenta1Activity.this, "Error al registrar en firebase", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void register(String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -400,7 +415,6 @@ public class CrearCuenta1Activity extends AppCompatActivity {
                     }
                 });
     }
-
     public static void setAllViewsEnabled(ViewGroup viewGroup, boolean enabled) {
         int childCount = viewGroup.getChildCount();
         for (int i = 0; i < childCount; i++) {

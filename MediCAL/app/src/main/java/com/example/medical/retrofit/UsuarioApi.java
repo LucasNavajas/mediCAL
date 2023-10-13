@@ -64,4 +64,7 @@ public interface UsuarioApi {
     @PUT("/usuario/token/{codUsuario}")
     Call<Usuario> modificarToken(@Path("codUsuario") int codUsuario, @Body String token);
 
+    @PUT("/usuario/verificar-mail-existente/{mail}")
+    Call<Void> verificarMailExistente(@Path("mail") String mail);
+
 }

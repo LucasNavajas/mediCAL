@@ -393,4 +393,13 @@ public class UsuarioDao {
 	    }
 		return saveConHash(usuario);
 	}
+
+	public void verificarMailExistente(String mail) throws FirebaseAuthException {
+		List<Usuario> usuarios = repository.findByMailUsuario(mail);
+	    if(usuarios.size()>0) {
+	    	UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(usuarios.get(0).getMailUsuario());
+	        String uid = userRecord.getUid();
+	        FirebaseAuth.getInstance().deleteUser(uid);
+	    }
+	}
 }
