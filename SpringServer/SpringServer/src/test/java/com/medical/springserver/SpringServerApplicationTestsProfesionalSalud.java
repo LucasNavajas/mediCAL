@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.medical.springserver.model.profesionalsalud.ProfesionalSalud;
 import com.medical.springserver.model.profesionalsalud.ProfesionalSaludDao;
 
@@ -18,7 +19,7 @@ class SpringServerApplicationTestsProfesionalSalud {
 
 	
 	//@Test
-	void addProfesionalSaludTest() {
+	void addProfesionalSaludTest() throws FirebaseAuthException {
 		// Assuming you have a Connection object named 'connection'
 				LocalDate fechaNacimiento = LocalDate.of(2000, 11, 7);
 		// Obtener la fecha de hoy

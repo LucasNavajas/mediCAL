@@ -66,9 +66,11 @@ public class UsuarioDao {
             if (usuario.getGeneroUsuario() != null) {
                 existingUsuario.setGeneroUsuario(usuario.getGeneroUsuario());
             }
-            if (usuario.getMailUsuario() != null && !usuario.getMailUsuario().equals(existingUsuario.getMailUsuario())) {
+            if (usuario.getMailUsuario() != null ) {
+            	if(!usuario.getMailUsuario().equals(existingUsuario.getMailUsuario())) {
             	modificarMail(usuario.getCodUsuario() ,existingUsuario.getMailUsuario(), usuario.getMailUsuario());
             	existingUsuario.setMailUsuario(usuario.getMailUsuario());
+            	}
             }
                 existingUsuario.setNombreInstitucion(usuario.getNombreInstitucion());
             if (usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().equals("")) {
@@ -86,7 +88,9 @@ public class UsuarioDao {
             if (usuario.getPerfil() != null) {
             	existingUsuario.setPerfil(usuario.getPerfil());
             }
+            if(usuario.getCodigoVerificacion() !=null) {
             	existingUsuario.setCodigoVerificacion(usuario.getCodigoVerificacion());
+            }
             
 
             // Guardar el usuario actualizado

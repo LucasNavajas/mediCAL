@@ -68,24 +68,6 @@ class SpringServerApplicationTestsReporte {
 		tipoReporteDao.save(tipoReporte6);
 		
 		
-		LocalDate fechaNacimiento = LocalDate.of(2001, 4, 3);
-
-		
-		Usuario usuario = new Usuario();
-		usuario.setUsuarioUnico("usuario1");
-		usuario.setApellidoUsuario("Navajas");
-		usuario.setContraseniaUsuario("123");
-		usuario.setFechaNacimientoUsuario(fechaNacimiento);
-		usuario.setFechaAltaUsuario(fechaHoy);
-		usuario.setGeneroUsuario("Hombre");
-		usuario.setMailUsuario("lucasnavajas@gmail.com");
-		usuario.setNombreInstitucion("Hospital2");
-		usuario.setNombreUsuario("Lucas");
-		usuario.setTelefonoUsuario("3756409336");
-		usuarioDao.saveConHash(usuario);
-		reporte.setUsuario(usuario);
-		
-		
 		reporteDao.save(reporte);	
 		
 		

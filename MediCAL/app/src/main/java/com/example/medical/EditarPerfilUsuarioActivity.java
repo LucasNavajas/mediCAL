@@ -333,6 +333,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                         textEditNombreUsuario.setText(usuario.getNombreUsuario());
                         textEditApellidoUsuario.setText(usuario.getApellidoUsuario());
                         textEditFechaNac.setText(usuario.getFechaNacimientoUsuario().toString());
+                        fechaNacimiento = usuario.getFechaNacimientoUsuario();
                         // String fechaNacimientoString = usuario.getFechaNacimientoUsuario().format(formatter);
                         textEditEmail.setText(usuario.getMailUsuario());
                         textEditTelefono.setText(usuario.getTelefonoUsuario());
@@ -417,15 +418,14 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
             return;
         }
 
-        Usuario usuarioModificado = new Usuario();
-        usuarioModificado.setNombreUsuario(nuevoNombre);
-        usuarioModificado.setApellidoUsuario(nuevoApellido);
-        usuarioModificado.setFechaNacimientoUsuario(fechaNacimiento);
-        usuarioModificado.setMailUsuario(nuevoEmail);
-        usuarioModificado.setTelefonoUsuario(nuevoTelefono);
-        usuarioModificado.setGeneroUsuario(nuevoGenero);
+        usuario.setNombreUsuario(nuevoNombre);
+        usuario.setApellidoUsuario(nuevoApellido);
+        usuario.setFechaNacimientoUsuario(fechaNacimiento);
+        usuario.setMailUsuario(nuevoEmail);
+        usuario.setTelefonoUsuario(nuevoTelefono);
+        usuario.setGeneroUsuario(nuevoGenero);
 
-        Call<Usuario> call = usuarioApi.modificarUsuario(usuarioModificado);
+        Call<Usuario> call = usuarioApi.save(usuario);
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {

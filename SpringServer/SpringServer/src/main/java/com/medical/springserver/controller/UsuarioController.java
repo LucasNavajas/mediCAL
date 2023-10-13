@@ -7,6 +7,8 @@ import com.medical.springserver.model.codigoverificacion.CodigoVerificacion;
 import com.medical.springserver.model.codigoverificacion.CodigoVerificacionDao;
 import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
+import com.medical.springserver.model.usuario.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ public class UsuarioController {
 
 	@Autowired
 	UsuarioDao usuarioDao;
+	@Autowired
+	UsuarioRepository repository;
 	@Autowired
 	CodigoVerificacionDao codVerificacionDao;
 	
@@ -149,7 +153,7 @@ public class UsuarioController {
             usuario.setCodigoVerificacion(nuevoCodigoVerificacion);
 
             // Guarda los cambios en la base de datos
-            Usuario modifiedUsuario = usuarioDao.save(usuario);
+            Usuario modifiedUsuario = repository.save(usuario);
 
             return new ResponseEntity<>(modifiedUsuario, HttpStatus.OK);
         } else {
