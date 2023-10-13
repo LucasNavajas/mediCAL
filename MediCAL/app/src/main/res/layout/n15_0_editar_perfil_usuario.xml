@@ -51,7 +51,14 @@
         android:layout_weight="1"
         android:layout_alignParentBottom="true"
         android:background="@drawable/rounded_background">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imagen_user"
@@ -76,6 +83,17 @@
             android:textSize="24sp"
             android:inputType="text"/>
 
+            <TextView
+                android:id="@+id/error_nombre2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Debe ingresar un nombre de usuario único"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/rojoError"
+                android:layout_below="@id/textEdit_nombre_usuario"
+                android:layout_marginStart="20dp"
+                android:visibility="gone" />
+
         <TextView
             android:id="@+id/error_nombre"
             android:layout_width="wrap_content"
@@ -83,7 +101,7 @@
             android:text="El nombre ingresado debe contener menos de 30 caracteres"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/rojoError"
-            android:layout_below="@id/textEdit_nombre_usuario"
+            android:layout_below="@+id/error_nombre2"
             android:layout_marginStart="20dp"
             android:visibility="gone" />
 
@@ -92,7 +110,7 @@
             android:layout_width="match_parent"
             android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textEdit_nombre_usuario"
+            android:layout_below="@+id/error_nombre"
             android:layout_marginTop="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -117,7 +135,7 @@
             android:layout_width="match_parent"
             android:fontFamily="@font/inter_regular"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textEdit_apellido_usuario"
+            android:layout_below="@+id/error_apellido"
             android:layout_marginTop="8dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -234,10 +252,11 @@
             android:visibility="gone" />
 
         <Button
+            android:layout_gravity="center"
             android:id="@+id/button_guardar"
             android:layout_width="252dp"
             android:layout_height="45dp"
-            android:layout_below="@id/textEdit_telefono"
+            android:layout_below="@+id/error_telefono"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="12dp"
@@ -251,6 +270,8 @@
             android:textAppearance="@style/CustomButtonText"
             android:textColor="@color/white"
             android:textSize="20sp" />
+        </LinearLayout>
+        </ScrollView>
 
     </RelativeLayout>
 
