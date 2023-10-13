@@ -40,6 +40,7 @@
         android:fontFamily="@font/inter_medium"
         android:inputType="textMultiLine"
         android:text="Nombremedicamento"
+        android:maxLength="100"
         android:textColor="#FFF"
         android:textSize="25sp" />
 

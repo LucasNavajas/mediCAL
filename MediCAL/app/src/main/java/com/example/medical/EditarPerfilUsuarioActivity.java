@@ -37,7 +37,6 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-
 public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
     private EditText textEditNombreUsuario;
@@ -61,6 +60,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     private TextView errorApellido2;
     private TextView errorApellido;
     private TextView error_Telefono;
+    private TextView error_Correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,50 +76,10 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         textEditApellidoUsuario.setFilters(new InputFilter[]{new TextOnlyInputFilter()});
 
         // Se supone se tiene el ID del usuario actual almacenado en una variable llamada "idUsuarioActual".
-        obtenerDatosUsuario(intent1.getIntExtra("codUsuario",0));
+        obtenerDatosUsuario(intent1.getIntExtra("codUsuario", 0));
 
         buttonGuardar.setOnClickListener(view -> {
-            String nuevoNombre = textEditNombreUsuario.getText().toString();
-            String nuevoApellido = textEditApellidoUsuario.getText().toString();
-            String nuevoTelefono = textEditTelefono.getText().toString();
-
-            if(nuevoNombre.length()>30){
-                errorNombre.setVisibility(View.VISIBLE);
-                return;
-            }
-            if(nuevoNombre.length() == 0){
-                errorNombre2.setVisibility(View.VISIBLE);
-                return;
-            }
-            if(nuevoApellido.length()>30){
-                errorNombre2.setVisibility(View.GONE);
-                errorNombre.setVisibility(View.GONE);
-                errorApellido.setVisibility(View.VISIBLE);
-                return;
-            }
-            if(nuevoApellido.length()==0){
-                errorNombre2.setVisibility(View.GONE);
-                errorNombre.setVisibility(View.GONE);
-                errorApellido.setVisibility(View.GONE);
-                errorApellido2.setVisibility(View.VISIBLE);
-                return;
-            }
-            if(nuevoTelefono.length()>30){
-                errorNombre2.setVisibility(View.GONE);
-                errorNombre.setVisibility(View.GONE);
-                errorApellido.setVisibility(View.GONE);
-                errorApellido2.setVisibility(View.GONE);
-                error_Telefono.setVisibility(View.VISIBLE);
-                return;
-            }
-            errorNombre2.setVisibility(View.GONE);
-            errorNombre.setVisibility(View.GONE);
-            errorApellido.setVisibility(View.GONE);
-            error_Telefono.setVisibility(View.GONE);
-            errorApellido2.setVisibility(View.GONE);
-
             guardarCambios();
-
         });
 
         botonCerrar.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +102,6 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                 popupGenero_1();
             }
         });
-
     }
 
     private void popupGenero_1() {
@@ -338,9 +297,12 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
 
                 if (age >= 18) {
                     textEditFechaNac.setText(fechaNacimiento.toString());
-                }
-                else{
+                } else {
                     Toast.makeText(EditarPerfilUsuarioActivity.this, "Debe tener al menos 18 años para crear una cuenta", Toast.LENGTH_SHORT).show();
+                    // Asignar una fecha por defecto o manejar el caso de menor de edad según tus requerimientos.
+                    // Aquí asigno una fecha nula, pero puedes elegir una fecha por defecto si es necesario.
+                    // Puedes regresar temprano para evitar el resto del código en este bloque.
+                    return;
                 }
 
                 // Ocultar el PopupWindow
@@ -401,6 +363,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         errorApellido = findViewById(R.id.error_apellido);
         errorApellido2 = findViewById(R.id.error_apellido2);
         error_Telefono = findViewById(R.id.error_telefono);
+        error_Correo= findViewById(R.id.error_correo);
 
         textEditGenero = findViewById(R.id.textEdit_Mujer);
         buttonGuardar = findViewById(R.id.button_guardar);
@@ -411,17 +374,50 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
     }
 
     private void guardarCambios() {
-        // Obtener los nuevos datos ingresados por el usuario
         String nuevoNombre = textEditNombreUsuario.getText().toString();
         String nuevoApellido = textEditApellidoUsuario.getText().toString();
-        // Revisar
-        //String nuevaFechaNac = textEditFechaNac.getText().toString();
         String nuevoEmail = textEditEmail.getText().toString();
         String nuevoTelefono = textEditTelefono.getText().toString();
         String nuevoGenero = textEditGenero.getText().toString();
 
-        // Aquí puedes crear un objeto Usuario con los nuevos datos ingresados por el usuario.
-        Usuario usuarioModificado = usuario;
+        boolean nombreValido = validarCampoNombre(nuevoNombre);
+        boolean apellidoValido = validarCampoApellido(nuevoApellido);
+        boolean emailValido = isValidEmail(nuevoEmail);
+        boolean telefonoValido = isValidPhone(nuevoTelefono);
+
+        boolean hayErrores = false;
+
+        if (!nombreValido) {
+            hayErrores = true;
+        } else {
+
+        }
+
+        if (!apellidoValido) {
+            hayErrores = true;
+        } else {
+
+        }
+
+        if (!emailValido) {
+            error_Correo.setVisibility(View.VISIBLE);
+            hayErrores = true;
+        } else {
+            error_Correo.setVisibility(View.GONE);
+        }
+
+        if (!telefonoValido) {
+            error_Telefono.setVisibility(View.VISIBLE);
+            hayErrores = true;
+        } else {
+            error_Telefono.setVisibility(View.GONE);
+        }
+
+        if (hayErrores) {
+            return;
+        }
+
+        Usuario usuarioModificado = new Usuario();
         usuarioModificado.setNombreUsuario(nuevoNombre);
         usuarioModificado.setApellidoUsuario(nuevoApellido);
         usuarioModificado.setFechaNacimientoUsuario(fechaNacimiento);
@@ -429,7 +425,6 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         usuarioModificado.setTelefonoUsuario(nuevoTelefono);
         usuarioModificado.setGeneroUsuario(nuevoGenero);
 
-        // Llamamos al método modificarUsuario de UsuarioApi para guardar los cambios en la base de datos.
         Call<Usuario> call = usuarioApi.modificarUsuario(usuarioModificado);
         call.enqueue(new Callback<Usuario>() {
             @Override
@@ -439,17 +434,72 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
                     finish(); // Cierra la actividad actual y regresa a la pantalla anterior.
                 } else {
-                    // Ocurrió un error al modificar los datos en la base de datos, muestra un mensaje de error.
-                    Toast.makeText(getApplicationContext(), "Error al guardar los cambios", Toast.LENGTH_SHORT).show();
+                    int statusCode = response.code();
+                    Toast.makeText(getApplicationContext(), "Error al guardar los cambios. Código de estado: " + statusCode, Toast.LENGTH_SHORT).show();
                 }
             }
 
-            @Override
+
+
             public void onFailure(Call<Usuario> call, Throwable t) {
                 // Error en la conexión, muestra un mensaje de error.
-                Toast.makeText(getApplicationContext(), "Error en la conexión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error en la conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private boolean validarCampoNombre(String nombre) {
+        if (nombre.isEmpty()) {
+            errorNombre2.setVisibility(View.VISIBLE);
+            errorNombre.setVisibility(View.GONE);
+            return false;
+        } else if (nombre.length() > 30) {
+            errorNombre.setVisibility(View.VISIBLE);
+            errorNombre2.setVisibility(View.GONE);
+            return false;
+        } else {
+            errorNombre.setVisibility(View.GONE);
+            errorNombre2.setVisibility(View.GONE);
+            return true;
+        }
+    }
+
+    private boolean validarCampoApellido(String apellido) {
+        if (apellido.isEmpty()) {
+            errorApellido2.setVisibility(View.VISIBLE);
+            errorApellido.setVisibility(View.GONE);
+            return false;
+        } else if (apellido.length() > 30) {
+            errorApellido2.setVisibility(View.GONE);
+            errorApellido.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            errorApellido2.setVisibility(View.GONE);
+            errorApellido.setVisibility(View.GONE);
+            return true;
+        }
+    }
+
+
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+    private boolean isValidPhone(String phoneNumber) {
+        String patronTelefono = "^[+]?[0-9]{1,3}[-\\s.]?[(]?[0-9]{1,6}[)]?[-\\s.]?[0-9]{1,12}$";
+
+        if (phoneNumber.matches(patronTelefono)) {
+            // El teléfono tiene el formato correcto
+            error_Telefono.setVisibility(View.GONE);
+            return true;
+        } else {
+            // Mostrar alerta para teléfono con formato incorrecto (error_Telefono)
+            error_Telefono.setVisibility(View.VISIBLE);
+            return false;
+        }
+    }
+
+
 
 }

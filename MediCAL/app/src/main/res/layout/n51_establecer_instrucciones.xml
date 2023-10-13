@@ -6,13 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
     <!--flecha y nombre med-->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layout_anadir_instrucciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="40dp">
 
         <ImageView
@@ -22,26 +22,23 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/flecha_atras"
-            app:tint="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/nombreMedicamento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_regular"
-            android:text="NombreMedicina"
+            android:text="NombreMedicamento"
             android:textColor="#FFF"
             android:textSize="21sp"
-            app:layout_constraintStart_toEndOf="@id/boton_volver"
-            app:layout_constraintTop_toTopOf="@id/boton_volver"
-            app:layout_constraintBottom_toBottomOf="@id/boton_volver"
             android:layout_marginStart="20dp"
-            android:singleLine="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="-4dp"
+            android:maxLength="100"
             />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
     <ImageView

@@ -6,25 +6,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layout_forma_administracion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
         android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="40dp">
 
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/boton_volver"
             android:layout_width="25dp"
             android:layout_height="32dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/flecha_atras"
-            app:tint="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/nombreMedicamento"
@@ -34,14 +33,13 @@
             android:text="NombreMedicamento"
             android:textColor="#FFF"
             android:textSize="21sp"
-            app:layout_constraintStart_toEndOf="@id/boton_volver"
-            app:layout_constraintTop_toTopOf="@id/boton_volver"
-            app:layout_constraintBottom_toBottomOf="@id/boton_volver"
             android:layout_marginStart="20dp"
-            android:layout_marginBottom="-4dp" />
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="-4dp"
+            android:maxLength="100"
+            />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imagen_inyectable_con_pastillas"

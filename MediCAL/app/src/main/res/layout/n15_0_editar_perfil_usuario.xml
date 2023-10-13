@@ -78,8 +78,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:hint="Nombre Usuario"
-            android:textColorHint="#000000"
+            android:hint="Nombre(s) Usuario"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gris_medical"
             android:textSize="24sp"
             android:inputType="text"/>
 
@@ -92,6 +93,7 @@
                 android:textColor="@color/rojoError"
                 android:layout_below="@id/textEdit_nombre_usuario"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:visibility="gone" />
 
         <TextView
@@ -103,6 +105,7 @@
             android:textColor="@color/rojoError"
             android:layout_below="@+id/error_nombre2"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:visibility="gone" />
 
         <EditText
@@ -115,7 +118,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:hint="Apellido(s) Usuario"
-            android:textColorHint="#000000"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gris_medical"
             android:textSize="24sp"
             android:inputType="text"/>
             <TextView
@@ -127,6 +131,7 @@
                 android:textColor="@color/rojoError"
                 android:layout_below="@id/textEdit_apellido_usuario"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:visibility="gone"/>
         <TextView
             android:id="@+id/error_apellido"
@@ -137,6 +142,7 @@
             android:textColor="@color/rojoError"
             android:layout_below="@+id/error_apellido2"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:visibility="gone"/>
 
         <TextView
@@ -162,7 +168,8 @@
             android:layout_marginTop="-8dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
-            android:hint="Mujer"
+            android:hint="Género seleccionado"
+            android:textColorHint="@color/gris_medical"
             android:textColor="@color/black"
             android:textSize="24sp" />
 
@@ -189,7 +196,8 @@
             android:layout_marginTop="-8dp"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
-            android:hint="12 May 2005"
+            android:hint="DD MMM AAAA"
+            android:textColorHint="@color/gris_medical"
             android:textColor="@color/black"
             android:textSize="24sp" />
 
@@ -217,9 +225,22 @@
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
             android:hint="mailejemplo@dominio.com"
-            android:textColorHint="#000000"
+            android:textColorHint="@color/gris_medical"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:inputType="textEmailAddress"/>
+
+            <TextView
+                android:id="@+id/error_correo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingresar una dirección de email válida"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/rojoError"
+                android:layout_below="@+id/textEdit_email"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"/>
 
         <TextView
             android:id="@+id/text_telefono"
@@ -245,7 +266,8 @@
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/inter_regular"
             android:hint="02612467606"
-            android:textColorHint="#000000"
+            android:textColorHint="@color/gris_medical"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:inputType="phone"/>
 
@@ -253,11 +275,12 @@
             android:id="@+id/error_telefono"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="El teléfono ingresado debe contener menos de 20 caracteres"
+            android:text="Ingresar un número de teléfono válido"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/rojoError"
             android:layout_below="@id/textEdit_telefono"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:visibility="gone" />
 
         <Button

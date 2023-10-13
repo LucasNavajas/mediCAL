@@ -46,6 +46,7 @@ import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.MedicamentoApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -83,45 +84,58 @@ public class NuevoMedicamentoActivity extends AppCompatActivity {
 
         botonVolver.setOnClickListener(view ->{onBackPressed();});
 
-        siguiente.setOnClickListener(view -> {
-            Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
-            String nombreMedicamentoString = nombreMedicamento.getText().toString();
-            String marcaMedicamentoString = marcaMedicamento.getText().toString();
-            medicamento.setMarcaMedicamento(marcaMedicamentoString);
-            medicamento.setNombreMedicamento(nombreMedicamentoString);
-            medicamento.setEsParticular(true);
-            medicamento.setFechaAltaMedicamento(LocalDate.now());
-            medicamentoApi.saveMedicamento(medicamento).enqueue(new Callback<Medicamento>() {
-                @Override
-                public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
-                    Recordatorio recordatorio = new Recordatorio();
-                    recordatorio.setImagen(bitmapToBase64(imagenBitmap));
-                    recordatorio.setCalendario(calendarioSeleccionado);
-                    recordatorio.setMedicamento(response.body());
-                    recordatorio.setFechaAltaRecordatorio(LocalDate.now());
-                    recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
+        siguiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Obtener el nombre del medicamento ingresado
+                String nombreMedicamentoString = nombreMedicamento.getText().toString();
+
+                // Verificar si el nombre del medicamento tiene menos de 255 caracteres
+                if (nombreMedicamentoString.length() <= 255) {
+                    // Resto del código para guardar el medicamento
+                    Bitmap imagenBitmap = ((BitmapDrawable) fotoMedicamento.getDrawable()).getBitmap();
+                    String marcaMedicamentoString = marcaMedicamento.getText().toString();
+                    medicamento.setMarcaMedicamento(marcaMedicamentoString);
+                    medicamento.setNombreMedicamento(nombreMedicamentoString);
+                    medicamento.setEsParticular(true);
+                    medicamento.setFechaAltaMedicamento(LocalDate.now());
+
+                    medicamentoApi.saveMedicamento(medicamento).enqueue(new Callback<Medicamento>() {
                         @Override
-                        public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
-                            Intent intent = new Intent(NuevoMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
-                            intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
-                            intent.putExtra("nombreMedicamento", medicamento.getNombreMedicamento());
-                            startActivity(intent);
+                        public void onResponse(Call<Medicamento> call, Response<Medicamento> response) {
+                            Recordatorio recordatorio = new Recordatorio();
+                            recordatorio.setImagen(bitmapToBase64(imagenBitmap));
+                            recordatorio.setCalendario(calendarioSeleccionado);
+                            recordatorio.setMedicamento(response.body());
+                            recordatorio.setFechaAltaRecordatorio(LocalDate.now());
+
+                            recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
+                                @Override
+                                public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
+                                    Intent intent = new Intent(NuevoMedicamentoActivity.this, ElegirAdministracionMedActivity.class);
+                                    intent.putExtra("codRecordatorio", response.body().getCodRecordatorio());
+                                    intent.putExtra("nombreMedicamento", medicamento.getNombreMedicamento());
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Call<Recordatorio> call, Throwable t) {
+                                    Toast.makeText(NuevoMedicamentoActivity.this, "Error de recordatorio creado", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override
-                        public void onFailure(Call<Recordatorio> call, Throwable t) {
-                            Toast.makeText(NuevoMedicamentoActivity.this, "Error de recordatorio creado", Toast.LENGTH_SHORT).show();
+                        public void onFailure(Call<Medicamento> call, Throwable t) {
+                            Toast.makeText(NuevoMedicamentoActivity.this, "Error de medicamento creado", Toast.LENGTH_SHORT).show();
                         }
                     });
 
+                } else {
+                    // Mostrar un mensaje de error si el nombre del medicamento es demasiado largo
+                    Snackbar.make(view, "El nombre del medicamento no puede tener más de 255 caracteres", Snackbar.LENGTH_LONG).show();
                 }
-
-                @Override
-                public void onFailure(Call<Medicamento> call, Throwable t) {
-                    Toast.makeText(NuevoMedicamentoActivity.this, "Error de medicamento creado", Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            }
         });
 
         capturedPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_photo.jpg");
