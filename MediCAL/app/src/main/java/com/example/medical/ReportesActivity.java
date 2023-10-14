@@ -156,8 +156,9 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
                         popupWindow.dismiss();
                         popupReporteCompartido();
                     } else {
-                        //popupWindow.dismiss();
-                        Toast.makeText(ReportesActivity.this, "Error al compartir el reporte.", Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss();
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(ReportesActivity.this, "No se pudo compartir el reporte.", Toast.LENGTH_SHORT).show();
                         //popupSinRegistros();
                     }
                 }
@@ -738,6 +739,7 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
         botonCancelar.setOnClickListener(view ->{
             popupWindow.dismiss();
             dimView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         });
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

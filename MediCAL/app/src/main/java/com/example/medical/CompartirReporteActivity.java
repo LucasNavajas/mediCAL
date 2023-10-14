@@ -502,23 +502,26 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
                 // --- TÍTULO / PRIMER HOJA ---
                 Row headerRow0 = sheet.getRow(0);
-                // Crear una celda que abarque las 6 primeras columnas (índices de 1 a 6, 0 es un margen)
                 Cell Titulocell = headerRow0.getCell(1);
-                Titulocell.setCellValue(reporteAsociado.getTipoReporte().getNombreTipoReporte()); // Título que se verá en las celdas unificadas
+                Titulocell.setCellValue(reporteAsociado.getTipoReporte().getNombreTipoReporte()); // Título
 
                 // --- DATOS DEL REPORTE / PRIMER HOJA ---
                 // Crear una fila para los datos del reporte
                 Row headerRow1 = sheet.getRow(1);
                 // Crear celdas datos del reporte
-                Cell fechaDesde = headerRow1.getCell(2);
+                Cell fechaGenerada = headerRow1.getCell(5);
+                fechaGenerada.setCellValue(reporteAsociado.getFechaGenerada().toString());
+                // Segunda fila de datos del reporte
+                Row headerRow2 = sheet.getRow(2);
+                Cell fechaDesde = headerRow2.getCell(2);
                 fechaDesde.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta = headerRow1.getCell(5);
+                Cell fechaHasta = headerRow2.getCell(5);
                 fechaHasta.setCellValue(reporteAsociado.getFechaHasta().toString());
 
 
                 // --- FILA ENCABEZADOS DE COLUMNAS / PRIMER HOJA ---
                 // Crear una fila para los encabezados de las columnas
-                Row headerRow = sheet.getRow(2);
+                Row headerRow = sheet.getRow(3);
                 // Crear celdas de encabezados de columnas
                 Cell headerCell1 = headerRow.getCell(1);
                 headerCell1.setCellValue("Tipo");
@@ -535,8 +538,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
 
                 // --- DATOS / PRIMER HOJA ---
-                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
-                //int[] ultimaFilaPorColumna = new int[8]; // 8 es el número de columnas procesadas (0 y 7 son los márgenes)
+                int fila = 4;   // Comienza desde la fila 4; fila 0 es el título, fila 1y2 los datos del reporte, fila 3 los encabezados
                 for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatorios) {
                     Log.d("MiApp", "Creando datos de registro, fila: " + fila);
                     Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
@@ -545,7 +547,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = fila - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (dataRow == null) {
                                 dataRow = sheet.createRow(fila);
@@ -620,20 +622,24 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 // Crear una fila para los datos del reporte
                 Row headerRow2_1 = sheet2.getRow(1);
                 // Crear celdas datos del reporte
-                Cell fechaDesde2 = headerRow2_1.getCell(3);
+                Cell fechaGenerada2 = headerRow2_1.getCell(5);
+                fechaGenerada2.setCellValue(reporteAsociado.getFechaGenerada().toString());
+
+                Row headerRow2_2 = sheet2.getRow(2);
+                Cell fechaDesde2 = headerRow2_2.getCell(3);
                 fechaDesde2.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta2 = headerRow2_1.getCell(6);
+                Cell fechaHasta2 = headerRow2_2.getCell(6);
                 fechaHasta2.setCellValue(reporteAsociado.getFechaHasta().toString());
 
                 // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
                 // Crear una fila para los encabezados de las columnas
-                Row headerRow2_2 = sheet2.getRow(2);
+                Row headerRow2_3 = sheet2.getRow(3);
                 // Crear celdas de encabezados de columnas
-                Cell headerCell2_1 = headerRow2_2.getCell(1);
+                Cell headerCell2_1 = headerRow2_3.getCell(1);
                 headerCell2_1.setCellValue("Nombre del Medicamento");
-                Cell headerCell2_2 = headerRow2_2.getCell(2);
-                headerCell2_2.setCellValue("Procentaje de Cumplimiento");
-                Cell headerCell2_3 = headerRow2_2.getCell(3);
+                Cell headerCell2_2 = headerRow2_3.getCell(2);
+                headerCell2_2.setCellValue("Procentaje de Cumplimiento (%)");
+                Cell headerCell2_3 = headerRow2_3.getCell(3);
                 headerCell2_3.setCellValue("Gráfico de Cumplimiento");
 
 
@@ -652,7 +658,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     registros.add(registroRecordatorio);
                 }
                 // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
-                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int filaActual = 4; // Comienza desde la fila 2; fila 0 es el título, fila 1y2 los datos del reporte, fila 3 los encabezados
                 Log.d("MiApp", "Comienzo con Hoja 2");
                 for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
                     String nombreMedicamento = entry.getKey();
@@ -664,18 +670,18 @@ public class CompartirReporteActivity extends AppCompatActivity {
                             registrosTomados++;
                         }
                     }
-                    double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0;
+                    double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0 ; //* 100.0
                     // Crear un formato decimal con dos decimales
                     DecimalFormat df = new DecimalFormat("#.##");
                     // Formatear el porcentaje con dos decimales y agregar "%"
-                    String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
+                    //String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
 
                     // ---
                     Row filaResumen = sheet2.getRow(filaActual);
                     if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = filaActual - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (filaResumen == null) {
                                 filaResumen = sheet.createRow(filaActual);
@@ -708,8 +714,8 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     Cell celdaNombreMedicamento = filaResumen.getCell(1);
                     celdaNombreMedicamento.setCellValue(nombreMedicamento);
                     Cell celdaPorcentajeCumplimiento = filaResumen.getCell(2);
-                    celdaPorcentajeCumplimiento.setCellValue(porcentajeFormateado.toString());
-
+                    //celdaPorcentajeCumplimiento.setCellValue(porcentajeFormateado);
+                    celdaPorcentajeCumplimiento.setCellValue(porcentajeCumplimiento);
                     filaActual++;
                 }
 
@@ -793,17 +799,21 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 // Crear una fila para los datos del reporte
                 Row headerRow1 = sheet.getRow(1);
                 // Crear celdas datos del reporte
-                Cell fechaDesde = headerRow1.getCell(2);
+                Cell fechaGenerada = headerRow1.getCell(5);
+                fechaGenerada.setCellValue(reporteAsociado.getFechaGenerada().toString());
+
+                Row headerRow2 = sheet.getRow(2);
+                Cell fechaDesde = headerRow2.getCell(2);
                 fechaDesde.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta = headerRow1.getCell(4);
+                Cell fechaHasta = headerRow2.getCell(4);
                 fechaHasta.setCellValue(reporteAsociado.getFechaHasta().toString());
-                Cell filtro = headerRow1.getCell(6);
+                Cell filtro = headerRow2.getCell(6);
                 filtro.setCellValue(reporteAsociado.getNombreMed());
 
 
                 // --- FILA ENCABEZADOS DE COLUMNAS / PRIMER HOJA ---
                 // Crear una fila para los encabezados de las columnas
-                Row headerRow = sheet.getRow(2);
+                Row headerRow = sheet.getRow(3);
                 // Crear celdas de encabezados de columnas
                 Cell headerCell1 = headerRow.getCell(1);
                 headerCell1.setCellValue("Tipo");
@@ -820,7 +830,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
 
 
                 // --- DATOS / PRIMER HOJA ---
-                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int fila = 4;   // Comienza desde la fila 2; fila 0 es el título, fila 1y2 los datos del reporte, fila 3 los encabezados
                 //int[] ultimaFilaPorColumna = new int[8]; // 8 es el número de columnas procesadas (0 y 7 son los márgenes)
                 for (RegistroRecordatorio registroRecordatorio : listaTotalRegistroRecordatoriosFiltroMed) {
                     Log.d("MiApp", "Creando datos de registro, fila: " + fila);
@@ -830,7 +840,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = fila - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (dataRow == null) {
                                 dataRow = sheet.createRow(fila);
@@ -905,22 +915,26 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 // Crear una fila para los datos del reporte
                 Row headerRow2_1 = sheet2.getRow(1);
                 // Crear celdas datos del reporte
-                Cell fechaDesde2 = headerRow2_1.getCell(2);
+                Cell fechaGenerada2 = headerRow2_1.getCell(5);
+                fechaGenerada2.setCellValue(reporteAsociado.getFechaGenerada().toString());
+
+                Row headerRow2_2 = sheet2.getRow(2);
+                Cell fechaDesde2 = headerRow2_2.getCell(2);
                 fechaDesde2.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta2 = headerRow2_1.getCell(5);
+                Cell fechaHasta2 = headerRow2_2.getCell(5);
                 fechaHasta2.setCellValue(reporteAsociado.getFechaHasta().toString());
-                Cell filtro2 = headerRow2_1.getCell(8);
+                Cell filtro2 = headerRow2_2.getCell(8);
                 filtro2.setCellValue(reporteAsociado.getNombreMed());
 
                 // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
                 // Crear una fila para los encabezados de las columnas
-                Row headerRow2_2 = sheet2.getRow(2);
+                Row headerRow2_3 = sheet2.getRow(3);
                 // Crear celdas de encabezados de columnas
-                Cell headerCell2_1 = headerRow2_2.getCell(1);
+                Cell headerCell2_1 = headerRow2_3.getCell(1);
                 headerCell2_1.setCellValue("Nombre del Medicamento");
-                Cell headerCell2_2 = headerRow2_2.getCell(2);
-                headerCell2_2.setCellValue("Procentaje de Cumplimiento");
-                Cell headerCell2_3 = headerRow2_2.getCell(3);
+                Cell headerCell2_2 = headerRow2_3.getCell(2);
+                headerCell2_2.setCellValue("Procentaje de Cumplimiento (%)");
+                Cell headerCell2_3 = headerRow2_3.getCell(3);
                 headerCell2_3.setCellValue("Gráfico de Cumplimiento");
 
 
@@ -939,7 +953,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     registros.add(registroRecordatorio);
                 }
                 // Calcular el porcentaje de cumplimiento y escribir en la hoja de resumen
-                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int filaActual = 4; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
                 Log.d("MiApp", "Comienzo con Hoja 2");
                 for (Map.Entry<String, List<RegistroRecordatorio>> entry : medicamentosAgrupados.entrySet()) {
                     String nombreMedicamento = entry.getKey();
@@ -953,16 +967,16 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     }
                     double porcentajeCumplimiento = (double) registrosTomados / totalRegistros * 100.0;
                     // Crear un formato decimal con dos decimales
-                    DecimalFormat df = new DecimalFormat("#.##");
+                    //DecimalFormat df = new DecimalFormat("#.##");
                     // Formatear el porcentaje con dos decimales y agregar "%"
-                    String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
+                    //String porcentajeFormateado = df.format(porcentajeCumplimiento) + "%";
 
                     // ---
                     Row filaResumen = sheet2.getRow(filaActual);
                     if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = filaActual - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (filaResumen == null) {
                                 filaResumen = sheet.createRow(filaActual);
@@ -995,7 +1009,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     Cell celdaNombreMedicamento = filaResumen.getCell(1);
                     celdaNombreMedicamento.setCellValue(nombreMedicamento);
                     Cell celdaPorcentajeCumplimiento = filaResumen.getCell(2);
-                    celdaPorcentajeCumplimiento.setCellValue(porcentajeFormateado.toString());
+                    celdaPorcentajeCumplimiento.setCellValue(porcentajeCumplimiento);
 
                     filaActual++;
                 }
@@ -1096,6 +1110,8 @@ public class CompartirReporteActivity extends AppCompatActivity {
                             }
                         } else {
                             Log.d("MiApp", "No se encontraron clases 'CalendarioSintoma' asociadas al calendario " + calendario.getNombreCalendario());
+                            Toast.makeText(CompartirReporteActivity.this, "No se encontraron síntomas entre estas fechas.", Toast.LENGTH_SHORT).show();
+                            finish(); // Cierra CompartirReporteActivity
                         }
                     } else {
                         Log.d("MiApp", "Error en la solicitud de clases 'CalendarioSintoma': " + response.message());
@@ -1129,15 +1145,19 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 // Crear una fila para los datos del reporte
                 Row headerRow1 = sheet.getRow(1);
                 // Crear celdas datos del reporte
-                Cell fechaDesde = headerRow1.getCell(2);
+                Cell fechaGenerada = headerRow1.getCell(6);
+                fechaGenerada.setCellValue(reporteAsociado.getFechaGenerada().toString());
+
+                Row headerRow2 = sheet.getRow(2);
+                Cell fechaDesde = headerRow2.getCell(2);
                 fechaDesde.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta = headerRow1.getCell(5);
+                Cell fechaHasta = headerRow2.getCell(5);
                 fechaHasta.setCellValue(reporteAsociado.getFechaHasta().toString());
-                Cell cantTotal = headerRow1.getCell(7);
+                Cell cantTotal = headerRow2.getCell(11);
                 cantTotal.setCellValue(listaTotalCalendarioSintomas.size());
 
                 // --- DATOS / PRIMER PARTE ---
-                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int fila = 4;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
                 for (CalendarioSintoma calendarioSintoma : listaTotalCalendarioSintomas) {
                     Log.d("MiApp", "Creando datos de registro, fila: " + fila);
                     Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
@@ -1146,7 +1166,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = fila - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (dataRow == null) {
                                 dataRow = sheet.createRow(fila);
@@ -1203,7 +1223,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 }
                 //cantTotal.setCellValue(cantidadTotal);
                 // Calcular el porcentaje del total y escribir en la hoja de resumen
-                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int filaActual = 4; // Comienza desde la fila 2; fila 0 es el título, fila 1y2 los datos del reporte, fila 3 los encabezados
                 Log.d("MiApp", "Comienzo con Parte 2");
                 for (Map.Entry<String, List<CalendarioSintoma>> entry : sintomasAgrupados.entrySet()) {
                     String nombreSintoma = entry.getKey();
@@ -1229,7 +1249,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = filaActual - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (filaResumen == null) {
                                 filaResumen = sheet.createRow(filaActual);
@@ -1364,6 +1384,8 @@ public class CompartirReporteActivity extends AppCompatActivity {
                             }
                         } else {
                             Log.d("MiApp", "No se encontraron clases 'CalendarioMedicion' asociadas al calendario " + calendario.getNombreCalendario());
+                            Toast.makeText(CompartirReporteActivity.this, "No se encontraron mediciones entre estas fechas.", Toast.LENGTH_SHORT).show();
+                            finish(); // Cierra CompartirReporteActivity
                         }
                     } else {
                         Log.d("MiApp", "Error en la solicitud de clases 'CalendarioMedicion': " + response.message());
@@ -1397,15 +1419,19 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 // Crear una fila para los datos del reporte
                 Row headerRow1 = sheet.getRow(1);
                 // Crear celdas datos del reporte
-                Cell fechaDesde = headerRow1.getCell(2);
+                Cell fechaGenerada = headerRow1.getCell(7);
+                fechaGenerada.setCellValue(reporteAsociado.getFechaGenerada().toString());
+
+                Row headerRow2 = sheet.getRow(2);
+                Cell fechaDesde = headerRow2.getCell(2);
                 fechaDesde.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta = headerRow1.getCell(4);
+                Cell fechaHasta = headerRow2.getCell(4);
                 fechaHasta.setCellValue(reporteAsociado.getFechaHasta().toString());
-                Cell cantTotal = headerRow1.getCell(8);
+                Cell cantTotal = headerRow2.getCell(12);
                 cantTotal.setCellValue(listaTotalCalendarioMediciones.size());
 
                 // --- DATOS / PRIMER PARTE ---
-                int fila = 3;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int fila = 4;   // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
                 for (CalendarioMedicion calendarioMedicion : listaTotalCalendarioMediciones) {
                     Log.d("MiApp", "Creando datos de registro, fila: " + fila);
                     Row dataRow = sheet.getRow(fila);    // Se crea CADA FILA de datos, va incrementando
@@ -1414,7 +1440,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (dataRow == null || dataRow.getCell(1) == null || dataRow.getCell(1).getStringCellValue() == null || dataRow.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = fila - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + fila + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (dataRow == null) {
                                 dataRow = sheet.createRow(fila);
@@ -1475,7 +1501,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 }
                 //cantTotal.setCellValue(cantidadTotal);
                 // Calcular el porcentaje del total y escribir en la hoja de resumen
-                int filaActual = 3; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
+                int filaActual = 4; // Comienza desde la fila 2; fila 0 es el título, fila 1 los datos del reporte, fila 2 los encabezados
                 Log.d("MiApp", "Comienzo con Parte 2");
                 for (Map.Entry<String, List<CalendarioMedicion>> entry : medicionesAgrupadas.entrySet()) {
                     String nombreMedicion = entry.getKey();
@@ -1499,7 +1525,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                     if (filaResumen == null || filaResumen.getCell(1) == null || filaResumen.getCell(1).getStringCellValue() == null || filaResumen.getCell(1).getStringCellValue().isEmpty()) {
                         int ultimaFila = filaActual - 1;
                         Log.d("MiApp", "    Entra en el if(dataRow.getCell(1)=null), con fila: " + filaActual + ", y ultimaFila: " + ultimaFila);
-                        if (ultimaFila >= 3) { // No copiar datos ni estilo de los encabezados
+                        if (ultimaFila >= 4) { // No copiar datos ni estilo de los encabezados
                             // Crea la fila si no existe
                             if (filaResumen == null) {
                                 filaResumen = sheet.createRow(filaActual);
