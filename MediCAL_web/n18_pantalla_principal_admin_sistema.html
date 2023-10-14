@@ -868,12 +868,90 @@
             border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
         }
 
-        /* Estilos para la alerta */
-         #popup-dialog-cambiar-contrasenia .alert {
-            color: red;
-            font-size: 14px;
+        #popup-dialog-subir-backup {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-subir-backup h3 {
+            margin-top: 50px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
             text-align: left;
-            margin-left: -15px;
+        }
+
+        #popup-dialog-subir-backup .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-subir-backup .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /*para los campos de texto del codigo de verificacion*/
+        #popup-dialog-subir-backup .verification-input {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin-right: 10px;
+            background-color: var(--sixth-color); /* Cambiar a amarillo */
+            color: var(--fifth-color); /* Color de texto blanco */
+            border: none; /* Sin borde */
+            border-radius: 4px; /* Borde redondeado */
+        }
+
+        #popup-dialog-subir-backup .verification-input::placeholder {
+            color: var(--fifth-color); /* Color de texto del marcador de posición blanco */
+        }
+
+        #popup-dialog-subir-backup .verification-input[type="text"] {
+            /* Estilos para restringir la entrada a solo números */
+            appearance: textfield;
+        }
+
+        /* Estilos para el botón de flecha */
+        #popup-dialog-subir-backup .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #popup-dialog-subir-backup .btn-back i {
+            vertical-align: middle;
         }
 </style>
   
@@ -895,6 +973,18 @@
             <a class="dropdown-item" href="#" onclick="openDialogModificar('popup-dialog-editar-perfil', 0)">
               <i class="bi bi-pencil-square"></i>
               Editar perfil
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="descargarBackup();">
+              <i class="bi bi-database-fill-down"></i>
+              Descargar Backup
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="openDialog('popup-dialog-subir-backup');">
+              <i class="bi bi-database-fill-up"></i>
+              Recuperación de BD
             </a>
           </li>
           <li>
@@ -934,7 +1024,7 @@
         <img src="img/permisos.png" alt="Imagen permisos" class="button-image">
         Generar permisos
       </button>
-      <button class="btn btn-custom" onclick="redirigir('n26_gestionar_usuarios.html')"">
+      <button class="btn btn-custom" onclick="redirigir('n26_gestionar_usuarios.html')">
         <img src="img/usuarios.png" alt="Imagen usuarios" class="button-image">
         Gestionar usuarios
       </button>
@@ -1025,7 +1115,7 @@
                     <label for="campo_email">Dirección de correo electrónico</label>
                 </td>
                 <td class="column-two">
-                    <input type="text" id="campo_email" placeholder="correoejemplo@dominio.com" style="width: 100%;" oninput="checkEmail()">
+                    <input type="text" id="campo_email" placeholder="correoejemplo@dominio.com" style="width: 100%;" oninput="checkEmailCampo()">
                     <div id="email-alert" class="alert"></div>
                 </td>
             </tr>
@@ -1065,7 +1155,7 @@
                             </span>
                         </div>
                     </div>
-                    <div id="contraseña-alert" class="alert"></div>
+                    <div id="contraseña-alert" class="alert">Ingrese su contraseña para guardar los cambios</div>
                 </td>
             </tr>
 
@@ -1083,7 +1173,7 @@
         </table>
 <!--boton guardar-->
 <div class="button-container">
-    <form action="javaScript:modificarUsuarioAdmin();" method="POST">
+    <form action="javaScript:if(contraseniaCorrecta){modificarUsuarioAdmin();}" method="POST">
       <div class="form-group">
         <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
       </div>
@@ -1193,6 +1283,119 @@
             <button onclick="closeDialog('popup-dialog-contrasenia-modificada'); signIn(mail, contraseniaLogin)" style="cursor: pointer;">ACEPTAR</button>
         </div>
     </div>
+<div id="popup-dialog-subir-backup" class="popup-content" style="text-align: center;">
+    <a href="#" class="btn-back" onclick="closeDialog('popup-dialog-subir-backup')">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h3 style="margin-bottom: 20px; text-align: center;">Recuperar Base de Datos</h3>
+    <form id="sqlForm" enctype="multipart/form-data" accept-charset="UTF-8">
+        <h4>Suba el archivo .sql de backup y presione el botón Recuperar</h4>
+        <input type="file" name="sqlFile" accept=".sql">
+    </form>
+    <div class="popup-buttons">
+        <button onclick="ejecutarSQL()" style="cursor: pointer; border: none; margin-bottom: 0px; border-radius: 100px; background-color: var(--second-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;  margin: 0 auto;">Recuperar</button>
+    </div>
+</div>
+<div id="popup-dialog-recuperacion-exitosa" class="popup-content">
+        <h3 style="color:black">Base de Datos recuperada correctamente.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-recuperacion-exitosa');" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+</div>
+
+<style>
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #00AFB9; /* Color de fondo específico */
+      z-index: 9999;
+    }
+
+    .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Ajusta la altura según tus necesidades */
+    margin-top: 150px; /* Ajusta el margen superior según tus necesidades */
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+    }
+
+    .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    }
+
+    /*para el svg*/
+    .svg-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Ajusta el margen superior según tus necesidades */
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+    }
+
+    .svg-container svg {
+    max-width: 100%;
+    max-height: 100%;
+    }
+
+    circle:nth-of-type(1) { fill: #ffffff; }
+    circle:nth-of-type(2) { fill: #d9d9d9; }
+    circle:nth-of-type(3) { fill: #0081A7; }
+    circle:nth-of-type(4) { fill: #000000; }
+    .hidden {
+      display: none;
+    }
+</style>
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <!--logo-->
+  <div class="image-container">
+    <img src="img/nombre_eslogan_verde.png" alt="Logo y eslogan verde">
+  </div>
+    <!--loader-->
+    <div class="svg-container">
+    <!-- Agrega aquí tu SVG -->
+    <svg width="300" height="120" id="loader">
+        <!-- Left arc path -->
+        <svg>
+          <path id="arc-left-up" fill="none" d="M 90 90 A 90 90 0 0 1 0 0"/>
+        </svg>
+        <!-- Right arc path -->
+        <svg>
+          <path id="arc-right-up" fill="none" d="M 100 90 A 90 90 0 0 0 190 0"/>
+        </svg>
+        
+
+        <circle cx="15" cy="15" r="15">
+          <!-- I used a python script to calculate the keyPoints and keyTimes based on a quadratic function. -->
+          <animateMotion dur="1.5s" repeatCount="indefinite"
+            calcMode="linear"
+            keyPoints="0.0;0.19;0.36;0.51;0.64;0.75;0.84;0.91;0.96;0.99;1.0;0.99;0.96;0.91;0.84;0.75;0.64;0.51;0.36;0.19;0.0;0.0;0.05;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+            keyTimes="0.0;0.025;0.05;0.075;0.1;0.125;0.15;0.175;0.2;0.225;0.25;0.275;0.3;0.325;0.35;0.375;0.4;0.425;0.45;0.475;0.5;0.525;0.55;0.575;0.6;0.625;0.65;0.675;0.7;0.725;0.75;0.775;0.8;0.825;0.85;0.875;0.9;0.925;0.95;0.975;1.0">
+            <mpath xlink:href="#arc-left-up"/>
+          </animateMotion>
+        </circle>
+        <circle cx="135" cy="105" r="15" />
+        <circle cx="165" cy="105" r="15" />
+        <circle cx="95" cy="15" r="15">
+          <animateMotion dur="1.5s" repeatCount="indefinite"
+            calcMode="linear"
+            keyPoints="0.0;0.0;0.05;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0.19;0.36;0.51;0.64;0.75;0.84;0.91;0.96;0.99;1.0;0.99;0.96;0.91;0.84;0.75;0.64;0.51;0.36;0.19;0.0"
+            keyTimes="0.0;0.025;0.05;0.075;0.1;0.125;0.15;0.175;0.2;0.225;0.25;0.275;0.3;0.325;0.35;0.375;0.4;0.425;0.45;0.475;0.5;0.525;0.55;0.575;0.6;0.625;0.65;0.675;0.7;0.725;0.75;0.775;0.8;0.825;0.85;0.875;0.9;0.925;0.95;0.975;1.0">
+            <mpath xlink:href="#arc-right-up"/>
+          </animateMotion>
+        </circle>
+      </svg>
+
+  </div>
+
+
+  </div>
   <!--Pie de pagina-->
   <footer class="footer-bg">
     <div class="container text-center">
@@ -1208,6 +1411,7 @@
   <script src="js/scriptsDialogPopup.js"></script>
   <script>
     $(document).ready(function() {
+
             // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
             var maxDate = new Date();
             maxDate.setFullYear(maxDate.getFullYear() + 20);
@@ -1238,6 +1442,7 @@
 
     // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
     var usuarioJson = JSON.parse(usuario);
+    var contraseniaCorrecta = false;
     document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
 
     function setearValoresAModificar(id, index){
@@ -1311,7 +1516,28 @@ fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
     });
 
 var guardarButton = document.getElementById("guardar-button");
+function ejecutarSQL() {
+    document.getElementById("loading-overlay").classList.remove("hidden");
+    const form = document.getElementById("sqlForm");
 
+    const formData = new FormData(form);
+
+    fetch('http://localhost:8080/upload-sql', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("loading-overlay").classList.add("hidden");
+        closeDialog('popup-dialog-subir-backup');
+        openDialog('popup-dialog-recuperacion-exitosa');
+    })
+    .catch(error => {
+        console.error(error);
+        document.getElementById("loading-overlay").classList.add("hidden");
+        closeDialog('popup-dialog-subir-backup');
+    });
+}
 function checkUsername() {
     var usernameInput = document.getElementById("campo_usuario");
     var username = usernameInput.value;
@@ -1346,6 +1572,36 @@ function checkUsername() {
     }
 }
 
+function descargarBackup(){
+    fetch(`http://localhost:8080/backup`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+    if (!response.ok) {
+      throw new Error('Error en la solicitud de copia de seguridad');
+    }
+    return response.blob();
+  })
+  .then(blob => {
+    // Crea un enlace temporal para descargar el archivo
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'copia_de_seguridad.sql';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+  })
+  .catch(error => {
+    console.error(error);
+    // Maneja el error, por ejemplo, mostrando un mensaje al usuario
+  });
+}
+
 function checkContraseña() {
     var contrasenaInput = document.getElementById("campo_contraseña");
     var contrasena = contrasenaInput.value;
@@ -1375,6 +1631,7 @@ function checkContraseña() {
             guardarButton.disabled = false;
             passwordMatchIcon.style.display = "inline-block";
             passwordMismatchIcon.style.display = "none";
+            contraseniaCorrecta = true;
         } else {
             // Acciones cuando la respuesta es false (error)
             contrasenaAlert.innerText = "Contraseña incorrecta, ingrese la contraseña para guardar los cambios";
@@ -1382,6 +1639,7 @@ function checkContraseña() {
             guardarButton.disabled = true;
             passwordMatchIcon.style.display = "none";
             passwordMismatchIcon.style.display = "inline-block";
+            contraseniaCorrecta = false;
         }
     })
     .catch(error => {
@@ -1428,13 +1686,15 @@ function checkContraseña() {
     
             if (!phonePattern.test(phone)) {
                 phoneAlert.innerText = "Número de teléfono no válido.";
+                guardarButton.disabled = true;
             } else {
                 phoneAlert.innerText = "";
+                guardarButton.disabled = false;
             }
         }
     
     
-        function checkEmail() {
+        function checkEmailCampo() {
             var emailInput = document.getElementById("campo_email");
             var email = emailInput.value;
             var emailAlert = document.getElementById("email-alert");
@@ -1585,6 +1845,7 @@ function checkContraseña() {
 var contraseniaLogin;
 var mail = usuarioJson.mailUsuario;
   function modificarContrasenia(id){
+    document.getElementById("loading-overlay").classList.remove("hidden");
     nuevaContrasenia = document.getElementById(id).value;
     fetch(`http://localhost:8080/usuario/modificarContrasenia/${usuarioJson.codUsuario}`, {
         method: 'POST',
@@ -1601,6 +1862,7 @@ var mail = usuarioJson.mailUsuario;
                     // Contraseña válida, se cierra el diálogo
             closeDialog('popup-dialog-restablecer-contrasenia');
             closeDialog('popup-dialog-cambiar-contrasenia');
+            document.getElementById("loading-overlay").classList.add("hidden");
             openDialog("popup-dialog-contrasenia-modificada");
 
         } else {
@@ -1608,6 +1870,7 @@ var mail = usuarioJson.mailUsuario;
             console.error('Error al modificar la contraseña');
             closeDialog('popup-dialog-cambiar-contrasenia');
             closeDialog('popup-dialog-restablecer-contrasenia');
+            document.getElementById("loading-overlay").classList.add("hidden");
         }
     })
     .catch(error => {
@@ -1615,6 +1878,7 @@ var mail = usuarioJson.mailUsuario;
         console.error('Error:', error);
         closeDialog('popup-dialog-cambiar-contrasenia');
         closeDialog('popup-dialog-restablecer-contrasenia');
+        document.getElementById("loading-overlay").classList.add("hidden");
     });
   }
 
@@ -1632,6 +1896,7 @@ let codUsuarioContrasenia;
 
 async function checkEmail() {
   try {
+    document.getElementById("loading-overlay").classList.remove("hidden");
     const emailInput = document.getElementById("campo_mail_contrasenia");
     const email = emailInput.value;
     const emailAlert = document.getElementById("email-alert-contrasenia");
@@ -1692,8 +1957,10 @@ async function checkEmail() {
       codigoVerificacion = resultadoUsuarioSave.codigoVerificacion.codVerificacion;
       codUsuarioContrasenia = resultadoUsuarioSave.codUsuario;
       closeDialog('popup-dialog-reiniciar-email');
+      document.getElementById("loading-overlay").classList.add("hidden");
       openDialog('popup-dialog-ingresar-codigo');
     } else {
+      document.getElementById("loading-overlay").classList.add("hidden");
       emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
     }
   } catch (error) {

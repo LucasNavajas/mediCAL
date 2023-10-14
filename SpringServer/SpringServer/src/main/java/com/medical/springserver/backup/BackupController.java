@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,33 +66,38 @@ public class BackupController {
         try {
             // Leer el archivo SQL
             InputStream inputStream = sqlFile.getInputStream();
-            byte[] sqlBytes = sqlFile.getBytes(); // Usar la codificación por defecto
-            String sqlScript = new String(sqlBytes, "UTF-8"); // Especificar la codificación aquí
-
+            byte[] sqlBytes = sqlFile.getBytes();
+            String sqlScript = new String(sqlBytes, "UTF-8");
 
             // Establecer la conexión con la base de datos (MySQL en este caso)
             String url = "jdbc:mysql://localhost:3306/SpringServerDB";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(url, username, password);
 
-            // Ejecutar el script SQL
-            Statement statement = connection.createStatement();
-            statement.execute(sqlScript);
-
-            // Cerrar la conexión
-            statement.close();
-            connection.close();
-
-            return "Script SQL ejecutado con éxito";
+            try (Connection connection = DriverManager.getConnection(url, username, password)) {
+                String[] sqlStatements = sqlScript.split(";");
+                for (String sqlStatement : sqlStatements) {
+                    if (!sqlStatement.trim().isEmpty()) {
+                        try (Statement statement = connection.createStatement()) {
+                            statement.execute(sqlStatement); // Usar execute() en lugar de executeUpdate()
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            return "Error al ejecutar el script SQL: " + e.getMessage();
+                        }
+                    }
+                }
+                return "Script SQL ejecutado con éxito";
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "Error al ejecutar el script SQL: " + e.getMessage();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return "Error al procesar el archivo SQL";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error al ejecutar el script SQL";
         }
     }
 }
+
+
 
 

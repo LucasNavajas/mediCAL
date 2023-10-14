@@ -793,6 +793,56 @@
             border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
         }
 
+        #popup-dialog-eliminado {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-eliminado h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-eliminado .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-eliminado .popup-buttons button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+          #popup-dialog-eliminado .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        
+
+
   </style>
 </head>
 
@@ -1139,6 +1189,14 @@
             <button onclick="closeDialog('popup-dialog-guardado')" style="cursor: pointer;">ACEPTAR</button>
         </div>
     </div>
+
+    <div id="popup-dialog-eliminado" class="popup-content">
+        <h3>Se dio de baja la instancia.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-eliminado')" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
 
     <div id="popup-dialog-atras" class="popup-content">
         <h3>¿Está Seguro?</h3>

@@ -512,6 +512,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -539,6 +540,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -561,6 +563,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -583,6 +586,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -605,6 +609,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -627,6 +632,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -649,6 +655,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -671,6 +678,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
@@ -693,6 +701,7 @@ function toggleRevertButtonVisibility() {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  openDialog('popup-dialog-eliminado');
                 })
                 .catch(error => {
                   // Manejar errores generales
