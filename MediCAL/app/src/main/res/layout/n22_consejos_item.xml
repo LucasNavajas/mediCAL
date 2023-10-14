@@ -58,7 +58,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:text="Descripción Consejo"
                 android:textSize="22dp" />
 
@@ -95,6 +95,19 @@
                 android:layout_below="@id/text_Leer_mas"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="1dp"
+                />
+
+            <ImageView
+                android:id="@+id/videoImagePlay"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="fitCenter"
+                android:layout_below="@id/text_Leer_mas"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="1dp"
+                android:src="@drawable/play_icon"
+                android:layout_centerInParent="true"
+                android:alpha="0.4"
                 />
 
             <ImageView

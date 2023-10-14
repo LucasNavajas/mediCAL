@@ -77,6 +77,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         View lineaLeerMas = holder.lineaLeerMas;
         ImageView compartir = holder.compartir;
         ImageView foto = holder.foto;
+        ImageView play= holder.play;
         TextView auspiciante = holder.auspiciante;
 
         holder.nombreConsejo.setText(consejoAleatorio.getNombreConsejo());
@@ -90,19 +91,20 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         if (tipo.getNroTipoConsejo() == 3) {
             iconoConsejo.setImageResource(R.drawable.foco_consejo);
             foto.setVisibility(View.GONE);
+            play.setVisibility(View.GONE);
             leerMas.setText("Ver Manual");
 
             // Link a Manual de Usuario
-            /*
+
             leerMas.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String linkManual = consejo.getLinkConsejo();
+                    String linkManual = consejoAleatorio.getLinkConsejo();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(linkManual));
                     context.startActivity(intent);
                 }
             });
-            */
+
             compartir.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -113,6 +115,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         } else if (tipo.getNroTipoConsejo() == 2) {
             iconoConsejo.setImageResource(R.drawable.foto_salud);
             foto.setVisibility(View.GONE);
+            play.setVisibility(View.GONE);
             // Los consejos de Bienestar y Salud no tienen un auspiciante pago, y tampoco son propios de MediCAL
             // "Leer más" utiliza el link para llevarlos a una noticia relacionada
             auspiciante.setVisibility(View.GONE);
@@ -141,6 +144,14 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             Picasso.get().load(consejoAleatorio.getFotoConsejo()).into(foto);
 
             foto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String videoLink = consejoAleatorio.getLinkConsejo();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoLink));
+                    context.startActivity(intent);
+                }
+            });
+            play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String videoLink = consejoAleatorio.getLinkConsejo();
@@ -233,6 +244,8 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
 
         // fotoConsejo sería poner la foto del consejo, que sería un botón que lleva al link del video
         ImageView foto;
+        ImageView play;
+
         TextView auspiciante;
         ImageView compartir;
 
@@ -245,6 +258,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             leerMas = itemView.findViewById(R.id.text_Leer_mas);
             lineaLeerMas = itemView.findViewById(R.id.linea_leer_mas);
             foto = itemView.findViewById(R.id.videoImageView);
+            play = itemView.findViewById(R.id.videoImagePlay);
             auspiciante = itemView.findViewById(R.id.texto_Auspiciante);
             compartir = itemView.findViewById(R.id.imagen_consejo_compartir);
 
