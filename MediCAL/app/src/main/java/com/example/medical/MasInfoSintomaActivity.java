@@ -1925,7 +1925,7 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
         return null;
     }
     private void popupBorrarSintoma(int codCalendarioSintoma) {
-        View popupView = getLayoutInflater().inflate(R.layout.n79_1_popup_borrar_medicion, null);
+        View popupView = getLayoutInflater().inflate(R.layout.n80_1_popup_borrar_sintoma, null);
 
         // Crear la instancia de PopupWindow
         PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
