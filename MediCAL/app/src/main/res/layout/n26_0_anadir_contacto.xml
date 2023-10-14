@@ -73,7 +73,7 @@
                 android:fontFamily="@font/inter_regular"
                 android:textSize="20sp"
                 android:textColor="@color/verdeTextos"
-                android:text="Ingrese el nombre de usuario o correo electrónico  del usuario a conectar"/>
+                android:text="Ingrese el nombre de usuario o correo electrónico del usuario a conectar"/>
 
             <EditText
                 android:id="@+id/textEdit_contacto"

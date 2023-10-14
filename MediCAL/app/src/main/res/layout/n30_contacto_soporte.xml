@@ -60,8 +60,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
+           
             android:fontFamily="@font/inter_semibold"
-            android:text="Emailnuestrocomunicacionsoporte@dominio.com"
+            android:text="medicalutnfrm@gmail.com"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:breakStrategy="simple"
