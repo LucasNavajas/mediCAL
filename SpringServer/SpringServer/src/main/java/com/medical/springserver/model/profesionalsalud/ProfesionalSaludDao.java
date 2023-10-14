@@ -53,7 +53,9 @@ public class ProfesionalSaludDao {
 	            usuarioDao.modificarMail(profesionalSalud.getCodUsuario(), existingProfesionalSalud.getMailUsuario(), profesionalSalud.getMailUsuario());
 	            existingProfesionalSalud.setMailUsuario(profesionalSalud.getMailUsuario());
 	        }
+	        if(profesionalSalud.getNombreInstitucion()!=null && !profesionalSalud.getNombreInstitucion().equals("")) {
 	        existingProfesionalSalud.setNombreInstitucion(profesionalSalud.getNombreInstitucion());
+	        }
 	        if (profesionalSalud.getNombreUsuario() != null && !profesionalSalud.getNombreUsuario().equals("")) {
 	            existingProfesionalSalud.setNombreUsuario(profesionalSalud.getNombreUsuario());
 	        }

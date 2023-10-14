@@ -206,4 +206,10 @@ public class UsuarioController {
 	public void verificarMailExistente(@PathVariable String mail) throws FirebaseAuthException {
 		usuarioDao.verificarMailExistente(mail);
 	}
+	
+	@GetMapping("/usuario/institucion/{nombreInstitucion}")
+	public List<Usuario> findByInstitucion(@PathVariable String nombreInstitucion) {
+	    return usuarioDao.findByInstitucion(nombreInstitucion);
+	}
+
 }

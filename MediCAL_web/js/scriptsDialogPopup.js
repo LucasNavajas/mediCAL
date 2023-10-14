@@ -81,7 +81,7 @@
             }
             aceptarNuevo.addEventListener("click", agregarMotivo);
           }
-          else if(window.location.href== "http://localhost:8081/n26_gestionar_usuarios.html"){
+          else if(window.location.href== "http://localhost:8081/n26_gestionar_usuarios.html" || window.location.href == "http://localhost:8081/n6_gestionar_profesionales.html"){
 
              function agregarMotivoUsuario(){
               openDialogMotivoUsuario('popup-dialog-motivo', idInstancia, index, esto);
@@ -105,6 +105,32 @@
           dialog.style.display = "block";
       }
 
+function openDialogRecuperar(id, idInstancia, index, esto) {
+          var overlay = document.getElementById("popup-overlay");
+          var dialog = document.getElementById(id);
+          var aceptar = dialog.querySelector(".accept-button");
+          var inputElements = dialog.querySelectorAll('input, textarea');
+
+            // Itera sobre los elementos y establece su valor en una cadena vacía
+            inputElements.forEach(function(input) {
+                input.value = '';
+            });
+          var aceptarNuevo = aceptar.cloneNode(true);
+          aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+        
+          // Define el nuevo controlador de eventos para el botón "aceptar"
+          function handleAceptarClick() {
+              recuperarInstancia(idInstancia);
+              toggleRestoreRow(index, esto);
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+      }
       function openDialogMotivoUsuario(id, idInstancia, index, esto) {
             var overlay = document.getElementById("popup-overlay");
             var dialog = document.getElementById(id);
@@ -164,6 +190,18 @@
             else{
             const tabla = document.querySelector("table");
             const fila = tabla.rows[index+1];
+            if(window.location.href == "http://localhost:8081/n6_gestionar_profesionales.html"){
+            usuario.value = fila.cells[1].textContent;
+
+            var aceptar = dialog.querySelector("#eliminar-button-motivo");
+            var aceptarNuevo = aceptar.cloneNode(true);
+            function handleAceptarClick() {
+              eliminarUsuario(fila.cells[0].textContent, motivo.value);
+              toggleDeleteRow(index, esto);
+              closeDialog(id);
+            }
+          }
+            else{
             usuario.value = fila.cells[2].textContent;
 
             var aceptar = dialog.querySelector("#eliminar-button-motivo");
@@ -172,6 +210,7 @@
               eliminarUsuario(fila.cells[1].textContent, motivo.value);
               toggleDeleteRow(index, esto);
               closeDialog(id);
+            }
           }
 
           // Agrega el nuevo controlador de eventos

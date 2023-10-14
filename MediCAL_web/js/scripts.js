@@ -18,6 +18,7 @@
     // Crea una fila para las cabeceras
     var cabecera = document.createElement("tr");
 
+     if (window.location.href !== 'http://localhost:8081/n6_gestionar_profesionales.html') {
     // Crea la celda del checkbox de selección
     var checkboxHeaderCell = document.createElement("th");
     var checkboxHeader = document.createElement("input");
@@ -28,6 +29,7 @@
     };
     checkboxHeaderCell.appendChild(checkboxHeader);
     cabecera.appendChild(checkboxHeaderCell);
+  }
 
     if (dataJSON && dataJSON.length > 0) {
         // Obtén las propiedades del primer objeto del arreglo como cabeceras
@@ -88,7 +90,7 @@
   if (datosJSON.length === 0) {
     // JSON vacío, crea un mensaje
     var h1 = document.createElement("h1");
-    h1.textContent = "No existen instancias para la opción seleccionada";
+    h1.textContent = "No existen elementos";
     // Agrega el mensaje al contenedor deseado (por ejemplo, el div que contiene la tabla)
     // Aplica estilos CSS para centrar el mensaje
     h1.style.textAlign = "center";
@@ -101,7 +103,7 @@
   for (var i = 0; i < datosJSON.length; i++) {
     var medicamento = datosJSON[i];
     var fila = document.createElement("tr");
-
+ if (window.location.href !== 'http://localhost:8081/n6_gestionar_profesionales.html') {
     // Celda para el checkbox
     var checkboxCell = document.createElement("td");
     var checkbox = document.createElement("input");
@@ -112,6 +114,7 @@
     };
     checkboxCell.appendChild(checkbox);
     fila.appendChild(checkboxCell);
+  }
 
     var primerObjeto = datosJSON[0];
     var propiedades = Object.keys(primerObjeto);
@@ -180,8 +183,14 @@
     (function (index, fila) {
       revertirIcono.onclick = function () {
         var idInstancia = fila.cells[1].textContent;
+        if(window.location.href == "http://localhost:8081/n6_gestionar_profesionales.html"){
+          idInstancia = fila.cells[0].textContent;
+          openDialogRecuperar('popup-dialog-confirma-recuperar', idInstancia, index, this);
+        }
+        else{
         recuperarInstancia(idInstancia);
         toggleRestoreRow(index, this);
+      }
       };
     })(i, fila);
 
@@ -191,7 +200,7 @@
 
     tbody.appendChild(fila);
 
-    if(window.location.href === 'http://localhost:8081/n26_gestionar_usuarios.html'){
+    if(window.location.href === 'http://localhost:8081/n26_gestionar_usuarios.html' || window.location.href === 'http://localhost:8081/n6_gestionar_profesionales.html'){
       var propiedadFechaDesde;
       for (var j = 0; j < propiedades.length; j++) {
             var propiedad = propiedades[j];
@@ -249,13 +258,17 @@ function toggleSearch(index) {
 function toggleDeleteButtonVisibility() {
     var checkboxes = document.querySelectorAll('tr:not(.deleted-row) .rowCheckbox:checked');
     var eliminarCalendariosBtn = document.getElementById('eliminarCalendariosBtn');
+    if(eliminarCalendariosBtn !== null){
     eliminarCalendariosBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+  }
 }
 
 function toggleRevertButtonVisibility() {
     var checkboxes = document.querySelectorAll('tr.deleted-row .rowCheckbox:checked');
     var revertInstanciasBtn = document.getElementById('revertInstanciasBtn');
+    if(revertInstanciasBtn !== null){
     revertInstanciasBtn.style.display = checkboxes.length > 0 ? 'inline-block' : 'none';
+  }
 }
 
 
@@ -297,7 +310,9 @@ function toggleRevertButtonVisibility() {
         tableRow.classList.remove('deleted-row');
 
         var checkbox = tableRow.querySelector('.rowCheckbox');
+        if(checkbox !== null){
         checkbox.style.display = 'inline-block';
+      }
 
         toggleDeleteButtonVisibility();
         toggleRevertButtonVisibility();
@@ -740,9 +755,31 @@ function recuperarInstancia(idInstancia){
                   console.error('Error:', error);
                 });
       }
+      else{
+fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error de red.'); // Manejo de errores si la respuesta no es exitosa (puedes personalizar esto)
+                  }
+                  return response.json(); // Parsear la respuesta a JSON si es una respuesta JSON
+                })
+                .then(data => {
+                  // Hacer algo con los datos de la respuesta
+                  openDialog('popup-dialog-restaurado');
+                })
+                .catch(error => {
+                  // Manejar errores generales
+                  console.error('Error:', error);
+                });
+      }
     }
     else{
-      if(window.location.href == "http://localhost:8081/n26_gestionar_usuarios.html"){
+      if(window.location.href == "http://localhost:8081/n26_gestionar_usuarios.html" ){
           fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
                 method: 'POST',
                 headers: {

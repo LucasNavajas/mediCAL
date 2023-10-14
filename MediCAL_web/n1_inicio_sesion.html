@@ -1099,6 +1099,23 @@ function modificarContrasenia(codUsuario, nuevaContrasenia) {
             openDialog('popup-dialog-contrasenia');
           });
       }
+      else if(data.perfil && data.perfil.codPerfil === 3){
+        // Iniciar sesión con correo y contraseña
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(function (userCredential) {
+            // Inicio de sesión exitoso, puedes redirigir al usuario a la página deseada
+            // Convierte el objeto JSON en una cadena JSON utilizando JSON.stringify
+            var usuarioString = JSON.stringify(data);
+            // Almacena la cadena JSON en sessionStorage bajo un nombre de clave
+            localStorage.setItem('usuario', usuarioString);
+            window.location.href = "n2_pantalla_principal_institucion.html";
+          })
+          .catch(function (error) {
+            // Ocultar la animación de carga en caso de error
+            document.getElementById("loading-overlay").classList.add("hidden");
+            openDialog('popup-dialog-contrasenia');
+          });
+      }
     })
     .catch(error => {
        document.getElementById("loading-overlay").classList.add("hidden");

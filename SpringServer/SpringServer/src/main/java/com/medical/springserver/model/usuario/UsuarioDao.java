@@ -72,7 +72,9 @@ public class UsuarioDao {
             	existingUsuario.setMailUsuario(usuario.getMailUsuario());
             	}
             }
+            if(usuario.getNombreInstitucion()!=null && !usuario.getNombreInstitucion().equals("")) {
                 existingUsuario.setNombreInstitucion(usuario.getNombreInstitucion());
+            }
             if (usuario.getNombreUsuario() != null && !usuario.getNombreUsuario().equals("")) {
                 existingUsuario.setNombreUsuario(usuario.getNombreUsuario());
             }
@@ -401,5 +403,9 @@ public class UsuarioDao {
 	        String uid = userRecord.getUid();
 	        FirebaseAuth.getInstance().deleteUser(uid);
 	    }
+	}
+	
+	public List<Usuario> findByInstitucion(String nombreInstitucion){
+		return repository.findPorInstitucion(nombreInstitucion);
 	}
 }

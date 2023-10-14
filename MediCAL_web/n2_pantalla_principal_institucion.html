@@ -106,6 +106,86 @@
 }
 
 
+ .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        .popup-content h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .popup-content h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .popup-content .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .popup-content .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .popup-content .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        .popup-content .popup-buttons .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        .popup-content .popup-buttons .accept-button {
+            order: 2;
+        }
+
 </style>
   
 </head>
@@ -113,8 +193,8 @@
 <!--Barra de arriba, ícono de configuración y el menú desplegable -->
   <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
-        MediCAL | Administrador Institución
+      <a class="navbar-brand" href="n2_pantalla_principal_institucion.html" style="font-weight: 600; font-size: 12pt;">
+        MediCAL | Administrador de Institución
       </a>
       <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -129,14 +209,14 @@
             </a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="window.location.href='n4_ayuda_y_soporte.html'">
               <i class="bi bi-question-circle"></i>
               Ayuda y soporte
             </a>
           </li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" id="cerrar_sesion" onclick="openDialog('popup-dialog-cerrar-sesion')">
               <i class="bi bi-box-arrow-left"></i>
               Cerrar sesión
             </a>
@@ -149,11 +229,11 @@
  <!--Pantalla-->
 <main class="pt-5">
   <img src="img/usuario.png" alt="Imagen de inicio" class="centered-image">
-  <p class="centered-text">Nombreusuario<br/>Correoelectronico</p>
+  <p id="usuario_y_correo" class="centered-text">Nombreusuario<br/>Correoelectronico</p>
   <div class="rectangle container">
     <!--Botones-->
     <div class="grid-container"> <!-- Cambio de clase: rectangle-container a grid-container -->
-      <button class="btn btn-custom">
+      <button class="btn btn-custom"onclick="redirigir('n6_gestionar_profesionales.html')">
         <img src="img/profesionales.png" alt="Imagen profesionales" class="button-image">
         Gestionar profesionales
       </button>
@@ -173,6 +253,18 @@
   </div>
 </main>
 
+<div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog-cerrar-sesion" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea cerrar sesión de esta cuenta?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-cerrar-sesion')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-cerrar-sesion'); signOut();">ACEPTAR</button>
+        </div>
+    </div>
+
   <!--Pie de pagina-->
   <footer class="footer-bg">
     <div class="container text-center">
@@ -183,5 +275,24 @@
   
   <!--llamo el archivo de javascript-->
   <script src="js/main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+  <!--referencio el archivo de estilos-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+  <script src="js/firebaseLoginAdminInstitucion.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/scriptsDialogPopup.js"></script>
+  <script>
+    var usuario = localStorage.getItem('usuario');
+
+    // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
+    var usuarioJson = JSON.parse(usuario);
+    var contraseniaCorrecta = false;
+    document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
+  </script>
 </body>
 </html> 

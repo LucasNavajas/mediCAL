@@ -28,5 +28,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer>{
 	
 	@Query("SELECT u FROM Usuario u WHERE u.perfil.codPerfil = :codPerfil")
     List<Usuario> findByCodPerfil(@Param("codPerfil") int codPerfil);
+	
+	@Query("SELECT u FROM Usuario u WHERE u.perfil.codPerfil = 4 AND u.nombreInstitucion = :nombreInstitucion")
+	List<Usuario> findPorInstitucion(@Param("nombreInstitucion") String nombreInstitucion);
 
 }
