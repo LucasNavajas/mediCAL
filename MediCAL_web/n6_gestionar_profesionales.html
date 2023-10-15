@@ -1077,7 +1077,7 @@
   <!--Barra de arriba, ícono de configuración y el menú desplegable -->
   <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif; position:fixed; width:100%">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+      <a class="navbar-brand" href="n2_pantalla_principal_institucion.html" style="font-weight: 600; font-size: 12pt;">
         MediCAL | Administrador de Institución
       </a>
       <div class="dropdown">
@@ -1087,7 +1087,7 @@
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
           <!--opciones del dropdown-->
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="window.location.href='n3_editar_perfil_institucion.html'">
               <i class="bi bi-pencil-square"></i>
               Editar perfil
             </a>
@@ -1708,63 +1708,77 @@ function cargarTabla() {
 }
 
 function cargarHistorialParaUsuarios(usuarios) {
-    if(usuarios.length===0){
-      reemplazarFilasConJSON(usuarios);
+  if (usuarios.length === 0) {
+    reemplazarFilasConJSON(usuarios);
+  } else {
+    const usuariosConHistorial = [];
+    const usuariosFiltrados = usuarios.filter((usuario) => usuario.perfil.codPerfil !== 2);
+
+    // Función para obtener el historial de un usuario
+    function obtenerHistorial(usuario) {
+      const { codUsuario } = usuario;
+      return fetch(`http://localhost:8080/historialfinvigencia/${codUsuario}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error de red.');
+          }
+          return response.json();
+        });
     }
-    else{
-  const usuariosConHistorial = [];
-  const usuariosFiltrados = usuarios.filter((usuario) => usuario.perfil.codPerfil !== 2);
-  // Recorre la lista de usuarios
-  usuariosFiltrados.forEach((usuario) => {
-    // Elimina las propiedades no deseadas
-    delete usuario.codigoVerificacion;
-    delete usuario.token;
-    delete usuario.contraseniaUsuario;
-    delete usuario.nombreInstitucion;
-    delete usuario.perfil;
 
-
-    const { codUsuario } = usuario;
-    fetch(`http://localhost:8080/historialfinvigencia/${codUsuario}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error de red.');
-        }
-        return response.json();
+    // Función para obtener los calendarios de un usuario
+    function obtenerCalendarios(usuario) {
+      const { codUsuario } = usuario;
+      return fetch(`http://localhost:8080/calendario/usuario/${codUsuario}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .then((historial) => {
-        // Si el historial es una lista no vacía, obtén el último elemento
-        const ultimoHistorial = historial.length > 0 ? historial[historial.length - 1] : null;
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error de red.');
+          }
+          return response.json();
+        });
+    }
 
-        // Agrega las propiedades al usuario o valores vacíos si no hay historial
-        usuario.fechaDesdeFV = ultimoHistorial ? ultimoHistorial.fechaDesdeFV : '';
-        usuario.fechaHastaFV = ultimoHistorial ? ultimoHistorial.fechaHastaFV : '';
-        usuario.motivoFV = ultimoHistorial ? ultimoHistorial.motivoFV : '';
-       // Verifica si el JSON de usuario tiene la propiedad 'dni' y asigna su valor, o lo deja vacío
-        usuario.dni = usuario.hasOwnProperty('dni') ? usuario.dni : null;
+    // Promise.all para obtener el historial y los calendarios de todos los usuarios
+    Promise.all(usuariosFiltrados.map(usuario => 
+      Promise.all([obtenerHistorial(usuario), obtenerCalendarios(usuario)])
+        .then(([historial, calendarios]) => {
+        delete usuario.codigoVerificacion;
+        delete usuario.token;
+        delete usuario.contraseniaUsuario;
+        delete usuario.nombreInstitucion;
+        delete usuario.perfil;
+          // Lógica para procesar historial y calendarios, igual que antes
+          const ultimoHistorial = historial.length > 0 ? historial[historial.length - 1] : null;
+          usuario.fechaDesdeFV = ultimoHistorial ? ultimoHistorial.fechaDesdeFV : '';
+          usuario.fechaHastaFV = ultimoHistorial ? ultimoHistorial.fechaHastaFV : '';
+          usuario.motivoFV = ultimoHistorial ? ultimoHistorial.motivoFV : '';
+          usuario.dni = usuario.hasOwnProperty('dni') ? usuario.dni : null;
+          usuario.matricula = usuario.hasOwnProperty('matricula') ? usuario.matricula : null;
+          usuario.numeroDeCalendarios = calendarios.length;
+          usuariosConHistorial.push(usuario);
 
-        // Verifica si el JSON de usuario tiene la propiedad 'matricula' y asigna su valor, o lo deja vacío
-        usuario.matricula = usuario.hasOwnProperty('matricula') ? usuario.matricula : null;
-
-        usuariosConHistorial.push(usuario);
-
-        // Si todos los usuarios tienen su historial cargado, reemplaza las filas en la tabla
-        if (usuariosConHistorial.length === usuariosFiltrados.length) {
-          usuariosConHistorial.sort((a, b) => a.codUsuario - b.codUsuario);
-          reemplazarFilasConJSON(usuariosConHistorial);
-        }
-      })
-      .catch((error) => {
-        console.error('Error al cargar historial:', error);
-      });
-  });
+          if (usuariosConHistorial.length === usuariosFiltrados.length) {
+            usuariosConHistorial.sort((a, b) => a.codUsuario - b.codUsuario);
+            reemplazarFilasConJSON(usuariosConHistorial);
+          }
+        })
+        .catch((error) => {
+          console.error('Error al cargar historial o calendarios:', error);
+        })
+    ));
+  }
 }
-}
+
       cargarTabla();
 
 

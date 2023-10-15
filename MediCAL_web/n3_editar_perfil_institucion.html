@@ -148,14 +148,709 @@
         margin-top: 0px;
         margin-right: 120px;
     }
+
+    .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        .popup-content h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .popup-content h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .popup-content .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .popup-content .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .popup-content .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        .popup-content .popup-buttons .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        .popup-content .popup-buttons .accept-button {
+            order: 2;
+        }
+
+
+        #popup-dialog-guardado {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-guardado h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-guardado .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-guardado .popup-buttons button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-guardado .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-atras {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+
+        #popup-dialog-atras h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-atras h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-atras .popup-buttons {
+             display: flex;
+            justify-content: space-between; /* Alinea los elementos en los extremos */
+            align-items: center; /* Centra verticalmente */
+            margin-top: 20px;
+        }
+
+        .left-button {
+            order: 1; /* Establece el orden para la parte izquierda */
+            margin-right: auto; /* Empuja todo hacia la izquierda */
+        }
+
+        .right-button {
+             order: 2; /* Establece el orden para la parte derecha */
+             margin-left: auto; /* Empuja todo hacia la derecha */
+        }
+
+        #popup-dialog-atras button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-atras button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+        #popup-dialog-restablecer-contrasenia {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+        /*boton*/
+        #popup-dialog-restablecer-contrasenia .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-restablecer-contrasenia .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Estilos para el botón de flecha */
+        #popup-dialog-restablecer-contrasenia .btn-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #popup-dialog-restablecer-contrasenia .btn-back i {
+            vertical-align: middle;
+        }
+        
+        /*etiquetas e inputs*/
+        /*campos editables*/
+        #popup-dialog-restablecer-contrasenia label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            margin-right: 5px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-top: 50px;
+        }
+
+        #popup-dialog-restablecer-contrasenia .input-group {
+            position: relative;
+            text-align: left;
+        }
+
+        #popup-dialog-restablecer-contrasenia input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 15px;
+            padding-right: 60px; /* Ajusta el espacio para el ícono */
+            text-align: left;
+        }
+
+        #popup-dialog-restablecer-contrasenia input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-restablecer-contrasenia .toggle-password {
+            position: absolute;
+            top: 35%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        #popup-dialog-restablecer-contrasenia .toggle-password i {
+            font-size: 20px;
+        }
+        #popup-dialog-restablecer-contrasenia .forgot-password-container {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        #popup-dialog-restablecer-contrasenia .forgot-password-link {
+            font-weight: normal;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            color: var(--first-color);
+            display: block;
+            margin: 0;
+        }
+
+        /* Estilos para la alerta */
+        #popup-dialog-restablecer-contrasenia .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
+
+        /* Estilos para los iconos de verificación y error */
+        #popup-dialog-restablecer-contrasenia .icon-check {
+            color: green;
+            position: absolute;
+            top: 35%;
+            right: 35px;
+            transform: translateY(-50%);
+        }
+
+        #popup-dialog-restablecer-contrasenia .icon-error {
+            color: red;
+            position: absolute;
+            top: 35%;
+            right: 35px;
+            transform: translateY(-50%);
+        }
+         #popup-dialog-contrasenia-modificada {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-contrasenia-modificada h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-contrasenia-modificada .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-contrasenia-modificada button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-contrasenia-modificada button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-reiniciar-email {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-reiniciar-email h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-reiniciar-email label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            margin-right: 5px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-reiniciar-email input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        #popup-dialog-reiniciar-email input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-reiniciar-email ::placeholder {
+            color: var(--seventh-color);
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .popup-buttons {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content,  #popup-dialog-reiniciar-email button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .popup-buttons, #popup-dialog-reiniciar-email .cancel-button {
+            margin-right: auto;
+            order: 1;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .popup-buttons, #popup-dialog-reiniciar-email .accept-button {
+            order: 2;
+        }
+
+        /* Estilos para la alerta de correo inválido */
+        #popup-dialog-reiniciar-email .alert {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+            margin-left: -15px;
+        }
+
+        #popup-dialog-reiniciar-email .popup-content, #popup-dialog-reiniciar-email .alert {
+            display: block;
+        }
+
+            #popup-dialog-ingresar-codigo .popup-content {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-ingresar-codigo h3 {
+            margin-top: 50px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-ingresar-codigo .popup-content, #popup-dialog-ingresar-codigo .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-ingresar-codigo .popup-content,  #popup-dialog-ingresar-codigo button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /*para los campos de texto del codigo de verificacion*/
+        #popup-dialog-ingresar-codigo .verification-input {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin-right: 10px;
+            background-color: var(--sixth-color); /* Cambiar a amarillo */
+            color: var(--fifth-color); /* Color de texto blanco */
+            border: none; /* Sin borde */
+            border-radius: 4px; /* Borde redondeado */
+        }
+
+        #popup-dialog-ingresar-codigo .verification-input::placeholder {
+            color: var(--fifth-color); /* Color de texto del marcador de posición blanco */
+        }
+
+        #popup-dialog-ingresar-codigo .verification-input[type="text"] {
+            /* Estilos para restringir la entrada a solo números */
+            appearance: textfield;
+        }
+
+        /* Estilos para el botón de flecha */
+        #popup-dialog-ingresar-codigo .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        #popup-dialog-ingresar-codigo i {
+            vertical-align: middle;
+        }
+
+            #popup-dialog-cambiar-contrasenia {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+        /*boton*/
+         #popup-dialog-cambiar-contrasenia .popup-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 20px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Estilos para el botón de flecha */
+         #popup-dialog-cambiar-contrasenia .btn-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: var(--first-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+         #popup-dialog-cambiar-contrasenia i {
+            vertical-align: middle;
+        }
+        
+        /*etiquetas e inputs*/
+        /*campos editables*/
+         #popup-dialog-cambiar-contrasenia label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            margin-right: 5px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-top: 50px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .input-group {
+            position: relative;
+            text-align: left;
+        }
+
+         #popup-dialog-cambiar-contrasenia input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 5px;
+            padding-right: 30px; /* Ajusta el espacio para el ícono */
+            text-align: left;
+        }
+
+         #popup-dialog-cambiar-contrasenia input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+         #popup-dialog-cambiar-contrasenia .toggle-password {
+            position: absolute;
+            top: 35%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+         #popup-dialog-cambiar-contrasenia .toggle-password i {
+            font-size: 20px;
+        }
+         #popup-dialog-cambiar-contrasenia .forgot-password-container {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .forgot-password-link {
+            font-weight: normal;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            color: var(--first-color);
+            display: block;
+            margin: 0;
+        }
+
+         #popup-dialog-cambiar-contrasenia .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+         #popup-dialog-cambiar-contrasenia .popup-buttons button {
+            border: 2px solid #fff;
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+          #popup-dialog-cambiar-contrasenia .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
   </style>
 </head>
 <body>
   <!--Barra de arriba, ícono de configuración y el menú desplegable -->
   <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
-        MediCAL | Administrador Institución
+      <a class="navbar-brand" href="n2_pantalla_principal_institucion.html" style="font-weight: 600; font-size: 12pt;">
+        MediCAL | Administrador de Institución
       </a>
       <div class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -170,14 +865,14 @@
             </a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="window.location.href='n4_ayuda_y_soporte.html'">
               <i class="bi bi-question-circle"></i>
               Ayuda y soporte
             </a>
           </li>
           <li class="dropdown-divider"></li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="#" onclick="openDialog('popup-dialog-cerrar-sesion')">
               <i class="bi bi-box-arrow-left"></i>
               Cerrar sesión
             </a>
@@ -200,7 +895,7 @@
         <div class="image">
           <img src="img/usuario.png" alt="Imagen">
         </div>
-        <div class="text">
+        <div class="text" id="usuario_y_correo">
           <p>Nombreusuario<br/>Correoelectronico</p>
         </div>
       </div>
@@ -224,7 +919,7 @@
             </div>
             <div class="row form-group">
               <label for="campo_institucion">Nombre institución</label>
-              <input type="text" id="campo_institucion" class="form-control" placeholder="Hospital Español" oninput="checkInstitutionName()">
+              <input type="text" id="campo_institucion" class="form-control" placeholder="Hospital Español" oninput="checkInstitutionName()" disabled>
               <div id="institutionname-alert" class="alert"></div>
             </div>
             <div class="row form-group">
@@ -232,7 +927,7 @@
               <input type="password" id="campo_contrasena" class="form-control" style="background-color:var(--sixth-color);" disabled>
             </div>
             <div class="row form-group">
-              <a onclick="openPopup()" href="1_1_restablecer_contraseña_institucion.html" style="text-align:left; margin:15px 5px;font-weight: normal;font-size: 18px;font-family: 'Inter', sans-serif; color: var(--first-color);">Restablecer contraseña</a>
+              <a onclick="openDialog('popup-dialog-restablecer-contrasenia'); checkPasswordMatch();" style="text-align:left; margin:15px 5px;font-weight: normal;font-size: 18px;font-family: 'Inter', sans-serif; color: var(--first-color); cursor: pointer;">Restablecer contraseña</a>
             </div>
           </div>
         </div>
@@ -255,7 +950,7 @@
             </div>
             <div class="row form-group">
               <label for="campo_mail">Dirección de correo electrónico</label>
-              <input type="text" id="campo_mail" class="form-control" placeholder="joseperez@undominio.com" oninput="checkEmail()">
+              <input type="text" id="campo_mail" class="form-control" placeholder="joseperez@undominio.com" oninput="checkEmailCampo()">
               <div id="email-alert" class="alert"></div>
             </div>
           </div>
@@ -265,7 +960,7 @@
 
 <!--boton guardar-->
 <div class="button-container">
-    <form action="tu_ruta_de_destino.html" method="POST">
+    <form action="javascript:crearJSONUsuarioModificado();" method="POST">
       <div class="form-group">
         <button id="guardar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
       </div>
@@ -273,104 +968,755 @@
   </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <div id="popup-overlay" class="popup-overlay"></div>
+
+    <div id="popup-dialog-cerrar-sesion" class="popup-content">
+        <h3>¿Está seguro?</h3>
+        <h4>¿Desea cerrar sesión de esta cuenta?</h4>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="cancelDialog('popup-dialog-cerrar-sesion')">CANCELAR</button>
+            <button class="accept-button" onclick="closeDialog('popup-dialog-cerrar-sesion'); signOut();">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-guardado" class="popup-content">
+        <h3>Se han guardado correctamente los cambios ingresados.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-guardado'); location.reload;" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-atras" class="popup-content">
+        <h3>¿Está Seguro?</h3>
+        <h4>Se perderán las modificaciones realizadas que no haya guardado.</h4>
+
+        <div class="popup-buttons">
+           <div class="left-button">
+            <button onclick="cancelDialog('popup-dialog-atras')" style="cursor: pointer;">CANCELAR</button>
+        </div>
+        <div class="right-button">
+            <button onclick="closeDialog('popup-dialog-atras'); window.location.href='n2_pantalla_principal_institucion.html'" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+        </div>
+    </div>
+
+    <div id="popup-dialog-restablecer-contrasenia" class="popup-content">
+        <a href="#" class="btn-back" onclick="closeDialog('popup-dialog-restablecer-contrasenia');">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!--Campos editables-->
+        <label for="campo_contraseña_actual">Escriba su contraseña actual</label>
+        <div class="input-group">
+            <input type="password" id="campo_contraseña_actual" placeholder="Contraseña actual" oninput="checkPasswordMatch()">
+            <span class="toggle-password" onclick="togglePassword('campo_contraseña_actual', 'eye-icon-actual')">
+                <i class="bi bi-eye-slash-fill" id="eye-icon-actual"></i>
+            </span>
+            <i class="bi bi-check-circle-fill icon-check" id="password-match-icon-actual" style="display: none; margin-right:10px;"></i>
+            <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon-actual" style="display: none; margin-right:10px;"></i>
+        </div>
+        
+        <div class="forgot-password-container">
+            <a href="#" class="forgot-password-link" onclick="closeDialog('popup-dialog-restablecer-contrasenia'); openDialog('popup-dialog-reiniciar-email')">¿Olvidaste tu contraseña?</a>
+        </div>
+        
+        <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
+        <div class="input-group">
+            <input type="password" id="campo_contraseña_nueva" placeholder="Contraseña nueva" oninput="checkNewPassword()">
+            <span class="toggle-password" onclick="togglePassword('campo_contraseña_nueva', 'eye-icon-nueva')">
+                <i class="bi bi-eye-slash-fill" id="eye-icon-nueva"></i>
+            </span>
+            <i class="bi bi-check-circle-fill icon-check" id="new-password-match-icon" style="display: none; margin-right:10px;"></i>
+        </div>
+        <div id="alert-container" class="alert"></div>
+        
+            <div class="form-group" style="margin-top: 10pt;">
+              <button type="submit" id="restablecerContrasenia" disabled class="click-animation" onclick="modificarContrasenia('campo_contraseña_nueva')" style="margin-bottom: 25px;margin-top:10px;border: none; border-radius: 100px; background-color: var(--second-color); color:var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 300px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Guardar</button>
+            </div>
+      </div>
+
+<div id="popup-dialog-reiniciar-email" class="popup-content">
+        <h3>REINICIAR</h3>
+        
+        <!--Campos editables-->
+        <label for="campo_mail_contrasenia">Email</label>
+        <input type="text" id="campo_mail_contrasenia" placeholder="Ingrese la dirección de correo de su cuenta" style="width: 500px">
+        <div id="email-alert-contrasenia" class="alert"></div>
+
+        <div class="popup-buttons">
+            <button class="cancel-button" onclick="closeDialog('popup-dialog-reiniciar-email');">CANCELAR</button>
+            <button class="accept-button" onclick="checkEmail()">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-ingresar-codigo" class="popup-content">
+        <a href="#" class="btn-back" onclick="closeDialog('popup-dialog-ingresar-codigo'); openDialog('popup-dialog-reiniciar-email')">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <h3>Ingrese el código de verificación que recibió por correo electrónico.</h3>
+        
+        <!--inputs del codigo de verificacion-->
+        <input type="text" class="verification-input" id="input1" maxlength="1" pattern="[0-9]" inputmode="numeric" required oninput="moveToNextInput(this, 2)">
+        <input type="text" class="verification-input" id="input2" maxlength="1" pattern="[0-9]" inputmode="numeric" required oninput="moveToNextInput(this, 3)">
+        <input type="text" class="verification-input" id="input3"maxlength="1" pattern="[0-9]" inputmode="numeric" required oninput="moveToNextInput(this, 4)">
+        <input type="text" class="verification-input" id="input4" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+        
+
+        <div class="popup-buttons" style="justify-content: center">
+            <button onclick="validarCodigo();" style="cursor: pointer;border: none;margin-bottom: 0px; border-radius: 100px; background-color: var( --second-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">VALIDAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-codigo-invalido" class="popup-content">
+        <h3>Código No Válido.</h3>
+        <h4>El código ingresado no coincide con el código enviado.</h4>
+
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-codigo-invalido');" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+    <div id="popup-dialog-cambiar-contrasenia" class="popup-content">
+        <a href="#" class="btn-back" onclick="closeDialog('popup-dialog-cambiar-contrasenia')">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!--Campos editables-->
+        <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
+        <div class="input-group">
+            <input type="password" id="campo_contrasenia_nueva" placeholder="Contraseña nueva">
+                <i class="toggle-password fas fa-eye" id="eye-icon-nueva"></i>
+        </div>
+        
+        <div id="alert-container"></div> <!-- Contenedor para la alerta -->
+
+        <!--boton de aceptar-->
+        <div class="popup-buttons">
+            <button onclick="validatePassword()" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+      </div>
+      <div id="popup-dialog-contrasenia-modificada" class="popup-content">
+        <h3>Contraseña restablecida correctamente.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-contrasenia-modificada'); signIn(mail, contraseniaLogin)" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
+
+    <style>
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #00AFB9; /* Color de fondo específico */
+      z-index: 9999;
+    }
+
+    .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Ajusta la altura según tus necesidades */
+    margin-top: 150px; /* Ajusta el margen superior según tus necesidades */
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+    }
+
+    .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    }
+
+    /*para el svg*/
+    .svg-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Ajusta el margen superior según tus necesidades */
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+    }
+
+    .svg-container svg {
+    max-width: 100%;
+    max-height: 100%;
+    }
+
+    circle:nth-of-type(1) { fill: #ffffff; }
+    circle:nth-of-type(2) { fill: #d9d9d9; }
+    circle:nth-of-type(3) { fill: #0081A7; }
+    circle:nth-of-type(4) { fill: #000000; }
+    .hidden {
+      display: none;
+    }
+</style>
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <!--logo-->
+  <div class="image-container">
+    <img src="img/nombre_eslogan_verde.png" alt="Logo y eslogan verde">
+  </div>
+    <!--loader-->
+    <div class="svg-container">
+    <!-- Agrega aquí tu SVG -->
+    <svg width="300" height="120" id="loader">
+        <!-- Left arc path -->
+        <svg>
+          <path id="arc-left-up" fill="none" d="M 90 90 A 90 90 0 0 1 0 0"/>
+        </svg>
+        <!-- Right arc path -->
+        <svg>
+          <path id="arc-right-up" fill="none" d="M 100 90 A 90 90 0 0 0 190 0"/>
+        </svg>
+        
+
+        <circle cx="15" cy="15" r="15">
+          <!-- I used a python script to calculate the keyPoints and keyTimes based on a quadratic function. -->
+          <animateMotion dur="1.5s" repeatCount="indefinite"
+            calcMode="linear"
+            keyPoints="0.0;0.19;0.36;0.51;0.64;0.75;0.84;0.91;0.96;0.99;1.0;0.99;0.96;0.91;0.84;0.75;0.64;0.51;0.36;0.19;0.0;0.0;0.05;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+            keyTimes="0.0;0.025;0.05;0.075;0.1;0.125;0.15;0.175;0.2;0.225;0.25;0.275;0.3;0.325;0.35;0.375;0.4;0.425;0.45;0.475;0.5;0.525;0.55;0.575;0.6;0.625;0.65;0.675;0.7;0.725;0.75;0.775;0.8;0.825;0.85;0.875;0.9;0.925;0.95;0.975;1.0">
+            <mpath xlink:href="#arc-left-up"/>
+          </animateMotion>
+        </circle>
+        <circle cx="135" cy="105" r="15" />
+        <circle cx="165" cy="105" r="15" />
+        <circle cx="95" cy="15" r="15">
+          <animateMotion dur="1.5s" repeatCount="indefinite"
+            calcMode="linear"
+            keyPoints="0.0;0.0;0.05;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.0;0.19;0.36;0.51;0.64;0.75;0.84;0.91;0.96;0.99;1.0;0.99;0.96;0.91;0.84;0.75;0.64;0.51;0.36;0.19;0.0"
+            keyTimes="0.0;0.025;0.05;0.075;0.1;0.125;0.15;0.175;0.2;0.225;0.25;0.275;0.3;0.325;0.35;0.375;0.4;0.425;0.45;0.475;0.5;0.525;0.55;0.575;0.6;0.625;0.65;0.675;0.7;0.725;0.75;0.775;0.8;0.825;0.85;0.875;0.9;0.925;0.95;0.975;1.0">
+            <mpath xlink:href="#arc-right-up"/>
+          </animateMotion>
+        </circle>
+      </svg>
+
+  </div>
+
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+ <!--llamo el archivo de javascript-->
+  <script src="js/main.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+  <!--referencio el archivo de estilos-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Referencia a jQuery UI y su estilo para calendario fnacimiento -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+  <script src="js/firebaseLoginAdminInstitucion.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/scriptsDialogPopup.js"></script>
 
   <script>
 
-    function checkUsername() {
-      var usernameInput = document.getElementById("campo_usuario");
-      var username = usernameInput.value;
-      var usernameMatchIcon = document.getElementById("username-match-icon");
-      var usernameMismatchIcon = document.getElementById("username-mismatch-icon");
-      var usernameAlert = document.getElementById("username-alert");
-      var guardarButton = document.getElementById("guardar-button"); // Agrega el ID al botón de guardar
+    var usuario = localStorage.getItem('usuario');
 
-      var existingUsername = "usuario123"; // Usuario existente
+    // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
+    var usuarioJson = JSON.parse(usuario);
+    var contraseniaCorrecta = false;
+    document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
+    document.getElementById("campo_usuario").value = usuarioJson.usuarioUnico;
+    document.getElementById("campo_institucion").value = usuarioJson.nombreInstitucion;
+    document.getElementById("campo_nombre").value = usuarioJson.nombreUsuario;
+    document.getElementById("campo_apellido").value = usuarioJson.apellidoUsuario;
+    document.getElementById("campo_telefono").value = usuarioJson.telefonoUsuario;
+    document.getElementById("campo_mail").value = usuarioJson.mailUsuario;
 
-      if (username === existingUsername) {
-        usernameMatchIcon.style.display = "none";
-        usernameMismatchIcon.style.display = "inline";
-        usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
-        guardarButton.disabled = true; // Inhabilita el botón de guardar
-      } else {
-        usernameMatchIcon.style.display = "inline";
-        usernameMismatchIcon.style.display = "none";
-        guardarButton.disabled = false; // Habilita el botón de guardar
-        if (username.length > 30) {
-          usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres";
+    var usuariosExistentes = [];
+var mailsExistentes = [];
+fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
         } else {
-          usernameAlert.innerText = "";
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
         }
-      }
+    })
+    .then(data => {
+       usuariosExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+
+fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       mailsExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+var guardarButton = document.getElementById("guardar-button");
+
+function checkUsername() {
+    var usernameInput = document.getElementById("campo_usuario");
+    var username = usernameInput.value;
+    var usernameMatchIcon = document.getElementById("username-match-icon");
+    var usernameMismatchIcon = document.getElementById("username-mismatch-icon");
+    var usernameAlert = document.getElementById("username-alert");
+    var guardarButton = document.getElementById("guardar-button");
+
+    if (username.length > 30) {
+        // Si el usuario supera los 30 caracteres, truncamos el valor del campo a 30 caracteres
+        usernameInput.value = username.substring(0, 30);
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
+        guardarButton.disabled = true;
+    } else if (usuariosExistentes.includes(username) && username!==usuarioJson.usuarioUnico) {
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
+        guardarButton.disabled = true;
+    } else if(username.length<1){
+        usernameMatchIcon.style.display = "none";
+        usernameMismatchIcon.style.display = "inline-block";
+        usernameAlert.innerText = "Ingrese un nombre de usuario.";
+        guardarButton.disabled = true;
+    }
+    else{
+        usernameMatchIcon.style.display = "inline-block";
+        usernameMismatchIcon.style.display = "none";
+        usernameAlert.innerText = "";
+        guardarButton.disabled = false;
+    }
+}
+
+function checkContraseña() {
+    var contrasenaInput = document.getElementById("campo_contraseña");
+    var contrasena = contrasenaInput.value;
+    var contrasenaAlert = document.getElementById("contraseña-alert");
+    var passwordMatchIcon = document.getElementById("password-match-icon");
+    var passwordMismatchIcon = document.getElementById("password-mismatch-icon");
+
+    fetch(`http://localhost:8080/usuario/misma-contrasenia/${usuarioJson.codUsuario}/${contrasena}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: {}
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+        if (data === true) {
+            // Acciones cuando la respuesta es true (éxito)
+            contrasenaAlert.innerText = "";
+            guardarButton.disabled = false;
+            passwordMatchIcon.style.display = "inline-block";
+            passwordMismatchIcon.style.display = "none";
+            contraseniaCorrecta = true;
+        } else {
+            // Acciones cuando la respuesta es false (error)
+            contrasenaAlert.innerText = "Contraseña incorrecta, ingrese la contraseña para guardar los cambios";
+            contrasenaInput.value = contrasena.substring(0, 16); // Corta el texto hasta los primeros 16 caracteres
+            guardarButton.disabled = true;
+            passwordMatchIcon.style.display = "none";
+            passwordMismatchIcon.style.display = "inline-block";
+            contraseniaCorrecta = false;
+        }
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+}
+
+
+        function checkName() {
+            var nameInput = document.getElementById("campo_nombre");
+            var name = nameInput.value;
+            var nameAlert = document.getElementById("name-alert");
+    
+            if (name.length > 30) {
+                nameAlert.innerText = "Ingresar nombre en 30 caracteres.";
+                nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                nameAlert.innerText = "";
+            }
+        }
+    
+        function checkLastName() {
+            var lastNameInput = document.getElementById("campo_apellido");
+            var lastName = lastNameInput.value;
+            var lastNameAlert = document.getElementById("lastname-alert");
+    
+            if (lastName.length > 30) {
+                lastNameAlert.innerText = "Ingresar apellido en 30 caracteres.";
+                lastNameInput.value = lastName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            } else {
+                lastNameAlert.innerText = "";
+            }
+        }
+    
+    
+        function checkPhone() {
+            var phoneInput = document.getElementById("campo_telefono");
+            var phone = phoneInput.value;
+            var phoneAlert = document.getElementById("phone-alert");
+    
+            var phonePattern = /^\d{10,16}$/; // Patrón para validar el formato de números de teléfono (10 a 16 dígitos)
+    
+            if (!phonePattern.test(phone)) {
+                phoneAlert.innerText = "Número de teléfono no válido.";
+                guardarButton.disabled = true;
+            } else {
+                phoneAlert.innerText = "";
+                guardarButton.disabled = false;
+            }
+        }
+    
+    
+        function checkEmailCampo() {
+            var emailInput = document.getElementById("campo_mail");
+            var email = emailInput.value;
+            var emailAlert = document.getElementById("email-alert");
+    
+            var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
+    
+            if (!emailPattern.test(email)) {
+                emailAlert.innerText = "Correo electrónico no válido.";
+                guardarButton.disabled = true;
+            } else if(mailsExistentes.includes(email) && email!==usuarioJson.mailUsuario){
+                emailAlert.innerText = "Este correo ya está en uso, ingrese uno diferente.";
+                guardarButton.disabled = true;
+            }
+            else{
+                emailAlert.innerText = "";
+                guardarButton.disabled = false;
+            }
+        }
+
+        function togglePassword(inputId, eyeIconId) {
+            var input = document.getElementById(inputId);
+            var eyeIcon = document.getElementById(eyeIconId);
+            if (input.type === "password") {
+                input.type = "text";
+                eyeIcon.classList.remove("bi-eye-slash-fill");
+                eyeIcon.classList.add("bi-eye-fill");
+            } else {
+                input.type = "password";
+                eyeIcon.classList.remove("bi-eye-fill");
+                eyeIcon.classList.add("bi-eye-slash-fill");
+            }
+        }
+   function checkPasswordMatch() {
+            var currentPasswordInput = document.getElementById("campo_contraseña_actual");
+            var currentPassword = currentPasswordInput.value;
+            var passwordMatchIcon = document.getElementById("password-match-icon-actual");
+            var passwordMismatchIcon = document.getElementById("password-mismatch-icon-actual");
+            var guardarButton = document.getElementById("restablecerContrasenia");
+            fetch(`http://localhost:8080/usuario/misma-contrasenia/${usuarioJson.codUsuario}/${currentPassword}`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: {}
+              })
+              .then(response => {
+                  if (response.ok) {
+                      // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+                      return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+                  } else {
+                      return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+                  }
+              })
+              .then(data => {
+                  if (data === true) {
+                      // Acciones cuando la respuesta es true (éxito)
+                      passwordMatchIcon.style.display = "inline";
+                      passwordMismatchIcon.style.display = "none";
+                      guardarButton.disabled = false;
+                  } else {
+                      passwordMatchIcon.style.display = "none";
+                      passwordMismatchIcon.style.display = "inline";
+                      guardarButton.disabled = true;
+                  }
+              })
+              .catch(error => {
+                  // Manejar errores de la solicitud
+                  console.error("Error en la solicitud:", error);
+                  passwordMatchIcon.style.display = "none";
+                  passwordMismatchIcon.style.display = "inline";
+              });
+        }
+
+        function checkNewPassword() {
+            var currentPasswordInput = document.getElementById("campo_contraseña_actual");
+            var currentPassword = currentPasswordInput.value;
+            var newPasswordInput = document.getElementById("campo_contraseña_nueva");
+            var newPassword = newPasswordInput.value;
+            var newPasswordMatchIcon = document.getElementById("new-password-match-icon");
+            var alertContainer = document.getElementById("alert-container");
+            var guardarButton = document.getElementById("restablecerContrasenia");
+
+
+            if(newPassword.length<6 || newPassword.length>15){
+                alertContainer.innerText = "Escriba una contraseña entre 6 y 15 caracteres.";
+                newPasswordMatchIcon.style.display = "none";
+                guardarButton.disabled = true;
+            }
+            else if (newPassword === currentPassword) {
+                alertContainer.innerText = "Escriba una contraseña nueva, no puede ser igual a la anterior.";
+                newPasswordMatchIcon.style.display = "none";
+                guardarButton.disabled = true;
+            } else {
+                alertContainer.innerText = "";
+                newPasswordMatchIcon.style.display = "inline";
+                guardarButton.disabled = false;
+            }
+        }
+var contraseniaLogin;
+var mail = usuarioJson.mailUsuario;
+  function modificarContrasenia(id){
+    document.getElementById("loading-overlay").classList.remove("hidden");
+    nuevaContrasenia = document.getElementById(id).value;
+    fetch(`http://localhost:8080/usuario/modificarContrasenia/${usuarioJson.codUsuario}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: nuevaContrasenia
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            console.log('Contraseña modificada con éxito');
+            contraseniaLogin = nuevaContrasenia;
+                    // Contraseña válida, se cierra el diálogo
+            closeDialog('popup-dialog-restablecer-contrasenia');
+            closeDialog('popup-dialog-cambiar-contrasenia');
+            document.getElementById("loading-overlay").classList.add("hidden");
+            openDialog("popup-dialog-contrasenia-modificada");
+
+        } else {
+            // Ocurrió un error al modificar la contraseña
+            console.error('Error al modificar la contraseña');
+            closeDialog('popup-dialog-cambiar-contrasenia');
+            closeDialog('popup-dialog-restablecer-contrasenia');
+            document.getElementById("loading-overlay").classList.add("hidden");
+        }
+    })
+    .catch(error => {
+        // Manejar errores de red u otros errores
+        console.error('Error:', error);
+        closeDialog('popup-dialog-cambiar-contrasenia');
+        closeDialog('popup-dialog-restablecer-contrasenia');
+        document.getElementById("loading-overlay").classList.add("hidden");
+    });
+  }
+
+let codigoVerificacion;
+let codUsuarioContrasenia;
+        function moveToNextInput(input, nextInputIndex) {
+            if (input.value.length === input.maxLength) {
+                const nextInput = document.querySelectorAll('.verification-input')[nextInputIndex - 1];
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        }
+
+
+async function checkEmail() {
+  try {
+    document.getElementById("loading-overlay").classList.remove("hidden");
+    const emailInput = document.getElementById("campo_mail_contrasenia");
+    const email = emailInput.value;
+    const emailAlert = document.getElementById("email-alert-contrasenia");
+
+    const emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
+
+    if (!emailPattern.test(email) || email !== mail) {
+      emailAlert.innerText = "Correo electrónico no válido";
+      return;
     }
 
+    const response = await fetch(`http://localhost:8080/usuario/mail/${email}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
 
-    function checkInstitutionName() {
-      var institutionNameInput = document.getElementById("campo_institucion");
-      var institutionName = institutionNameInput.value;
-      var institutionNameAlert = document.getElementById("institutionname-alert");
-
-      if (institutionName.length > 30) {
-        institutionNameAlert.innerText = "Ingresar nombre de institución en 30 caracteres";
-        institutionNameInput.value = institutionName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
-      } else {
-        institutionNameAlert.innerText = "";
-      }
+    if (!response.ok) {
+      emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
+      return;
     }
 
-    function checkName() {
-      var nameInput = document.getElementById("campo_nombre");
-      var name = nameInput.value;
-      var nameAlert = document.getElementById("name-alert");
+    const data = await response.json();
+    console.log(data);
 
-      if (name.length > 30) {
-        nameAlert.innerText = "Ingresar nombre de usuario en 30 caracteres";
-        nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
-      } else {
-        nameAlert.innerText = "";
+    if (data.perfil && (data.perfil.codPerfil === 3)) {
+      emailAlert.innerText = "";
+      const resultadoUsuarioSaveResponse = await fetch(`http://localhost:8080/usuario/set-cod-verificacion/${data.codUsuario}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!resultadoUsuarioSaveResponse.ok) {
+        throw new Error('Error de red en la solicitud POST para usuario/save.');
       }
-    }
 
-    function checkLastName() {
-      var lastNameInput = document.getElementById("campo_apellido");
-      var lastName = lastNameInput.value;
-      var lastNameAlert = document.getElementById("lastname-alert");
+      const resultadoUsuarioSave = await resultadoUsuarioSaveResponse.json();
+      console.log(resultadoUsuarioSave);
 
-      if (lastName.length > 30) {
-        lastNameAlert.innerText = "Ingresar apellido de usuario en 30 caracteres";
-        lastNameInput.value = lastName.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
-      } else {
-        lastNameAlert.innerText = "";
+      const sendCodigoResponse = await fetch('http://localhost:8080/email/sendCodigo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          to: resultadoUsuarioSave.mailUsuario,
+          codigo: resultadoUsuarioSave.codigoVerificacion.codVerificacion
+        })
+      });
+
+      if (!sendCodigoResponse.ok) {
+        throw new Error('Error en la solicitud POST para email/sendCodigo');
       }
+      codigoVerificacion = resultadoUsuarioSave.codigoVerificacion.codVerificacion;
+      codUsuarioContrasenia = resultadoUsuarioSave.codUsuario;
+      closeDialog('popup-dialog-reiniciar-email');
+      document.getElementById("loading-overlay").classList.add("hidden");
+      openDialog('popup-dialog-ingresar-codigo');
+    } else {
+      document.getElementById("loading-overlay").classList.add("hidden");
+      emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
     }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
-    function checkPhone() {
-      var phoneInput = document.getElementById("campo_telefono");
-      var phone = phoneInput.value;
-      var phoneAlert = document.getElementById("phone-alert");
+function validarCodigo() {
+  // Obtener los valores de los 4 inputs
+  var input1 = document.getElementById("input1").value;
+  var input2 = document.getElementById("input2").value;
+  var input3 = document.getElementById("input3").value;
+  var input4 = document.getElementById("input4").value;
 
-      var phonePattern = /^\d{10,16}$/; // Patrón para validar el formato de números de teléfono (10 a 16 dígitos)
+  // Concatenar los valores de los inputs para formar la cadena
+  var codigoIngresado = input1 + input2 + input3 + input4;
 
-      if (!phonePattern.test(phone)) {
-        phoneAlert.innerText = "Número de teléfono no válido";
-      } else {
-        phoneAlert.innerText = "";
-      }
+  // Definir la cadena a la que deseas comparar
+  var codigoEsperado = codigoVerificacion; // Reemplaza con el código esperado
+
+  // Verificar si el código ingresado es igual al código esperado
+  if (codigoIngresado === codigoEsperado) {
+    closeDialog("popup-dialog-ingresar-codigo");
+    openDialog("popup-dialog-cambiar-contrasenia");
+  } else {
+    closeDialog("popup-dialog-ingresar-codigo");
+    openDialog("popup-dialog-codigo-invalido");
+  }
+}
+
+        /*verificar cantidad de caracteres de la contraseña*/
+function validatePassword() {
+    var passwordInput = document.getElementById("campo_contrasenia_nueva");
+    var password = passwordInput.value;
+
+    // Verificar la longitud de la contraseña
+    if (password.length >= 6 && password.length <= 15) {
+        // Realiza la solicitud POST para modificar la contraseña
+        modificarContrasenia("campo_contrasenia_nueva");
+    } else {
+        // Contraseña no válida, muestra un mensaje de error
+        var errorMessage = document.createElement("div");
+        errorMessage.classList.add("alert");
+        errorMessage.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
+        var alertContainer = document.getElementById("alert-container");
+
+        // Limpia los mensajes de error anteriores y muestra el nuevo mensaje
+        alertContainer.innerHTML = "";
+        alertContainer.appendChild(errorMessage);
+        passwordInput.focus();
     }
+}
 
-    function checkEmail() {
-      var emailInput = document.getElementById("campo_mail");
-      var email = emailInput.value;
-      var emailAlert = document.getElementById("email-alert");
+function crearJSONUsuarioModificado(){
+    var usuario = document.getElementById("campo_usuario").value;
+    var nombre = document.getElementById("campo_nombre").value;
+    var apellido = document.getElementById("campo_apellido").value;
+    var telefono = document.getElementById("campo_telefono").value;
+    var mail = document.getElementById("campo_mail").value;
+    var codigo = usuarioJson.codUsuario;
 
-      var emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
+    var jsonUsuario = {
+      codUsuario : codigo,
+      usuarioUnico : usuario,
+      nombreUsuario : nombre,
+      apellidoUsuario : apellido,
+      mailUsuario : mail,
+      telefonoUsuario : telefono
+    };
+     fetch('http://localhost:8080/usuario/saveSinHash', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonUsuario)
+              }).then(function (response) {
+                if (!response.ok) {
+                  throw new Error('Error en la solicitud.'); // Manejo de errores si la respuesta no es exitosa
+                }
+                return response.json(); // Parsea la respuesta a JSON si es una respuesta JSON
+              })
+              .then(function (data) {
+                // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
+                localStorage.removeItem('usuario');
+                var usuarioString = JSON.stringify(data);
+                // Almacena la cadena JSON en sessionStorage bajo un nombre de clave
+                localStorage.setItem('usuario', usuarioString);
+                openDialog('popup-dialog-guardado');
+              })
+              .catch(function (error) {
+                // Manejar errores generales
+                console.error('Error:', error);
+              });
+  }
 
-      if (!emailPattern.test(email)) {
-        emailAlert.innerText = "Correo electrónico no válido";
-      } else {
-        emailAlert.innerText = "";
-      }
-    }
+
   </script>
   <script>
     const campoContrasena = document.getElementById('campo_contrasena');

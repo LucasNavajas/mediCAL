@@ -108,7 +108,6 @@ public class UsuarioController {
 	
 	@PostMapping("/usuario/modificarContrasenia/{codUsuario}")
     public ResponseEntity<String> modificarContrasenia(@PathVariable int codUsuario, @RequestBody String nuevaContrasenia) {
-		System.out.println(nuevaContrasenia);
         try {
             Usuario usuario = usuarioDao.modificarContrasenia(codUsuario, nuevaContrasenia.trim());
             return new ResponseEntity<>("Contraseña modificada correctamente.", HttpStatus.OK);
