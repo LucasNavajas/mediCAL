@@ -37,7 +37,7 @@ public class ProfesionalSaludDao {
 	        if (profesionalSalud.getApellidoUsuario() != null && !profesionalSalud.getApellidoUsuario().equals("")) {
 	            existingProfesionalSalud.setApellidoUsuario(profesionalSalud.getApellidoUsuario());
 	        }
-	        if (profesionalSalud.getContraseniaUsuario() != null) {
+	        if (profesionalSalud.getContraseniaUsuario() != null &&  profesionalSalud.getContraseniaUsuario().length()<16) {
 	            usuarioDao.modificarContrasenia(profesionalSalud.getCodUsuario(), profesionalSalud.getContraseniaUsuario());
 	        }
 	        if (profesionalSalud.getFechaAltaUsuario() != null) {

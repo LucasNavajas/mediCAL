@@ -54,7 +54,7 @@ public class UsuarioDao {
             if (usuario.getApellidoUsuario() != null && !usuario.getApellidoUsuario().equals("")) {
                 existingUsuario.setApellidoUsuario(usuario.getApellidoUsuario());
             }
-            if (usuario.getContraseniaUsuario() != null) {
+            if (usuario.getContraseniaUsuario() != null && usuario.getContraseniaUsuario().length()<16) {
                 modificarContrasenia(usuario.getCodUsuario(), usuario.getContraseniaUsuario());
             }
             if (usuario.getFechaAltaUsuario() != null) {
