@@ -25,6 +25,9 @@ public interface UsuarioApi {
     @POST("/usuario/save")
     Call<Usuario> save(@Body Usuario usuario);
 
+    @POST("/usuario/saveSinHash")
+    Call<Usuario> saveSinHash(@Body Usuario usuario);
+
     @POST("/usuario/modificar")
     Call<Usuario> modificarUsuario(@Body Usuario usuario);
 

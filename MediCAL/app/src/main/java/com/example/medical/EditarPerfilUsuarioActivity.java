@@ -425,7 +425,7 @@ public class EditarPerfilUsuarioActivity extends AppCompatActivity {
         usuario.setTelefonoUsuario(nuevoTelefono);
         usuario.setGeneroUsuario(nuevoGenero);
 
-        Call<Usuario> call = usuarioApi.save(usuario);
+        Call<Usuario> call = usuarioApi.saveSinHash(usuario);
         call.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
