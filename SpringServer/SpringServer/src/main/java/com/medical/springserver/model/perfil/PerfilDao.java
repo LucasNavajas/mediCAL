@@ -30,6 +30,9 @@ public class PerfilDao{
 	        if (perfil.getNombrePerfil() != null) {
 	            existingPerfil.setNombrePerfil(perfil.getNombrePerfil());
 	        }
+	        if(perfil.getDescPerfil() != null && !perfil.getDescPerfil().equals("")) {
+	        	existingPerfil.setDescPerfil(perfil.getDescPerfil());
+	        }
 
 	        // Guardar el perfil actualizado
 	        return repository.save(existingPerfil);

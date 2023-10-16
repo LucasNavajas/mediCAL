@@ -1422,11 +1422,11 @@ function cargarTabla(){
       }
 
       function crearJSONPerfil(){
-        fechaActual = new Date();
-        nombre = document.getElementById("campo_nombre_alta").value;
-        descripcion = document.getElementById("campo_descripcion_alta").value;
-        fechaFV = document.getElementById("campo_fechaFV_alta").value;
-        motivo = document.getElementById("campo_motivo_alta").value;
+        var fechaActual = new Date();
+        var nombre = document.getElementById("campo_nombre_alta").value;
+        var descripcion = document.getElementById("campo_descripcion_alta").value;
+        var fechaFV = document.getElementById("campo_fechaFV_alta").value;
+        var motivo = document.getElementById("campo_motivo_alta").value;
 
         var jsonObject = {
           fechaAltaPerfil : fechaActual,
@@ -1446,11 +1446,11 @@ function cargarTabla(){
       }
 
       function crearJSONPerfilModificado(){
-        codigo = document.getElementById("campo_codigo_modif").value;
-        nombre = document.getElementById("campo_nombre_modif").value;
-        descripcion = document.getElementById("campo_descripcion_modif").value;
-        fechaFV = document.getElementById("campo_fechaFV_modif").value;
-        motivo = document.getElementById("campo_motivo_modif").value;
+        var codigo = document.getElementById("campo_codigo_modif").value;
+        var nombre = document.getElementById("campo_nombre_modif").value;
+        var descripcion = document.getElementById("campo_descripcion_modif").value;
+        var fechaFV = document.getElementById("campo_fechaFV_modif").value;
+        var motivo = document.getElementById("campo_motivo_modif").value;
 
         var jsonObject = {
           codPerfil : codigo,

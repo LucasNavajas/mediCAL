@@ -1590,12 +1590,11 @@ $(document).ready(function() {
 
     });
     // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
-    var maxDate = new Date();
+   var maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 18); // Restar 18 años a la fecha actual
 
     var minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear()-100);
-    minDate.setDate(minDate.getDate());
-
+    minDate.setFullYear(minDate.getFullYear() - 100);
     // Selecciona todos los campos de fecha con la clase "campo_fecha"
     $(".campo_fecha").datepicker({
         dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
@@ -2143,6 +2142,7 @@ function crearJSONUsuarioModificado(){
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
             cargarTabla();
+            openDialog('popup-dialog-guardado');
         },
         error: function (error) {
             console.error("Error al guardar el profesional de salud:", error);
@@ -2164,6 +2164,7 @@ function crearJSONUsuarioModificado(){
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
             cargarTabla();
+            openDialog('popup-dialog-guardado');
         },
         error: function (error) {
             console.error("Error al guardar el usuario:", error);
@@ -2185,6 +2186,7 @@ function crearJSONUsuarioModificado(){
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
             cargarTabla();
+            openDialog('popup-dialog-guardado');
         },
         error: function (error) {
             console.error("Error al guardar el usuario:", error);
@@ -2208,6 +2210,7 @@ function crearJSONUsuarioModificado(){
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
             cargarTabla();
+            openDialog('popup-dialog-guardado');
         },
         error: function (error) {
             console.error("Error al guardar el usuario:", error);
@@ -2234,23 +2237,23 @@ function setearValoresAModificar(id, index){
 
   codigo.value = fila.cells[1].textContent;
   usuario.value = fila.cells[2].textContent;
-  nombre.value = fila.cells[4].textContent;
-  apellido.value = fila.cells[5].textContent;
-  fechaNac.value = formatearStringADate(fila.cells[7].textContent);
-  genero.value = fila.cells[8].textContent;
-  email.value = fila.cells[9].textContent;
-  if(fila.cells[12].textContent =="3" || fila.cells[12].textContent == "4"){
-    institucion.value = fila.cells[10].textContent;
-    dni.value= fila.cells[16].textContent;
-    matricula.value = fila.cells[17].textContent;
+  nombre.value = fila.cells[3].textContent;
+  apellido.value = fila.cells[4].textContent;
+  fechaNac.value = formatearStringADate(fila.cells[6].textContent);
+  genero.value = fila.cells[7].textContent;
+  email.value = fila.cells[8].textContent;
+  if(fila.cells[11].textContent =="3" || fila.cells[11].textContent == "4"){
+    institucion.value = fila.cells[9].textContent;
+    dni.value= fila.cells[12].textContent;
+    matricula.value = fila.cells[13].textContent;
   }
   else{
     institucion.placeholder= "No es perfil de institución";
     dni.placeholder= "No es perfil de institución";
     matricula.placeholder= "No es perfil de institución";
   }
-  telefono.value = fila.cells[11].textContent;
-  perfil.value = fila.cells[12].textContent;
+  telefono.value = fila.cells[10].textContent;
+  perfil.value = fila.cells[11].textContent;
 
 
 
