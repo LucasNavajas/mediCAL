@@ -49,7 +49,7 @@
             android:fontFamily="@font/inter_medium"
             android:textSize="22sp"
             android:textColor="#FFF"
-            />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

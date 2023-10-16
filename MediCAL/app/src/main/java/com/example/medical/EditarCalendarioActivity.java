@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medical.model.Calendario;
 import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
@@ -50,7 +52,10 @@ public class EditarCalendarioActivity extends AppCompatActivity {
         botonCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent intent = new Intent (EditarCalendarioActivity.this, InicioCalendarioActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
         editarNombre.setOnClickListener(new View.OnClickListener() {
@@ -75,13 +80,19 @@ public class EditarCalendarioActivity extends AppCompatActivity {
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calendarioApi.modificarCalendario(calendario.getCodCalendario(), calendario).enqueue(new Callback<Calendario>() {
+                Calendario calendarioTemp = new Calendario();
+                calendarioTemp.setCodCalendario(calendario.getCodCalendario());
+                calendarioTemp.setNombreCalendario(calendario.getNombreCalendario());
+                calendarioTemp.setRelacionCalendario(calendario.getRelacionCalendario());
+                calendarioTemp.setNombrePaciente(calendario.getNombrePaciente());
+                calendarioApi.modificarCalendario(calendarioTemp.getCodCalendario(), calendarioTemp).enqueue(new Callback<Calendario>() {
                     @Override
                     public void onResponse(Call<Calendario> call, Response<Calendario> response) {
                         Intent intent = new Intent (EditarCalendarioActivity.this, InicioCalendarioActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
+                        Log.d("MiApp","Calendario guardado exitosamente: " + calendarioTemp);
                     }
 
                     @Override
