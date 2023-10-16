@@ -121,6 +121,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private Runnable runnableCode;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private int codUsuarioLogeado;
+    private Usuario usuarioLogeado;
     private Intent intent1;
     private List<EstadoSolicitud> estadosSolicitud;
 
@@ -204,10 +205,17 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         editarCalendario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(InicioCalendarioActivity.this, EditarCalendarioActivity.class);
-                String jsonCalendario = new Gson().toJson(calendarioSeleccionado);
-                intent.putExtra("calendarioJson", jsonCalendario);
-                startActivity(intent);
+                if (usuarioLogeado.getPerfil().getNombrePerfil().equals("Usuario Particular")) {
+                    Intent intent = new Intent(InicioCalendarioActivity.this, EditarCalendarioActivity.class);
+                    String jsonCalendario = new Gson().toJson(calendarioSeleccionado);
+                    intent.putExtra("calendarioJson", jsonCalendario);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(InicioCalendarioActivity.this, EditarCalendarioEnfermeroActivity.class);
+                    String jsonCalendario = new Gson().toJson(calendarioSeleccionado);
+                    intent.putExtra("calendarioJson", jsonCalendario);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -1321,7 +1329,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         usuarioApi.getByMailUsuario(mail).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                Usuario usuarioLogeado = response.body();
+                usuarioLogeado = response.body();
                 if(usuarioLogeado.getPerfil()!=null) {
                     perfilUsuario.setText(usuarioLogeado.getPerfil().getNombrePerfil());
                 }

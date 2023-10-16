@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,9 @@ public class CrearCalendario2Activity extends AppCompatActivity {
     private ImageView botonVolver;
     private Button siguiente;
     private EditText nombreCalendario;
+    private EditText nombrePaciente;
     private TextView contadorLetras;
+    private TextView contadorLetras2;
     private FirebaseAuth mAuth;
     private RetrofitService retrofitService = new RetrofitService();
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
@@ -56,11 +59,20 @@ public class CrearCalendario2Activity extends AppCompatActivity {
             nombreCalendario.setText(calendario.getNombreCalendario());
             contadorLetras.setText(calendario.getNombreCalendario().length()+"/30");
         }
+        if (getIntent().getStringExtra("perfilPaciente") != null && getIntent().getStringExtra("editarPaciente") != null) {
+            RelativeLayout cuadroNombreCalendario = findViewById(R.id.cuadro_nombre_calendario);
+            cuadroNombreCalendario.setVisibility(View.GONE);
+            RelativeLayout cuadroNombrePaciente = findViewById(R.id.cuadro_nombre_paciente);
+            cuadroNombrePaciente.setVisibility(View.VISIBLE);
+            nombrePaciente.setText(calendario.getNombrePaciente());
+            contadorLetras2.setText(calendario.getNombrePaciente().length()+"/30");
+        }
 
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String nombreCalendarioString = nombreCalendario.getText().toString();
+                String nombrePacienteString = nombrePaciente.getText().toString();
                 if (getIntent().getStringExtra("calendarioJson") == null) {
                     if (nombreCalendarioString != "" && usuarioActual != null) {
                         Calendario calendario = new Calendario();
@@ -86,7 +98,20 @@ public class CrearCalendario2Activity extends AppCompatActivity {
                         });
 
                     }
-                }else{
+                }else if (getIntent().getStringExtra("perfilPaciente") != null){
+                    if (getIntent().getStringExtra("editarPaciente") != null) {
+                        calendario.setNombrePaciente(nombrePacienteString);
+                        Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioEnfermeroActivity.class);
+                        String jsonCalendario2 = new Gson().toJson(calendario);
+                        intent.putExtra("calendarioJson", jsonCalendario2);
+                        startActivity(intent);
+                    }
+                    calendario.setNombreCalendario(nombreCalendarioString);
+                    Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioEnfermeroActivity.class);
+                    String jsonCalendario2 = new Gson().toJson(calendario);
+                    intent.putExtra("calendarioJson", jsonCalendario2);
+                    startActivity(intent);
+                } else {
                     calendario.setNombreCalendario(nombreCalendarioString);
                     Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioActivity.class);
                     String jsonCalendario2 = new Gson().toJson(calendario);
@@ -141,7 +166,9 @@ public class CrearCalendario2Activity extends AppCompatActivity {
         botonVolver = findViewById(R.id.boton_volver);
         siguiente = findViewById(R.id.button_siguiente);
         nombreCalendario = findViewById(R.id.editText);
-        contadorLetras = findViewById(R.id.characterCount);
+        nombrePaciente = findViewById(R.id.editText2);
+        contadorLetras = findViewById(R.id.characterCount1);
+        contadorLetras2 = findViewById(R.id.characterCount2);
         mAuth = FirebaseAuth.getInstance();
     }
 

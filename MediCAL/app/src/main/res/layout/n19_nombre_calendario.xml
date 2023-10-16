@@ -54,12 +54,17 @@
         (solo cambia regular, medium, etc no la fuente ni elcolor)
         trabajar en java-->
         <RelativeLayout
-            android:id="@+id/cuadro_texto"
+            android:id="@+id/cuadro_nombre_calendario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp">
+
+            <RelativeLayout
+                android:id="@+id/cuadro_texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
             <!-- Texto de adentro hasta 30 caracteres-->
             <EditText
@@ -75,12 +80,12 @@
                 android:textSize="21sp"
                 android:fontFamily="@font/inter_regular"
                 android:textColorHint="@color/gris_medical"/>
-        </RelativeLayout>
+            </RelativeLayout>
 
         <!-- Contador de caracteres (ver en java) -->
         <TextView
             android:layout_below="@+id/cuadro_texto"
-            android:id="@+id/characterCount"
+            android:id="@+id/characterCount1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -92,6 +97,57 @@
             android:textSize="18sp"
             android:fontFamily="@font/inter_regular"
             android:textColor="@color/gris_medical" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cuadro_nombre_paciente"
+            android:layout_below="@+id/cuadro_nombre_calendario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/cuadro_texto2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- Texto de adentro hasta 30 caracteres-->
+                <EditText
+                    android:id="@+id/editText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:hint="Escriba el nombre del paciente"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColorHint="@color/gris_medical"/>
+            </RelativeLayout>
+
+            <!-- Contador de caracteres (ver en java) -->
+            <TextView
+                android:layout_below="@+id/cuadro_texto2"
+                android:id="@+id/characterCount2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignEnd="@id/cuadro_texto2"
+                android:layout_gravity="end"
+                android:text="0/30"
+                android:textSize="18sp"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/gris_medical" />
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/button_siguiente"
