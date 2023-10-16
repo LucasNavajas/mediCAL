@@ -156,6 +156,8 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1187,9 +1189,6 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         textoSinRecordatorios = findViewById(R.id.texto_sin_recordatorios);
         perfilUsuario = findViewById(R.id.perfil_usuario);
         llenarListaCalendarios();
-
-
-
     }
 
     private void loadRegistros() {
@@ -1330,6 +1329,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 usuarioLogeado = response.body();
+                deshabilitarBotonConsejos();
                 if(usuarioLogeado.getPerfil()!=null) {
                     perfilUsuario.setText(usuarioLogeado.getPerfil().getNombrePerfil());
                 }
@@ -1368,6 +1368,14 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 Toast.makeText(InicioCalendarioActivity.this, "Hubo un error al iniciar sesión, intente nuevamente", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void deshabilitarBotonConsejos() {
+        // Si no es un Usuario Particular, se deshabilita la Sección Consejos
+        if (!usuarioLogeado.getPerfil().getNombrePerfil().equals("Usuario Particular")){
+            LinearLayout botonConsejos = findViewById(R.id.consejos);
+            botonConsejos.setVisibility(View.GONE);
+        }
     }
 
     private void setTokenUsuario() {

@@ -63,7 +63,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/consejos"
+                android:id="@+id/cuadro_consejos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/gris"
@@ -180,6 +180,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/consejos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

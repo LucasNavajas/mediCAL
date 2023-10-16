@@ -290,6 +290,7 @@ public class MasActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 usuarioInstance=response.body();
+                deshabilitarBotonConsejos();
                 if(usuarioInstance.getPerfil()!=null) {
                     perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
                 }
@@ -305,7 +306,13 @@ public class MasActivity extends AppCompatActivity {
         });
     }
 
-
+    private void deshabilitarBotonConsejos() {
+        // Si no es un Usuario Particular, se deshabilita la Sección Consejos
+        if (!usuarioInstance.getPerfil().getNombrePerfil().equals("Usuario Particular")){
+            LinearLayout botonConsejos = findViewById(R.id.consejos);
+            botonConsejos.setVisibility(View.GONE);
+        }
+    }
 
     private void popupCerrarSesion() {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);

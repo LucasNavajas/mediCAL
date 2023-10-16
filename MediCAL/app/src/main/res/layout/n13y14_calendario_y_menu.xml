@@ -190,7 +190,7 @@
                     android:id="@+id/fecha_hoy_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hoy, 5 jul"
+                    android:text=""
                     android:textAlignment="center"
                     android:textColor="@color/verdeTextos"
                     android:fontFamily="@font/inter_medium"

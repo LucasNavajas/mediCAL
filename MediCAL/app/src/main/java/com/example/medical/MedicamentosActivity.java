@@ -279,6 +279,7 @@ public class MedicamentosActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 usuarioInstance = response.body();
+                deshabilitarBotonConsejos();
                 if (usuarioInstance.getPerfil() != null) {
                     perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
                 }
@@ -291,6 +292,14 @@ public class MedicamentosActivity extends AppCompatActivity {
                 Toast.makeText(MedicamentosActivity.this, "Error al cargar el usuario", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void deshabilitarBotonConsejos() {
+        // Si no es un Usuario Particular, se deshabilita la Sección Consejos
+        if (!usuarioInstance.getPerfil().getNombrePerfil().equals("Usuario Particular")){
+            LinearLayout botonConsejos = findViewById(R.id.consejos);
+            botonConsejos.setVisibility(View.GONE);
+        }
     }
 
 
