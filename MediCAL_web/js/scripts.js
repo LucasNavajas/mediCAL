@@ -547,6 +547,7 @@ function toggleRevertButtonVisibility() {
         }
         // No es necesario analizar la respuesta si es void o sin contenido
         // Puedes simplemente continuar aquí
+        cargarTabla();
         openDialog('popup-dialog-eliminado');
       })
       .catch(error => {
@@ -775,6 +776,30 @@ function recuperarInstancia(idInstancia){
                   // Manejar errores generales
                   console.error('Error:', error);
                 });
+      }
+
+      else if(window.location.href == "http://localhost:8081/n9_gestionar_calendarios.html"){
+        fetch(`http://localhost:8080/calendario/recuperar/${idInstancia}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+    if (!response.ok) {
+      throw new Error('Error de red.');
+        }
+        // No es necesario analizar la respuesta si es void o sin contenido
+        // Puedes simplemente continuar aquí
+        openDialog('popup-dialog-guardado');
+        cargarTabla();
+      })
+      .catch(error => {
+        // Manejar errores generales
+        console.error('Error:', error);
+      });
+
+    
       }
       else{
 fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {

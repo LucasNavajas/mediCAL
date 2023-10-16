@@ -82,6 +82,12 @@ public class CalendarioDao {
 		 
 	 }
 	 
+	 public void recuperarCalendario(int codCalendario) {
+		 Calendario calendario = repository.findByCodCalendario(codCalendario);
+		 calendario.setFechaFinVigenciaC(null);
+		 save(calendario);
+	 }
+	 
 	 public List<Calendario> findByInstitucion(String nombreInstitucion) {
 		 return repository.findByInstitucion(nombreInstitucion);
 	 }

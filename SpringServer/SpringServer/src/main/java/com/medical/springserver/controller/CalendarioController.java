@@ -47,6 +47,11 @@ public class CalendarioController {
 		calendarioDao.eliminarCalendario(codCalendario);
 	}
 	
+	@PostMapping("/calendario/recuperar/{codCalendario}")
+	public void recuperarCalendario(@PathVariable int codCalendario) {
+		calendarioDao.recuperarCalendario(codCalendario);
+	}
+	
 	@GetMapping("/calendario/get-all/{nombreInstitucion}")
 	public List<Calendario> findByInstitucion(@PathVariable String nombreInstitucion){
 		return calendarioDao.findByInstitucion(nombreInstitucion);
