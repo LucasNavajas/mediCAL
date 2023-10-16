@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class EditarCalendarioEnfermeroActivity extends AppCompatActivity {
 
     private TextView nombreCalendario;
-    private TextView relacionCalendario;
+    private TextView pacienteCalendario;
     private ImageView botonCerrar;
     private ImageView editarNombre;
     private ImageView editarPaciente;
@@ -182,14 +182,14 @@ public class EditarCalendarioEnfermeroActivity extends AppCompatActivity {
         String jsonCalendario = getIntent().getStringExtra("calendarioJson");
         calendario = new Gson().fromJson(jsonCalendario, Calendario.class);
         nombreCalendario = findViewById(R.id.textEdit_NombreCalendario);
-        relacionCalendario = findViewById(R.id.textEdit_nombreRelacion);
+        pacienteCalendario = findViewById(R.id.textEdit_nombrePaciente);
         editarNombre = findViewById(R.id.lapiz_editar_NombreCalendario);
         editarPaciente = findViewById(R.id.lapiz_editar_nombrePaciente);
         botonCerrar = findViewById(R.id.boton_cerrar);
         guardar = findViewById(R.id.button_guardar);
         eliminarCalendario = findViewById(R.id.button_eliminarCalendario);
         nombreCalendario.setText(calendario.getNombreCalendario());
-        relacionCalendario.setText(calendario.getRelacionCalendario());
+        pacienteCalendario.setText(calendario.getNombrePaciente());
 
     }
 

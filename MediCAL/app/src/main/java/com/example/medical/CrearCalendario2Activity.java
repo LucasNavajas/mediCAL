@@ -66,6 +66,8 @@ public class CrearCalendario2Activity extends AppCompatActivity {
             cuadroNombrePaciente.setVisibility(View.VISIBLE);
             nombrePaciente.setText(calendario.getNombrePaciente());
             contadorLetras2.setText(calendario.getNombrePaciente().length()+"/30");
+            TextView titulo = findViewById(R.id.text_nombrecalendario);
+            titulo.setText("Nombre el Paciente");
         }
 
         siguiente.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +143,21 @@ public class CrearCalendario2Activity extends AppCompatActivity {
                 contadorLetras.setText(newText.length()+"/30");
             }
         });
+
+        nombrePaciente.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String newText = editable.toString();
+                contadorLetras.setText(newText.length()+"/30");
+            }
+        });
+
     }
 
     private void obtenerUsuarioPorMail() {

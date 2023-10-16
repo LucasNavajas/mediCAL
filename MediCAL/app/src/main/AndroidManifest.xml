@@ -144,6 +144,7 @@
         <activity android:name=".AgregarReporteActivity"></activity>
         <activity android:name=".CompartirReporteActivity"></activity>
         <activity android:name=".DescargarReporteActivity"></activity>
+        <activity android:name=".EditarCalendarioEnfermeroActivity"></activity>
 
     </application>
 
