@@ -338,7 +338,7 @@
                 android:layout_toEndOf="@id/menu_button_nav"
                 android:layout_alignTop="@id/menu_button_nav"
                 android:layout_alignBottom="@id/menu_button_nav"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/inter_medium" />
             <TextView
                 android:id="@+id/perfil_usuario"
@@ -351,7 +351,7 @@
                 android:layout_alignTop="@id/menu_button_nav"
                 android:layout_alignBottom="@id/menu_button_nav"
                 android:layout_below="@id/nombre_usuario"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="38dp"
                 android:fontFamily="@font/inter_medium" />
 
             <View
