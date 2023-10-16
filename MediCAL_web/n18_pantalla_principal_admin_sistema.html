@@ -1895,16 +1895,17 @@ let codUsuarioContrasenia;
 
 
 async function checkEmail() {
-  try {
     document.getElementById("loading-overlay").classList.remove("hidden");
-    const emailInput = document.getElementById("campo_mail_contrasenia");
+    const emailInput = document.getElementById("campo_mail");
     const email = emailInput.value;
-    const emailAlert = document.getElementById("email-alert-contrasenia");
+    const emailAlert = document.getElementById("email-alert");
+  try {
 
     const emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
 
-    if (!emailPattern.test(email) || email !== usuarioJson.mailUsuario) {
+    if (!emailPattern.test(email)) {
       emailAlert.innerText = "Correo electrónico no válido";
+      document.getElementById("loading-overlay").classList.add("hidden");
       return;
     }
 
@@ -1916,15 +1917,24 @@ async function checkEmail() {
     });
 
     if (!response.ok) {
-      emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
+      emailAlert.innerText = "Ingrese la dirección de correo de su cuenta";
+      document.getElementById("loading-overlay").classList.add("hidden");
       return;
     }
 
     const data = await response.json();
-    console.log(data);
 
-    if (data.perfil && (data.perfil.codPerfil === 2)) {
+    if (!data || Object.keys(data).length === 0) {
+      emailAlert.innerText = "Ingrese la dirección de correo de su cuenta";
+      document.getElementById("loading-overlay").classList.add("hidden");
+      return;
+    }
+
+
+    if (data.perfil && (data.perfil.codPerfil === 2 || data.perfil.codPerfil === 3)) {
       emailAlert.innerText = "";
+
+
       const resultadoUsuarioSaveResponse = await fetch(`http://localhost:8080/usuario/set-cod-verificacion/${data.codUsuario}`, {
         method: 'POST',
         headers: {
@@ -1938,7 +1948,6 @@ async function checkEmail() {
       }
 
       const resultadoUsuarioSave = await resultadoUsuarioSaveResponse.json();
-      console.log(resultadoUsuarioSave);
 
       const sendCodigoResponse = await fetch('http://localhost:8080/email/sendCodigo', {
         method: 'POST',
@@ -1961,9 +1970,11 @@ async function checkEmail() {
       openDialog('popup-dialog-ingresar-codigo');
     } else {
       document.getElementById("loading-overlay").classList.add("hidden");
-      emailAlert.innerText = "No se encontró un usuario con el correo electrónico ingresado";
+      emailAlert.innerText = "Ingrese la dirección de correo de su cuenta";
     }
   } catch (error) {
+     emailAlert.innerText = "Ingrese la dirección de correo de su cuenta";
+      document.getElementById("loading-overlay").classList.add("hidden");
     console.error('Error:', error);
   }
 }

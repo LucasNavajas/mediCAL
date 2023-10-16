@@ -34,6 +34,19 @@
           var aceptar = dialog.querySelector(".accept-button");
           var aceptarNuevo = aceptar.cloneNode(true);
           aceptar.parentNode.replaceChild(aceptarNuevo, aceptar);
+          if(window.location.href === "http://localhost:8081/n19_gestionar_tablas.html"){
+            function handleAceptarClick() {
+              eliminarCalendariosSeleccionados();
+          }
+
+          // Agrega el nuevo controlador de eventos
+          aceptarNuevo.addEventListener("click", handleAceptarClick);
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+          }
+          
+          else{
           function handleAceptarClick() {
               openDialogMotivo('popup-dialog-agregar-motivo');
           }
@@ -43,6 +56,7 @@
           overlay.style.display = "block";
           overlay.style.opacity = "1";
           dialog.style.display = "block";
+        }
         }
 
         function openDialogBajaTodosUsuarios(id){

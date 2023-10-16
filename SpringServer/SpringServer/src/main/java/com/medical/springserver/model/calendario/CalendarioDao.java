@@ -15,8 +15,34 @@ public class CalendarioDao {
 	private CalendarioRepository repository;
 	
 	public Calendario save(Calendario calendario) {
-		return repository.save(calendario);
+	    // Buscar la entidad existente por su código
+	    Calendario existingCalendario = repository.findById(calendario.getCodCalendario()).orElse(null);
+
+	    if (existingCalendario != null) {
+	        if (calendario.getFechaAltaCalendario() != null) {
+	            existingCalendario.setFechaAltaCalendario(calendario.getFechaAltaCalendario());
+	        }
+	        if (calendario.getFechaFinVigenciaC() != null) {
+	            existingCalendario.setFechaFinVigenciaC(calendario.getFechaFinVigenciaC());
+	        }
+	        if (calendario.getNombreCalendario() != null) {
+	            existingCalendario.setNombreCalendario(calendario.getNombreCalendario());
+	        }
+	        if (calendario.getNombrePaciente() != null) {
+	            existingCalendario.setNombrePaciente(calendario.getNombrePaciente());
+	        }
+	        if (calendario.getRelacionCalendario() != null) {
+	            existingCalendario.setRelacionCalendario(calendario.getRelacionCalendario());
+	        }
+
+	        // Guardar la entidad actualizada
+	        return repository.save(existingCalendario);
+	    } else {
+	        // Si no se encuentra la entidad existente, crea una nueva
+	        return repository.save(calendario);
+	    }
 	}
+
 	
 	public List<Calendario> getAllCalendarios(){
 		Streamable<Calendario> streamableCalendarios = Streamable.of(repository.findAll());
@@ -54,6 +80,10 @@ public class CalendarioDao {
 		 calendario.setFechaFinVigenciaC(LocalDate.now());
 		 save(calendario);
 		 
+	 }
+	 
+	 public List<Calendario> findByInstitucion(String nombreInstitucion) {
+		 return repository.findByInstitucion(nombreInstitucion);
 	 }
 
 }

@@ -1683,7 +1683,6 @@ function limitarCaracteres(event, id) {
             }
         }
 function cargarTabla() {
-  console.log(usuarioJson.nombreInstitucion);
   fetch(`http://localhost:8080/usuario/institucion/${usuarioJson.nombreInstitucion}`, {
     method: 'GET',
     headers: {

@@ -38,13 +38,18 @@ public class CalendarioController {
 	@PostMapping("/calendario/modificar/{codCalendario}")
 	public Calendario modificarCalendario(@PathVariable int codCalendario, @RequestBody Calendario calendario) {
 		return calendarioDao.modificarCalendario(codCalendario, calendario.getNombreCalendario(), calendario.getRelacionCalendario(), calendario.getNombrePaciente());
-				//codCalendario, calendario.getFechaAltaCalendario(), calendario.getFechaFinVigenciaC(),
-				//calendario.getNombreCalendario(), calendario.getRelacionCalendario(), calendario.getNombrePaciente());
+		//codCalendario, calendario.getFechaAltaCalendario(), calendario.getFechaFinVigenciaC(),
+		//calendario.getNombreCalendario(), calendario.getRelacionCalendario(), calendario.getNombrePaciente());
 	}
 	
 	@PostMapping("/calendario/eliminar/{codCalendario}")
 	public void eliminarCalendario(@PathVariable int codCalendario) {
 		calendarioDao.eliminarCalendario(codCalendario);
+	}
+	
+	@GetMapping("/calendario/get-all/{nombreInstitucion}")
+	public List<Calendario> findByInstitucion(@PathVariable String nombreInstitucion){
+		return calendarioDao.findByInstitucion(nombreInstitucion);
 	}
 		
 	

@@ -534,7 +534,28 @@ function toggleRevertButtonVisibility() {
                   console.error('Error:', error);
                 });
       }
+      else{ //Para los calendarios
+        fetch(`http://localhost:8080/calendario/eliminar/${idInstancia}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+    if (!response.ok) {
+      throw new Error('Error de red.');
+        }
+        // No es necesario analizar la respuesta si es void o sin contenido
+        // Puedes simplemente continuar aquí
+        openDialog('popup-dialog-eliminado');
+      })
+      .catch(error => {
+        // Manejar errores generales
+        console.error('Error:', error);
+      });
+
     }
+  }
     else{
     var valorSeleccionado = lista.value;
 
