@@ -58,6 +58,11 @@ public class RegistroRecordatorioController {
 		return registroRecordatorioDao.getByCodRegistroRecordatorio(codRegistroRecordatorio);
 	}
 	
+	@GetMapping("/registroRecordatorio/registros/{codCalendario}")
+	public List<RegistroRecordatorio> obtenerRegistrosCalendarioProfesional(@PathVariable int codCalendario){
+		return registroRecordatorioDao.obtenerRegistrosCalendarioProfesional(codCalendario);
+	}
+	
 
 	
 }

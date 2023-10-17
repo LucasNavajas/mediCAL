@@ -8,6 +8,8 @@ import com.medical.springserver.model.profesionalsalud.ProfesionalSaludDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -32,4 +34,18 @@ public class ProfesionalSaludController {
 	public ProfesionalSalud saveAdmin(@RequestBody ProfesionalSalud profesionalsalud) {
 		return profesionalsaludDao.saveAdmin(profesionalsalud);
 	}
+	
+	@GetMapping("/profesionalsalud/dni-unico")
+	public List<String> obtenerDnisUnicos(){
+		return profesionalsaludDao.obtenerDniUnicos();
+	}
+	
+	@GetMapping("/profesionalsalud/filtrados")
+	public List<ProfesionalSalud> getProfesionalesSaludByDateRange(
+            @RequestParam(name = "startDate") LocalDate startDate,
+            @RequestParam(name = "endDate") LocalDate endDate,
+            @RequestParam(name = "nombreInstitucion") String nombreInstitucion) {
+        return profesionalsaludDao.obtenerUsuariosPorFechas(startDate, endDate, nombreInstitucion);
+    }
+	
 }

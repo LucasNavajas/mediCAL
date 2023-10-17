@@ -79,4 +79,8 @@ public class RegistroRecordatorioDao {
 			delete(registro);
 		}
 	}
+	
+	public List<RegistroRecordatorio> obtenerRegistrosCalendarioProfesional(int codCalendario){
+		return repository.obtenerRegistrosCalendario(codCalendario);
+	}
 }

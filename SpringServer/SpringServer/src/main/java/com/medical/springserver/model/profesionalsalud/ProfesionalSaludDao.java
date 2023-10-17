@@ -1,5 +1,6 @@
 package com.medical.springserver.model.profesionalsalud;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,4 +116,45 @@ public class ProfesionalSaludDao {
 		return saveConHash(profesionalsalud);
 	}
 	
+	
+	public List<String> obtenerDniUnicos() {
+	    List<String> usuarios = repository.findAllDistinctUsuarioUnico();
+	    List<String> dnisVigentes = new ArrayList<>();
+
+	    for (String usuario : usuarios) {
+	        ProfesionalSalud temporal = obtenerUsuariosPorUsuarioUnico(usuario);
+
+	        // Verificar si temporal es nulo antes de llamar a métodos en él
+	        if (temporal != null && usuarioDao.estaVigente(temporal)) {
+	        	dnisVigentes.add(Long.toString(temporal.getDni()));
+	        }
+	    }
+	    
+	    return dnisVigentes;
+	}
+	
+	public ProfesionalSalud obtenerUsuariosPorUsuarioUnico(String usuarioUnico) {
+	    List<ProfesionalSalud> usuariosConMismoUsuario = repository.findByUsuarioUnico(usuarioUnico);
+	    if (usuariosConMismoUsuario.isEmpty()) {
+	        return null;
+	    }
+	    
+	    List<ProfesionalSalud> usuariosVigentes = new ArrayList<>();
+	    
+	    for (ProfesionalSalud usuario : usuariosConMismoUsuario) {
+	        if (usuarioDao.estaVigente(usuario)) {
+	            usuariosVigentes.add(usuario);
+	        }
+	    }
+	    
+	    if (usuariosVigentes.isEmpty()) {
+	        return null;
+	    }
+	    
+	    return usuariosVigentes.get(0);
+	}
+	
+	public List<ProfesionalSalud> obtenerUsuariosPorFechas(LocalDate fechaDesde, LocalDate fechaHasta, String nombreInstitucion){
+		return repository.findByFechaAltaUsuarioBetween(fechaDesde, fechaHasta, nombreInstitucion);
+	}
 }

@@ -72,5 +72,15 @@ public interface RegistroRecordatorioRepository extends CrudRepository<RegistroR
 	List<RegistroRecordatorio> obtenerRegistrosPorCodRecordatorioHistorial(
 	        @Param("codRecordatorio") int codRecordatorio
 	);	
+	
+	@Query("SELECT r FROM RegistroRecordatorio r WHERE " +
+	        "r.recordatorio.calendario.codCalendario = :codCalendario " +
+	        "AND r.fechaFinVigenciaRR IS NULL " +  // Agrega esta condición
+	        "AND r.tomaRegistroRecordatorio = TRUE " +  // Agrega esta condición
+	        "OR r.omision IS NOT NULL " +  // Agrega esta condición
+	        "ORDER BY r.fechaTomaEsperada")
+	List<RegistroRecordatorio> obtenerRegistrosCalendario(
+	        @Param("codCalendario") int codCalendario
+	);	
 
 }

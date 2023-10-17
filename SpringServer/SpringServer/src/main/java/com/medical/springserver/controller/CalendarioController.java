@@ -57,6 +57,14 @@ public class CalendarioController {
 		return calendarioDao.findByInstitucion(nombreInstitucion);
 	}
 		
-	
+	@GetMapping("/calendario/filtrados")
+	public List<Calendario> obtenerCalendariosFiltrados(
+            @RequestParam(name = "codUsuario", required = false, defaultValue = "0") int codUsuario,
+            @RequestParam(name = "codMedicamento", required = false, defaultValue = "0") int codMedicamento,
+            @RequestParam(name = "codSintoma", required = false, defaultValue = "0") int codSintoma,
+            @RequestParam(name = "nombreInstitucion") String nombreInstitucion
+    ) {
+        return calendarioDao.obtenerCalendariosFiltrados(codUsuario, codMedicamento, codSintoma, nombreInstitucion);
+    }
 
 }
