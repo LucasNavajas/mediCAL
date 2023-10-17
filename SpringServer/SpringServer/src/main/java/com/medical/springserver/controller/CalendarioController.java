@@ -6,6 +6,8 @@ import com.medical.springserver.model.calendario.CalendarioDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -59,12 +61,14 @@ public class CalendarioController {
 		
 	@GetMapping("/calendario/filtrados")
 	public List<Calendario> obtenerCalendariosFiltrados(
-            @RequestParam(name = "codUsuario", required = false, defaultValue = "0") int codUsuario,
-            @RequestParam(name = "codMedicamento", required = false, defaultValue = "0") int codMedicamento,
-            @RequestParam(name = "codSintoma", required = false, defaultValue = "0") int codSintoma,
-            @RequestParam(name = "nombreInstitucion") String nombreInstitucion
-    ) {
-        return calendarioDao.obtenerCalendariosFiltrados(codUsuario, codMedicamento, codSintoma, nombreInstitucion);
+	        @RequestParam(name = "codUsuario", required = false, defaultValue = "0") int codUsuario,
+	        @RequestParam(name = "codMedicamento", required = false, defaultValue = "0") int codMedicamento,
+	        @RequestParam(name = "codSintoma", required = false, defaultValue = "0") int codSintoma,
+	        @RequestParam(name = "nombreInstitucion") String nombreInstitucion,
+	        @RequestParam(name = "fechadesde", required = false) LocalDate fechaDesde,
+	        @RequestParam(name = "fechahasta", required = false) LocalDate fechaHasta
+	) {
+        return calendarioDao.obtenerCalendariosFiltrados(codUsuario, codMedicamento, codSintoma, nombreInstitucion, fechaDesde, fechaHasta);
     }
 
 }

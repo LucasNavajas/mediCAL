@@ -105,7 +105,7 @@ public class CalendarioDao {
 		 return repository.findByInstitucion(nombreInstitucion);
 	 }
 	 
-	 public List<Calendario> obtenerCalendariosFiltrados(int codUsuario, int codMedicamento, int codSintoma, String nombreInstitucion){
+	 public List<Calendario> obtenerCalendariosFiltrados(int codUsuario, int codMedicamento, int codSintoma, String nombreInstitucion, LocalDate fechaDesde, LocalDate fechaHasta){
 		 List<Calendario> pacientes = new ArrayList<>();
 		 List<Calendario> pacientesFiltradosMed = new ArrayList<>();
 		 List<Calendario> pacientesFiltradosSintomas = new ArrayList<>();
@@ -113,11 +113,11 @@ public class CalendarioDao {
 		 if (codUsuario == 0) {
 			List<Usuario> profesionales = usuarioDao.findByInstitucion(nombreInstitucion);
 			for (Usuario profesional : profesionales) {
-				pacientes.addAll(findByCodUsuario(profesional.getCodUsuario()));
+				pacientes.addAll(repository.findByCodUsuarioAndDateRange(profesional.getCodUsuario(), fechaDesde, fechaHasta));
 			}
 		 }
 		 else {
-			 pacientes.addAll(findByCodUsuario(codUsuario));
+			 pacientes.addAll(repository.findByCodUsuarioAndDateRange(codUsuario, fechaDesde, fechaHasta));
 		 }
 		 if(codMedicamento == 0 && codSintoma == 0) {
 			 return pacientes;
