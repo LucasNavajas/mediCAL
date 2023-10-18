@@ -32,7 +32,7 @@ public class BackupController {
         
         // Genera un nombre de archivo basado en la fecha y hora actual
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String outputFile = "copia_de_seguridad_" + dateFormat.format(new Date()) + ".sql";
+        String outputFile = "Copia_seguridad_BD_V" + dateFormat.format(new Date()) + ".sql";
 
         try {
             boolean success = DatabaseUtil.backup(dbUsername, dbPassword, dbName, outputFile);
