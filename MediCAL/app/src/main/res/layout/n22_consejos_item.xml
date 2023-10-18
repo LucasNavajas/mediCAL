@@ -111,13 +111,36 @@
                 />
 
             <ImageView
-                android:id="@+id/imagen_consejo_compartir"
+                android:id="@+id/imagen_like_vacio"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/videoImageView"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/consejo_like" />
+
+            <ImageView
+                android:id="@+id/imagen_likeado"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/videoImageView"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/likeado"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/imagen_consejo_compartir"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/videoImageView"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
+                android:layout_alignParentStart="@id/imagen_like_vacio"
                 android:src="@drawable/consejo_compartir" />
 
             <TextView

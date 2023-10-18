@@ -628,7 +628,7 @@ public class CompartirReporteActivity extends AppCompatActivity {
                 Row headerRow2_2 = sheet2.getRow(2);
                 Cell fechaDesde2 = headerRow2_2.getCell(3);
                 fechaDesde2.setCellValue(reporteAsociado.getFechaDesde().toString());
-                Cell fechaHasta2 = headerRow2_2.getCell(6);
+                Cell fechaHasta2 = headerRow2_2.getCell(7);
                 fechaHasta2.setCellValue(reporteAsociado.getFechaHasta().toString());
 
                 // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---

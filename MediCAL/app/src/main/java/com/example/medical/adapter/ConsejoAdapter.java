@@ -75,6 +75,8 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         ImageView iconoConsejo = holder.iconoConsejo;;
         TextView leerMas = holder.leerMas;
         View lineaLeerMas = holder.lineaLeerMas;
+        ImageView like = holder.like;
+        ImageView likeado = holder.likeado;
         ImageView compartir = holder.compartir;
         ImageView foto = holder.foto;
         ImageView play= holder.play;
@@ -105,6 +107,20 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                 }
             });
 
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like.setVisibility(View.GONE);
+                    likeado.setVisibility(View.VISIBLE);
+                }
+            });
+            likeado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like.setVisibility(View.VISIBLE);
+                    likeado.setVisibility(View.GONE);
+                }
+            });
             compartir.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -219,7 +235,6 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         context.startActivity(Intent.createChooser(intent, "Compartir vía"));
     }
 
-
     // Método para obtener un consejo aleatorio de una lista de consejos
     private Consejo obtenerConsejoAleatorio(List<Consejo> consejos) {
         if (consejos == null || consejos.isEmpty()) {
@@ -247,6 +262,8 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         ImageView play;
 
         TextView auspiciante;
+        ImageView like;
+        ImageView likeado;
         ImageView compartir;
 
         public ConsejoViewHolder(@NonNull View itemView) {
@@ -260,6 +277,8 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             foto = itemView.findViewById(R.id.videoImageView);
             play = itemView.findViewById(R.id.videoImagePlay);
             auspiciante = itemView.findViewById(R.id.texto_Auspiciante);
+            like = itemView.findViewById(R.id.imagen_like_vacio);
+            likeado = itemView.findViewById(R.id.imagen_likeado);
             compartir = itemView.findViewById(R.id.imagen_consejo_compartir);
 
         }
