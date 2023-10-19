@@ -210,7 +210,6 @@ public class AgregarReporteActivity extends AppCompatActivity {
         };
 
         botonEnviar.setOnClickListener(view -> {
-
             medicamento = textoNombreMedicamento.getText().toString();
             destinatario = emailDestinatario.getText().toString();
             if (fechaReporteDesdeString.equals("Seleccione 'fecha desde'")){
@@ -218,6 +217,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
             } else if (fechaReporteHastaString.equals("Seleccione 'fecha hasta'")) {
                 Toast.makeText(AgregarReporteActivity.this, "Debe Seleccionar una 'fecha hasta'", Toast.LENGTH_SHORT).show();
             } else if (!esCorreoValido(destinatario)) {
+                popupCorreoNoValido();
                 Toast.makeText(this, "La dirección de correo no es válida.", Toast.LENGTH_SHORT).show();
             } else {
                 Log.d("MiApp", "Se obtuvo un mail correcto de destinatario: " + destinatario);
@@ -1952,6 +1952,45 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 intent.putExtra("codUsuario", codUsuarioLogeado);
                 intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void popupCorreoNoValido() {
+        Log.d("MiApp","Se llamó a popupCorreoNoValido");
+        View popupView = getLayoutInflater().inflate(R.layout.n85_popup_correo_invalido, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView atras = popupView.findViewById(R.id.atras);
+
+        atras.setOnClickListener(view ->{
+            popupWindow.dismiss();
+            dimView.setVisibility(View.GONE);
+        });
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
             }
         });
     }
