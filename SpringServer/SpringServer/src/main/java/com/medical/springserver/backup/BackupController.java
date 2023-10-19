@@ -4,6 +4,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +56,31 @@ public class BackupController {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null); // Error en la copia de seguridad
+        }
+    }
+    
+    @Scheduled(fixedRate = 86400000) // 24 horas en milisegundos
+    public void realizarCopiaDeSeguridadProgramada() {
+    	 String dbUsername = "root";
+         String dbPassword = "root";
+         String dbName = "springserverdb";
+        // Obtén el nombre del día de la semana actual (por ejemplo, "lunes")
+        SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEEE");
+        String dayOfWeek = dayOfWeekFormat.format(new Date());
+
+        // Genera el nombre del archivo basado en el día de la semana
+        String outputFile = "Copia_seguridad_BD_" + dayOfWeek + ".sql";
+
+        try {
+            boolean success = DatabaseUtil.backup(dbUsername, dbPassword, dbName, outputFile);
+            if (success) {
+                System.out.println("Backup realizado con éxito");
+            } else {
+                System.out.println("Error al realizar el backup");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("Error al realizar el backup");
         }
     }
     
