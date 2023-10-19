@@ -106,7 +106,6 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                     context.startActivity(intent);
                 }
             });
-
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -144,6 +143,20 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                     context.startActivity(intent);
                 }
             });
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like.setVisibility(View.GONE);
+                    likeado.setVisibility(View.VISIBLE);
+                }
+            });
+            likeado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like.setVisibility(View.VISIBLE);
+                    likeado.setVisibility(View.GONE);
+                }
+            });
             compartir.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -173,6 +186,20 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                     String videoLink = consejoAleatorio.getLinkConsejo();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoLink));
                     context.startActivity(intent);
+                }
+            });
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like.setVisibility(View.GONE);
+                    likeado.setVisibility(View.VISIBLE);
+                }
+            });
+            likeado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like.setVisibility(View.VISIBLE);
+                    likeado.setVisibility(View.GONE);
                 }
             });
             compartir.setOnClickListener(new View.OnClickListener(){

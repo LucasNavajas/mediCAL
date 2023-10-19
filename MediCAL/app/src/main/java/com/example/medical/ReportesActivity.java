@@ -285,7 +285,10 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             botonVolver.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onBackPressed(); // Volver a la actividad anterior
+                    Intent intent = new Intent(ReportesActivity.this, MasActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
+                    intent.putExtra("calendarioSeleccionadoid", codCalendarioSeleccionado);
+                    startActivity(intent);
                 }
             });
 

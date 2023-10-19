@@ -727,7 +727,7 @@ public class AgregarReporteActivity extends AppCompatActivity {
                 Row headerRow2_2 = sheet2.getRow(2);
                 Cell fechaDesde2 = headerRow2_2.getCell(3);
                 fechaDesde2.setCellValue(fechaReporteDesdeString);
-                Cell fechaHasta2 = headerRow2_2.getCell(6);
+                Cell fechaHasta2 = headerRow2_2.getCell(7);
                 fechaHasta2.setCellValue(fechaReporteHastaString);
 
                 // --- FILA ENCABEZADOS DE COLUMNAS / SEGUNDA HOJA ---
