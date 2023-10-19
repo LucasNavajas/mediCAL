@@ -249,6 +249,7 @@ function toggleSearch(index) {
   var input = container.querySelector('.search-input');
   if (container.classList.contains('active')) {
     input.focus();
+    filterTable();
   } else {
     input.value = '';
     filterTable();
@@ -469,43 +470,47 @@ function toggleRevertButtonVisibility() {
       //toggleDeletedRowsVisibility();
     }
 
-    function filterTable() {
-      var table = document.getElementsByTagName('table')[0];
-      var rows = table.getElementsByTagName('tr');
+   function filterTable() {
+  console.log("Entra a filtertable");
+  var table = document.getElementsByTagName('table')[0];
+  console.log("Número de filas en la tabla: " + table.rows.length);
+  var rows = table.getElementsByTagName('tr');
 
-      for (var i = 1; i < rows.length; i++) {
-        var row = rows[i];
-        var shouldDisplayRow = true;
+  for (var i = 1; i < rows.length; i++) {
+    var row = rows[i];
+    var shouldDisplayRow = true;
 
-        var cells = row.getElementsByTagName('td');
-        for (var j = 1; j < cells.length - 1; j++) { // Start from 1 to skip the checkbox column
-          var cell = cells[j];
-          var searchInput = document.getElementById('search' + (j - 1)); // Adjust the search input index
+    var cells = row.getElementsByTagName('td');
+    var jStart = (window.location.href === "http://localhost:8081/n6_gestionar_profesionales.html") ? 0 : 1;
 
-            if (searchInput) {
-                var searchText = searchInput.value.toUpperCase();
-                var cellText = cell.textContent || cell.innerText;
+    for (var j = jStart; j < cells.length - 1; j++) {
+      var cell = cells[j];
+      var searchInput = document.getElementById('search' + (j - jStart)); // Ajusta el índice del campo de búsqueda
 
-                // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
-                if (j === 4 && searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
-                // Obtener el valor del campo de fecha
-                var selectedDate = $(searchInput).datepicker('getDate');
+      if (searchInput) {
+        var searchText = searchInput.value.toUpperCase();
+        var cellText = cell.textContent || cell.innerText;
 
-                // Formatear la fecha en el formato "dd/mm/yyyy"
-                searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
-                }
+        // Si se está buscando por fecha, formatear la fecha de la misma manera que se muestra en el campo de entrada
+        if (searchInput.type === "text" && searchInput.classList.contains("datepicker")) {
+          // Obtener el valor del campo de fecha
+          var selectedDate = $(searchInput).datepicker('getDate');
 
-                if (cellText.toUpperCase().indexOf(searchText) === -1) {
-                shouldDisplayRow = false;
-                break;
-                }
-            }
-            
+          // Formatear la fecha en el formato "dd/mm/yyyy"
+          searchText = selectedDate ? selectedDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
         }
 
-        row.style.display = shouldDisplayRow ? '' : 'none';
+        if (cellText.toUpperCase().indexOf(searchText) === -1) {
+          shouldDisplayRow = false;
+          break;
+        }
       }
     }
+
+    row.style.display = shouldDisplayRow ? '' : 'none';
+  }
+}
+
 
     function eliminarInstancia(idInstancia){
 
@@ -802,6 +807,7 @@ function recuperarInstancia(idInstancia){
     
       }
       else{
+        document.getElementById("loading-overlay").classList.remove("hidden");
 fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
                 method: 'POST',
                 headers: {
@@ -817,15 +823,18 @@ fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   openDialog('popup-dialog-restaurado');
+                  document.getElementById("loading-overlay").classList.add("hidden");
                 })
                 .catch(error => {
                   // Manejar errores generales
                   console.error('Error:', error);
+                  document.getElementById("loading-overlay").classList.add("hidden");
                 });
       }
     }
     else{
       if(window.location.href == "http://localhost:8081/n26_gestionar_usuarios.html" ){
+        document.getElementById("loading-overlay").classList.remove("hidden");
           fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
                 method: 'POST',
                 headers: {
@@ -841,10 +850,12 @@ fetch(`http://localhost:8080/usuario/recuperar/${idInstancia}`, {
                 .then(data => {
                   // Hacer algo con los datos de la respuesta
                   actualizar(idInstancia, data);
+                  document.getElementById("loading-overlay").classList.add("hidden");
                 })
                 .catch(error => {
                   // Manejar errores generales
                   console.error('Error:', error);
+                  document.getElementById("loading-overlay").classList.add("hidden");
                 });
       }
       else{

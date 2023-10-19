@@ -19,6 +19,26 @@
             });
         }
 
+      function openDialogPermisos(id){
+        var overlay = document.getElementById("popup-overlay-oscuro");
+            var dialog = document.getElementById(id);
+            overlay.style.display = "block";
+            overlay.style.opacity = "1";
+            dialog.style.display = "block";
+            var spans = document.querySelectorAll('span[id^="contador"]');
+            for (var i = 0; i < spans.length; i++) {
+                var span = spans[i];
+                // Por ejemplo, puedes establecer el contenido del span en su valor original.
+                span.textContent = "300 caracteres restantes";
+            }
+            var inputElements = dialog.querySelectorAll('input, textarea');
+
+            // Itera sobre los elementos y establece su valor en una cadena vacía
+            inputElements.forEach(function(input) {
+                input.value = '';
+            });
+      }
+
       function openDialogModificar(id, index) {
           var overlay = document.getElementById("popup-overlay");
           var dialog = document.getElementById(id);

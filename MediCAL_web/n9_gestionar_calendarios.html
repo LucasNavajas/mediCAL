@@ -1084,6 +1084,7 @@ function cargarTabla() {
 function cargarDatosAdicionalesCalendario(calendarios) {
   if (calendarios.length === 0) {
     reemplazarFilasConJSON(calendarios);
+    activarBusqueda();
   } else {
     // Función para obtener los recordatorios de un calendario
     function obtenerRecordatorios(codCalendario) {
@@ -1130,6 +1131,7 @@ function contarRecordatorios(calendario) {
 
         // Llamar a la función para reemplazar las filas con el resultado
         reemplazarFilasConJSON(calendariosSinRelacion);
+        activarBusqueda();
       })
       .catch((error) => {
         console.error('Error:', error);

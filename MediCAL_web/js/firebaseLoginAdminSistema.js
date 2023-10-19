@@ -28,13 +28,13 @@ const firebaseConfig = {
             console.log("Usuario no autenticado");
             // Ejemplo de redirección a la página de inicio de sesión
             localStorage.removeItem('usuario');
-            window.location.href = "n1_inicio_sesion.html";
+            openDialogPermisos('popup-dialog-no-permisos');
         }
       } else {
         // El usuario no ha iniciado sesión, puedes redirigirlo a la página de inicio de sesión o realizar otras acciones
         console.log("Usuario no autenticado");
         // Ejemplo de redirección a la página de inicio de sesión
-        window.location.href = "n1_inicio_sesion.html";
+        openDialogPermisos('popup-dialog-no-permisos');
       }
     });
 

@@ -113,6 +113,19 @@
   }
 }
 
+        .popup-overlay-oscuro {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 1);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
         /* Estilos CSS aquí */
         .popup-overlay {
             display: none;
@@ -1007,6 +1020,62 @@
       margin-right:5px;
       cursor: pointer;
     }
+
+            #popup-dialog-no-permisos {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-no-permisos h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-no-permisos h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-no-permisos .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-no-permisos .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-no-permisos .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
 </style>
   
 </head>
@@ -1087,7 +1156,7 @@
 </main>
 
  <div id="popup-overlay" class="popup-overlay"></div>
-
+ <div id="popup-overlay-oscuro" class="popup-overlay-oscuro"></div>
     <div id="popup-dialog-cerrar-sesion" class="popup-content">
         <h3>¿Está seguro?</h3>
         <h4>¿Desea cerrar sesión de esta cuenta?</h4>
@@ -1361,6 +1430,7 @@
         </div>
     </div>
 
+
 <style>
 
     .loading-overlay {
@@ -1452,6 +1522,14 @@
 
 
   </div>
+  <div id="popup-dialog-no-permisos" class="popup-content">
+        <h3>Usuario No Autenticado.</h3>
+        <h4>No posee permisos para acceder a esta página.</h4>
+
+        <div class="popup-buttons">
+            <button onclick="window.location.href='n1_inicio_sesion.html'" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
   <!--Pie de pagina-->
   <footer class="footer-bg">
     <div class="container text-center">
@@ -1466,8 +1544,11 @@
   <script src="js/scripts.js"></script>
   <script src="js/scriptsDialogPopup.js"></script>
   <script>
-    $(document).ready(function() {
 
+    document.getElementById("loading-overlay").classList.remove("hidden");
+
+    $(document).ready(function() {
+        document.getElementById("loading-overlay").classList.add("hidden");
         $('.toggle-password').click(function() {
         $(this).toggleClass('fa-eye fa-eye-slash');
         var input = $(this).parent().find('input');
@@ -1971,9 +2052,9 @@ let codUsuarioContrasenia;
 
 async function checkEmail() {
     document.getElementById("loading-overlay").classList.remove("hidden");
-    const emailInput = document.getElementById("campo_mail");
+    const emailInput = document.getElementById("campo_mail_contrasenia");
     const email = emailInput.value;
-    const emailAlert = document.getElementById("email-alert");
+    const emailAlert = document.getElementById("email-alert-contrasenia");
   try {
 
     const emailPattern = /\S+@\S+\.\S+/; // Patrón básico para validar el formato del correo electrónico
