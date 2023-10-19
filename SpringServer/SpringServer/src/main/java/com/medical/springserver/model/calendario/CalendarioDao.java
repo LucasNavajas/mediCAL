@@ -1,6 +1,8 @@
 package com.medical.springserver.model.calendario;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
 import com.medical.springserver.model.calendariosintoma.CalendarioSintomaDao;
+import com.medical.springserver.model.calendariosintoma.CalendarioSintomaRepository;
 import com.medical.springserver.model.recordatorio.Recordatorio;
 import com.medical.springserver.model.recordatorio.RecordatorioDao;
+import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorio;
+import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorioRepository;
 import com.medical.springserver.model.usuario.Usuario;
 import com.medical.springserver.model.usuario.UsuarioDao;
 
@@ -26,6 +31,10 @@ public class CalendarioDao {
 	private RecordatorioDao recordatorioDao;
 	@Autowired
 	private CalendarioSintomaDao calendarioSintomaDao;
+	@Autowired
+	RegistroRecordatorioRepository repositoryRegistro;
+	@Autowired
+	CalendarioSintomaRepository repositorySintoma;
 	
 	public Calendario save(Calendario calendario) {
 	    // Buscar la entidad existente por su código
@@ -105,62 +114,75 @@ public class CalendarioDao {
 		 return repository.findByInstitucion(nombreInstitucion);
 	 }
 	 
-	 public List<Calendario> obtenerCalendariosFiltrados(int codUsuario, int codMedicamento, int codSintoma, String nombreInstitucion, LocalDate fechaDesde, LocalDate fechaHasta){
-		 List<Calendario> pacientes = new ArrayList<>();
-		 List<Calendario> pacientesFiltradosMed = new ArrayList<>();
-		 List<Calendario> pacientesFiltradosSintomas = new ArrayList<>();
-		 
-		 if (codUsuario == 0) {
-			List<Usuario> profesionales = usuarioDao.findByInstitucion(nombreInstitucion);
-			for (Usuario profesional : profesionales) {
-				pacientes.addAll(repository.findByCodUsuarioAndDateRange(profesional.getCodUsuario(), fechaDesde, fechaHasta));
-			}
-		 }
-		 else {
-			 pacientes.addAll(repository.findByCodUsuarioAndDateRange(codUsuario, fechaDesde, fechaHasta));
-		 }
-		 if(codMedicamento == 0 && codSintoma == 0) {
-			 return pacientes;
-		 }
-		 if(codMedicamento != 0) {
-			 for(Calendario paciente : pacientes) {
-				 List<Recordatorio> recordatorios = recordatorioDao.findByCodCalendario(paciente.getCodCalendario());
-				 for (Recordatorio recordatorio : recordatorios) {
-					 if(recordatorio.getMedicamento().getCodMedicamento() == codMedicamento) {
-						 pacientesFiltradosMed.add(paciente);
-					 }
-				 }
-			 }
-			 if(codSintoma != 0) {
-				 for(Calendario paciente: pacientesFiltradosMed) {
-					 List<CalendarioSintoma> sintomas = calendarioSintomaDao.findByCodCalendario(paciente.getCodCalendario());
-					 for(CalendarioSintoma sintoma : sintomas) {
-						 if(sintoma.getSintoma().getCodSintoma()==codSintoma) {
-							 pacientesFiltradosSintomas.add(paciente);
-						 }
-					 }
-				 }
-				 return pacientesFiltradosSintomas;
-			 }
-			 else {
-				 return pacientesFiltradosMed;
-			 }
-		 }
-		 
-		 if(codSintoma != 0) {
-			 for(Calendario paciente: pacientes) {
-				 List<CalendarioSintoma> sintomas = calendarioSintomaDao.findByCodCalendario(paciente.getCodCalendario());
-				 for(CalendarioSintoma sintoma : sintomas) {
-					 if(sintoma.getSintoma().getCodSintoma()==codSintoma) {
-						 pacientesFiltradosSintomas.add(paciente);
-					 }
-				 }
-			 }
-			 return pacientesFiltradosSintomas;
-		 }
-		 else {
-			 return pacientes;
-		 }
-	 }
+	 public List<Calendario> obtenerCalendariosFiltrados(int codUsuario, int codMedicamento, int codSintoma, String nombreInstitucion, LocalDate fechaDesde, LocalDate fechaHasta) {
+		    List<Calendario> pacientes = new ArrayList<>();
+		    if (codUsuario == 0) {
+		        List<Usuario> profesionales = usuarioDao.findByInstitucion(nombreInstitucion);
+		        for (Usuario profesional : profesionales) {
+		            pacientes.addAll(repository.findByCodUsuarioAndDateRange(profesional.getCodUsuario(), fechaDesde, fechaHasta));
+		        }
+		    } else {
+		        pacientes.addAll(repository.findByCodUsuarioAndDateRange(codUsuario, fechaDesde, fechaHasta));
+		    }
 
+		    if (codMedicamento == 0 && codSintoma == 0) {
+		        return pacientes;
+		    }
+
+		    List<Calendario> pacientesFiltrados = new ArrayList<>();
+
+		    for (Calendario paciente : pacientes) {
+		        List<Recordatorio> recordatorios = recordatorioDao.findByCodCalendario(paciente.getCodCalendario());
+
+		        if (codMedicamento != 0) {
+		            boolean tieneMedicamento = false;
+		            for (Recordatorio recordatorio : recordatorios) {
+		                if (recordatorio.getMedicamento().getCodMedicamento() == codMedicamento) {
+		                    tieneMedicamento = true;
+		                    break;  // No es necesario seguir buscando en los recordatorios
+		                }
+		            }
+		            if (!tieneMedicamento) {
+		                continue;  // Salta al siguiente paciente si no tiene el medicamento
+		            }
+		        }
+
+		        if (codSintoma != 0) {
+		            boolean tieneSintoma = false;
+		            List<CalendarioSintoma> sintomas = calendarioSintomaDao.findByCodCalendario(paciente.getCodCalendario());
+		            for (CalendarioSintoma sintoma : sintomas) {
+		                if (sintoma.getSintoma().getCodSintoma() == codSintoma) {
+		                    tieneSintoma = true;
+		                    break;  // No es necesario seguir buscando en los síntomas
+		                }
+		            }
+		            if (!tieneSintoma) {
+		                continue;  // Salta al siguiente paciente si no tiene el síntoma
+		            }
+		        }
+
+		        pacientesFiltrados.add(paciente);
+		    }
+
+		    return pacientesFiltrados;
+		}
+
+		public List<RegistroRecordatorio> obtenerRegistrosFiltrados(int codUsuario, int codMedicamento,
+			String nombreInstitucion, LocalDate fechaDesde, LocalDate fechaHasta) {
+			List<Calendario> calendarios = obtenerCalendariosFiltrados(codUsuario, codMedicamento, 0, nombreInstitucion, LocalDate.of(0,1,1), LocalDate.now());
+			List<RegistroRecordatorio> registros = new ArrayList<>();
+			for (Calendario calendario : calendarios) {
+				registros.addAll(repositoryRegistro.obtenerRegistrosCalendarioEnRango(calendario.getCodCalendario(), LocalDateTime.of(fechaDesde, LocalTime.of(0, 0)), LocalDateTime.of(fechaHasta, LocalTime.of(23, 59))));
+			}
+			return registros;
+		}
+		
+		public List<CalendarioSintoma> obtenerSintomasFiltrados(String nombreInstitucion, LocalDate fechaDesde, LocalDate fechaHasta) {
+				List<Calendario> calendarios = obtenerCalendariosFiltrados(0, 0, 0, nombreInstitucion, LocalDate.of(0,1,1), LocalDate.now());
+				List<CalendarioSintoma> sintomas = new ArrayList<>();
+				for (Calendario calendario : calendarios) {
+					sintomas.addAll(repositorySintoma.findSintomasByCalendarioAndDateRange(calendario.getCodCalendario(), LocalDateTime.of(fechaDesde, LocalTime.of(0, 0)), LocalDateTime.of(fechaHasta, LocalTime.of(23, 59))));
+				}
+				return sintomas;
+			}
 }

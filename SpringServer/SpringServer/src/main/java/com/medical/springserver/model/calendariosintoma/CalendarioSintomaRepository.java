@@ -1,4 +1,6 @@
 package com.medical.springserver.model.calendariosintoma;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +22,16 @@ public interface CalendarioSintomaRepository extends CrudRepository<CalendarioSi
     
 	@Query("SELECT cs FROM CalendarioSintoma cs WHERE cs.sintoma.codSintoma = :codSintoma AND cs.fechaFinVigenciaCS IS NULL")
 	List<CalendarioSintoma> findByCodSintoma(@Param("codSintoma") Integer codSintoma);
+	
+    @Query("SELECT cs FROM CalendarioSintoma cs " +
+            "WHERE cs.calendario.codCalendario = :codCalendario " +
+            "AND cs.fechaCalendarioSintoma BETWEEN :fechaDesde AND :fechaHasta " +
+            "AND cs.fechaFinVigenciaCS IS NULL")
+     List<CalendarioSintoma> findSintomasByCalendarioAndDateRange(
+         @Param("codCalendario") Integer codCalendario,
+         @Param("fechaDesde") LocalDateTime fechaDesde,
+         @Param("fechaHasta") LocalDateTime fechaHasta
+     );
 
 
 }

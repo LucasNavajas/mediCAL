@@ -16,12 +16,8 @@ public interface CalendarioRepository extends CrudRepository<Calendario, Integer
     @Query("SELECT c FROM Calendario c WHERE c.usuario.nombreInstitucion = :nombreInstitucion")
     List<Calendario> findByInstitucion(@Param("nombreInstitucion") String nombreInstitucion);
     
-    @Query("SELECT c FROM Calendario c WHERE c.usuario.codUsuario = :codusuario AND c.fechaAltaCalendario >= :fechadesde AND c.fechaAltaCalendario <= :fechahasta AND c.fechaFinVigenciaC = null")
+    @Query("SELECT c FROM Calendario c WHERE c.usuario.codUsuario = :codusuario AND c.fechaFinVigenciaC IS NULL AND c.fechaAltaCalendario BETWEEN :fechadesde AND :fechahasta ")
     List<Calendario> findByCodUsuarioAndDateRange(@Param("codusuario") Integer codusuario, @Param("fechadesde") LocalDate fechadesde, @Param("fechahasta") LocalDate fechahasta);
-
-
-    @Query("SELECT c FROM Calendario c WHERE c.usuario.nombreInstitucion = :nombreInstitucion AND c.fechaAltaCalendario >= :fechadesde AND c.fechaAltaCalendario <= :fechahasta AND c.fechaFinVigenciaC = null")
-    List<Calendario> findByInstitucionAndDateRange(@Param("nombreInstitucion") String nombreInstitucion, @Param("fechadesde") LocalDate fechadesde, @Param("fechahasta") LocalDate fechahasta);
 
     
     Calendario findByCodCalendario(Integer codCalendario);

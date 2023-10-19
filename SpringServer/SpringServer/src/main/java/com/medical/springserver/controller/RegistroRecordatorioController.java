@@ -6,6 +6,8 @@ import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorioD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -62,6 +64,7 @@ public class RegistroRecordatorioController {
 	public List<RegistroRecordatorio> obtenerRegistrosCalendarioProfesional(@PathVariable int codCalendario){
 		return registroRecordatorioDao.obtenerRegistrosCalendarioProfesional(codCalendario);
 	}
+	
 	
 
 	

@@ -549,6 +549,249 @@
     margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
 }
 
+        #popup-dialog-filtro-medicamentos {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-filtro-medicamentos h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-filtro-medicamentos label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-filtro-medicamentos input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-filtro-medicamentos input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-filtro-medicamentos ::placeholder {
+            color: var(--seventh-color);
+        }
+
+
+        /* Estilo para el menú desplegable */
+        #popup-dialog-filtro-medicamentos select {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            font-size: 18px;
+            border-radius: 4px;
+            border-color: var(--seventh-color);
+            padding: 5px;
+            color: var(--fifth-color);
+            outline: none;
+        }
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-filtro-medicamentos .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-filtro-medicamentos .camp-table td, #popup-dialog-filtro-medicamentos .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-filtro-medicamentos .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-filtro-medicamentos tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-filtro-medicamentos tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-filtro-medicamentos .column-one {
+        width: 40%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-filtro-medicamentos .column-two {
+        width: 70%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+/*boton generar*/
+#popup-dialog-filtro-medicamentos .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 30px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+
+        #popup-dialog-filtro-sintomas {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            max-width: 800px; /* Ancho máximo del pop-up */
+            width: 80%; /* Ancho del pop-up */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh; /* Establece la altura máxima al 90% de la altura visible */
+            overflow-y: auto;
+        }
+
+        #popup-dialog-filtro-sintomas h3 {
+            margin-top: 20px;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Etiquetas e inputs */
+        #popup-dialog-filtro-sintomas label {
+            color: var(--fifth-color);
+            font-weight: 400px;
+            font-size: 18px;
+            display: block;
+            text-align: left;
+            word-wrap: break-word;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-filtro-sintomas input {
+            border: none;
+            border-bottom: 1px solid var(--seventh-color);
+            border-radius: none;
+            outline: none;
+            font-weight: 400px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 100%; /* Ajusta el ancho máximo al 100% */
+            text-align: left;
+            margin-left: 0px;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #popup-dialog-filtro-sintomas input:focus {
+            border-bottom: 2px solid var(--first-color);
+        }
+
+        #popup-dialog-filtro-sintomas ::placeholder {
+            color: var(--seventh-color);
+        }
+
+
+    /* Estilo para los elementos de la tabla (columna1: labels, columna2:inputs)
+    ya que se como los estilos de tablas */
+
+    #popup-dialog-filtro-sintomas .camp-table{
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+    }
+
+    #popup-dialog-filtro-sintomas .camp-table td, #popup-dialog-filtro-sintomas .camp-table th {
+        /* Estilos específicos para las celdas de la tabla con la clase "camp-table" */
+        border: none;
+        align-items: center;
+    }
+
+    #popup-dialog-filtro-sintomas .camp-table tr {
+        border: none;/* Estilos específicos para las filas de la tabla con la clase "camp-table" */
+
+    }
+
+    #popup-dialog-filtro-sintomas tr.clicked td {
+    background-color: transparent;
+    }
+
+    #popup-dialog-filtro-sintomas tr:focus-within td {
+        background-color: transparent;
+        font-weight: 400;
+    }
+
+    #popup-dialog-filtro-sintomas .column-one {
+        width: 20%; /* Anchura de la columna uno */
+        vertical-align: top;
+        padding: 2px;
+    }
+
+    #popup-dialog-filtro-sintomas .column-two {
+        width: 60%; /* Anchura de la columna dos */
+        text-align: center;
+        padding: 2px;
+    }
+
+/*boton generar*/
+#popup-dialog-filtro-sintomas .button-container {
+    display: flex;
+    justify-content: center; /* Cambiado a 'center' */
+    align-items: center; /* Cambiado a 'center' */
+    padding-bottom: 30px;
+    margin-top: 40px;
+    margin-right: auto; /* Cambiado a 'auto' */
+    margin-left: auto; /* Agregado 'auto' para centrar horizontalmente */
+}
+
 </style>
   
 </head>
@@ -593,7 +836,7 @@
 <main class="pt-5">
 
 <!--flecha atras-->
-<a href="n2_pantalla_principal_institucion" class="btn-back">
+<a href="n2_pantalla_principal_institucion.html" class="btn-back">
       <i class="bi bi-arrow-left"></i>
     </a>
   <!--Titulo-->
@@ -614,11 +857,11 @@
         <img src="img/pacientes.png" alt="Imagen calendario" class="button-image">
         Pacientes
       </button>
-      <button class="btn btn-custom">
+      <button class="btn btn-custom" onclick="openDialog('popup-dialog-filtro-medicamentos')">
         <img src="img/medicamentos_consumidos.png" alt="Imagen reportes" class="button-image">
         Medicamentos consumidos
       </button>
-      <button class="btn btn-custom">
+      <button class="btn btn-custom" onclick="openDialog('popup-dialog-filtro-sintomas')">
         <img src="img/sintomas.png" alt="Imagen permisos" class="button-image">
         Síntomas registrados
       </button>
@@ -769,6 +1012,113 @@
 </div>
 </div>
 
+<div id="popup-dialog-filtro-medicamentos" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-filtro-medicamentos')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Filtrar medicamentos</h3>
+        
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fdesde_medicamentos">Fecha desde</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fdesde_medicamentos" class="campo_fecha" placeholder="Seleccione la 'fecha desde' del reporte" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fhasta_medicamentos">Fecha hasta</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fhasta_medicamentos" class="campo_fecha" placeholder="Seleccione la 'fecha hasta' del reporte" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+            <td class="column-one">
+                <label for="campo_profesional_medicamentos">Profesional de la salud</label>
+            </td>
+            <td class="column-two">
+                <div style="display: flex; justify-content: flex-start; width: 100%;">
+                    <select id="campo_profesional_medicamentos"><!--deberia listar profesionales activos-->
+                        <option value="" disabled selected>Seleccionar Profesional</option>
+                        <option value="0">Todos</option>
+                    </select>
+                </div>
+            </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_medicamentos_medicamentos">Medicamentos</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <select id="campo_medicamentos_medicamentos"><!--deberia listar medicamentos activos-->
+                            <option value="" disabled selected>Seleccionar Medicamentos</option>
+                            <option value="0">Todos</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+<!--boton generar-->
+<div class="button-container">
+    <form action="javascript:crearReporteMedicamentos();" method="POST" onsubmit="return validarFechas('campo_fdesde_medicamentos', 'campo_fhasta_medicamentos')">
+        <div class="form-group">
+            <button id="generar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Generar</button>
+        </div>
+    </form>
+</div>
+</div>
+
+<div id="popup-dialog-filtro-sintomas" class="popup-content">
+        <!-- Icono de cerrar -->
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-filtro-sintomas')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+        <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Filtrar síntomas</h3>
+        
+        <table class="camp-table">
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fdesde_sintomas">Fecha desde</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fdesde_sintomas" class="campo_fecha" placeholder="Seleccione la 'fecha desde' del reporte" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_fhasta_sintomas">Fecha hasta</label>
+                </td>
+                <td class="column-two">
+                    <div style="display: flex; justify-content: flex-start; width: 100%;">
+                        <input type="text" id="campo_fhasta_sintomas" class="campo_fecha" placeholder="Seleccione la 'fecha hasta' del reporte" style="width: 100%;">
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+<!--boton generar-->
+<div class="button-container">
+    <form action="javascript:crearReporteSintomas();" method="POST" onsubmit="return validarFechas('campo_fdesde_sintomas',campo_fhasta_sintomas)">
+        <div class="form-group">
+            <button id="generar-button" type="submit" class="click-animation" style="border: none; border-radius: 100px; background-color: var(--first-color); color: var(--fourth-color); font-family: 'Inter', sans-serif; font-weight: bold; font-size: 18px; padding: 10px 20px; width: 250px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer;">Generar</button>
+        </div>
+    </form>
+</div>
+</div>
 <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
@@ -788,8 +1138,10 @@
   <script src="js/scripts.js"></script>
   <script src="js/scriptsDialogPopup.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+
+<script >
   var usuario = localStorage.getItem('usuario');
 
     // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
@@ -837,6 +1189,10 @@
                         value: profesional.codUsuario,
                         text: profesional.nombreUsuario + ' ' + profesional.apellidoUsuario
                     }));
+                    $('#campo_profesional_medicamentos').append($('<option>', {
+                        value: profesional.codUsuario,
+                        text: profesional.nombreUsuario + ' ' + profesional.apellidoUsuario
+                    }));
                 });
             },
             error: function (xhr, status, error) {
@@ -852,6 +1208,10 @@
                 // Iterar sobre los resultados y agregar opciones al select
                 data.forEach(function (medicamento) {
                     $('#campo_medicamentos_pacientes').append($('<option>', {
+                        value: medicamento.codMedicamento,
+                        text: medicamento.nombreMedicamento
+                    }));
+                    $('#campo_medicamentos_medicamentos').append($('<option>', {
                         value: medicamento.codMedicamento,
                         text: medicamento.nombreMedicamento
                     }));
@@ -873,6 +1233,7 @@
                         value: sintoma.codSintoma,
                         text: sintoma.nombreSintoma
                     }));
+
                 });
             },
             error: function (xhr, status, error) {
@@ -985,7 +1346,7 @@ async function crearReporteProfesionales() {
   });
 
 
-    guardarArchivoExcel(workbook);
+    guardarArchivoExcel(workbook, 'reporte_profesionales');
   } catch (error) {
     console.error('Error:', error);
   }
@@ -1060,15 +1421,16 @@ function agregarFilaExcel(worksheet, profesional, cantidadPacientesAsociados, ca
   });
 }
 
-function guardarArchivoExcel(workbook) {
+function guardarArchivoExcel(workbook, nombre) {
+  console.log(nombre);
   workbook.xlsx.writeBuffer().then((data) => {
     const blob = new Blob([data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
     a.href = url;
-    a.download = 'reporte_profesionales.xlsx';
+    a.download = nombre+'.xlsx';
     a.click();
   });
 }
@@ -1077,18 +1439,21 @@ function guardarArchivoExcel(workbook) {
 async function crearReportePacientes() {
   var fechaDesde = new Date($("#campo_fdesde_pacientes").val());
   var fechaHasta = new Date($("#campo_fhasta_pacientes").val());
-  var filtroProfesional = $("#campo_profesional_pacientes").text;
-  var codProfesional = $("#campo_profesional_pacientes").value;
-  var filtroMedicamentos = $("#campo_medicamentos_pacientes").text;
-  var codMedicamento = $("#campo_medicamentos_pacientes").value;
-  var filtroSintomas = $("#campo_sintomas_pacientes").text;
-  var codSintoma = $("#campo_sintomas_pacientes").text;
+  var filtroProfesionalSelect = document.getElementById("campo_profesional_pacientes");
+  var filtroProfesional = filtroProfesionalSelect.options[filtroProfesionalSelect.selectedIndex].textContent;
+  var codProfesional = document.getElementById("campo_profesional_pacientes").value;
+  var filtroMedicamentosSelect = document.getElementById("campo_medicamentos_pacientes");
+  var filtroMedicamentos = filtroMedicamentosSelect.options[filtroMedicamentosSelect.selectedIndex].textContent;
+  var codMedicamento = document.getElementById("campo_medicamentos_pacientes").value;
+  var filtroSintomasSelect = document.getElementById("campo_sintomas_pacientes");
+  var filtroSintomas = filtroSintomasSelect.options[filtroSintomasSelect.selectedIndex].textContent;
+  var codSintoma = document.getElementById("campo_sintomas_pacientes").value;
 
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Hoja 1');
 
 // Formato del título
-  const titleFont = {
+  const titleFont2 = {
     name: 'Roboto',
     size: 20,
     color: { argb: 'FF0081A7' },
@@ -1100,51 +1465,63 @@ async function crearReportePacientes() {
   // Agregar título en A1
   worksheet.mergeCells('A1:E1');
   worksheet.getCell('A1').value = 'Reporte Pacientes/Calendarios';
-  worksheet.getCell('A1').font = titleFont;
+  worksheet.getCell('A1').font = titleFont2;
 
   // Obtener la fecha actual
-  const currentDate = new Date();
-  const formattedDate = currentDate.toISOString().split('T')[0];
+  const currentDate2 = new Date();
+  const formattedDate2 = currentDate2.toISOString().split('T')[0];
 
   // Formato de los campos de fechas
-  const fechaFont = {
+  const fechaFont2 = {
     name: 'Roboto',
     size: 12,
     color: { argb: 'FF808080' },
   };
 
   // Agregar la fecha generada en A2
-  worksheet.getCell('A2').value = 'Fecha Generado:';
-  worksheet.getCell('A2').font = fechaFont;
-  worksheet.getCell('B2').value = formattedDate;
-  worksheet.getCell('B2').font = fechaFont;
+  worksheet.getCell('A2').value = 'FECHA GENERADO:';
+  worksheet.getCell('A2').font = fechaFont2;
+  worksheet.getCell('B2').value = formattedDate2;
+  worksheet.getCell('B2').font = fechaFont2;
 
   // Agregar "Fecha Desde" en C2 y el valor de fecha desde en D2
-  worksheet.getCell('C2').value = 'Fecha Desde:';
-  worksheet.getCell('C2').font = fechaFont;
+  worksheet.getCell('C2').value = 'FECHA DESDE:';
+  worksheet.getCell('C2').font = fechaFont2;
   worksheet.getCell('D2').value = fechaDesde.toISOString().split('T')[0];
-  worksheet.getCell('D2').font = fechaFont;
+  worksheet.getCell('D2').font = fechaFont2;
 
   // Agregar "Fecha Hasta" en E2 y el valor de fecha hasta en F2
-  worksheet.getCell('E2').value = 'Fecha Hasta:';
-  worksheet.getCell('E2').font = fechaFont;
+  worksheet.getCell('E2').value = 'FECHA HASTA:';
+  worksheet.getCell('E2').font = fechaFont2;
   worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
-  worksheet.getCell('F2').font = fechaFont;
+  worksheet.getCell('F2').font = fechaFont2;
 
-  const tituloFont = {
+  worksheet.getCell('E4').value = 'FILTRO:';
+  worksheet.getCell('E4').font = fechaFont2;
+  worksheet.getCell('F4').value = filtroProfesional;
+  worksheet.getCell('F4').font = fechaFont2;
+
+  worksheet.getCell('E5').value = 'FILTRO:';
+  worksheet.getCell('E5').font = fechaFont2;
+  worksheet.getCell('F5').value = filtroMedicamentos;
+  worksheet.getCell('F5').font = fechaFont2;
+
+  worksheet.getCell('E6').value = 'FILTRO:';
+  worksheet.getCell('E6').font = fechaFont2;
+  worksheet.getCell('F6').value = filtroSintomas;
+  worksheet.getCell('F6').font = fechaFont2;
+
+  const tituloFont2 = {
     name: 'Arial',
     size: 12,
     color: { argb: 'FFFFFFFF' }, // Texto en blanco
   };
 
   // Agregar los títulos en la fila 3
-  worksheet.getCell('A3').value = 'Nombre Enfermero';
-  worksheet.getCell('B3').value = 'DNI';
-  worksheet.getCell('C3').value = 'Matricula';
-  worksheet.getCell('D3').value = 'Fecha de Alta';
-  worksheet.getCell('E3').value = 'N° de Registros asociados';
-  worksheet.getCell('F3').value = 'N° de Pacientes asociados';
-
+  worksheet.getCell('A3').value = 'Nombre Calendario';
+  worksheet.getCell('B3').value = 'Nombre Paciente';
+  worksheet.getCell('C3').value = 'Fecha de Alta';
+  worksheet.getCell('D3').value = 'N° de Medicamentos';
   // Fondo de color 00AFB9 y formato de fuente
   worksheet.getRow(3).eachCell((cell) => {
     cell.fill = {
@@ -1160,37 +1537,572 @@ async function crearReportePacientes() {
     cell.alignment = { horizontal: 'center' };
   });
 
-  const params = {
-    startDate: fechaDesde.toISOString().split('T')[0],
-    endDate: fechaHasta.toISOString().split('T')[0],
+  const params2 = {
+    codUsuario : codProfesional, 
+    codMedicamento : codMedicamento,
+    codSintoma : codSintoma, 
     nombreInstitucion: usuarioJson.nombreInstitucion,
+    fechadesde: fechaDesde.toISOString().split('T')[0],
+    fechahasta: fechaHasta.toISOString().split('T')[0]
+
   };
-
   try {
-    const data = await obtenerDatosProfesionales(params);
-
-    for (const profesional of data) {
-      const cantidadPacientesAsociados = await obtenerCantidadPacientesAsociados(profesional.codUsuario);
-      const cantidadRegistros = await obtenerCantidadRegistros(profesional.codUsuario)
-      agregarFilaExcel(worksheet, profesional, cantidadPacientesAsociados, cantidadRegistros);
+    const dataPacientes = await obtenerDatosPacientes(params2);
+    var i=4;
+    for (const paciente of dataPacientes) {
+      const cantidadMedicamentos = await obtenerCantidadMedicamentos(paciente.codCalendario);
+      agregarFilaExcelPacientes(worksheet, paciente, cantidadMedicamentos,i);
+      i++;
     }
   worksheet.columns.forEach((column) => {
-    let maxLength = 0;
-    column.eachCell({ includeEmpty: true }, (cell) => {
-      const columnLength = cell.value ? cell.value.toString().length : 10;
-      if (columnLength > maxLength) {
-        maxLength = columnLength;
-      }
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        var columnLength2 = cell.value ? cell.value.toString().length : 10;
+        if (columnLength2 > maxLength) {
+          maxLength = columnLength2;
+        }
+      });
+      column.width = maxLength < 20 ? 20 : maxLength;
     });
-    column.width = maxLength < 20 ? 20 : maxLength;
-  });
 
 
-    guardarArchivoExcel(workbook);
+    guardarArchivoExcel(workbook, 'reporte_pacientes');
   } catch (error) {
     console.error('Error:', error);
   }
 }
+
+async function obtenerDatosPacientes(params) {
+  const url = 'http://localhost:8080/calendario/filtrados';
+
+  const response = await $.ajax({
+    url,
+    type: 'GET',
+    data: params,
+    dataType: 'json',
+  });
+
+  console.log('Respuesta de obtenerDatosPacientes:', response);
+
+  return response;
+}
+
+
+async function obtenerCantidadMedicamentos(codcalendario) {
+  const url = `http://localhost:8080/recordatorio/calendario/${codcalendario}`;
+
+    const response = await $.ajax({
+      url,
+      type: 'GET',
+      dataType: 'json',
+    });
+
+    // Verificar si la respuesta es un objeto JSON
+  if (typeof response !== 'undefined') {
+    const tamañoJSON = Object.keys(response).length;
+    console.log(`Tamaño del JSON: ${tamañoJSON}`);
+    return tamañoJSON;
+  } else {
+    return 0;
+  }
+  
+
+}
+
+function agregarFilaExcelPacientes(worksheet, paciente, cantidadMedicamentos,fila) {
+  const row = worksheet.getRow(fila);
+
+  row.getCell(1).value = paciente.nombreCalendario;
+  row.getCell(2).value = paciente.nombrePaciente;
+  row.getCell(3).value = paciente.fechaAltaCalendario;
+  row.getCell(4).value = cantidadMedicamentos.toString();
+
+  for (let i = 1; i <= 4; i++) {
+    row.getCell(i).font = {
+      name: 'Arial',
+      size: 11,
+      color: { argb: 'FF000000' },
+    };
+    row.getCell(i).alignment = { horizontal: 'center' };
+  }
+}
+
+async function crearReporteMedicamentos() {
+  var fechaDesde = new Date($("#campo_fdesde_medicamentos").val());
+  var fechaHasta = new Date($("#campo_fhasta_medicamentos").val());
+  var filtroProfesionalSelect = document.getElementById("campo_profesional_medicamentos");
+  var filtroProfesional = filtroProfesionalSelect.options[filtroProfesionalSelect.selectedIndex].textContent;
+  var codProfesional = document.getElementById("campo_profesional_medicamentos").value;
+  var filtroMedicamentosSelect = document.getElementById("campo_medicamentos_medicamentos");
+  var filtroMedicamentos = filtroMedicamentosSelect.options[filtroMedicamentosSelect.selectedIndex].textContent;
+  var codMedicamento = document.getElementById("campo_medicamentos_medicamentos").value;
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Hoja 1');
+
+// Formato del título
+  const titleFont2 = {
+    name: 'Roboto',
+    size: 20,
+    color: { argb: 'FF0081A7' },
+  };
+
+  // Alineación del título centrado
+  worksheet.getCell('A1').alignment = { horizontal: 'center' };
+
+  // Agregar título en A1
+  worksheet.mergeCells('A1:Q1');
+  worksheet.getCell('A1').value = 'Reporte Medicamentos';
+  worksheet.getCell('A1').font = titleFont2;
+
+  // Obtener la fecha actual
+  const currentDate2 = new Date();
+  const formattedDate2 = currentDate2.toISOString().split('T')[0];
+
+  // Formato de los campos de fechas
+  const fechaFont2 = {
+    name: 'Roboto',
+    size: 12,
+    color: { argb: 'FF808080' },
+  };
+
+  // Agregar la fecha generada en A2
+  worksheet.getCell('A2').value = 'FECHA GENERADO:';
+  worksheet.getCell('A2').font = fechaFont2;
+  worksheet.getCell('B2').value = formattedDate2;
+  worksheet.getCell('B2').font = fechaFont2;
+
+  // Agregar "Fecha Desde" en C2 y el valor de fecha desde en D2
+  worksheet.getCell('C2').value = 'FECHA DESDE:';
+  worksheet.getCell('C2').font = fechaFont2;
+  worksheet.getCell('D2').value = fechaDesde.toISOString().split('T')[0];
+  worksheet.getCell('D2').font = fechaFont2;
+
+  // Agregar "Fecha Hasta" en E2 y el valor de fecha hasta en F2
+  worksheet.getCell('E2').value = 'FECHA HASTA:';
+  worksheet.getCell('E2').font = fechaFont2;
+  worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
+  worksheet.getCell('F2').font = fechaFont2;
+
+  worksheet.getCell('H2').value = 'FILTRO:';
+  worksheet.getCell('H2').font = fechaFont2;
+  worksheet.getCell('I2').value = filtroProfesional;
+  worksheet.getCell('I2').font = fechaFont2;
+
+  worksheet.getCell('K2').value = 'FILTRO:';
+  worksheet.getCell('K2').font = fechaFont2;
+  worksheet.getCell('L2').value = filtroMedicamentos;
+  worksheet.getCell('L2').font = fechaFont2;
+
+
+
+  const tituloFont2 = {
+    name: 'Arial',
+    size: 12,
+    color: { argb: 'FFFFFFFF' }, // Texto en blanco
+  };
+
+  // Agregar los títulos en la fila 3
+  worksheet.getCell('A3').value = 'Tipo';
+  worksheet.getCell('B3').value = 'Medicamento';
+  worksheet.getCell('C3').value = 'Fecha Registrado';
+  worksheet.getCell('D3').value = 'Programado Para';
+  worksheet.getCell('E3').value = 'Valor';
+  worksheet.getCell('F3').value = 'Notas';
+  worksheet.getCell('H3').value = 'Medicamento';
+  worksheet.getCell('I3').value = 'Porcentaje de Cumplimiento';
+  worksheet.mergeCells('J3:Q3');
+  worksheet.getCell('J3').value = 'Gráfico de Porcentaje de Cumplimiento';
+  // Fondo de color 00AFB9 y formato de fuente
+  worksheet.getRow(3).eachCell((cell) => {
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF00AFB9' },
+    };
+    cell.font = {
+      name: 'Arial',
+      size: 12,
+      color: { argb: 'FFFFFFFF' },
+    };
+    cell.alignment = { horizontal: 'center' };
+  });
+
+
+// Establece el fondo de color gris oscuro para toda la columna G desde la fila 3 en adelante
+
+
+  const params = {
+    codUsuario : codProfesional, 
+    codMedicamento : codMedicamento,
+    nombreInstitucion: usuarioJson.nombreInstitucion,
+    fechadesde: fechaDesde.toISOString().split('T')[0],
+    fechahasta: fechaHasta.toISOString().split('T')[0]
+
+  };
+  try {
+    const dataMedicamentos = await obtenerDatosMedicamentos(params);
+    var i=4;
+    for (const medicamento of dataMedicamentos) {
+      agregarFilaExcelMedicamentos(worksheet, medicamento,i);
+      i++;
+    }
+    agruparMedicamentos(worksheet, dataMedicamentos, workbook);
+  worksheet.columns.forEach((column) => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        var columnLength2 = cell.value ? cell.value.toString().length : 10;
+        if (columnLength2 > maxLength) {
+          maxLength = columnLength2;
+        }
+      });
+      column.width = maxLength < 20 ? 20 : maxLength;
+    });
+
+worksheet.getColumn('G').eachCell({ includeEmpty: true }, (cell, rowNumber) => {
+  if (rowNumber >= 3) {
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF333333' }, // Cambiar el código de color a gris oscuro
+    };
+    // Otros estilos que desees aplicar a las celdas de la columna G
+    cell.font = {
+      name: 'Arial',
+      size: 12,
+      color: { argb: 'FFFFFFFF' }, // Texto en blanco
+    };
+    cell.alignment = { horizontal: 'center' };
+  }
+});
+
+    guardarArchivoExcel(workbook, 'reporte_medicamentos');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function obtenerDatosMedicamentos(params) {
+  const url = 'http://localhost:8080/registroRecordatorio/filtrados';
+
+  const response = await $.ajax({
+    url,
+    type: 'GET',
+    data: params,
+    dataType: 'json',
+  });
+
+  return response;
+}
+
+
+
+
+function agregarFilaExcelMedicamentos(worksheet, medicamento ,fila) {
+  const row = worksheet.getRow(fila);
+  const fechaTomaReal = new Date(medicamento.fechaTomaReal);
+  const fechaTomaEsperada = new Date(medicamento.fechaTomaEsperada);
+
+  // Luego, puedes formatear las fechas al formato deseado, por ejemplo, 'año-mes-dia hora:min'.
+  const formatoFecha = (fecha) => {
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Agregar 1 al mes ya que los meses en JavaScript van de 0 a 11
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const hora = String(fecha.getHours()).padStart(2, '0');
+    const minuto = String(fecha.getMinutes()).padStart(2, '0');
+    return `${año}-${mes}-${dia} ${hora}:${minuto}`;
+  };
+
+  row.getCell(1).value = medicamento.recordatorio.presentacionMed.nombrePresentacionMed;
+  row.getCell(2).value = medicamento.recordatorio.medicamento.nombreMedicamento;
+  if(medicamento.fechaTomaReal !== null){
+  row.getCell(3).value = formatoFecha(fechaTomaReal);
+  row.getCell(5).value = "Tomado";
+  }
+  else{
+    if (medicamento.omision !== null){
+      row.getCell(3).value = "-";
+      row.getCell(5).value = "Omitido"
+    }
+    else{
+      row.getCell(3).value = "-";
+      row.getCell(5).value = "Toma a futuro"
+    }
+  }
+  row.getCell(4).value = formatoFecha(fechaTomaEsperada);
+  if(medicamento.recordatorio.instruccion.descInstruccion !== ""){
+  row.getCell(6).value = medicamento.recordatorio.instruccion.nombreInstruccion + " - " + medicamento.recordatorio.instruccion.descInstruccion;
+  }
+  else{
+    row.getCell(6).value = medicamento.recordatorio.instruccion.nombreInstruccion;
+  }
+
+
+  for (let i = 1; i <= 6; i++) {
+    row.getCell(i).font = {
+      name: 'Arial',
+      size: 11,
+      color: { argb: 'FF000000' },
+    };
+    row.getCell(i).alignment = { horizontal: 'center' };
+  }
+}
+
+async function agruparMedicamentos(worksheet, dataMedicamentos, workbook) {
+  const medicamentosAgrupados = {};
+  const nombres = [];
+  const cumplimientos = [];
+
+  for (const medicamento of dataMedicamentos) {
+    const nombreMedicamento = medicamento.recordatorio.medicamento.nombreMedicamento;
+    if (!medicamentosAgrupados[nombreMedicamento]) {
+      medicamentosAgrupados[nombreMedicamento] = [];
+    }
+    medicamentosAgrupados[nombreMedicamento].push(medicamento);
+  }
+
+  // Después de agrupar los medicamentos, puedes recorrer el objeto y agregar las filas a la hoja de cálculo.
+  let fila = 4;
+  for (const nombreMedicamento in medicamentosAgrupados) {
+    const medicamentos = medicamentosAgrupados[nombreMedicamento];
+    const totalMedicamentos = medicamentos.length;
+    const medicamentosConCumplimiento = medicamentos.filter(
+      (medicamento) => medicamento.fechaTomaReal !== null
+    );
+    const cumplimiento = (medicamentosConCumplimiento.length / totalMedicamentos) * 100;
+    cumplimientos.push(cumplimiento);
+    nombres.push(nombreMedicamento);
+
+    const row = worksheet.getRow(fila);
+    row.getCell(8).value = nombreMedicamento;
+    row.getCell(9).value = cumplimiento; // Agrega el porcentaje de cumplimiento en la columna I
+
+    fila++;
+  }
+
+}
+
+
+async function crearReporteSintomas() {
+  var fechaDesde = new Date($("#campo_fdesde_sintomas").val());
+  var fechaHasta = new Date($("#campo_fhasta_sintomas").val());
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Hoja 1');
+
+// Formato del título
+  const titleFont2 = {
+    name: 'Roboto',
+    size: 20,
+    color: { argb: 'FF0081A7' },
+  };
+
+  // Alineación del título centrado
+  worksheet.getCell('A1').alignment = { horizontal: 'center' };
+
+  // Agregar título en A1
+  worksheet.mergeCells('A1:L1');
+  worksheet.getCell('A1').value = 'Reporte Síntomas';
+  worksheet.getCell('A1').font = titleFont2;
+
+  // Obtener la fecha actual
+  const currentDate2 = new Date();
+  const formattedDate2 = currentDate2.toISOString().split('T')[0];
+
+  // Formato de los campos de fechas
+  const fechaFont2 = {
+    name: 'Roboto',
+    size: 12,
+    color: { argb: 'FF808080' },
+  };
+
+  // Agregar la fecha generada en A2
+  worksheet.getCell('A2').value = 'FECHA GENERADO:';
+  worksheet.getCell('A2').font = fechaFont2;
+  worksheet.getCell('B2').value = formattedDate2;
+  worksheet.getCell('B2').font = fechaFont2;
+
+  // Agregar "Fecha Desde" en C2 y el valor de fecha desde en D2
+  worksheet.getCell('C2').value = 'FECHA DESDE:';
+  worksheet.getCell('C2').font = fechaFont2;
+  worksheet.getCell('D2').value = fechaDesde.toISOString().split('T')[0];
+  worksheet.getCell('D2').font = fechaFont2;
+
+  // Agregar "Fecha Hasta" en E2 y el valor de fecha hasta en F2
+  worksheet.getCell('E2').value = 'FECHA HASTA:';
+  worksheet.getCell('E2').font = fechaFont2;
+  worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
+  worksheet.getCell('F2').font = fechaFont2;
+
+  worksheet.getCell('H2').value = 'DÍAS CON SÍNTOMAS:';
+  worksheet.getCell('H2').font = fechaFont2;
+
+  const tituloFont2 = {
+    name: 'Arial',
+    size: 12,
+    color: { argb: 'FFFFFFFF' }, // Texto en blanco
+  };
+
+  // Agregar los títulos en la fila 3
+  worksheet.getCell('A3').value = 'Nombre Síntoma';
+  worksheet.getCell('B3').value = 'Fecha Registrado';
+  worksheet.getCell('D3').value = 'Cantidad Síntomas';
+  worksheet.getCell('E3').value = 'Nombre Síntoma';
+  worksheet.getCell('F3').value = 'Porcentaje de Síntomas'
+  worksheet.mergeCells('G3:L3');
+  worksheet.getCell('G3').value = 'Gráfico de Porcentaje de Síntomas';
+  // Fondo de color 00AFB9 y formato de fuente
+  worksheet.getRow(3).eachCell((cell) => {
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF00AFB9' },
+    };
+    cell.font = {
+      name: 'Arial',
+      size: 12,
+      color: { argb: 'FFFFFFFF' },
+    };
+    cell.alignment = { horizontal: 'center' };
+  });
+
+
+// Establece el fondo de color gris oscuro para toda la columna G desde la fila 3 en adelante
+
+
+  const params = {
+    nombreInstitucion: usuarioJson.nombreInstitucion,
+    fechadesde: fechaDesde.toISOString().split('T')[0],
+    fechahasta: fechaHasta.toISOString().split('T')[0]
+
+  };
+  try {
+    const dataSintomas = await obtenerDatosSintomas(params);
+    var i=4;
+    for (const sintoma of dataSintomas) {
+      agregarFilaExcelSintomas(worksheet, sintoma,i);
+      i++;
+    }
+    agruparSintomas(worksheet, dataSintomas, workbook);
+  worksheet.columns.forEach((column) => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        var columnLength2 = cell.value ? cell.value.toString().length : 10;
+        if (columnLength2 > maxLength) {
+          maxLength = columnLength2;
+        }
+      });
+      column.width = maxLength < 20 ? 20 : maxLength;
+    });
+
+worksheet.getColumn('C').eachCell({ includeEmpty: true }, (cell, rowNumber) => {
+  if (rowNumber >= 3) {
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF333333' }, // Cambiar el código de color a gris oscuro
+    };
+    // Otros estilos que desees aplicar a las celdas de la columna G
+    cell.font = {
+      name: 'Arial',
+      size: 12,
+      color: { argb: 'FFFFFFFF' }, // Texto en blanco
+    };
+    cell.alignment = { horizontal: 'center' };
+  }
+});
+
+    guardarArchivoExcel(workbook, 'reporte_sintomas');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function obtenerDatosSintomas(params) {
+  const url = 'http://localhost:8080/calendarioSintoma/filtrados';
+
+  const response = await $.ajax({
+    url,
+    type: 'GET',
+    data: params,
+    dataType: 'json',
+  });
+
+  return response;
+}
+
+
+
+
+function agregarFilaExcelSintomas(worksheet, sintoma ,fila) {
+  const row = worksheet.getRow(fila);
+  const fechaRegistro = new Date(sintoma.fechaCalendarioSintoma);
+
+  // Luego, puedes formatear las fechas al formato deseado, por ejemplo, 'año-mes-dia hora:min'.
+  const formatoFecha = (fecha) => {
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Agregar 1 al mes ya que los meses en JavaScript van de 0 a 11
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const hora = String(fecha.getHours()).padStart(2, '0');
+    const minuto = String(fecha.getMinutes()).padStart(2, '0');
+    return `${año}-${mes}-${dia} ${hora}:${minuto}`;
+  };
+
+  row.getCell(1).value = sintoma.sintoma.nombreSintoma;
+  row.getCell(2).value = formatoFecha(fechaRegistro);
+
+  for (let i = 1; i <= 2; i++) {
+    row.getCell(i).font = {
+      name: 'Arial',
+      size: 11,
+      color: { argb: 'FF000000' },
+    };
+    row.getCell(i).alignment = { horizontal: 'center' };
+  }
+}
+
+async function agruparSintomas(worksheet, dataSintomas, workbook) {
+  const sintomasAgrupados = {};
+  const nombres = [];
+  const cantidad = [];
+
+  // Agrupar los síntomas
+  for (const sintoma of dataSintomas) {
+    const nombreSintoma = sintoma.sintoma.nombreSintoma;
+    if (!sintomasAgrupados[nombreSintoma]) {
+      sintomasAgrupados[nombreSintoma] = [];
+    }
+    sintomasAgrupados[nombreSintoma].push(sintoma);
+  }
+
+  // Calcular el total de síntomas
+  let totalSintomas = 0;
+  for (const nombreSintoma in sintomasAgrupados) {
+    totalSintomas += sintomasAgrupados[nombreSintoma].length;
+  }
+
+  // Después de agrupar los síntomas, puedes recorrer el objeto y agregar las filas a la hoja de cálculo.
+  let fila = 4;
+  for (const nombreSintoma in sintomasAgrupados) {
+    const sintomas = sintomasAgrupados[nombreSintoma];
+    const cantidadSintomas = sintomas.length;
+    const porcentaje = (cantidadSintomas / totalSintomas) * 100;
+
+    cantidad.push(cantidadSintomas);
+    nombres.push(nombreSintoma);
+
+    const row = worksheet.getRow(fila);
+    // Agrega la cantidad en la columna D, el nombre en la columna E y el porcentaje en la columna F
+    row.getCell(4).value = cantidadSintomas;
+    row.getCell(5).value = nombreSintoma;
+    row.getCell(6).value = porcentaje;
+
+    fila++;
+  }
+}
+
+
+
 
 </script>
 </body>

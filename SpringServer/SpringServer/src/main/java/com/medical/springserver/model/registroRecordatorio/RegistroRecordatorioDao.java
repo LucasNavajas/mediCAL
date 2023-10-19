@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import com.medical.springserver.model.calendario.Calendario;
+import com.medical.springserver.model.calendario.CalendarioDao;
 import com.medical.springserver.model.calendariomedicion.CalendarioMedicion;
 
 @Service
@@ -83,4 +85,7 @@ public class RegistroRecordatorioDao {
 	public List<RegistroRecordatorio> obtenerRegistrosCalendarioProfesional(int codCalendario){
 		return repository.obtenerRegistrosCalendario(codCalendario);
 	}
+
+
+
 }

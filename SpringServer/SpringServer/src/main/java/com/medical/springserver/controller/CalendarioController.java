@@ -1,8 +1,8 @@
 package com.medical.springserver.controller;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.medical.springserver.model.calendario.Calendario;
 import com.medical.springserver.model.calendario.CalendarioDao;
+import com.medical.springserver.model.calendariosintoma.CalendarioSintoma;
+import com.medical.springserver.model.registroRecordatorio.RegistroRecordatorio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -70,5 +70,27 @@ public class CalendarioController {
 	) {
         return calendarioDao.obtenerCalendariosFiltrados(codUsuario, codMedicamento, codSintoma, nombreInstitucion, fechaDesde, fechaHasta);
     }
+	
+	@GetMapping("/registroRecordatorio/filtrados")
+	public List<RegistroRecordatorio> obtenerRegistrosFiltrados(@RequestParam(name = "codUsuario", required = false, defaultValue = "0") int codUsuario,
+	        @RequestParam(name = "codMedicamento", required = false, defaultValue = "0") int codMedicamento,
+	        @RequestParam(name = "nombreInstitucion") String nombreInstitucion,
+	        @RequestParam(name = "fechadesde", required = false) LocalDate fechaDesde,
+	        @RequestParam(name = "fechahasta", required = false) LocalDate fechaHasta
+	)
+	{
+		return calendarioDao.obtenerRegistrosFiltrados(codUsuario, codMedicamento, nombreInstitucion, fechaDesde, fechaHasta);
+	}
+	
+	@GetMapping("/calendarioSintoma/filtrados")
+	public List<CalendarioSintoma> obtenerSintomasFiltrados(
+	        @RequestParam(name = "nombreInstitucion") String nombreInstitucion,
+	        @RequestParam(name = "fechadesde", required = false) LocalDate fechaDesde,
+	        @RequestParam(name = "fechahasta", required = false) LocalDate fechaHasta
+	)
+	{
+		return calendarioDao.obtenerSintomasFiltrados(nombreInstitucion, fechaDesde, fechaHasta);
+	}
+	
 
 }
