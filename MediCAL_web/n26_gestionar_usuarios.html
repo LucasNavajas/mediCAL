@@ -912,7 +912,7 @@
   <!--Barra de arriba, ícono de configuración y el menú desplegable -->
   <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif; position:fixed; width:100%">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" style="font-weight: 600; font-size: 12pt;">
+      <a class="navbar-brand" href="n18_pantalla_principal_admin_sistema.html" id="usuario_y_rol" style="font-weight: 600; font-size: 12pt;">
         MediCAL | Administrador del Sistema
       </a>
       <div class="dropdown">
@@ -1511,7 +1511,11 @@
   <script src="js/scriptsDialogPopup.js"></script>
 
   <script>
+var usuario = localStorage.getItem('usuario');
 
+// Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
+var usuarioJson = JSON.parse(usuario);
+document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " " + usuarioJson.perfil.nombrePerfil;
 $(document).ready(function() {
 
   var selectPerfil = $("#campo_tipo_usuario_alta");

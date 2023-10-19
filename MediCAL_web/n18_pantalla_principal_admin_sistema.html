@@ -8,6 +8,7 @@
   <!--Iconos que uso de bootstrap-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
   <!--Tipografia Fuente:Inter sacada de google fonts-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -953,6 +954,59 @@
         #popup-dialog-subir-backup .btn-back i {
             vertical-align: middle;
         }
+
+#popup-dialog-guardado {
+            background-color: var( --fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-guardado h3 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-guardado .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-guardado .popup-buttons button {
+            border: 2px solid var( --fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-guardado .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
+    .toggle-password {
+      position: absolute;
+      right: 0;
+      margin-right:5px;
+      cursor: pointer;
+    }
 </style>
   
 </head>
@@ -960,7 +1014,7 @@
 <!--Barra de arriba, ícono de configuración y el menú desplegable -->
   <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#" onclick="window.location.href='n18_pantalla_principal_admin_sistema.html'" style="font-weight: 600; font-size: 12pt;">
+      <a class="navbar-brand" id="usuario_y_rol" href="#" onclick="window.location.href='n18_pantalla_principal_admin_sistema.html'" style="font-weight: 600; font-size: 12pt;">
         MediCAL | Administrador del Sistema
       </a>
       <div class="dropdown">
@@ -1148,6 +1202,7 @@
                 <td class="column-two">
                     <div class="input-group">
                         <input type="password" id="campo_contraseña" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña()">
+                        <i class="toggle-password fas fa-eye"></i>
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
@@ -1190,9 +1245,7 @@
         <label for="campo_contraseña_actual">Escriba su contraseña actual</label>
         <div class="input-group">
             <input type="password" id="campo_contraseña_actual" placeholder="Contraseña actual" oninput="checkPasswordMatch()">
-            <span class="toggle-password" onclick="togglePassword('campo_contraseña_actual', 'eye-icon-actual')">
-                <i class="bi bi-eye-slash-fill" id="eye-icon-actual"></i>
-            </span>
+            <i class="toggle-password fas fa-eye" id="eye-icon-actual"></i>
             <i class="bi bi-check-circle-fill icon-check" id="password-match-icon-actual" style="display: none;"></i>
             <i class="bi bi-x-circle-fill icon-error" id="password-mismatch-icon-actual" style="display: none;"></i>
         </div>
@@ -1204,9 +1257,7 @@
         <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
         <div class="input-group">
             <input type="password" id="campo_contraseña_nueva" placeholder="Contraseña nueva" oninput="checkNewPassword()">
-            <span class="toggle-password" onclick="togglePassword('campo_contraseña_nueva', 'eye-icon-nueva')">
-                <i class="bi bi-eye-slash-fill" id="eye-icon-nueva"></i>
-            </span>
+            <i class="toggle-password fas fa-eye" id="eye-icon-nueva"></i>
             <i class="bi bi-check-circle-fill icon-check" id="new-password-match-icon" style="display: none;"></i>
         </div>
         <div id="alert-container" class="alert"></div>
@@ -1267,7 +1318,7 @@
         <label for="campo_contraseña_nueva">Genere su nueva contraseña (debe tener entre 6 y 15 caracteres)</label>
         <div class="input-group">
             <input type="password" id="campo_contrasenia_nueva" placeholder="Contraseña nueva">
-                <i class="toggle-password fas fa-eye" id="eye-icon-nueva"></i>
+            <i class="toggle-password fas fa-eye" id="eye-icon-nueva"></i>
         </div>
         
         <div id="alert-container"></div> <!-- Contenedor para la alerta -->
@@ -1303,7 +1354,12 @@
         </div>
     </div>
 
-</div>
+<div id="popup-dialog-guardado" class="popup-content">
+        <h3>Se han guardado correctamente los cambios ingresados.</h3>
+        <div class="popup-buttons">
+            <button onclick="closeDialog('popup-dialog-guardado'); location.reload();" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
 
 <style>
 
@@ -1412,6 +1468,16 @@
   <script>
     $(document).ready(function() {
 
+        $('.toggle-password').click(function() {
+        $(this).toggleClass('fa-eye fa-eye-slash');
+        var input = $(this).parent().find('input');
+        if (input.attr('type') === 'password') {
+          input.attr('type', 'text');
+        } else {
+          input.attr('type', 'password');
+        }
+      });
+
             // Calcula la fecha máxima permitida dentro de 20 años desde la fecha actual
             var maxDate = new Date();
             maxDate.setFullYear(maxDate.getFullYear() + 20);
@@ -1444,6 +1510,7 @@
     var usuarioJson = JSON.parse(usuario);
     var contraseniaCorrecta = false;
     document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
+    document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " " + usuarioJson.perfil.nombrePerfil;
 
     function setearValoresAModificar(id, index){
       const contenedor = document.getElementById(id);
@@ -1572,35 +1639,43 @@ function checkUsername() {
     }
 }
 
-function descargarBackup(){
-    fetch(`http://localhost:8080/backup`, {
+function descargarBackup() {
+  fetch(`http://localhost:8080/backup`, {
     method: 'GET',
     headers: {
-        'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error en la solicitud de copia de seguridad');
+      }
+
+      // Obtener la fecha actual en el formato deseado (yyyyMMdd_HHmmss)
+      const currentDate = new Date();
+      const dateFormat = currentDate.toISOString().replace(/[-:]/g, '').replace('T', '_').slice(0, 15);
+
+      // Generar el nombre del archivo con la fecha
+      const fileName = `Copia_Seguridad_BD_V${dateFormat}.sql`;
+
+      return response.blob().then((blob) => {
+        // Crea un enlace temporal para descargar el archivo
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = fileName; // Utiliza el nombre del archivo generado
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
     })
-    .then(response => {
-    if (!response.ok) {
-      throw new Error('Error en la solicitud de copia de seguridad');
-    }
-    return response.blob();
-  })
-  .then(blob => {
-    // Crea un enlace temporal para descargar el archivo
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = 'copia_de_seguridad.sql';
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-  })
-  .catch(error => {
-    console.error(error);
-    // Maneja el error, por ejemplo, mostrando un mensaje al usuario
-  });
+    .catch((error) => {
+      console.error(error);
+      // Maneja el error, por ejemplo, mostrando un mensaje al usuario
+    });
 }
+
 
 function checkContraseña() {
     var contrasenaInput = document.getElementById("campo_contraseña");
@@ -1751,11 +1826,11 @@ function checkContraseña() {
               .then(function (data) {
                 // Manejar los datos de respuesta del servidor (puedes mostrar un mensaje de éxito, actualizar la interfaz de usuario, etc.)
                 closeDialog('popup-dialog-editar-perfil');
+                openDialog('popup-dialog-guardado');
                 localStorage.removeItem('usuario');
                 var usuarioString = JSON.stringify(data);
                 // Almacena la cadena JSON en sessionStorage bajo un nombre de clave
                 localStorage.setItem('usuario', usuarioString);
-                location.reload();
               })
               .catch(function (error) {
                 // Manejar errores generales

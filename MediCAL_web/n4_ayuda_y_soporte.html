@@ -197,7 +197,7 @@
  <!--Barra de arriba, ícono de configuración y el menú desplegable -->
 <nav class="navbar sticky-top navbar-custom" style="background-color: var(--sixth-color); font-family: 'Inter', sans-serif;">
   <div class="container-fluid d-flex justify-content-between align-items-center">
-    <a class="navbar-brand" id="tituloPerfil" href="#" style="font-weight: 600; font-size: 12pt;">
+    <a class="navbar-brand" id="usuario_y_rol" href="#" style="font-weight: 600; font-size: 12pt;">
       MediCAL | 
     </a>
     <div class="dropdown">
@@ -275,12 +275,11 @@
 
     <script>
 
-   var usuario = localStorage.getItem('usuario');
+    var usuario = localStorage.getItem('usuario');
 
     // Convierte la cadena JSON nuevamente en un objeto JavaScript utilizando JSON.parse
     var usuarioJson = JSON.parse(usuario);
-    var titulo = document.getElementById("tituloPerfil");
-    titulo.textContent = titulo.textContent + " " + usuarioJson.perfil.nombrePerfil
+    document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " " + usuarioJson.perfil.nombrePerfil;
 
       fetch('http://localhost:8080/FAQ/get-all')
   .then(response => response.json())

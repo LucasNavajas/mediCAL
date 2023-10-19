@@ -23,6 +23,7 @@ import java.util.Date;
 
 @RestController
 public class BackupController {
+	private String outputFile;
 
     @GetMapping("/backup")
     public ResponseEntity<FileSystemResource> realizarCopiaDeSeguridad() {
@@ -32,7 +33,7 @@ public class BackupController {
         
         // Genera un nombre de archivo basado en la fecha y hora actual
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String outputFile = "Copia_seguridad_BD_V" + dateFormat.format(new Date()) + ".sql";
+        outputFile = "Copia_seguridad_BD_V" + dateFormat.format(new Date()) + ".sql";
 
         try {
             boolean success = DatabaseUtil.backup(dbUsername, dbPassword, dbName, outputFile);

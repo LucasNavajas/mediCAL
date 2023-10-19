@@ -19,14 +19,25 @@
             });
         }
 
-        function openDialogModificar(id, index) {
-            var overlay = document.getElementById("popup-overlay");
-            var dialog = document.getElementById(id);
-            setearValoresAModificar(id, index);
-            overlay.style.display = "block";
-            overlay.style.opacity = "1";
-            dialog.style.display = "block";
-        }
+      function openDialogModificar(id, index) {
+          var overlay = document.getElementById("popup-overlay");
+          var dialog = document.getElementById(id);
+
+          // Obtener todos los elementos input en el diálogo
+          var inputElements = dialog.querySelectorAll('input');
+
+          // Borrar el contenido de los inputs
+          for (var i = 0; i < inputElements.length; i++) {
+              inputElements[i].value = '';
+          }
+
+          setearValoresAModificar(id, index);
+
+          overlay.style.display = "block";
+          overlay.style.opacity = "1";
+          dialog.style.display = "block";
+      }
+
 
         function openDialogBajaTodos(id){
           var overlay = document.getElementById("popup-overlay");
