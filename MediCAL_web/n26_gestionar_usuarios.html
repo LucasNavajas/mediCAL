@@ -951,6 +951,75 @@
     .hidden {
       display: none;
     }
+
+        .popup-overlay-oscuro {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 1);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+    #popup-dialog-no-permisos {
+            background-color: var(--fourth-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 90%;
+            width: fit-content;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #popup-dialog-no-permisos h3 {
+            margin-top: 0;
+            color: var(--third-color);
+            font-size: 22px;
+            font-weight: 600px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        #popup-dialog-no-permisos h4 {
+            margin-top: 0;
+            color: var(--fifth-color);
+            font-size: 20px;
+            font-weight: 400px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        #popup-dialog-no-permisos .popup-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        #popup-dialog-no-permisos .popup-buttons button {
+            border: 2px solid var(--fourth-color);
+            background-color: transparent;
+            color: var(--first-color);
+            font-size: 18px;
+            font-weight: 400px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+         /*seleccion del boton*/
+         #popup-dialog-no-permisos .popup-buttons button:focus {
+            outline: none;
+            border-color: var(--first-color); /* Cambia el color del borde al seleccionar */
+        }
   </style>
 </head>
 
@@ -987,7 +1056,15 @@
   </nav>
 
   <div id="popup-overlay" class="popup-overlay"></div>
+<div id="popup-overlay-oscuro" class="popup-overlay-oscuro"></div>
+<div id="popup-dialog-no-permisos" class="popup-content">
+        <h3>Usuario No Autenticado.</h3>
+        <h4>No posee permisos para acceder a esta página.</h4>
 
+        <div class="popup-buttons">
+            <button onclick="window.location.href='n1_inicio_sesion.html'" style="cursor: pointer;">ACEPTAR</button>
+        </div>
+    </div>
     <div id="popup-dialog-cerrar-sesion" class="popup-content">
         <h3>¿Está seguro?</h3>
         <h4>¿Desea cerrar sesión de esta cuenta?</h4>
@@ -1237,8 +1314,8 @@
                     </td>
                     <td class="column-two">
                         <div style="display: flex; justify-content: flex-start; width: 100%;">
-                            <select id="campo_tipo_usuario_alta">
-                                <option value="" disabled selected>Seleccionar prefil del usuario</option>
+                            <select id="campo_tipo_usuario_alta" onchange="checkContraseña('campo_contraseña_alta', 'contraseña-alert-alta', 'guardar-button-alta', 'password-match-icon', 'password-mismatch-icon', 'campo_tipo_usuario_alta')">
+                                <option value="" disabled selected >Seleccionar prefil del usuario</option>
                             </select>
                         </div>
                     </td>
@@ -1346,7 +1423,7 @@
                 </td>
                 <td class="column-two">
                     <div class="input-group">
-                        <input type="text" id="campo_contraseña_alta" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña('campo_contraseña_alta', 'contraseña-alert-alta', 'guardar-button-alta', 'password-match-icon', 'password-mismatch-icon')">
+                        <input type="text" id="campo_contraseña_alta" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña('campo_contraseña_alta', 'contraseña-alert-alta', 'guardar-button-alta', 'password-match-icon', 'password-mismatch-icon', 'campo_tipo_usuario_alta')">
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="bi bi-check-circle-fill icon-check" id="password-match-icon" style="display: none;"></i>
@@ -1406,7 +1483,7 @@
                     </td>
                     <td class="column-two">
                         <div style="display: flex; justify-content: flex-start; width: 100%;">
-                            <select id="campo_tipo_usuario_modif" disabled>
+                            <select id="campo_tipo_usuario_modif" disabled onchange="checkContraseña('campo_contraseña_modif', 'campo_contraseña_modif', 'guardar-button', 'password-match-icon-modif', 'password-mismatch-icon-modif', 'campo_tipo_usuario_modif')">
                                 <option value="" disabled selected>Seleccionar prefil del usuario</option>
                             </select>
                         </div>
@@ -1514,7 +1591,7 @@
                 </td>
                 <td class="column-two">
                     <div class="input-group">
-                        <input type="text" id="campo_contraseña_modif" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña('campo_contraseña_modif', 'campo_contraseña_modif', 'guardar-button', 'password-match-icon-modif', 'password-mismatch-icon-modif')">
+                        <input type="text" id="campo_contraseña_modif" placeholder="Contraseña" style="width: 100%;" oninput="checkContraseña('campo_contraseña_modif', 'campo_contraseña_modif', 'guardar-button', 'password-match-icon-modif', 'password-mismatch-icon-modif', 'campo_tipo_usuario_modif')">
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="bi bi-check-circle-fill icon-check" id="password-match-icon-modif" style="display: none;"></i>
@@ -1847,33 +1924,51 @@ function checkUsername(id, idalert, guardar, matchid, mismatchid) {
     }
 }
 
-function checkContraseña(id, idalert, guardar, matchid, mismatchid) {
+function checkContraseña(id, idalert, guardar, matchid, mismatchid, perfilid) {
     var contrasenaInput = document.getElementById(id);
     var contrasena = contrasenaInput.value;
+    var perfil = document.getElementById(perfilid).value;
     var contrasenaAlert = document.getElementById(idalert);
-    var passwordMatchIcon = document.getElementById(matchid);
+    var passwordMatchIcon = document.getElementById(matchid); 
     var passwordMismatchIcon = document.getElementById(mismatchid);
     var guardarButton = document.getElementById(guardar);
 
-    if (contrasena.length > 15) {
-        contrasenaAlert.innerText = "La contraseña puede tener como máximo 15 caracteres.";
-        contrasenaInput.value = contrasena.substring(0, 15); // Corta el texto hasta los primeros 16 caracteres
-        guardarButton.disabled = true;
-        passwordMatchIcon.style.display = "none";
-        passwordMismatchIcon.style.display = "inline-block";
-    } else if (contrasena.length < 6 || contrasena.length > 15) {
-        contrasenaAlert.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
-        guardarButton.disabled = true;
-        passwordMatchIcon.style.display = "none";
-        passwordMismatchIcon.style.display = "inline-block";
+    if (perfil === "3" || perfil === "4") {
+        // Expresión regular para validar la contraseña
+        var contraseñaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,15}$/;
+		 if (!contraseñaRegex.test(contrasena)) {
+            contrasenaAlert.innerText = "La contraseña debe tener entre 6 y 15 caracteres y contener como mínimo una mayúscula, una minúscula y un número.";
+            guardarButton.disabled = true;
+            passwordMatchIcon.style.display = "none";
+            passwordMismatchIcon.style.display = "inline-block";
+        } else {
+            contrasenaAlert.innerText = "";
+            guardarButton.disabled = false;
+            passwordMatchIcon.style.display = "inline-block";
+            passwordMismatchIcon.style.display = "none";
+        }
     } else {
-        contrasenaAlert.innerText = "";
-        guardarButton.disabled = false;
-        passwordMatchIcon.style.display = "inline-block";
-        passwordMismatchIcon.style.display = "none";
-
+        // Restablecer las reglas anteriores si el perfil no es 2 o 3
+        if (contrasena.length > 15) {
+            contrasenaAlert.innerText = "La contraseña puede tener como máximo 15 caracteres.";
+            contrasenaInput.value = contrasena.substring(0, 15);
+            guardarButton.disabled = true;
+            passwordMatchIcon.style.display = "none";
+            passwordMismatchIcon.style.display = "inline-block";
+        } else if (contrasena.length < 6 || contrasena.length > 15) {
+            contrasenaAlert.innerText = "La contraseña debe tener entre 6 y 15 caracteres.";
+            guardarButton.disabled = true;
+            passwordMatchIcon.style.display = "none";
+            passwordMismatchIcon.style.display = "inline-block";
+        } else {
+            contrasenaAlert.innerText = "";
+            guardarButton.disabled = false;
+            passwordMatchIcon.style.display = "inline-block";
+            passwordMismatchIcon.style.display = "none";
+        }
     }
 }
+
         function checkName(id, idalert, guardar) {
             var nameInput = document.getElementById(id);
             var name = nameInput.value;
@@ -2120,6 +2215,7 @@ function eliminarUsuario(id, motivo) {
 }
 
 function crearJSONUsuario(){
+document.getElementById("loading-overlay").classList.remove("hidden");
   var usuario = document.getElementById("campo_usuario_alta").value;
   var perfil = document.getElementById("campo_tipo_usuario_alta").value;
   var institucion = document.getElementById("campo_institucion_alta").value;
@@ -2176,6 +2272,7 @@ function crearJSONUsuario(){
 }
 
 function crearJSONUsuarioModificado(){
+document.getElementById("loading-overlay").classList.remove("hidden");
   var perfil = document.getElementById("campo_tipo_usuario_modif").value;
   var codigo = document.getElementById("campo_cod_modif").value;
   var usuario = document.getElementById("campo_usuario_modif").value;
@@ -2206,7 +2303,6 @@ function crearJSONUsuarioModificado(){
     fechaAltaUsuario: fechaHoy,
     fechaNacimientoUsuario : fechaNac
   };
-  console.log(jsonUsuarioSalud);
   modificarProfesional(jsonUsuarioSalud);
 
   }
@@ -2235,6 +2331,7 @@ function crearJSONUsuarioModificado(){
         contentType: "application/json",
         data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
         success: function (data) {
+        	document.getElementById("loading-overlay").classList.add("hidden");
             console.log("Profesional de salud guardado exitosamente:", data);
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
@@ -2243,12 +2340,13 @@ function crearJSONUsuarioModificado(){
         },
         error: function (error) {
             console.error("Error al guardar el profesional de salud:", error);
+            document.getElementById("loading-overlay").classList.add("hidden");
         }
     });
   }
 
   function modificarUsuario(json){
-    var url = "http://localhost:8080/usuario/save";
+    var url = "http://localhost:8080/usuario/saveSinHash";
 
     // Realizar la solicitud AJAX
     $.ajax({
@@ -2257,6 +2355,7 @@ function crearJSONUsuarioModificado(){
         contentType: "application/json",
         data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
         success: function (data) {
+        	document.getElementById("loading-overlay").classList.add("hidden");
             console.log("Usuario guardado exitosamente:", data);
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
@@ -2265,6 +2364,7 @@ function crearJSONUsuarioModificado(){
         },
         error: function (error) {
             console.error("Error al guardar el usuario:", error);
+            document.getElementById("loading-overlay").classList.add("hidden");
         }
     });
   }
@@ -2279,6 +2379,7 @@ function crearJSONUsuarioModificado(){
         contentType: "application/json",
         data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
         success: function (data) {
+        	document.getElementById("loading-overlay").classList.add("hidden");
             console.log("Usuario guardado exitosamente:", data);
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
@@ -2286,6 +2387,7 @@ function crearJSONUsuarioModificado(){
             openDialog('popup-dialog-guardado');
         },
         error: function (error) {
+        	document.getElementById("loading-overlay").classList.add("hidden");
             console.error("Error al guardar el usuario:", error);
         }
     });
@@ -2303,6 +2405,7 @@ function crearJSONUsuarioModificado(){
         contentType: "application/json",
         data: JSON.stringify(json), // Convierte el objeto JSON a una cadena
         success: function (data) {
+        	document.getElementById("loading-overlay").classList.add("hidden");
             console.log("Usuario guardado exitosamente:", data);
             closeDialog('popup-dialog-alta-usuario');
             closeDialog('popup-dialog-modificar-usuario');
@@ -2310,6 +2413,7 @@ function crearJSONUsuarioModificado(){
             openDialog('popup-dialog-guardado');
         },
         error: function (error) {
+        	document.getElementById("loading-overlay").classList.add("hidden");
             console.error("Error al guardar el usuario:", error);
         }
     });

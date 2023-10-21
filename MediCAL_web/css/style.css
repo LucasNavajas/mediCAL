@@ -42,6 +42,9 @@
     font-family: 'Inter', sans-serif;
   }
     
+    .alert{
+      word-break:break-word;
+    }
 /*navbar personalizo el tamaño de la barra (alto)*/ 
   .navbar-custom {
     height: 41px;
