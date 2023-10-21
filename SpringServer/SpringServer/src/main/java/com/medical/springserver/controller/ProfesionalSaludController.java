@@ -40,6 +40,11 @@ public class ProfesionalSaludController {
 		return profesionalsaludDao.obtenerDniUnicos();
 	}
 	
+	@GetMapping("/profesionalsalud/matriculas-unicas")
+	public List<String> obtenerMatriculasUnicas(){
+		return profesionalsaludDao.obtenerMatriculasUnicas();
+	}
+	
 	@GetMapping("/profesionalsalud/filtrados")
 	public List<ProfesionalSalud> getProfesionalesSaludByDateRange(
             @RequestParam(name = "startDate") LocalDate startDate,

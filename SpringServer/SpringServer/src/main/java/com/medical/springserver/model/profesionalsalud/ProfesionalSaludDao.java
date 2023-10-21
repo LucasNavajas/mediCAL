@@ -157,4 +157,20 @@ public class ProfesionalSaludDao {
 	public List<ProfesionalSalud> obtenerUsuariosPorFechas(LocalDate fechaDesde, LocalDate fechaHasta, String nombreInstitucion){
 		return repository.findByFechaAltaUsuarioBetween(fechaDesde, fechaHasta, nombreInstitucion);
 	}
+
+	public List<String> obtenerMatriculasUnicas() {
+		List<String> usuarios = repository.findAllDistinctUsuarioUnico();
+	    List<String> matriculasVigentes = new ArrayList<>();
+
+	    for (String usuario : usuarios) {
+	        ProfesionalSalud temporal = obtenerUsuariosPorUsuarioUnico(usuario);
+
+	        // Verificar si temporal es nulo antes de llamar a métodos en él
+	        if (temporal != null && usuarioDao.estaVigente(temporal)) {
+	        	matriculasVigentes.add(Long.toString(temporal.getMatricula()));
+	        }
+	    }
+	    
+	    return matriculasVigentes;
+	}
 }

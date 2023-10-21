@@ -1447,7 +1447,7 @@
 
      <div id="popup-dialog-modificar-usuario" class="popup-content">
         <!-- Icono de cerrar -->
-<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modificar-usuario')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modificar-usuario'); dniActual = undefined;matriculaActual = undefined; mailActual = undefined; usuarioActual = undefined;" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
         <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Usuario</h3>
         
         <table class="camp-table">
@@ -1804,6 +1804,9 @@ $(document).ready(function() {
 
 var usuariosExistentes = [];
 var mailsExistentes = [];
+var dnisExistentes = [];
+var matriculasExistentes = [];
+var usuarioActual, mailActual, dniActual, matriculaActual;
 fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
     method: 'GET',
     headers: {
@@ -1849,6 +1852,50 @@ fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
         console.error("Error en la solicitud:", error);
     });
 
+
+fetch(`http://localhost:8080/profesionalsalud/dni-unico`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       dnisExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+    fetch(`http://localhost:8080/profesionalsalud/matriculas-unicas`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       matriculasExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
 function editarInstancia(index){
   openDialogModificar("popup-dialog-modificar-usuario", index);
 }
@@ -1905,7 +1952,7 @@ function checkUsername(id, idalert, guardar, matchid, mismatchid) {
         usernameMismatchIcon.style.display = "inline-block";
         usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
         guardarButton.disabled = true;
-    } else if (usuariosExistentes.includes(username)) {
+    } else if (usuariosExistentes.includes(username) && username != usuarioActual) {
         usernameMatchIcon.style.display = "none";
         usernameMismatchIcon.style.display = "inline-block";
         usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
@@ -2006,7 +2053,11 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid, perfilid) {
             if (!dniPattern.test(dni)) {
                 guardarButton.disabled = true;
                 dniAlert.innerText = "Documento Nacional de Identidad inválido.\nIngrese los dígitos sin espacios ni puntos.";
-            } else {
+            } else if(dnisExistentes.includes(dni) && dni != dniActual){
+            	guardarButton.disabled = true;
+                dniAlert.innerText = "Este DNI ya se encuentra en uso, ingrese uno diferente.";
+            }
+            else {
                 guardarButton.disabled = false;
                 dniAlert.innerText = "";
             }
@@ -2039,7 +2090,11 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid, perfilid) {
             if (!matriculaPattern.test(matricula)) {
                 matriculaAlert.innerText = "Número de matrícula inválido.\nIngrese los dígitos sin espacios ni puntos.";
                 guardarButton.disabled = true;
-            } else {
+            } else if(matriculasExistentes.includes(matricula) && matricula != matriculaActual){
+            	matriculaAlert.innerText = "Esta matrícula ya está en uso, ingrese una diferente.";
+                guardarButton.disabled = true;
+            } 
+            else {
                 matriculaAlert.innerText = "";
                 guardarButton.disabled = false;
             }
@@ -2056,7 +2111,7 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid, perfilid) {
             if (!emailPattern.test(email)) {
                 emailAlert.innerText = "Correo electrónico no válido.";
                 guardarButton.disabled = true;
-            } else if(mailsExistentes.includes(email)){
+            } else if(mailsExistentes.includes(email) && email != mailActual){
                 emailAlert.innerText = "Este correo ya está en uso, ingrese uno diferente.";
                 guardarButton.disabled = true;
             }
@@ -2346,6 +2401,8 @@ document.getElementById("loading-overlay").classList.remove("hidden");
   }
 
   function modificarUsuario(json){
+  	mailActual = undefined; 
+  	usuarioActual = undefined;
     var url = "http://localhost:8080/usuario/saveSinHash";
 
     // Realizar la solicitud AJAX
@@ -2370,6 +2427,10 @@ document.getElementById("loading-overlay").classList.remove("hidden");
   }
 
   function modificarProfesional(json){
+  	dniActual = undefined;
+  	matriculaActual = undefined;
+  	mailActual = undefined; 
+  	usuarioActual = undefined;
     var url = "http://localhost:8080/profesionalsalud/save";
 
     // Realizar la solicitud AJAX
@@ -2438,15 +2499,19 @@ function setearValoresAModificar(id, index){
 
   codigo.value = fila.cells[1].textContent;
   usuario.value = fila.cells[2].textContent;
+  usuarioActual = usuario.value;
   nombre.value = fila.cells[3].textContent;
   apellido.value = fila.cells[4].textContent;
   fechaNac.value = formatearStringADate(fila.cells[6].textContent);
   genero.value = fila.cells[7].textContent;
   email.value = fila.cells[8].textContent;
+  mailActual = email.value;
   if(fila.cells[11].textContent =="3" || fila.cells[11].textContent == "4"){
     institucion.value = fila.cells[9].textContent;
     dni.value= fila.cells[12].textContent;
     matricula.value = fila.cells[13].textContent;
+    matriculaActual = matricula.value;
+    dniActual = dni.value;
   }
   else{
     institucion.placeholder= "No es perfil de institución";

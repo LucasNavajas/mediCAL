@@ -2059,6 +2059,10 @@ async function crearReporteSintomas() {
       agregarFilaExcelSintomas(worksheet, sintoma,i);
       i++;
     }
+    var diasConSintomas = contarDiasConSintomas(dataSintomas);
+    worksheet.getCell('I2').value = diasConSintomas;
+    worksheet.getCell('I2').font = fechaFont2;
+
     agruparSintomas(worksheet, dataSintomas, workbook);
   worksheet.columns.forEach((column) => {
       let maxLength = 0;
@@ -2176,6 +2180,22 @@ async function agruparSintomas(worksheet, dataSintomas, workbook) {
     fila++;
   }
 }
+
+function contarDiasConSintomas(dataSintomas) {
+  // Crear un conjunto para almacenar las fechas únicas
+  var fechasUnicas = new Set();
+
+  // Iterar a través de los síntomas y agregar sus fechas al conjunto
+  dataSintomas.forEach(function(sintoma) {
+    fechasUnicas.add(sintoma.fechaCalendarioSintoma);
+  });
+
+  // El tamaño del conjunto representará la cantidad de días con síntomas
+  var diasConSintomas = fechasUnicas.size;
+
+  return diasConSintomas;
+}
+
 
 
 

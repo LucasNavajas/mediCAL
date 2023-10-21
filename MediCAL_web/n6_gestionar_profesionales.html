@@ -1530,7 +1530,7 @@
 
     <div id="popup-dialog-modificar-profesional" class="popup-content">
         <!-- Icono de cerrar -->
-<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modificar-profesional')" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
+<i class="bi bi-x-lg" onclick="closeDialog('popup-dialog-modificar-profesional');dniActual = undefined;matriculaActual = undefined; mailActual = undefined; usuarioActual = undefined;" style="position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer;"></i>
         <h3 style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px;">Modificar Profesional</h3>
         
         <table class="camp-table">
@@ -1761,12 +1761,11 @@
   <script src="js/scriptsDialogPopup.js"></script>
 
   <script>
-  var maxDate = new Date();
+   var maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 18); // Restar 18 años a la fecha actual
 
     var minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear()-100);
-    minDate.setDate(minDate.getDate());
-
+    minDate.setFullYear(minDate.getFullYear() - 100);
     // Selecciona todos los campos de fecha con la clase "campo_fecha"
     $(".campo_fecha").datepicker({
         dateFormat: "yy-mm-dd", // Formato de la fecha: "dd nombre_mes aaaa"
@@ -1789,6 +1788,9 @@ var usuario = localStorage.getItem('usuario');
     document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " " + usuarioJson.perfil.nombrePerfil;
 var usuariosExistentes = [];
 var mailsExistentes = [];
+var dnisExistentes = [];
+var matriculasExistentes = [];
+var usuarioActual, mailActual, dniActual, matriculaActual;
 fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
     method: 'GET',
     headers: {
@@ -1828,6 +1830,50 @@ fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
     })
     .then(data => {
        mailsExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+    fetch(`http://localhost:8080/profesionalsalud/dni-unico`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       dnisExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+    fetch(`http://localhost:8080/profesionalsalud/matriculas-unicas`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       matriculasExistentes = data;
     })
     .catch(error => {
         // Manejar errores de la solicitud
@@ -1965,7 +2011,7 @@ function checkUsername(id, idalert, guardar, matchid, mismatchid) {
         usernameMismatchIcon.style.display = "inline-block";
         usernameAlert.innerText = "El usuario no puede tener más de 30 caracteres.";
         guardarButton.disabled = true;
-    } else if (usuariosExistentes.includes(username)) {
+    } else if (usuariosExistentes.includes(username) && username != usuarioActual) {
         usernameMatchIcon.style.display = "none";
         usernameMismatchIcon.style.display = "inline-block";
         usernameAlert.innerText = "Este nombre de usuario único ya está en uso. Pruebe con otro username.";
@@ -2044,7 +2090,11 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid) {
             if (!dniPattern.test(dni)) {
                 guardarButton.disabled = true;
                 dniAlert.innerText = "Documento Nacional de Identidad inválido.\nIngrese los dígitos sin espacios ni puntos.";
-            } else {
+            } else if(dnisExistentes.includes(dni) && dni != dniActual){
+                guardarButton.disabled = true;
+                dniAlert.innerText = "Este DNI ya se encuentra en uso, ingrese uno diferente.";
+            }
+            else {
                 guardarButton.disabled = false;
                 dniAlert.innerText = "";
             }
@@ -2077,7 +2127,11 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid) {
             if (!matriculaPattern.test(matricula)) {
                 matriculaAlert.innerText = "Número de matrícula inválido.\nIngrese los dígitos sin espacios ni puntos.";
                 guardarButton.disabled = true;
-            } else {
+            } else if(matriculasExistentes.includes(matricula) && matricula != matriculaActual){
+                matriculaAlert.innerText = "Esta matrícula ya está en uso, ingrese una diferente.";
+                guardarButton.disabled = true;
+            } 
+            else {
                 matriculaAlert.innerText = "";
                 guardarButton.disabled = false;
             }
@@ -2094,7 +2148,7 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid) {
             if (!emailPattern.test(email)) {
                 emailAlert.innerText = "Correo electrónico no válido.";
                 guardarButton.disabled = true;
-            } else if(mailsExistentes.includes(email)){
+            } else if(mailsExistentes.includes(email) && email != mailActual){
                 emailAlert.innerText = "Este correo ya está en uso, ingrese uno diferente.";
                 guardarButton.disabled = true;
             }
@@ -2103,7 +2157,6 @@ function checkContraseña(id, idalert, guardar, matchid, mismatchid) {
                 guardarButton.disabled = false;
             }
         }
-
 function setearValoresAModificar(id, index){
   const contenedor = document.getElementById(id);
   const tabla = document.querySelector("table");
@@ -2221,6 +2274,10 @@ document.getElementById("loading-overlay").classList.remove("hidden");
   modificarProfesional(jsonUsuarioSalud);
 }
 function modificarProfesional(json){
+    dniActual = undefined;
+    matriculaActual = undefined; 
+    mailActual = undefined; 
+    usuarioActual = undefined;
     var url = "http://localhost:8080/profesionalsalud/save";
 
     // Realizar la solicitud AJAX
