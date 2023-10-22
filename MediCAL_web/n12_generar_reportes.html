@@ -1194,6 +1194,7 @@
     </form>
 </div>
 </div>
+<canvas id="myChart"></canvas>
 <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
@@ -1214,6 +1215,7 @@
   <script src="js/scriptsDialogPopup.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
 <script >
@@ -1727,7 +1729,7 @@ async function crearReporteMedicamentos() {
   worksheet.getCell('A1').alignment = { horizontal: 'center' };
 
   // Agregar título en A1
-  worksheet.mergeCells('A1:Q1');
+  worksheet.mergeCells('A1:M1');
   worksheet.getCell('A1').value = 'Reporte Medicamentos';
   worksheet.getCell('A1').font = titleFont2;
 
@@ -1786,8 +1788,8 @@ async function crearReporteMedicamentos() {
   worksheet.getCell('E3').value = 'Valor';
   worksheet.getCell('F3').value = 'Notas';
   worksheet.getCell('H3').value = 'Medicamento';
-  worksheet.getCell('I3').value = 'Porcentaje de Cumplimiento';
-  worksheet.mergeCells('J3:Q3');
+  worksheet.getCell('I3').value = '% de Cumplimiento';
+  worksheet.mergeCells('J3:M3');
   worksheet.getCell('J3').value = 'Gráfico de Porcentaje de Cumplimiento';
   // Fondo de color 00AFB9 y formato de fuente
   worksheet.getRow(3).eachCell((cell) => {
@@ -1804,6 +1806,7 @@ async function crearReporteMedicamentos() {
     cell.alignment = { horizontal: 'center' };
   });
 
+  worksheet.mergeCells('J4:M22');
 
 // Establece el fondo de color gris oscuro para toda la columna G desde la fila 3 en adelante
 
@@ -1955,6 +1958,55 @@ async function agruparMedicamentos(worksheet, dataMedicamentos, workbook) {
 
     fila++;
   }
+document.getElementById("myChart").style.display = "block";
+
+var ctx = document.getElementById('myChart').getContext('2d');
+
+const chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: nombres,
+    datasets: [{
+      label: 'Cumplimiento',
+      data: cumplimientos,
+      backgroundColor: 'rgba(75, 192, 192, 1)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1,
+    }],
+  },
+    options: {
+    indexAxis: 'y',
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+  }
+}
+});
+
+var chartImage = chart.toBase64Image();
+
+// Crea una imagen en el archivo Excel
+const imageId = workbook.addImage({
+  base64: chartImage, // Utiliza la imagen generada desde Chart.js
+  extension: 'png',
+});
+
+ worksheet.addImage(imageId, {
+    tl: { col: 9, row: 3 }, // Cambiar a columna J y fila 4
+    ext: { width: 800, height: 400 },
+  });
+
+document.getElementById("myChart").style.display = "none";
+
 
 }
 
@@ -1977,7 +2029,7 @@ async function crearReporteSintomas() {
   worksheet.getCell('A1').alignment = { horizontal: 'center' };
 
   // Agregar título en A1
-  worksheet.mergeCells('A1:L1');
+  worksheet.mergeCells('A1:J1');
   worksheet.getCell('A1').value = 'Reporte Síntomas';
   worksheet.getCell('A1').font = titleFont2;
 
@@ -2024,8 +2076,8 @@ async function crearReporteSintomas() {
   worksheet.getCell('B3').value = 'Fecha Registrado';
   worksheet.getCell('D3').value = 'Cantidad Síntomas';
   worksheet.getCell('E3').value = 'Nombre Síntoma';
-  worksheet.getCell('F3').value = 'Porcentaje de Síntomas'
-  worksheet.mergeCells('G3:L3');
+  worksheet.getCell('F3').value = '% de Síntomas'
+  worksheet.mergeCells('G3:J3');
   worksheet.getCell('G3').value = 'Gráfico de Porcentaje de Síntomas';
   // Fondo de color 00AFB9 y formato de fuente
   worksheet.getRow(3).eachCell((cell) => {
@@ -2041,7 +2093,7 @@ async function crearReporteSintomas() {
     };
     cell.alignment = { horizontal: 'center' };
   });
-
+worksheet.mergeCells('G4:J23');
 
 // Establece el fondo de color gris oscuro para toda la columna G desde la fila 3 en adelante
 
@@ -2179,6 +2231,55 @@ async function agruparSintomas(worksheet, dataSintomas, workbook) {
 
     fila++;
   }
+document.getElementById("myChart").style.display = "block";
+
+var ctx = document.getElementById('myChart').getContext('2d');
+
+const chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: nombres,
+    datasets: [{
+      label: 'Cantidad de Síntomas',
+      data: cantidad,
+      backgroundColor: 'rgba(75, 192, 192, 1)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1,
+    }],
+  },
+    options: {
+    indexAxis: 'y',
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+  }
+}
+});
+
+var chartImage = chart.toBase64Image();
+
+// Crea una imagen en el archivo Excel
+const imageId = workbook.addImage({
+  base64: chartImage, // Utiliza la imagen generada desde Chart.js
+  extension: 'png',
+});
+
+ worksheet.addImage(imageId, {
+    tl: { col: 6, row: 3 }, // Cambiar a columna J y fila 4
+    ext: { width: 800, height: 400 },
+  });
+
+document.getElementById("myChart").style.display = "none";
+
 }
 
 function contarDiasConSintomas(dataSintomas) {

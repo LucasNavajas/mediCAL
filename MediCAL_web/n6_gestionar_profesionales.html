@@ -1650,7 +1650,7 @@
                 </td>
                 <td class="column-two">
                     <div class="input-group">
-                        <input type="text" id="campo_contraseña_modif" placeholder="qwerty" style="width: 100%;" oninput="checkContraseña('campo_contraseña_modif', 'campo_contraseña_modif', 'guardar-button-modif', 'password-match-icon-modif', 'password-mismatch-icon-modif')">
+                        <input type="text" id="campo_contraseña_modif" placeholder="qwerty" style="width: 100%;" oninput="checkContraseña('campo_contraseña_modif', 'contraseña-alert-modif', 'guardar-button-modif', 'password-match-icon-modif', 'password-mismatch-icon-modif')">
                         <div class="input-group-append">
                             <!-- Este bloque de código contiene los iconos de check y error -->
                             <span class="input-group-text">
@@ -2174,13 +2174,17 @@ function setearValoresAModificar(id, index){
 
   codigo.value = fila.cells[0].textContent;
   usuario.value = fila.cells[1].textContent;
+  usuarioActual = usuario.value;
   nombre.value = fila.cells[2].textContent;
   apellido.value = fila.cells[3].textContent;
   fechaNac.value = formatearStringADate(fila.cells[5].textContent);
   genero.value = fila.cells[6].textContent;
   email.value = fila.cells[7].textContent;
+  mailActual = email.value;
   dni.value= fila.cells[9].textContent;
+  dniActual = dni.value;
   matricula.value = fila.cells[10].textContent;
+  matriculaActual = matricula.value;
   telefono.value = fila.cells[8].textContent;
 }
 

@@ -56,6 +56,10 @@ public class CalendarioDao {
 	        if (calendario.getRelacionCalendario() != null) {
 	            existingCalendario.setRelacionCalendario(calendario.getRelacionCalendario());
 	        }
+	        
+	        if(calendario.getUsuario() != null) {
+	        	existingCalendario.setUsuario(calendario.getUsuario());
+	        }
 
 	        // Guardar la entidad actualizada
 	        return repository.save(existingCalendario);

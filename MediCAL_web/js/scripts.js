@@ -183,11 +183,16 @@
     (function (index, fila) {
       revertirIcono.onclick = function () {
         var idInstancia = fila.cells[1].textContent;
-        if(window.location.href == "http://localhost:8081/n6_gestionar_profesionales.html"){
+        if(window.location.href == "http://localhost:8081/n6_gestionar_profesionales.html" ){
           idInstancia = fila.cells[0].textContent;
           openDialogRecuperar('popup-dialog-confirma-recuperar', idInstancia, index, this);
         }
-        else{
+
+        else if(window.location.href == "http://localhost:8081/n9_gestionar_calendarios.html"){
+          idInstancia = fila.cells[1].textContent;
+          openDialogRecuperar('popup-dialog-confirma-recuperar', idInstancia, index, this);
+        }
+          else{
         recuperarInstancia(idInstancia);
         toggleRestoreRow(index, this);
       }
@@ -796,6 +801,7 @@ function recuperarInstancia(idInstancia){
         }
         // No es necesario analizar la respuesta si es void o sin contenido
         // Puedes simplemente continuar aquí
+        closeDialog('popup-dialog-confirma-recuperar');
         openDialog('popup-dialog-guardado');
         cargarTabla();
       })
