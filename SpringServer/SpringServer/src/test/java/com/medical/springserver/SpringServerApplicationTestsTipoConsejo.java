@@ -40,6 +40,10 @@ class SpringServerApplicationTestsTipoConsejo {
 		// Obtener la fecha de hoy
 		LocalDate fechaHoy = LocalDate.now();
 		
+		// Inicializar Lista de Likeados y agregar primer valor "0"
+		// Los números serán agregados junto con una coma de separación, SIN espacios
+		String listaLikeados = "0";
+		
 		Consejo consejo = new Consejo();
 		consejo.setNombreConsejo("Su consejo diario de MediCAL!");
 		// Colocar luego link a Manual de Usuario
@@ -48,6 +52,8 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo.setAuspiciante("MediCAL");
 		consejo.setDescConsejo("¡Es fácil añadir un contacto a supervisar! " + " Acceda al menú desplegable, seleccione “Añadir contacto” y busque por el nombre de usuario. ");
 		consejo.setTipoConsejo(tipoConsejo3);
+		consejo.setCantLikes(100);
+		consejo.setListaLikeados(listaLikeados);
 		consejoDao.save(consejo);
 		
 		
@@ -58,6 +64,8 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo1.setFechaAltaConsejo(fechaHoy);
 		consejo1.setDescConsejo("Dormir bien es muy importante. No dormir lo suficiente puede afectar tus hormonas, así como tu salud física y mental.");
 		consejo1.setTipoConsejo(tipoConsejo2);
+		consejo1.setCantLikes(150);
+		consejo1.setListaLikeados(listaLikeados);
 		consejoDao.save(consejo1);		
 		
 		Consejo consejo2 = new Consejo();
@@ -69,6 +77,8 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo2.setDescConsejo("7 Cuidados básicos para personas con hipertensión.");
 		consejo2.setFotoConsejo("https://img.youtube.com/vi/a2EuM2w4LrI/maxresdefault.jpg");
 		consejo2.setTipoConsejo(tipoConsejo);
+		consejo2.setCantLikes(200);
+		consejo2.setListaLikeados(listaLikeados);
 		consejoDao.save(consejo2);
 		
 		Consejo consejo3 = new Consejo();
@@ -79,6 +89,8 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo3.setAuspiciante("MediCAL");
 		consejo3.setDescConsejo("¡Es fácil añadir un síntoma nuevo! " + " Pulse en “Más” de la barra inferior de herramientas, seleccione “Mediciones y Síntomas”, luego Agregue un Seguimiento sobre Síntomas y seleccione entre las opciones aquellos síntomas que desee guardar. ");
 		consejo3.setTipoConsejo(tipoConsejo3);
+		consejo3.setCantLikes(125);
+		consejo3.setListaLikeados(listaLikeados);
 		consejoDao.save(consejo3);
 		
 		
@@ -89,6 +101,8 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo4.setFechaAltaConsejo(fechaHoy);
 		consejo4.setDescConsejo("El agua es esencial para una buena salud. ¿Estás consumiendo lo suficiente? Estas pautas pueden ayudarte a averiguarlo.");
 		consejo4.setTipoConsejo(tipoConsejo2);
+		consejo4.setCantLikes(77);
+		consejo4.setListaLikeados(listaLikeados);
 		consejoDao.save(consejo4);
 		
 		Consejo consejo5 = new Consejo();
@@ -100,6 +114,8 @@ class SpringServerApplicationTestsTipoConsejo {
 		consejo5.setDescConsejo("¡Taller de la Memoria! La doctora Paula Fachinelli, del Departamento de Gestión de Políticas Sociales para el Adulto Mayor de OSEP, nos brinda lo mejor del Taller de Estimulación Cognitiva");
 		consejo5.setFotoConsejo("https://img.youtube.com/vi/TZh2EOK_Hms/maxresdefault.jpg");
 		consejo5.setTipoConsejo(tipoConsejo);
+		consejo5.setCantLikes(177);
+		consejo5.setListaLikeados(listaLikeados);
 		consejoDao.save(consejo5);
 		
 		//System.out.println(tipoConsejo.getVarconsejo());

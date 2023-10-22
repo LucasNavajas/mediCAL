@@ -2,6 +2,7 @@ package com.example.medical.model;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Consejo {
     private int nroConsejo;
@@ -13,6 +14,8 @@ public class Consejo {
     private LocalDate fechaAltaConsejo;
     private LocalDate fechaFinVigenciaConsejo;
     private TipoConsejo tipoConsejo;
+    private int cantLikes;
+    private String listaLikeados;
 
     public int getNroConsejo() {
         return nroConsejo;
@@ -75,12 +78,31 @@ public class Consejo {
     }
 
 
+    public int getCantLikes() {
+        return cantLikes;
+    }
+
+    public void setCantLikes(int cantLikes) {
+        this.cantLikes = cantLikes;
+    }
+
+
+    public String getListaLikeados() {
+        return listaLikeados;
+    }
+
+    public void setListaLikeados(String listaLikeados) {
+        this.listaLikeados = listaLikeados;
+    }
+
+
     @Override
     public String toString() {
         return "Consejo [nroConsejo=" + nroConsejo + ", nombreConsejo=" + nombreConsejo + ", linkConsejo=" + linkConsejo
                 + ", auspiciante=" + auspiciante + ", descConsejo=" + descConsejo + ", fechaAltaConsejo="
                 + fechaAltaConsejo + ", fotoConsejo=" + fotoConsejo + ", fechaFinVigenciaConsejo="
-                + fechaFinVigenciaConsejo + ", tipoconsejo=" + tipoConsejo + "]";
+                + fechaFinVigenciaConsejo + ", cantLikes=" + cantLikes + ", listaLikeados=" + listaLikeados
+                + ", tipoconsejo=" + tipoConsejo + "]";
     }
 
 

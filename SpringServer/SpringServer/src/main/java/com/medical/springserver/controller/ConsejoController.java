@@ -2,6 +2,7 @@ package com.medical.springserver.controller;
 
 import com.medical.springserver.model.consejo.Consejo;
 import com.medical.springserver.model.consejo.ConsejoDao;
+import com.medical.springserver.model.reporte.Reporte;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,11 @@ public class ConsejoController {
 	@GetMapping("/consejo/get-all")
 	public List<Consejo> getAllConsejo(){
 		return consejoDao.getAllConsejo();
+	}
+	
+	@GetMapping("/consejo/{nroConsejo}")
+	public Consejo getByNroConsejo(@PathVariable int nroConsejo) {
+	    return consejoDao.findByNroConsejo(nroConsejo);
 	}
 	
 	@PostMapping("/consejo/save")

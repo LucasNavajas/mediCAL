@@ -224,39 +224,36 @@ public class ConsejosActivity extends AppCompatActivity {
         private void loadConsejos() {
             RetrofitService retrofitService = new RetrofitService();
             ConsejoApi consejoApi = retrofitService.getRetrofit().create(ConsejoApi.class);
-            consejoApi.getAllConsejos()
-                    .enqueue(new Callback<List<Consejo>>() {
+            consejoApi.getAllConsejos().enqueue(new Callback<List<Consejo>>() {
+                @Override
+                public void onResponse(Call<List<Consejo>> call, Response<List<Consejo>> response) {
+                    Log.d("ConsejoActivity", "llamo el método on response");
+                    int statusCode = response.code();
+                    Log.d("ConsejoActivity", "Status code: " + statusCode);
+                    if (response.isSuccessful() && response.body() != null) {
+                        Log.d("ConsejoActivity", "la populo");
+                        populateListView(response.body());
+                    } else {
+                        Log.d("ConsejoActivity", "no anda");
+                        Log.d("ConsejoActivity", "Response code: " + response.code());
+                        Log.d("ConsejoActivity", "Error body: " + response.errorBody());
+                        Toast.makeText(ConsejosActivity.this, "Respuesta vacía o incorrecta del servidor", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-                        @Override
-                        public void onResponse(Call<List<Consejo>> call, Response<List<Consejo>> response) {
-                            Log.d("ConsejoActivity", "llamo el método on response");
-                            int statusCode = response.code();
-                            Log.d("ConsejoActivity", "Status code: " + statusCode);
-                            if (response.isSuccessful() && response.body() != null) {
-                                Log.d("ConsejoActivity", "la populo");
-                                populateListView(response.body());
-                            } else {
-                                Log.d("ConsejoActivity", "no anda");
-                                Log.d("ConsejoActivity", "Response code: " + response.code());
-                                Log.d("ConsejoActivity", "Error body: " + response.errorBody());
-                                Toast.makeText(ConsejosActivity.this, "Respuesta vacía o incorrecta del servidor", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<Consejo>> call, Throwable t) {
-                            Log.d("ConsejoActivity", "no carga");
-                            Toast.makeText(ConsejosActivity.this, "Fallo en la base de datos", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                @Override
+                public void onFailure(Call<List<Consejo>> call, Throwable t) {
+                    Log.d("ConsejoActivity", "no carga");
+                    Toast.makeText(ConsejosActivity.this, "Fallo en la base de datos", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         private void populateListView(List<Consejo> consejoList) {
             if (consejoList != null && !consejoList.isEmpty()) {
                 Log.d("ConsejoActivity", "la populo en la list");
-                ConsejoAdapter consejoAdapter = new ConsejoAdapter (consejoList, this);
+                ConsejoAdapter consejoAdapter = new ConsejoAdapter (consejoList, this, codUsuarioLogeado);
                 recyclerView.setAdapter(consejoAdapter);
-
             } else {
                 Log.d("ConsejoActivity", "no la populo en la list");
                 Toast.makeText(ConsejosActivity.this, "La lista de Consejos está vacía o es nula", Toast.LENGTH_SHORT).show();

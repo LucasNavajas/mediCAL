@@ -2,6 +2,7 @@ package com.medical.springserver.model.consejo;
 
 import java.awt.Image;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medical.springserver.model.tipoconsejo.TipoConsejo;
@@ -26,6 +27,8 @@ public class Consejo {
 	// foto antes era tipo Image
 	private String fotoConsejo;
 	private LocalDate fechaFinVigenciaConsejo;
+	private int cantLikes;					// Contador de Likes
+	private String listaLikeados;		// Lista de Strings con el codUsuario que ha dado like
 	
 	@ManyToOne
 	@JoinColumn(name = "nroTipoConsejo")
@@ -92,12 +95,33 @@ public class Consejo {
 	}
 
 
+	public int getCantLikes() {
+		return cantLikes;
+	}
+
+
+	public void setCantLikes(int cantLikes) {
+		this.cantLikes = cantLikes;
+	}
+
+
+	public String getListaLikeados() {
+		return listaLikeados;
+	}
+
+
+	public void setListaLikeados(String listaLikeados) {
+		this.listaLikeados = listaLikeados;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Consejo [nroConsejo=" + nroConsejo + ", nombreConsejo=" + nombreConsejo + ", linkConsejo=" + linkConsejo
 				+ ", auspiciante=" + auspiciante + ", descConsejo=" + descConsejo + ", fechaAltaConsejo="
 				+ fechaAltaConsejo + ", fotoConsejo=" + fotoConsejo + ", fechaFinVigenciaConsejo="
-				+ fechaFinVigenciaConsejo + ", tipoconsejo=" + tipoconsejo + "]";
+				+ fechaFinVigenciaConsejo + ", cantLikes=" + cantLikes + ", listaLikeados=" + listaLikeados
+				+ ", tipoconsejo=" + tipoconsejo + "]";
 	}
 
 
@@ -129,9 +153,6 @@ public class Consejo {
 	public void setFechaFinVigenciaConsejo(LocalDate fechaFinVigenciaConsejo) {
 		this.fechaFinVigenciaConsejo = fechaFinVigenciaConsejo;
 	}
-
-
-	
 	
 	
 }

@@ -101,56 +101,71 @@
                 android:id="@+id/videoImagePlay"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:scaleType="fitCenter"
                 android:layout_below="@id/text_Leer_mas"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="1dp"
-                android:src="@drawable/play_icon"
                 android:layout_centerInParent="true"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="34dp"
                 android:alpha="0.4"
-                />
+                android:scaleType="fitCenter"
+                android:src="@drawable/play_icon" />
+
+            <ImageView
+                android:id="@+id/imagen_consejo_compartir"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_below="@id/videoImagePlay"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/consejo_compartir" />
 
             <ImageView
                 android:id="@+id/imagen_like_vacio"
                 android:layout_width="38dp"
                 android:layout_height="34dp"
-                android:layout_below="@id/videoImageView"
-                android:layout_marginTop="23dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="11dp"
+                android:layout_below="@id/videoImagePlay"
+                android:layout_alignParentStart="@id/imagen_consejo_compartir"
+                android:layout_marginStart="75dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="20dp"
                 android:src="@drawable/consejo_like" />
 
             <ImageView
                 android:id="@+id/imagen_likeado"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_below="@id/videoImageView"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_below="@id/videoImagePlay"
+                android:layout_alignParentStart="@id/imagen_consejo_compartir"
+                android:layout_marginStart="75dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="20dp"
                 android:src="@drawable/likeado"
                 android:visibility="gone"/>
 
-            <ImageView
-                android:id="@+id/imagen_consejo_compartir"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/videoImageView"
-                android:layout_marginStart="60dp"
+            <TextView
+                android:id="@+id/texto_Likeados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/videoImagePlay"
+                android:layout_marginStart="130dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="0dp"
                 android:layout_alignParentStart="@id/imagen_like_vacio"
-                android:src="@drawable/consejo_compartir" />
+                android:text="200 Likes"
+                android:textSize="20dp"
+                />
 
             <TextView
                 android:id="@+id/texto_Auspiciante"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/videoImageView"
+                android:layout_below="@id/imagen_consejo_compartir"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="0dp"
                 android:layout_alignParentStart="@id/imagen_consejo_compartir"
                 android:text="Auspiciante: "
                 android:textSize="20dp"
@@ -162,7 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1.5dp"
                 android:background="#808080"
-                android:layout_below="@+id/imagen_consejo_compartir"
+                android:layout_below="@+id/texto_Auspiciante"
                 android:layout_marginBottom="0dp"
                 android:layout_marginTop="10dp"
                 />

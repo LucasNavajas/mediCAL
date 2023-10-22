@@ -43,7 +43,12 @@ public class ConsejoDao {
 	        if (consejo.getTipoConsejo() != null) {
 	            existingConsejo.setTipoConsejo(existingConsejo.getTipoConsejo());
 	        }
-
+	        if (consejo.getCantLikes() != -1) {
+	        	existingConsejo.setCantLikes(consejo.getCantLikes());
+	        }
+	        if (consejo.getListaLikeados() != null) {
+	        	existingConsejo.setListaLikeados(consejo.getListaLikeados());
+	        }
 	        // Guardar la entidad actualizada
 	        return repository.save(existingConsejo);
 	    } else {
@@ -54,6 +59,10 @@ public class ConsejoDao {
 
 	public List<Consejo> getAllConsejo() {
 	    return repository.getAllConsejos(LocalDate.now());
+	}
+	
+	public Consejo findByNroConsejo(int nroConsejo) {
+		return repository.findByNroConsejo(nroConsejo);
 	}
 	
 	public void delete(Consejo consejo) {

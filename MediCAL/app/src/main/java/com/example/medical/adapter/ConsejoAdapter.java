@@ -5,6 +5,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medical.ConsejosActivity;
+import com.example.medical.retrofit.ConsejoApi;
+import com.example.medical.retrofit.RetrofitService;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
@@ -23,19 +26,29 @@ import com.example.medical.model.Consejo;
 import com.example.medical.model.TipoConsejo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoViewHolder> {
 
     private final Context context;
+    private int codUsuarioLogeado;
     private Map<Integer, List<Consejo>> consejoPorTipo = new HashMap<>();
     private List<Consejo> consejoAleatorioPorTipo = new ArrayList<>();
+    private Consejo consejoALikear;
+    private Consejo consejoADeslikear;
+    private TextView textoLikeados;
 
-    public ConsejoAdapter(List<Consejo> consejoList, Context context) {
+    public ConsejoAdapter(List<Consejo> consejoList, Context context, int codUsuarioLogeado) {
         this.context = context;
+        this.codUsuarioLogeado = codUsuarioLogeado;
 
         // Agrupar consejos por tipo
         for (Consejo consejo : consejoList) {
@@ -81,10 +94,26 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         ImageView foto = holder.foto;
         ImageView play= holder.play;
         TextView auspiciante = holder.auspiciante;
+        textoLikeados = holder.textoLikeados;
 
         holder.nombreConsejo.setText(consejoAleatorio.getNombreConsejo());
         holder.descripcionConsejo.setText(consejoAleatorio.getDescConsejo());
         holder.auspiciante.setText(consejoAleatorio.getAuspiciante());
+        textoLikeados.setText(consejoAleatorio.getCantLikes() + " Likes");
+        Log.d("MiApp", "Se cargan " + consejoAleatorio.getCantLikes() + " likes del consejo: " + consejoAleatorio.getNroConsejo());
+
+        // Se fija si el codUsuarioLogeado está dentro de la lista de los usuarios que han dado like
+        String listaLikeadosString = consejoAleatorio.getListaLikeados();
+        List<String> LikesDeUsuarios = Arrays.asList(listaLikeadosString.split(","));
+        if (LikesDeUsuarios!=null) {
+            for (String codUsuarioString : LikesDeUsuarios) {
+                if (codUsuarioString.equals(String.valueOf(codUsuarioLogeado))) {
+                    like.setVisibility(View.GONE);
+                    likeado.setVisibility(View.VISIBLE);
+                    Log.d("MiApp", "Se encontró el consejo likeado: " + consejoAleatorio.getNroConsejo() + ", con " + consejoAleatorio.getCantLikes() + " Likes");
+                }
+            }
+        }
 
         // Obtener el TipoConsejo del consejoAleatorio actual
         TipoConsejo tipo = consejoAleatorio.getTipoConsejo();
@@ -97,33 +126,12 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             leerMas.setText("Ver Manual");
 
             // Link a Manual de Usuario
-
             leerMas.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String linkManual = consejoAleatorio.getLinkConsejo();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(linkManual));
                     context.startActivity(intent);
-                }
-            });
-            like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    like.setVisibility(View.GONE);
-                    likeado.setVisibility(View.VISIBLE);
-                }
-            });
-            likeado.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    like.setVisibility(View.VISIBLE);
-                    likeado.setVisibility(View.GONE);
-                }
-            });
-            compartir.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
                 }
             });
 
@@ -141,26 +149,6 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                     String link = consejoAleatorio.getLinkConsejo();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                     context.startActivity(intent);
-                }
-            });
-            like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    like.setVisibility(View.GONE);
-                    likeado.setVisibility(View.VISIBLE);
-                }
-            });
-            likeado.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    like.setVisibility(View.VISIBLE);
-                    likeado.setVisibility(View.GONE);
-                }
-            });
-            compartir.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
                 }
             });
 
@@ -188,28 +176,33 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
                     context.startActivity(intent);
                 }
             });
-            like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    like.setVisibility(View.GONE);
-                    likeado.setVisibility(View.VISIBLE);
-                }
-            });
-            likeado.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    like.setVisibility(View.VISIBLE);
-                    likeado.setVisibility(View.GONE);
-                }
-            });
-            compartir.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
-                }
-            });
 
         }
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                like.setVisibility(View.GONE);
+                likeado.setVisibility(View.VISIBLE);
+                likearConsejo(consejoAleatorio, holder);
+            }
+        });
+        likeado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                like.setVisibility(View.VISIBLE);
+                likeado.setVisibility(View.GONE);
+                deslikearConsejo(consejoAleatorio, holder);
+            }
+        });
+
+        compartir.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                compartirConsejo(consejoAleatorio); // Llama al método para compartir el consejo
+            }
+        });
+
     }
 
     public void compartirConsejo(Consejo consejo) {
@@ -262,6 +255,94 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         context.startActivity(Intent.createChooser(intent, "Compartir vía"));
     }
 
+    public void likearConsejo (Consejo consejo, ConsejoViewHolder holder) {
+        RetrofitService retrofitService = new RetrofitService();
+        ConsejoApi consejoApi = retrofitService.getRetrofit().create(ConsejoApi.class);
+
+        consejoApi.getByNroConsejo(consejo.getNroConsejo()).enqueue(new Callback<Consejo>() {
+            @Override
+            public void onResponse(Call<Consejo> call, Response<Consejo> response) {
+                Log.d("MiApp", "Se llama a LikearConsejo");
+                consejoALikear = response.body();
+
+                String codUsuarioLogeadoString = String.valueOf(codUsuarioLogeado);
+                String listaLikeadosString = consejoALikear.getListaLikeados() + "," + codUsuarioLogeadoString;
+                consejoALikear.setListaLikeados(listaLikeadosString);         // Actualizo la lista de likes del consejo con el codUsuarioLogeado
+                Log.d("MiApp", "Se dio like al consejo: " + consejoALikear.getNroConsejo() + ". LikesDeUsuariosAModificar: " + listaLikeadosString);
+
+                int likesActuales = consejoALikear.getCantLikes();
+                likesActuales++;
+                consejoALikear.setCantLikes(likesActuales);
+                Log.d("MiApp", "Se dio like al consejo: " + consejoALikear.getNroConsejo() + ". Cantidad de Likes: " + likesActuales);
+                holder.textoLikeados.setText(likesActuales + " Likes");
+
+                consejoApi.save(consejoALikear).enqueue(new Callback<Consejo>() {
+                    @Override
+                    public void onResponse(Call<Consejo> call, Response<Consejo> response) {
+                        Log.d("MiApp", "Éxito al guardar el consejo a Likear");
+                    }
+                    @Override
+                    public void onFailure(Call<Consejo> call, Throwable t) {
+                        Log.d("MiApp", "Fallo al guardar el consejo a Likear");
+                    }
+                });
+            }
+            @Override
+            public void onFailure(Call<Consejo> call, Throwable t) {
+                Log.d("MiApp", "Fallo al actualizar datos del consejo al Likear");
+            }
+        });
+
+    }
+
+    public void deslikearConsejo (Consejo consejo, ConsejoViewHolder holder) {
+        RetrofitService retrofitService = new RetrofitService();
+        ConsejoApi consejoApi = retrofitService.getRetrofit().create(ConsejoApi.class);
+        consejoApi.getByNroConsejo(consejo.getNroConsejo()).enqueue(new Callback<Consejo>() {
+            @Override
+            public void onResponse(Call<Consejo> call, Response<Consejo> response) {
+                Log.d("MiApp", "Se llama a DeslikearConsejo");
+                consejoADeslikear = response.body();
+
+                String listaLikeadosString = consejoADeslikear.getListaLikeados();
+                List<String> LikesDeUsuariosAModificar = Arrays.asList(listaLikeadosString.split(","));
+
+                for (String codUsuarioString : LikesDeUsuariosAModificar) {
+                    if (codUsuarioString.equals(String.valueOf(codUsuarioLogeado))) {
+                        // Crear una copia mutable de la lista actual
+                        List<String> listaLikeadosAModificar = new ArrayList<>(LikesDeUsuariosAModificar);
+                        listaLikeadosAModificar.remove(codUsuarioString);
+                        String listaLikeadosStringAModificar = String.join(",", listaLikeadosAModificar); // Convierte la lista actualizada en una cadena separada por comas
+                        consejoADeslikear.setListaLikeados(listaLikeadosStringAModificar);
+                        Log.d("MiApp", "Se dio dislike al consejo: " + consejoADeslikear.getNroConsejo() + ". listaLikeadosStringAModificar: " + listaLikeadosStringAModificar);
+
+                        int likesActuales = consejoADeslikear.getCantLikes();
+                        likesActuales--;
+                        consejoADeslikear.setCantLikes(likesActuales);
+                        Log.d("MiApp", "Se dio dislike al consejo: " + consejoADeslikear.getNroConsejo() + ". Cantidad de Likes: " + likesActuales);
+                        holder.textoLikeados.setText(likesActuales + " Likes");
+
+                        consejoApi.save(consejoADeslikear).enqueue(new Callback<Consejo>() {
+                            @Override
+                            public void onResponse(Call<Consejo> call, Response<Consejo> response) {
+                                Log.d("MiApp", "Éxito al guardar el consejo a Deslikear");
+                            }
+                            @Override
+                            public void onFailure(Call<Consejo> call, Throwable t) {
+                                Log.d("MiApp", "Fallo al guardar el consejo a Deslikear");
+                            }
+                        });
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<Consejo> call, Throwable t) {
+                Log.d("MiApp", "Fallo al actualizar datos del consejo al Deslikear");
+            }
+        });
+
+    }
+
     // Método para obtener un consejo aleatorio de una lista de consejos
     private Consejo obtenerConsejoAleatorio(List<Consejo> consejos) {
         if (consejos == null || consejos.isEmpty()) {
@@ -292,6 +373,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
         ImageView like;
         ImageView likeado;
         ImageView compartir;
+        TextView textoLikeados;
 
         public ConsejoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -307,7 +389,7 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             like = itemView.findViewById(R.id.imagen_like_vacio);
             likeado = itemView.findViewById(R.id.imagen_likeado);
             compartir = itemView.findViewById(R.id.imagen_consejo_compartir);
-
+            textoLikeados = itemView.findViewById(R.id.texto_Likeados);
         }
     }
 }
