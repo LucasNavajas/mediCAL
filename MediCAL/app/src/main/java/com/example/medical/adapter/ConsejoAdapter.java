@@ -104,8 +104,9 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
 
         // Se fija si el codUsuarioLogeado está dentro de la lista de los usuarios que han dado like
         String listaLikeadosString = consejoAleatorio.getListaLikeados();
-        List<String> LikesDeUsuarios = Arrays.asList(listaLikeadosString.split(","));
-        if (LikesDeUsuarios!=null) {
+
+        if (listaLikeadosString!=null) {
+            List<String> LikesDeUsuarios = Arrays.asList(listaLikeadosString.split(","));
             for (String codUsuarioString : LikesDeUsuarios) {
                 if (codUsuarioString.equals(String.valueOf(codUsuarioLogeado))) {
                     like.setVisibility(View.GONE);
@@ -264,6 +265,11 @@ public class ConsejoAdapter extends RecyclerView.Adapter<ConsejoAdapter.ConsejoV
             public void onResponse(Call<Consejo> call, Response<Consejo> response) {
                 Log.d("MiApp", "Se llama a LikearConsejo");
                 consejoALikear = response.body();
+                
+                if (consejoALikear.getListaLikeados() == null){
+                    String listaNueva = "0";    // Inicializar string de codUsuarios mostrando como primer elemento el 0
+                    consejoALikear.setListaLikeados(listaNueva);
+                }
 
                 String codUsuarioLogeadoString = String.valueOf(codUsuarioLogeado);
                 String listaLikeadosString = consejoALikear.getListaLikeados() + "," + codUsuarioLogeadoString;

@@ -1142,7 +1142,7 @@
                 </td>
                 <td class="column-two">
                     <input type="text" id="campo_fechaFV_consejo_Modif" class="campo_fecha" placeholder="null" style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
-                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" >
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);">
                 </td>
             </tr>
 
@@ -1167,19 +1167,19 @@
                             <option value="" disabled selected>Seleccionar Tipo Consejo</option>
                             <option value="1">Médicos</option>
                             <option value="2">Bienestar y Salud</option>
-                            <option value = "3">Sobre la App</option>
+                            <option value="3">Sobre la App</option>
                         </select>
                     </div>
                 </td>
             </tr>
-            
-            
+
+
             <tr>
                 <td class="column-one">
                     <label for="campo_desc_consejo_Modif">Descripción</label>
                 </td>
                 <td class="column-two">
-                    <textarea id="campo_desc_consejo_Modif" placeholder="Descripción del consejo" oninput="limitarCaracteresConsejModif(event)" rows="4" wrap="soft" ></textarea>
+                    <textarea id="campo_desc_consejo_Modif" placeholder="Descripción del consejo" oninput="limitarCaracteresConsejModif(event)" rows="4" wrap="soft"></textarea>
                     <span id="contadorCaracteres_consejo_Modif" style="display: block; text-align: left; margin-top: 10px;"></span>
                 </td>
             </tr>
@@ -1202,8 +1202,8 @@
                     <input type="text" id="campo_foto_consejo_Modif" placeholder="URL de archivo de foto" style="width: 100%;">
                     <div id="foto-alert" class="alert"></div>
                 </td>
-            </tr>         
-            
+            </tr>
+
             <tr>
                 <td class="column-one">
                     <label for="campo_nombre2_consejo_Modif">Nombre Auspiciante</label>
@@ -1213,7 +1213,27 @@
                     <div id="name-alert-consejo-auspiciante-modif" class="alert"></div>
                 </td>
             </tr>
-          
+
+            <tr>
+                <td class="column-one">
+                    <label for="campo_cantLikes_Modif">Líkes</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_cantLikes_Modif" placeholder=" 0 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
+            <tr style="display: none;">
+                <td class="column-one">
+                    <label for="campo_listaLikeados_Modif">Lista de Usuarios con Like</label>
+                </td>
+                <td class="column-two">
+                    <input type="text" id="campo_listaLikeados_Modif" placeholder=" 0 " style="width: 100%;border: none; border-radius: 0px;font-weight: 400px;
+                    font-size: 18px;" class="form-control" style="background-color:var(--sixth-color);" disabled>
+                </td>
+            </tr>
+
         </table>
 <!--boton guardar-->
 <div class="button-container">
@@ -1982,9 +2002,9 @@
             var name = nameInput.value;
             var nameAlert = document.getElementById(idAlert);
     
-            if (name.length > 30) {
-                nameAlert.innerText = "Ingresar nombre en 30 caracteres.";
-                nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            if (name.length > 40) {
+                nameAlert.innerText = "Ingresar nombre en 40 caracteres.";
+                nameInput.value = name.substring(0, 40); // Corta el texto hasta los primeros 40 caracteres
             } else {
                 nameAlert.innerText = "";
             }
@@ -2320,26 +2340,32 @@ function setearValoresAModificar(id, index){
                }
                break;
         case "Consejo":
-              var codigo = contenedor.querySelector("#campo_codigo_consejo_Modif");
-              var nombre = contenedor.querySelector("#campo_nombre_consejo_Modif");
-              var link = contenedor.querySelector("#campo_link_consejo_Modif");
-              var auspiciante = contenedor.querySelector("#campo_nombre2_consejo_Modif");
-              var descripcion = contenedor.querySelector("#campo_desc_consejo_Modif");
-              var foto = contenedor.querySelector("#campo_foto_consejo_Modif");
-              var fechaFV = contenedor.querySelector("#campo_fechaFV_consejo_Modif");
-              var tipoConsejo = contenedor.querySelector("#campo_tipoconsejo_Modif");
+            var codigo = contenedor.querySelector("#campo_codigo_consejo_Modif");
+            var nombre = contenedor.querySelector("#campo_nombre_consejo_Modif");
+            var link = contenedor.querySelector("#campo_link_consejo_Modif");
+            var auspiciante = contenedor.querySelector("#campo_nombre2_consejo_Modif");
+            var descripcion = contenedor.querySelector("#campo_desc_consejo_Modif");
+            var foto = contenedor.querySelector("#campo_foto_consejo_Modif");
+            var fechaFV = contenedor.querySelector("#campo_fechaFV_consejo_Modif");
+            var tipoConsejo = contenedor.querySelector("#campo_tipoconsejo_Modif");
+            var cantLikes = contenedor.querySelector("#campo_cantLikes_Modif");
+            var listaLikeados = contenedor.querySelector("#campo_listaLikeados_Modif");
 
-              codigo.value = fila.cells[1].textContent;
-              nombre.value = fila.cells[2].textContent;
-              link.value = fila.cells[3].textContent;
-              auspiciante.value = fila.cells[4].textContent;
-              descripcion.value = fila.cells[5].textContent;
-              foto.value = fila.cells[7].textContent;
-              if (fila.cells[8].textContent !== "-"){
+            codigo.value = fila.cells[1].textContent;
+            nombre.value = fila.cells[2].textContent;
+            link.value = fila.cells[3].textContent;
+            auspiciante.value = fila.cells[4].textContent;
+            descripcion.value = fila.cells[5].textContent;
+            foto.value = fila.cells[7].textContent;
+            if (fila.cells[8].textContent !== "-") {
                 fechaFV.value = formatearStringADate(fila.cells[8].textContent);
-              }
-              tipoConsejo.value = fila.cells[9].textContent;
-              break;
+            }
+            cantLikes.value = fila.cells[9].textContent;
+            if (fila.cells[10].textContent !== "-") {
+                listaLikeados.value = fila.cells[10].textContent;
+            }
+            tipoConsejo.value = fila.cells[11].textContent;
+            break;
         case "FAQ":
               var codigo = contenedor.querySelector("#campo_codigo_FAQ_Modif");
               var pregunta = contenedor.querySelector("#campo_pregunta_FAQ_Modif");
@@ -2701,6 +2727,8 @@ function crearJSONConsejoModificado(){
   var link = document.getElementById("campo_link_consejo_Modif").value;
   var foto = document.getElementById("campo_foto_consejo_Modif").value;
   var auspiciante = document.getElementById("campo_nombre2_consejo_Modif").value;
+  var cantLikes = document.getElementById("campo_cantLikes_Modif").value;
+  var listaLikeados = document.getElementById("campo_listaLikeados_Modif").value;
 
   var jsonObject = {
     nroConsejo : codigo,
@@ -2709,7 +2737,9 @@ function crearJSONConsejoModificado(){
     auspiciante : auspiciante,
     descConsejo : descripcion,
     fotoConsejo : foto,
-    fechaFinVigenciaConsejo : fechaFV,
+    fechaFinVigenciaConsejo: fechaFV,
+    cantLikes: cantLikes,
+    listaLikeados : listaLikeados,
     tipoConsejo : {
       nroTipoConsejo : tipoConsejo
     }

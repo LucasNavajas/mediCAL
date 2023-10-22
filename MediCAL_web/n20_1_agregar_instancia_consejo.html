@@ -416,9 +416,9 @@ textarea {
             var name = nameInput.value;
             var nameAlert = document.getElementById("name-alert");
     
-            if (name.length > 30) {
-                nameAlert.innerText = "Ingresar nombre en 30 caracteres.";
-                nameInput.value = name.substring(0, 30); // Corta el texto hasta los primeros 30 caracteres
+            if (name.length > 40) {
+                nameAlert.innerText = "Ingresar nombre en 40 caracteres.";
+                nameInput.value = name.substring(0, 40); // Corta el texto hasta los primeros 40 caracteres
             } else {
                 nameAlert.innerText = "";
             }
