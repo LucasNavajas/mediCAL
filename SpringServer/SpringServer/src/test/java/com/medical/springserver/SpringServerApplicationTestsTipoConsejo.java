@@ -47,7 +47,7 @@ class SpringServerApplicationTestsTipoConsejo {
 		Consejo consejo = new Consejo();
 		consejo.setNombreConsejo("Su consejo diario de MediCAL!");
 		// Colocar luego link a Manual de Usuario
-		consejo.setLinkConsejo("null");
+		consejo.setLinkConsejo("https://drive.google.com/file/d/1k7BJV5AQUrGgPFDskg1RTq0I2TPUYcpj/view?usp=sharing");
 		consejo.setFechaAltaConsejo(fechaHoy);
 		consejo.setAuspiciante("MediCAL");
 		consejo.setDescConsejo("¡Es fácil añadir un contacto a supervisar! " + " Acceda al menú desplegable, seleccione “Añadir contacto” y busque por el nombre de usuario. ");
@@ -84,7 +84,7 @@ class SpringServerApplicationTestsTipoConsejo {
 		Consejo consejo3 = new Consejo();
 		consejo3.setNombreConsejo("Su consejo diario de MediCAL!");
 		// Colocar luego link a Manual de Usuario
-		consejo3.setLinkConsejo("null");
+		consejo3.setLinkConsejo("https://drive.google.com/file/d/1k7BJV5AQUrGgPFDskg1RTq0I2TPUYcpj/view?usp=sharing");
 		consejo3.setFechaAltaConsejo(fechaHoy);
 		consejo3.setAuspiciante("MediCAL");
 		consejo3.setDescConsejo("¡Es fácil añadir un síntoma nuevo! " + " Pulse en “Más” de la barra inferior de herramientas, seleccione “Mediciones y Síntomas”, luego Agregue un Seguimiento sobre Síntomas y seleccione entre las opciones aquellos síntomas que desee guardar. ");
