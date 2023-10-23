@@ -151,7 +151,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
             public void onResponse(Call<List<Medicamento>> call, Response<List<Medicamento>> response) {
                 medicamentosEntidades = response.body();
                 for(Medicamento medicamento : medicamentosEntidades){
-                    medicamentos.add(medicamento.getNombreMedicamento());
+                    medicamentos.add(medicamento.getNombreMedicamento()+ " - " + medicamento.getMarcaMedicamento());
                 }
                 ArrayAdapter<String> adapter = new MedicamentoAdapter(elegirMedicamentoActivity, medicamentos, medicamentosEntidades, calendarioSeleccionado);
                 listViewMedicamentos.setAdapter(adapter);

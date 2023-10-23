@@ -1591,7 +1591,13 @@
     var usuarioJson = JSON.parse(usuario);
     var contraseniaCorrecta = false;
     document.getElementById("usuario_y_correo").innerHTML = usuarioJson.usuarioUnico + "<br/>" + usuarioJson.mailUsuario;
-    document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " " + usuarioJson.perfil.nombrePerfil;
+    
+    if(usuarioJson.perfil.nombrePerfil === null){
+        document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " Administrador del Sistema";
+    }
+    else{
+         document.getElementById("usuario_y_rol").innerHTML ="MediCAL | " + usuarioJson.usuarioUnico + " " + usuarioJson.perfil.nombrePerfil;
+    }
 
     function setearValoresAModificar(id, index){
       const contenedor = document.getElementById(id);
@@ -1909,6 +1915,7 @@ function checkContraseña() {
                 closeDialog('popup-dialog-editar-perfil');
                 openDialog('popup-dialog-guardado');
                 localStorage.removeItem('usuario');
+                data.perfil.nombrePerfil = "Adminstrador del Sistema";
                 var usuarioString = JSON.stringify(data);
                 // Almacena la cadena JSON en sessionStorage bajo un nombre de clave
                 localStorage.setItem('usuario', usuarioString);

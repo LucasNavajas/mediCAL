@@ -1287,11 +1287,11 @@ var usuario = localStorage.getItem('usuario');
                 data.forEach(function (medicamento) {
                     $('#campo_medicamentos_pacientes').append($('<option>', {
                         value: medicamento.codMedicamento,
-                        text: medicamento.nombreMedicamento
+                        text: medicamento.nombreMedicamento + " - " + medicamento.marcaMedicamento
                     }));
                     $('#campo_medicamentos_medicamentos').append($('<option>', {
                         value: medicamento.codMedicamento,
-                        text: medicamento.nombreMedicamento
+                        text: medicamento.nombreMedicamento + " - " + medicamento.marcaMedicamento
                     }));
                 });
             },
