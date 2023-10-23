@@ -7,9 +7,28 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medical.model.Calendario;
+import com.example.medical.model.PerfilPermiso;
+import com.example.medical.model.Usuario;
+import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.InventarioApi;
+import com.example.medical.retrofit.PerfilPermisoApi;
+import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ElegirSeguimientoActivity extends AppCompatActivity {
     private int codCalendario;
+    private List<PerfilPermiso> permisos;
+    private List<Integer> codigosPermisos;
+    private RetrofitService retrofitService = new RetrofitService();
+    private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+    private PerfilPermisoApi perfilPermisoApi = retrofitService.getRetrofit().create(PerfilPermisoApi.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +40,7 @@ public class ElegirSeguimientoActivity extends AppCompatActivity {
         Intent intent1 = getIntent();
         codCalendario = intent1.getIntExtra("calendarioSeleccionadoid", 0);
         Log.d("MiApp", "codCalendario en ElegirSeguimientoActivity: " + codCalendario); // Agregar este log
+        inicializarUsuario();
 
         // Configura el clic de la flecha hacia atrás
         findViewById(R.id.boton_volver).setOnClickListener(new View.OnClickListener() {
@@ -52,6 +72,42 @@ public class ElegirSeguimientoActivity extends AppCompatActivity {
                 intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                 intent.putExtra("calendarioSeleccionadoid", getIntent().getIntExtra("calendarioSeleccionadoid",0));
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void inicializarUsuario() {
+        usuarioApi.getByCodUsuario(getIntent().getIntExtra("codUsuario",0)).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                verificarPermisos(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
+    private void verificarPermisos(Usuario usuarioLogeado) {
+        perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
+            @Override
+            public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {
+                permisos = response.body();
+                codigosPermisos = permisos.stream()
+                        .map(perfilPermiso -> perfilPermiso.getPermiso().getCodPermiso())
+                        .collect(Collectors.toList());
+                if(!codigosPermisos.contains(4)){
+                    findViewById(R.id.todo_Sintoma).setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(12)){
+                    findViewById(R.id.todo_medicion).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PerfilPermiso>> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
             }
         });
     }

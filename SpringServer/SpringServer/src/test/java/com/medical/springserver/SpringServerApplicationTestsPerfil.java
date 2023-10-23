@@ -149,7 +149,7 @@ class SpringServerApplicationTestsPerfil {
 		perfil.setNombrePerfil("Usuario Particular");
 		perfilDao.save(perfil);
 		for(int i=0; i<15; i++) {
-			if(i<8 || i>10) {
+			if(i!=9) {
 				PerfilPermiso perfilPermiso = new PerfilPermiso();
 				perfilPermiso.setPermiso(permisosTotales.get(i));
 				perfilPermiso.setPerfil(perfil);

@@ -42,6 +42,7 @@ import com.example.medical.model.Calendario;
 import com.example.medical.model.EstadoSolicitud;
 import com.example.medical.model.Inventario;
 import com.example.medical.model.Omision;
+import com.example.medical.model.PerfilPermiso;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.model.RegistroRecordatorio;
 import com.example.medical.model.Solicitud;
@@ -50,6 +51,7 @@ import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.EstadoSolicitudApi;
 import com.example.medical.retrofit.InventarioApi;
 import com.example.medical.retrofit.OmisionApi;
+import com.example.medical.retrofit.PerfilPermisoApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -70,6 +72,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,6 +80,8 @@ import retrofit2.Response;
 
 
 public class InicioCalendarioActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
+    private List<PerfilPermiso> permisos;
+    private List<Integer> codigosPermisos;
     private LocalDate selectedDate;
     private Calendario calendarioSeleccionado;
     private TextView nombreCalendario;
@@ -104,6 +109,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
     private RegistroRecordatorioApi registroRecordatorioApi = retrofitService.getRetrofit().create(RegistroRecordatorioApi.class);
     private RecordatorioApi recordatorioApi = retrofitService.getRetrofit().create(RecordatorioApi.class);
     private OmisionApi omisionApi = retrofitService.getRetrofit().create(OmisionApi.class);
+    private PerfilPermisoApi perfilPermisoApi = retrofitService.getRetrofit().create(PerfilPermisoApi.class);
     private List<Calendario> listaCalendarios;
     private LinearLayout contenedorCalendarios;
     private RelativeLayout soporte;
@@ -209,11 +215,13 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
             public void onClick(View view) {
                 if (usuarioLogeado.getPerfil().getNombrePerfil().equals("Usuario Particular")) {
                     Intent intent = new Intent(InicioCalendarioActivity.this, EditarCalendarioActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
                     String jsonCalendario = new Gson().toJson(calendarioSeleccionado);
                     intent.putExtra("calendarioJson", jsonCalendario);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(InicioCalendarioActivity.this, EditarCalendarioEnfermeroActivity.class);
+                    intent.putExtra("codUsuario", codUsuarioLogeado);
                     String jsonCalendario = new Gson().toJson(calendarioSeleccionado);
                     intent.putExtra("calendarioJson", jsonCalendario);
                     startActivity(intent);
@@ -469,7 +477,12 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                     popupWindow.dismiss();
                     popupEditarRecordatorio(registroRecordatorio);
                 });
-
+                if(!codigosPermisos.contains(7)){
+                    editarRecordatorio.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(8)){
+                    eliminarRecordatorio.setVisibility(View.GONE);
+                }
             }
             else {
                 View popupView = getLayoutInflater().inflate(R.layout.n55_0_notificacion_recordatorio, null);
@@ -1370,6 +1383,39 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
     }
 
+    private void verificarPermisos(Usuario usuarioLogeado) {
+        perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
+            @Override
+            public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {
+                permisos = response.body();
+                codigosPermisos = permisos.stream()
+                        .map(perfilPermiso -> perfilPermiso.getPermiso().getCodPermiso())
+                        .collect(Collectors.toList());
+
+                if(!codigosPermisos.contains(1)){
+                    calendarioNuevo.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(2)){
+                    editarCalendario.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(6)){
+                    agregarRecordatorio.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(10)){
+                    editarPerfil.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(11)){
+                    eliminarCuenta.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PerfilPermiso>> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
+
     private void deshabilitarBotonConsejos() {
         // Si no es un Usuario Particular, se deshabilita la Sección Consejos
         if (!usuarioLogeado.getPerfil().getNombrePerfil().equals("Usuario Particular")){
@@ -2018,6 +2064,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         } else {
             Log.d("MiApp", "No se encontraron clases 'Inventario' asociadas al codRecordatorio: " + recordatorio.getCodRecordatorio());
         }
+        verificarPermisos(usuarioLogeado);
     }
 
     private void popupInventarioAlerta(Inventario inventario) {

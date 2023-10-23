@@ -127,6 +127,18 @@ public class Perfil {
 				+ fechaAltaPerfil + ", fechaFinVigenciaP=" + fechaFinVigenciaP + ", motivoFinVigenciaP=" 
 				+ motivoFinVigenciaP + ", nombrePerfil=" + nombrePerfil + "]";
 	}
+
+
+
+	public List<PerfilPermiso> getPerfilPermiso() {
+		return perfilPermiso;
+	}
+
+
+
+	public void setPerfilPermiso(List<PerfilPermiso> perfilPermiso) {
+		this.perfilPermiso = perfilPermiso;
+	}
 	
 	
 }

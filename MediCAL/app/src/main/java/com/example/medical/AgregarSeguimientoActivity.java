@@ -19,10 +19,14 @@ import android.widget.TextView;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.CalendarioMedicion;
 import com.example.medical.model.CalendarioSintoma;
+import com.example.medical.model.PerfilPermiso;
+import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
 import com.example.medical.retrofit.CalendarioMedicionApi;
 import com.example.medical.retrofit.CalendarioSintomaApi;
+import com.example.medical.retrofit.PerfilPermisoApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -43,7 +47,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AgregarSeguimientoActivity extends AppCompatActivity {
-
+    private List<PerfilPermiso> permisos;
+    private List<Integer> codigosPermisos;
     private static final String PREFS_NAME = "MyPrefs"; // Nombre de las preferencias compartidas
     private static final String FIRST_TIME_KEY = "isFirstTime"; // Clave para indicar si es la primera vez
     private Calendario calendarioSeleccionado;
@@ -53,7 +58,10 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
     private CalendarioApi calendarioApi;
     private CalendarioSintomaApi calendarioSintomaApi;
     private CalendarioMedicionApi calendarioMedicionApi;
+    private UsuarioApi usuarioApi;
+    private PerfilPermisoApi perfilPermisoApi;
     private RelativeLayout ultimaRelativeLayoutSintoma=null;
+    private Button agregarSeguimientoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +83,10 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
         // Inicializar las APIs utilizando Retrofit
         calendarioMedicionApi = retrofitService.getRetrofit().create(CalendarioMedicionApi.class);
         calendarioSintomaApi = retrofitService.getRetrofit().create(CalendarioSintomaApi.class);
+        usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+        perfilPermisoApi = retrofitService.getRetrofit().create(PerfilPermisoApi.class);
+        agregarSeguimientoButton = findViewById(R.id.button_agregarseguimiento);
+        inicializarUsuario();
 
         runOnUiThread(new Runnable() {
             @Override
@@ -84,9 +96,6 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
             }
         });
 
-
-
-        Button agregarSeguimientoButton = findViewById(R.id.button_agregarseguimiento);
         agregarSeguimientoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +140,38 @@ public class AgregarSeguimientoActivity extends AppCompatActivity {
 
     }
 
+    private void inicializarUsuario() {
+        usuarioApi.getByCodUsuario(getIntent().getIntExtra("codUsuario",0)).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                verificarPermisos(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
+    private void verificarPermisos(Usuario usuarioLogeado) {
+        perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
+            @Override
+            public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {
+                permisos = response.body();
+                codigosPermisos = permisos.stream()
+                        .map(perfilPermiso -> perfilPermiso.getPermiso().getCodPermiso())
+                        .collect(Collectors.toList());
+                if(!codigosPermisos.contains(4) && !codigosPermisos.contains(12)){
+                    agregarSeguimientoButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PerfilPermiso>> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
     private void obtenerCalendarioSeleccionado() {
         Call<Calendario> call = calendarioApi.getByCodCalendario(codCalendario);
         call.enqueue(new Callback<Calendario>() {

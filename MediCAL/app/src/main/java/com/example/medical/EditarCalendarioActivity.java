@@ -20,10 +20,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.medical.model.Calendario;
+import com.example.medical.model.PerfilPermiso;
+import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.PerfilPermisoApi;
 import com.example.medical.retrofit.ReporteApi;
 import com.example.medical.retrofit.RetrofitService;
+import com.example.medical.retrofit.UsuarioApi;
 import com.google.gson.Gson;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +47,10 @@ public class EditarCalendarioActivity extends AppCompatActivity {
     private Button guardar;
     private Calendario calendario;
     private RetrofitService retrofitService = new RetrofitService();
+    private List<PerfilPermiso> permisos;
+    private List<Integer> codigosPermisos;
+    private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+    private PerfilPermisoApi perfilPermisoApi = retrofitService.getRetrofit().create(PerfilPermisoApi.class);
     private CalendarioApi calendarioApi = retrofitService.getRetrofit().create(CalendarioApi.class);
 
 
@@ -186,7 +197,39 @@ public class EditarCalendarioActivity extends AppCompatActivity {
         eliminarCalendario = findViewById(R.id.button_eliminarCalendario);
         nombreCalendario.setText(calendario.getNombreCalendario());
         relacionCalendario.setText(calendario.getRelacionCalendario());
-
+        inicializarUsuario();
     }
 
+    private void inicializarUsuario() {
+        usuarioApi.getByCodUsuario(getIntent().getIntExtra("codUsuario",0)).enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                verificarPermisos(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
+    private void verificarPermisos(Usuario usuarioLogeado) {
+        perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
+            @Override
+            public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {
+                permisos = response.body();
+                codigosPermisos = permisos.stream()
+                        .map(perfilPermiso -> perfilPermiso.getPermiso().getCodPermiso())
+                        .collect(Collectors.toList());
+                if(!codigosPermisos.contains(3)){
+                    eliminarCalendario.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PerfilPermiso>> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
 }
