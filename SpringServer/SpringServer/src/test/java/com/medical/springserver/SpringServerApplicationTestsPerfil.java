@@ -91,21 +91,21 @@ class SpringServerApplicationTestsPerfil {
 		permisoDao.save(permiso8);
 		
 		Permiso permiso9 = new Permiso();
-		permiso9.setNombrePermiso("Agregar Usuarios");
+		permiso9.setNombrePermiso("Agregar Usuario");
 		permiso9.setDescPermiso("Permite al usuario crear usuarios");
 		permiso9.setFechaAltaPermiso(fechaHoy);
 		permisosTotales.add(permiso9);
 		permisoDao.save(permiso9);
 		
 		Permiso permiso10 = new Permiso();
-		permiso10.setNombrePermiso("Modificar Usuarios");
+		permiso10.setNombrePermiso("Modificar Usuario");
 		permiso10.setDescPermiso("Permite al usuario modificar usuarios existentes");
 		permiso10.setFechaAltaPermiso(fechaHoy);
 		permisosTotales.add(permiso10);
 		permisoDao.save(permiso10);
 		
 		Permiso permiso11 = new Permiso();
-		permiso11.setNombrePermiso("Eliminar Usuarios");
+		permiso11.setNombrePermiso("Eliminar Usuario");
 		permiso11.setDescPermiso("Permite al usuario eliminar usuarios existentes");
 		permiso11.setFechaAltaPermiso(fechaHoy);
 		permisosTotales.add(permiso11);
