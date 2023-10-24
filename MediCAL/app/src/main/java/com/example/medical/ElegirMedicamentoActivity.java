@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -159,9 +160,11 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         String medicamentoSeleccionadoString = filteredMedicamentos.get(position);
+                        Log.d("MiApp", "medicamentoSeleccionadoString es: " + medicamentoSeleccionadoString);
                         for (Medicamento medicamento : medicamentosEntidades) {
-                            if (medicamento.getNombreMedicamento().equalsIgnoreCase(medicamentoSeleccionadoString)) {
+                            if ((medicamento.getNombreMedicamento()+ " - " + medicamento.getMarcaMedicamento()).equalsIgnoreCase(medicamentoSeleccionadoString)) {
                                 medicamentoSeleccionado = medicamento;
+                                Log.d("MiApp", "medicamentoSeleccionado es: " + medicamentoSeleccionado);
                             }
                         }
 
@@ -169,6 +172,7 @@ public class ElegirMedicamentoActivity extends AppCompatActivity {
                         recordatorio.setMedicamento(medicamentoSeleccionado);
                         recordatorio.setCalendario(calendarioSeleccionado);
                         recordatorio.setFechaAltaRecordatorio(LocalDate.now());
+                        Log.d("MiApp", "El nuevo recordatorio tiene: " + recordatorio);
                         recordatorioApi.save(recordatorio).enqueue(new Callback<Recordatorio>() {
                             @Override
                             public void onResponse(Call<Recordatorio> call, Response<Recordatorio> response) {
