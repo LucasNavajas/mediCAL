@@ -296,7 +296,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 // Obtener el valor actual del EditText
-                                int diasduracion = 99999;
+                                int diasduracion = 380;
                                 recordatorio.setDuracionRecordatorio(diasduracion);
                                 recordatorio.setFechaFinRecordatorio(recordatorio.getFechaInicioRecordatorio().plusDays(diasduracion));
 
@@ -599,8 +599,8 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(EditarDosisFuturasActivity.this, "Error al modificar los registros del recordatorio", Toast.LENGTH_SHORT).show();
                 inhabilitarCargando();
+                popUpAplazado(recordatorio);
             }
         });
     }
@@ -887,7 +887,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
 
         TextView diasduracionTextView = findViewById(R.id.dias);
 
-        if (diasduracion == 99999) {
+        if (diasduracion == 380) {
             diasduracionTextView.setText("Tratamiento continuo");
         } else {
             diasduracionTextView.setText("Días de tratamiento: " + diasduracion);
