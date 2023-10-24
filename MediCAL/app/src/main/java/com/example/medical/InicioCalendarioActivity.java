@@ -422,6 +422,7 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 // Mostrar el popup en la ubicación deseada
                 popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
+                ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
                 ImageView eliminarRecordatorio = popupView.findViewById(R.id.imagen_basurin);
                 ImageView editarRecordatorio = popupView.findViewById(R.id.imagen_lapiz);
                 ImageView imagenRecordatorio = popupView.findViewById(R.id.imagen);
@@ -472,7 +473,10 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                     popupWindow.dismiss();
                     popupEliminarRecordatorio(registroRecordatorio);
                 });
-
+                cerrar.setOnClickListener(view ->{
+                    popupWindow.dismiss();
+                    dimView.setVisibility(View.GONE);
+                });
                 editarRecordatorio.setOnClickListener(view ->{
                     popupWindow.dismiss();
                     popupEditarRecordatorio(registroRecordatorio);

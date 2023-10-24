@@ -15,6 +15,17 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp">
 
+        <!-- Botón cerrar -->
+        <ImageView
+            android:id="@+id/boton_cerrar"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/cerrar_cruz_delgada"
+            />
+
         <ImageView
             android:id="@+id/imagen_lapiz"
             android:layout_width="40dp"
