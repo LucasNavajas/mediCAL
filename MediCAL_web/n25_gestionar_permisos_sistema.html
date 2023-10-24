@@ -499,7 +499,7 @@
         <div class="box4">
             <label style="font-size: 18px; font-weight: bold; margin-left: 10px; margin-right: 10px;" >Permisos de Usuario</label>
           <ul>
-            <li><input type="checkbox" id="item9" /><label for="item9">Agregar Usuarios</label></li>
+            <li><input type="checkbox" id="item9" disabled/><label for="item9">Agregar Usuarios</label></li>
             <li><input type="checkbox" id="item10" /><label for="item10">Modificar Usuarios</label></li>
             <li><input type="checkbox" id="item11" /><label for="item11">Eliminar Usuarios</label></li>
           </ul>
@@ -556,7 +556,7 @@ $(document).ready(function() {
         // Iterar a través de los resultados
         data.forEach(function(perfil) {
             // Excluir el perfil "Administrador del Sistema"
-            if (perfil.nombrePerfil !== "Administrador del Sistema") {
+            if (perfil.nombrePerfil !== "Administrador del Sistema" && perfil.nombrePerfil !== "Administrador de Institución") {
                 // Agregar una opción al select
                 $("#lista_usuarios").append($("<option>").val(perfil.codPerfil).text(perfil.nombrePerfil));
             }
@@ -585,6 +585,7 @@ $(document).ready(function() {
                     $("#" + checkboxId).prop("checked", true);
                 });
             });
+            $("#item9" ).prop("checked", true);
         }
     }
 

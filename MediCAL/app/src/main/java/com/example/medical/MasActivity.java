@@ -487,6 +487,12 @@ public class MasActivity extends AppCompatActivity {
                 if(!codigosPermisos.contains(15)){
                    rectangleInformes.setVisibility(View.GONE);
                 }
+                if(!codigosPermisos.contains(10)){
+                    editarPerfil.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(11)){
+                    eliminarCuenta.setVisibility(View.GONE);
+                }
             }
 
             @Override

@@ -1962,7 +1962,7 @@ document.getElementById("myChart").style.display = "block";
 
 var ctx = document.getElementById('myChart').getContext('2d');
 
-const chart = new Chart(ctx, {
+var chart = new Chart(ctx, {
   type: 'bar',
   data: {
     labels: nombres,
@@ -2006,7 +2006,7 @@ const imageId = workbook.addImage({
   });
 
 document.getElementById("myChart").style.display = "none";
-
+chart.destroy();
 
 }
 
@@ -2233,9 +2233,11 @@ async function agruparSintomas(worksheet, dataSintomas, workbook) {
   }
 document.getElementById("myChart").style.display = "block";
 
+
 var ctx = document.getElementById('myChart').getContext('2d');
 
-const chart = new Chart(ctx, {
+
+var chart = new Chart(ctx, {
   type: 'bar',
   data: {
     labels: nombres,
@@ -2279,6 +2281,7 @@ const imageId = workbook.addImage({
   });
 
 document.getElementById("myChart").style.display = "none";
+chart.destroy();
 
 }
 

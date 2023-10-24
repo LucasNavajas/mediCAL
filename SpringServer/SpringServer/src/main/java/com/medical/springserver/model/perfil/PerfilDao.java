@@ -46,7 +46,11 @@ public class PerfilDao{
 	public List<Perfil> getAllPerfiles() {
 	    Streamable<Perfil> streamablePerfiles = Streamable.of(repository.findAll());
 	    List<Perfil> perfiles = new ArrayList<>();
-	    streamablePerfiles.forEach(perfiles::add);
+	    
+	    streamablePerfiles
+	        .filter(perfil -> perfil.getFechaFinVigenciaP() == null)
+	        .forEach(perfiles::add);
+	    
 	    return perfiles;
 	}
 	

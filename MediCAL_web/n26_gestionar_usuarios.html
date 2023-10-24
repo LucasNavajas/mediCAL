@@ -1807,6 +1807,7 @@ var mailsExistentes = [];
 var dnisExistentes = [];
 var matriculasExistentes = [];
 var usuarioActual, mailActual, dniActual, matriculaActual;
+function obtenerCamposExistentes(){
 fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
     method: 'GET',
     headers: {
@@ -1896,6 +1897,9 @@ fetch(`http://localhost:8080/profesionalsalud/dni-unico`, {
         // Manejar errores de la solicitud
         console.error("Error en la solicitud:", error);
     });
+
+}
+obtenerCamposExistentes();
 function editarInstancia(index){
   openDialogModificar("popup-dialog-modificar-usuario", index);
 }
@@ -2392,6 +2396,7 @@ document.getElementById("loading-overlay").classList.remove("hidden");
             closeDialog('popup-dialog-modificar-usuario');
             filtrarUsuarios();
             openDialog('popup-dialog-guardado');
+            obtenerCamposExistentes();
         },
         error: function (error) {
             console.error("Error al guardar el profesional de salud:", error);
@@ -2418,6 +2423,7 @@ document.getElementById("loading-overlay").classList.remove("hidden");
             closeDialog('popup-dialog-modificar-usuario');
             filtrarUsuarios();
             openDialog('popup-dialog-guardado');
+            obtenerCamposExistentes();
         },
         error: function (error) {
             console.error("Error al guardar el usuario:", error);
@@ -2446,6 +2452,7 @@ document.getElementById("loading-overlay").classList.remove("hidden");
             closeDialog('popup-dialog-modificar-usuario');
             filtrarUsuarios();
             openDialog('popup-dialog-guardado');
+            obtenerCamposExistentes();
         },
         error: function (error) {
         	document.getElementById("loading-overlay").classList.add("hidden");
@@ -2472,6 +2479,7 @@ document.getElementById("loading-overlay").classList.remove("hidden");
             closeDialog('popup-dialog-modificar-usuario');
             filtrarUsuarios();
             openDialog('popup-dialog-guardado');
+            obtenerCamposExistentes();
         },
         error: function (error) {
         	document.getElementById("loading-overlay").classList.add("hidden");

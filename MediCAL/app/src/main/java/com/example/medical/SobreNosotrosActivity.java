@@ -27,8 +27,7 @@ public class SobreNosotrosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.n89_sobre_app);
-        this.context = context;
-
+        context = this;
         botonVolver = findViewById(R.id.boton_volver);
         termYCond = findViewById(R.id.text_term_cond);
         politicas = findViewById(R.id.text_politicas);
@@ -68,9 +67,9 @@ public class SobreNosotrosActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Copiar link a manual ?
-                String url = "https://drive.google.com/file/d/1k7BJV5AQUrGgPFDskg1RTq0I2TPUYcpj/view?usp=sharing";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+                String link = "https://drive.google.com/file/d/1k7BJV5AQUrGgPFDskg1RTq0I2TPUYcpj/view?usp=sharing";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                context.startActivity(intent);
             }
         });
 

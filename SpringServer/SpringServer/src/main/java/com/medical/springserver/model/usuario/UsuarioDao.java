@@ -168,6 +168,7 @@ public class UsuarioDao {
         UserRecord userRecord2 = FirebaseAuth.getInstance().updateUser(request);
         String hashedPassword = passwordEncoder.encode(nuevaContrasenia);
         usuario.setContraseniaUsuario(hashedPassword);
+        usuario.setFechaAltaUsuario(LocalDate.now());
         return repository.save(usuario);
     }
 	

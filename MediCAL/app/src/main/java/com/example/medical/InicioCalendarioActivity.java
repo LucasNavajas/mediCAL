@@ -68,6 +68,7 @@ import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -1349,6 +1350,14 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
                 deshabilitarBotonConsejos();
                 if(usuarioLogeado.getPerfil()!=null) {
                     perfilUsuario.setText(usuarioLogeado.getPerfil().getNombrePerfil());
+                    Period periodo = Period.between(usuarioLogeado.getFechaAltaUsuario(), LocalDate.now());
+
+                    if(periodo.getYears()>1 && usuarioLogeado.getPerfil().getCodPerfil()!=1){
+                        popupContraseniaAlerta(usuarioLogeado.getPerfil().getCodPerfil());
+                    }
+                    else if(periodo.getYears()>1 && usuarioLogeado.getPerfil().getCodPerfil()==1){
+                        popupContraseniaAlerta(usuarioLogeado.getPerfil().getCodPerfil());
+                    }
                 }
                 nombreUsuario.setText(usuarioLogeado.getUsuarioUnico());
                 codUsuarioLogeado = usuarioLogeado.getCodUsuario();
@@ -2131,6 +2140,48 @@ public class InicioCalendarioActivity extends AppCompatActivity implements Calen
         });
     }
 
+    private void popupContraseniaAlerta(int codPerfil) {
+        View popupView = getLayoutInflater().inflate(R.layout.n90_popup_vencimiento_contrasenia, null);
+
+        // Crear la instancia de PopupWindow
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        // Hacer que el popup sea enfocable (opcional)
+        popupWindow.setFocusable(true);
+
+        // Configurar animación para oscurecer el fondo
+        View rootView = findViewById(android.R.id.content);
+
+        View dimView = findViewById(R.id.dim_view_contrasenia);
+        dimView.setVisibility(View.VISIBLE);
+
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.popup);
+        popupView.startAnimation(scaleAnimation);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(false);
+        // Mostrar el popup en la ubicación deseada
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        TextView texto = popupView.findViewById(R.id.text);
+        ImageView cerrar = popupView.findViewById(R.id.boton_cerrar);
+
+        if(codPerfil == 1){
+            texto.setText("Han pasado 2 años, debe modificar su contraseña por motivos de seguridad");
+        }
+        else{
+            texto.setText("Ha pasado 1 año, debe modificar su contraseña por motivos de seguridad");
+        }
+
+        cerrar.setOnClickListener(view ->{popupWindow.dismiss();});
+        // Configurar el OnTouchListener para la vista oscura
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                dimView.setVisibility(View.GONE);
+            }
+        });
+    }
 
     private void popupInventarioVacio(Inventario inventario) {
         notificacionInventario++;

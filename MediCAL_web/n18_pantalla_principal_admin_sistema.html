@@ -1624,6 +1624,10 @@
 
 var usuariosExistentes = [];
 var mailsExistentes = [];
+var dnisExistentes = [];
+var matriculasExistentes = [];
+var usuarioActual, mailActual, dniActual, matriculaActual;
+function obtenerCamposExistentes(){
 fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
     method: 'GET',
     headers: {
@@ -1668,6 +1672,54 @@ fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
         // Manejar errores de la solicitud
         console.error("Error en la solicitud:", error);
     });
+
+
+fetch(`http://localhost:8080/profesionalsalud/dni-unico`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       dnisExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+    fetch(`http://localhost:8080/profesionalsalud/matriculas-unicas`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+        if (response.ok) {
+            // La contraseña se modificó con éxito, puedes manejar la respuesta aquí
+            return response.json(); // Si esperas más datos en la respuesta, puedes parsearla como JSON
+        } else {
+            return response.json(); // Si la respuesta contiene información adicional sobre el error, puedes parsearla también
+        }
+    })
+    .then(data => {
+       matriculasExistentes = data;
+    })
+    .catch(error => {
+        // Manejar errores de la solicitud
+        console.error("Error en la solicitud:", error);
+    });
+
+}
+obtenerCamposExistentes();
 
 var guardarButton = document.getElementById("guardar-button");
 function ejecutarSQL() {
@@ -1919,11 +1971,13 @@ function checkContraseña() {
                 var usuarioString = JSON.stringify(data);
                 // Almacena la cadena JSON en sessionStorage bajo un nombre de clave
                 localStorage.setItem('usuario', usuarioString);
+                obtenerCamposExistentes();
               })
               .catch(function (error) {
                 // Manejar errores generales
                 console.error('Error:', error);
               });
+
   }
 
  function togglePassword(inputId, eyeIconId) {

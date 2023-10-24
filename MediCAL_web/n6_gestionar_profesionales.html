@@ -1791,6 +1791,7 @@ var mailsExistentes = [];
 var dnisExistentes = [];
 var matriculasExistentes = [];
 var usuarioActual, mailActual, dniActual, matriculaActual;
+function obtenerCamposExistentes(){
 fetch(`http://localhost:8080/usuario/get-all-usuarios-unicos`, {
     method: 'GET',
     headers: {
@@ -1836,7 +1837,8 @@ fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
         console.error("Error en la solicitud:", error);
     });
 
-    fetch(`http://localhost:8080/profesionalsalud/dni-unico`, {
+
+fetch(`http://localhost:8080/profesionalsalud/dni-unico`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json'
@@ -1879,6 +1881,9 @@ fetch(`http://localhost:8080/usuario/get-all-mails-unicos-cuentas`, {
         // Manejar errores de la solicitud
         console.error("Error en la solicitud:", error);
     });
+
+}
+obtenerCamposExistentes();
 function editarInstancia(index){
   openDialogModificar("popup-dialog-modificar-profesional", index);
 }
@@ -2239,12 +2244,14 @@ function guardarUsuario(jsonUsuarioSalud){
             closeDialog('popup-dialog-modificar-profesional');
             cargarTabla();
             openDialog('popup-dialog-guardado');
+            obtenerCamposExistentes();
         },
         error: function (error) {
             document.getElementById("loading-overlay").classList.add("hidden");
             console.error("Error al guardar el profesional de salud:", error);
         }
     });
+
   }
 
   function crearJSONUsuarioModificado(){
@@ -2297,6 +2304,7 @@ function modificarProfesional(json){
             closeDialog('popup-dialog-modificar-profesional');
             cargarTabla();
             openDialog('popup-dialog-guardado');
+            obtenerCamposExistentes();
         },
         error: function (error) {
             document.getElementById("loading-overlay").classList.add("hidden");

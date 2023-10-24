@@ -38,10 +38,12 @@ import com.example.medical.model.Calendario;
 import com.example.medical.model.Dosis;
 import com.example.medical.model.Inventario;
 import com.example.medical.model.Medicamento;
+import com.example.medical.model.PerfilPermiso;
 import com.example.medical.model.Recordatorio;
 import com.example.medical.model.RegistroRecordatorio;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.CalendarioApi;
+import com.example.medical.retrofit.PerfilPermisoApi;
 import com.example.medical.retrofit.RecordatorioApi;
 import com.example.medical.retrofit.RegistroRecordatorioApi;
 import com.example.medical.retrofit.RetrofitService;
@@ -57,12 +59,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class MedicamentosActivity extends AppCompatActivity {
     private RetrofitService retrofitService = new RetrofitService();
+    private List<PerfilPermiso> permisos;
+    private List<Integer> codigosPermisos;
     private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
-
+    private PerfilPermisoApi perfilPermisoApi = retrofitService.getRetrofit().create(PerfilPermisoApi.class);
     private ImageView menuButton;
     private TextView nombreUsuario;
     private TextView nombre;
@@ -284,7 +289,7 @@ public class MedicamentosActivity extends AppCompatActivity {
                     perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
                 }
                 nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
-
+                verificarPermisos(usuarioInstance);
             }
 
             @Override
@@ -758,11 +763,9 @@ public class MedicamentosActivity extends AppCompatActivity {
     }
 
     private void createTextViewNoHayActivos(int aver) {
+        TextView nombreCalendarioTextView = findViewById(R.id.nombre_calendario);
+        nombreCalendarioTextView.setText(calendarioSeleccionado.getNombreCalendario());
             if (aver != 3 && aca != 1) {
-                TextView nombreCalendarioTextView = findViewById(R.id.nombre_calendario);
-                nombreCalendarioTextView.setText(calendarioSeleccionado.getNombreCalendario());
-                progressBar.setVisibility(View.GONE);
-                dimView.setVisibility(View.GONE);
 
                 LinearLayout linearLayout = findViewById(R.id.contenido);
                 // Crear un nuevo TextView para el mensaje "No hay Medicamentos Activos"
@@ -795,6 +798,8 @@ public class MedicamentosActivity extends AppCompatActivity {
 
                 aca = 1;
             }
+        progressBar.setVisibility(View.GONE);
+        dimView.setVisibility(View.GONE);
     }
 
     private LocalDateTime obtenerFechaMasAntigua(List<RegistroRecordatorio> registrosRelacionados, String todoJunto) {
@@ -877,6 +882,28 @@ public class MedicamentosActivity extends AppCompatActivity {
         return inventarioMasActual;
     }
 
+    private void verificarPermisos(Usuario usuarioLogeado) {
+        perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
+            @Override
+            public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {
+                permisos = response.body();
+                codigosPermisos = permisos.stream()
+                        .map(perfilPermiso -> perfilPermiso.getPermiso().getCodPermiso())
+                        .collect(Collectors.toList());
+                if(!codigosPermisos.contains(10)){
+                    editarPerfil.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(11)){
+                    eliminarCuenta.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PerfilPermiso>> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
 
 
 }

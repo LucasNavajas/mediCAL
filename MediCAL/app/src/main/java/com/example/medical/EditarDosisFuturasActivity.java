@@ -298,6 +298,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                                 // Obtener el valor actual del EditText
                                 int diasduracion = 99999;
                                 recordatorio.setDuracionRecordatorio(diasduracion);
+                                recordatorio.setFechaFinRecordatorio(recordatorio.getFechaInicioRecordatorio().plusDays(diasduracion));
 
                                 // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
                                 mostrarDuracionDias(diasduracion);
@@ -1604,6 +1605,7 @@ public class EditarDosisFuturasActivity extends AppCompatActivity {
                 // Obtener el valor actual del EditText
                 int diasduracion = Integer.parseInt(textEditDias.getText().toString());
                 recordatorio.setDuracionRecordatorio(diasduracion);
+                recordatorio.setFechaFinRecordatorio(recordatorio.getFechaInicioRecordatorio().plusDays(diasduracion));
 
                 // Llamar al método mostrarDuracion y pasar la fecha y los días de duración
                 mostrarDuracionDias(diasduracion);

@@ -38,9 +38,11 @@ import com.example.medical.FiltrosDeEditText.TextOnlyInputFilter;
 import com.example.medical.adapter.ConsejoAdapter;
 import com.example.medical.model.Calendario;
 import com.example.medical.model.Consejo;
+import com.example.medical.model.PerfilPermiso;
 import com.example.medical.model.TipoConsejo;
 import com.example.medical.model.Usuario;
 import com.example.medical.retrofit.ConsejoApi;
+import com.example.medical.retrofit.PerfilPermisoApi;
 import com.example.medical.retrofit.RetrofitService;
 import com.example.medical.retrofit.TipoConsejoApi;
 import com.example.medical.retrofit.UsuarioApi;
@@ -51,11 +53,15 @@ import com.google.gson.Gson;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ConsejosActivity extends AppCompatActivity {
         private RetrofitService retrofitService = new RetrofitService();
+        private List<PerfilPermiso> permisos;
+        private List<Integer> codigosPermisos;
         private UsuarioApi usuarioApi = retrofitService.getRetrofit().create(UsuarioApi.class);
+        private PerfilPermisoApi perfilPermisoApi = retrofitService.getRetrofit().create(PerfilPermisoApi.class);
 
         private ImageView menuButton;
         private TextView nombreUsuario;
@@ -286,13 +292,13 @@ public class ConsejosActivity extends AppCompatActivity {
             usuarioApi.getByCodUsuario(codUsuarioLogeado).enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    usuarioInstance = response.body();
                     usuarioInstance=response.body();
                     if(usuarioInstance.getPerfil()!=null) {
                         perfilUsuario.setText(usuarioInstance.getPerfil().getNombrePerfil());
                     }
                     nombreUsuario.setText(usuarioInstance.getUsuarioUnico());
                     nombre.setText(usuarioInstance.getUsuarioUnico());
+                    verificarPermisos(usuarioInstance);
                 }
 
                 @Override
@@ -456,7 +462,28 @@ public class ConsejosActivity extends AppCompatActivity {
             }
         });
     }
+    private void verificarPermisos(Usuario usuarioLogeado) {
+        perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
+            @Override
+            public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {
+                permisos = response.body();
+                codigosPermisos = permisos.stream()
+                        .map(perfilPermiso -> perfilPermiso.getPermiso().getCodPermiso())
+                        .collect(Collectors.toList());
+                if(!codigosPermisos.contains(10)){
+                    editarPerfil.setVisibility(View.GONE);
+                }
+                if(!codigosPermisos.contains(11)){
+                    eliminarCuenta.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<PerfilPermiso>> call, Throwable t) {
+                Log.d("Error en la obtencion de los permisos", "Error en permisos");
+            }
+        });
+    }
     }
 
 
