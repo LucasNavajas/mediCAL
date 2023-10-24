@@ -68,9 +68,9 @@ public class SobreNosotrosActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Copiar link a manual ?
-                String link = "";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                context.startActivity(intent);
+                String url = "https://drive.google.com/file/d/1k7BJV5AQUrGgPFDskg1RTq0I2TPUYcpj/view?usp=sharing";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
             }
         });
 
@@ -93,6 +93,7 @@ public class SobreNosotrosActivity extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
+
 
     }
 
