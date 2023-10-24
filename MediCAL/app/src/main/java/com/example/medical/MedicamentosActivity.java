@@ -759,6 +759,11 @@ public class MedicamentosActivity extends AppCompatActivity {
 
     private void createTextViewNoHayActivos(int aver) {
             if (aver != 3 && aca != 1) {
+                TextView nombreCalendarioTextView = findViewById(R.id.nombre_calendario);
+                nombreCalendarioTextView.setText(calendarioSeleccionado.getNombreCalendario());
+                progressBar.setVisibility(View.GONE);
+                dimView.setVisibility(View.GONE);
+
                 LinearLayout linearLayout = findViewById(R.id.contenido);
                 // Crear un nuevo TextView para el mensaje "No hay Medicamentos Activos"
                 TextView noEncontradoTextView = new TextView(this);
