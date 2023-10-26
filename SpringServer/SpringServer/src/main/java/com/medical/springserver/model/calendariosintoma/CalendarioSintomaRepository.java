@@ -16,7 +16,7 @@ public interface CalendarioSintomaRepository extends CrudRepository<CalendarioSi
 	
 	// Método para buscar todas las instancias de Calendario con un codcalendario específico
 	@Query("SELECT cs FROM CalendarioSintoma cs WHERE cs.calendario.codCalendario = :codCalendario AND cs.fechaFinVigenciaCS IS NULL")
-	List<CalendarioSintoma> findByCodCalendario(@Param("codCalendario") Integer codCalendario);
+	List<CalendarioSintoma> findByCodCalendario(@Param("codCalendario") int codCalendario);
 
     CalendarioSintoma findByCodCalendarioSintoma(Integer codCalendarioSintoma);
     
