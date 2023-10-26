@@ -106,18 +106,21 @@ public class CrearCalendario2Activity extends AppCompatActivity {
                         Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioEnfermeroActivity.class);
                         String jsonCalendario2 = new Gson().toJson(calendario);
                         intent.putExtra("calendarioJson", jsonCalendario2);
+                        intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                         startActivity(intent);
                     }
                     calendario.setNombreCalendario(nombreCalendarioString);
                     Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioEnfermeroActivity.class);
                     String jsonCalendario2 = new Gson().toJson(calendario);
                     intent.putExtra("calendarioJson", jsonCalendario2);
+                    intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                     startActivity(intent);
                 } else {
                     calendario.setNombreCalendario(nombreCalendarioString);
                     Intent intent = new Intent(CrearCalendario2Activity.this, EditarCalendarioActivity.class);
                     String jsonCalendario2 = new Gson().toJson(calendario);
                     intent.putExtra("calendarioJson", jsonCalendario2);
+                    intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                     startActivity(intent);
                 }
             }

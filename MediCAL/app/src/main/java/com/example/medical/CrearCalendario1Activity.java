@@ -49,6 +49,7 @@ public class CrearCalendario1Activity extends AppCompatActivity {
                     Intent intent = new Intent(CrearCalendario1Activity.this, EditarCalendarioActivity.class);
                     String jsonCalendario2 = new Gson().toJson(calendario);
                     intent.putExtra("calendarioJson", jsonCalendario2);
+                    intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                     startActivity(intent);
                 }
             }

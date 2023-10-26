@@ -75,6 +75,7 @@ public class EditarCalendarioActivity extends AppCompatActivity {
                 Intent intent = new Intent(EditarCalendarioActivity.this, CrearCalendario2Activity.class);
                 String jsonCalendario = new Gson().toJson(calendario);
                 intent.putExtra("calendarioJson", jsonCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                 startActivity(intent);
             }
         });
@@ -84,6 +85,7 @@ public class EditarCalendarioActivity extends AppCompatActivity {
                 Intent intent = new Intent(EditarCalendarioActivity.this, CrearCalendario1Activity.class);
                 String jsonCalendario = new Gson().toJson(calendario);
                 intent.putExtra("calendarioJson", jsonCalendario);
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                 startActivity(intent);
             }
         });
@@ -201,10 +203,12 @@ public class EditarCalendarioActivity extends AppCompatActivity {
     }
 
     private void inicializarUsuario() {
+        Log.d("MiApp", "Se inicializa codUsuario: " + getIntent().getIntExtra("codUsuario",0));
         usuarioApi.getByCodUsuario(getIntent().getIntExtra("codUsuario",0)).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 verificarPermisos(response.body());
+                Log.d("MiApp","Obtengo el usuario: " + response.body());
             }
 
             @Override
@@ -214,6 +218,7 @@ public class EditarCalendarioActivity extends AppCompatActivity {
         });
     }
     private void verificarPermisos(Usuario usuarioLogeado) {
+        Log.d("MiApp", "Se tiene el usuario logeado: " + usuarioLogeado);
         perfilPermisoApi.getByCodPerfil(usuarioLogeado.getPerfil().getCodPerfil()).enqueue(new Callback<List<PerfilPermiso>>() {
             @Override
             public void onResponse(Call<List<PerfilPermiso>> call, Response<List<PerfilPermiso>> response) {

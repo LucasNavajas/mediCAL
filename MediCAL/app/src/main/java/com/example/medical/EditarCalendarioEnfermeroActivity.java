@@ -76,6 +76,7 @@ public class EditarCalendarioEnfermeroActivity extends AppCompatActivity {
                 String jsonCalendario = new Gson().toJson(calendario);
                 intent.putExtra("calendarioJson", jsonCalendario);
                 intent.putExtra("perfilPaciente", "true");
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                 startActivity(intent);
             }
         });
@@ -88,6 +89,7 @@ public class EditarCalendarioEnfermeroActivity extends AppCompatActivity {
                 intent.putExtra("calendarioJson", jsonCalendario);
                 intent.putExtra("perfilPaciente", "true");
                 intent.putExtra("editarPaciente", "true");
+                intent.putExtra("codUsuario", getIntent().getIntExtra("codUsuario",0));
                 startActivity(intent);
             }
         });
