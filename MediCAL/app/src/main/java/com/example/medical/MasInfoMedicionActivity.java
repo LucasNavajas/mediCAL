@@ -617,7 +617,7 @@ public class MasInfoMedicionActivity extends AppCompatActivity {
         });
     }
     private void obtenerCalendarioMedicionConMedicion() {
-        Call<List<CalendarioMedicion>> call5 = calendarioMedicionApi.getByCodMedicion(codMedicion);
+        Call<List<CalendarioMedicion>> call5 = calendarioMedicionApi.getByCodMedicionAndCodCalendario(codMedicion,codCalendario);
         Log.d("MiApp", "Codigo medicion MasInfoMedicion: " + codMedicion);
         call5.enqueue(new Callback<List<CalendarioMedicion>>() {
             @Override

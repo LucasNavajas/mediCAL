@@ -1,6 +1,7 @@
 package com.example.medical.retrofit;
 
 import com.example.medical.model.CalendarioMedicion;
+import com.example.medical.model.CalendarioSintoma;
 import com.example.medical.model.Usuario;
 
 
@@ -13,6 +14,13 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface CalendarioMedicionApi {
+
+    @GET("/calendariomedicion/medicion/{codMedicion}/calendario/{codCalendario}")
+    Call<List<CalendarioMedicion>> getByCodMedicionAndCodCalendario(
+            @Path("codMedicion") int codMedicion,
+            @Path("codCalendario") int codCalendario
+    );
+
 
     @GET("/calendariomedicion/get-all")
     Call<List<CalendarioMedicion>> getAllCalendarioMedicion();

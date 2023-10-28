@@ -12,8 +12,15 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface CalendarioSintomaApi {
+
+    @GET("/calendariosintoma/sintoma/{codSintoma}/calendario/{codCalendario}")
+    Call<List<CalendarioSintoma>> getByCodSintomaAndCodCalendario(
+            @Path("codSintoma") int codSintoma,
+            @Path("codCalendario") int codCalendario
+    );
 
     @GET("/calendariosintoma/get-all")
     Call<List<CalendarioSintoma>> getAllCalendarioSintomas();

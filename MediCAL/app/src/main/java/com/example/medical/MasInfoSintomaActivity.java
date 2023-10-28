@@ -614,17 +614,18 @@ public class MasInfoSintomaActivity extends AppCompatActivity {
         });
     }
     private void obtenerCalendarioMedicionConMedicion() {
-        Call<List<CalendarioSintoma>> call5 = calendarioSintomaApi.getByCodSintoma(codSintoma);
+
+        Call<List<CalendarioSintoma>> call5 = calendarioSintomaApi.getByCodSintomaAndCodCalendario(codSintoma,codCalendario);
         Log.d("MiApp", "Codigo medicion MasInfoSintoma: " + codSintoma);
         call5.enqueue(new Callback<List<CalendarioSintoma>>() {
             @Override
             public void onResponse(Call<List<CalendarioSintoma>> call5, Response<List<CalendarioSintoma>> response) {
                 if (response.isSuccessful()) {
-                    List<CalendarioSintoma> calendarioSintomas = response.body();
-                    Log.d("MiApp", "Tamaño de la lista calendarioSintomas en MasInfoSintoma: " + calendarioSintomas.size());
-                    ObtenerFechaYValor(calendarioSintomas);
-                    calendarioSintomasSelec = calendarioSintomas;
+                    List<CalendarioSintoma> NuevocalendarioSintomas = response.body();
+                    ObtenerFechaYValor(NuevocalendarioSintomas);
+                    calendarioSintomasSelec = NuevocalendarioSintomas;
                     CrearRelativeLayout(calendarioSintomasSelec);
+
                 } else {
                     int statusCode = response.code();
                     Log.d("MiApp", "Código de estado HTTP: " + statusCode);
