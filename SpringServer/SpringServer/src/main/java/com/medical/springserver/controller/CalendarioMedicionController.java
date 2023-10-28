@@ -95,5 +95,23 @@ public class CalendarioMedicionController {
 
         return ResponseEntity.ok("CalendarioMedicion eliminado exitosamente");
     }
+	
+	@GetMapping("/calendariomedicion/medicion/{codMedicion}/calendario/{codCalendario}")
+	public List<CalendarioMedicion> getByCodMedicionAndCodCalendario(
+	        @PathVariable int codMedicion, 
+	        @PathVariable int codCalendario) {
+
+	    List<CalendarioMedicion> resultByMedicion = calendariomedicionDao.findByCodMedicion(codMedicion);
+	    List<CalendarioMedicion> resultByCalendario = calendariomedicionDao.findByCodCalendario(codCalendario);
+	    
+	    List<CalendarioMedicion> combinedResult = new ArrayList<>();
+	    for (CalendarioMedicion medicion : resultByMedicion) {
+	        if (resultByCalendario.contains(medicion)) {
+	            combinedResult.add(medicion);
+	        }
+	    }
+	    
+	    return combinedResult;
+	}
 
 }

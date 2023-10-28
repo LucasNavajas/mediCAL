@@ -65,5 +65,24 @@ public class CalendarioSintomaController {
 	public CalendarioSintoma save(@RequestBody CalendarioSintoma calendariosintoma) {
 		return calendariosintomaDao.save(calendariosintoma);
 	}
+	
+	@GetMapping("/calendariosintoma/sintoma/{codSintoma}/calendario/{codCalendario}")
+	public List<CalendarioSintoma> getByCodSintomaAndCodCalendario(
+	        @PathVariable int codSintoma, 
+	        @PathVariable int codCalendario) {
+
+	    List<CalendarioSintoma> resultBySintoma = calendariosintomaDao.findByCodSintoma(codSintoma);
+	    List<CalendarioSintoma> resultByCalendario = calendariosintomaDao.findByCodCalendario(codCalendario);
+	    
+	    List<CalendarioSintoma> combinedResult = new ArrayList<>();
+	    for (CalendarioSintoma sintoma : resultBySintoma) {
+	        if (resultByCalendario.contains(sintoma)) {
+	            combinedResult.add(sintoma);
+	        }
+	    }
+	    
+	    return combinedResult;
+	}
+
 
 }
