@@ -1369,6 +1369,16 @@ async function crearReporteProfesionales() {
   worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
   worksheet.getCell('F2').font = fechaFont;
 
+  worksheet.getCell('G1').value = 'Usuario:';
+  worksheet.getCell('G1').font = fechaFont;
+  worksheet.getCell('H1').value = usuarioJson.usuarioUnico;
+  worksheet.getCell('H1').font = fechaFont;
+
+  worksheet.getCell('G2').value = 'Institución:';
+  worksheet.getCell('G2').font = fechaFont;
+  worksheet.getCell('H2').value = usuarioJson.nombreInstitucion;
+  worksheet.getCell('H2').font = fechaFont;
+
   const tituloFont = {
     name: 'Arial',
     size: 12,
@@ -1557,37 +1567,47 @@ async function crearReportePacientes() {
   };
 
   // Agregar la fecha generada en A2
-  worksheet.getCell('A2').value = 'FECHA GENERADO:';
+  worksheet.getCell('A2').value = 'Fecha Generado:';
   worksheet.getCell('A2').font = fechaFont2;
   worksheet.getCell('B2').value = formattedDate2;
   worksheet.getCell('B2').font = fechaFont2;
 
   // Agregar "Fecha Desde" en C2 y el valor de fecha desde en D2
-  worksheet.getCell('C2').value = 'FECHA DESDE:';
+  worksheet.getCell('C2').value = 'Fecha Desde:';
   worksheet.getCell('C2').font = fechaFont2;
   worksheet.getCell('D2').value = fechaDesde.toISOString().split('T')[0];
   worksheet.getCell('D2').font = fechaFont2;
 
   // Agregar "Fecha Hasta" en E2 y el valor de fecha hasta en F2
-  worksheet.getCell('E2').value = 'FECHA HASTA:';
+  worksheet.getCell('E2').value = 'Fecha Hasta:';
   worksheet.getCell('E2').font = fechaFont2;
   worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
   worksheet.getCell('F2').font = fechaFont2;
 
-  worksheet.getCell('E4').value = 'FILTRO:';
+  worksheet.getCell('E4').value = 'Filtro Profesionales:';
   worksheet.getCell('E4').font = fechaFont2;
   worksheet.getCell('F4').value = filtroProfesional;
   worksheet.getCell('F4').font = fechaFont2;
 
-  worksheet.getCell('E5').value = 'FILTRO:';
+  worksheet.getCell('E5').value = 'Filtro Medicamentos:';
   worksheet.getCell('E5').font = fechaFont2;
   worksheet.getCell('F5').value = filtroMedicamentos;
   worksheet.getCell('F5').font = fechaFont2;
 
-  worksheet.getCell('E6').value = 'FILTRO:';
+  worksheet.getCell('E6').value = 'Filtro Síntomas:';
   worksheet.getCell('E6').font = fechaFont2;
   worksheet.getCell('F6').value = filtroSintomas;
   worksheet.getCell('F6').font = fechaFont2;
+
+  worksheet.getCell('E7').value = 'Usuario:';
+  worksheet.getCell('E7').font = fechaFont2;
+  worksheet.getCell('F7').value = usuarioJson.usuarioUnico;
+  worksheet.getCell('F7').font = fechaFont2;
+
+  worksheet.getCell('E8').value = 'Institución:';
+  worksheet.getCell('E8').font = fechaFont2;
+  worksheet.getCell('F8').value = usuarioJson.nombreInstitucion;
+  worksheet.getCell('F8').font = fechaFont2;
 
   const tituloFont2 = {
     name: 'Arial',
@@ -1745,34 +1765,42 @@ async function crearReporteMedicamentos() {
   };
 
   // Agregar la fecha generada en A2
-  worksheet.getCell('A2').value = 'FECHA GENERADO:';
+  worksheet.getCell('A2').value = 'Fecha Generado:';
   worksheet.getCell('A2').font = fechaFont2;
   worksheet.getCell('B2').value = formattedDate2;
   worksheet.getCell('B2').font = fechaFont2;
 
   // Agregar "Fecha Desde" en C2 y el valor de fecha desde en D2
-  worksheet.getCell('C2').value = 'FECHA DESDE:';
+  worksheet.getCell('C2').value = 'Fecha Desde:';
   worksheet.getCell('C2').font = fechaFont2;
   worksheet.getCell('D2').value = fechaDesde.toISOString().split('T')[0];
   worksheet.getCell('D2').font = fechaFont2;
 
   // Agregar "Fecha Hasta" en E2 y el valor de fecha hasta en F2
-  worksheet.getCell('E2').value = 'FECHA HASTA:';
+  worksheet.getCell('E2').value = 'Fecha Hasta:';
   worksheet.getCell('E2').font = fechaFont2;
   worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
   worksheet.getCell('F2').font = fechaFont2;
 
-  worksheet.getCell('H2').value = 'FILTRO:';
+  worksheet.getCell('G2').value = 'Filtro Profesionales:';
+  worksheet.getCell('G2').font = fechaFont2;
+  worksheet.getCell('H2').value = filtroProfesional;
   worksheet.getCell('H2').font = fechaFont2;
-  worksheet.getCell('I2').value = filtroProfesional;
-  worksheet.getCell('I2').font = fechaFont2;
 
-  worksheet.getCell('K2').value = 'FILTRO:';
+  worksheet.getCell('I2').value = 'Filtro Medicamentos:';
+  worksheet.getCell('I2').font = fechaFont2;
+  worksheet.getCell('J2').value = filtroMedicamentos;
+  worksheet.getCell('J2').font = fechaFont2;
+
+  worksheet.getCell('K2').value = 'Usuario:';
   worksheet.getCell('K2').font = fechaFont2;
-  worksheet.getCell('L2').value = filtroMedicamentos;
+  worksheet.getCell('L2').value = usuarioJson.usuarioUnico;
   worksheet.getCell('L2').font = fechaFont2;
 
-
+  worksheet.getCell('M2').value = 'Institución:';
+  worksheet.getCell('M2').font = fechaFont2;
+  worksheet.getCell('N2').value = usuarioJson.nombreInstitucion;
+  worksheet.getCell('N2').font = fechaFont2;
 
   const tituloFont2 = {
     name: 'Arial',
@@ -1830,12 +1858,12 @@ async function crearReporteMedicamentos() {
   worksheet.columns.forEach((column) => {
       let maxLength = 0;
       column.eachCell({ includeEmpty: true }, (cell) => {
-        var columnLength2 = cell.value ? cell.value.toString().length : 10;
+        var columnLength2 = cell.value ? cell.value.toString().length : 20;
         if (columnLength2 > maxLength) {
           maxLength = columnLength2;
         }
       });
-      column.width = maxLength < 20 ? 20 : maxLength;
+      column.width = maxLength < 30 ? 30 : maxLength;
     });
 
 worksheet.getColumn('G').eachCell({ includeEmpty: true }, (cell, rowNumber) => {
@@ -1843,7 +1871,7 @@ worksheet.getColumn('G').eachCell({ includeEmpty: true }, (cell, rowNumber) => {
     cell.fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FF333333' }, // Cambiar el código de color a gris oscuro
+      fgColor: { argb: 'FFEEEEEE' }, // Cambiar el código de color a gris oscuro
     };
     // Otros estilos que desees aplicar a las celdas de la columna G
     cell.font = {
@@ -2045,26 +2073,35 @@ async function crearReporteSintomas() {
   };
 
   // Agregar la fecha generada en A2
-  worksheet.getCell('A2').value = 'FECHA GENERADO:';
+  worksheet.getCell('A2').value = 'Fecha Generado:';
   worksheet.getCell('A2').font = fechaFont2;
   worksheet.getCell('B2').value = formattedDate2;
   worksheet.getCell('B2').font = fechaFont2;
 
   // Agregar "Fecha Desde" en C2 y el valor de fecha desde en D2
-  worksheet.getCell('C2').value = 'FECHA DESDE:';
+  worksheet.getCell('C2').value = 'Fecha Desde:';
   worksheet.getCell('C2').font = fechaFont2;
   worksheet.getCell('D2').value = fechaDesde.toISOString().split('T')[0];
   worksheet.getCell('D2').font = fechaFont2;
 
   // Agregar "Fecha Hasta" en E2 y el valor de fecha hasta en F2
-  worksheet.getCell('E2').value = 'FECHA HASTA:';
+  worksheet.getCell('E2').value = 'Fecha Hasta:';
   worksheet.getCell('E2').font = fechaFont2;
   worksheet.getCell('F2').value = fechaHasta.toISOString().split('T')[0];
   worksheet.getCell('F2').font = fechaFont2;
 
-  worksheet.getCell('H2').value = 'DÍAS CON SÍNTOMAS:';
-  worksheet.getCell('H2').font = fechaFont2;
+  worksheet.getCell('G2').value = 'Días con Síntomas:';
+  worksheet.getCell('G2').font = fechaFont2;
 
+  worksheet.getCell('K1').value = 'Usuario:';
+  worksheet.getCell('K1').font = fechaFont2;
+  worksheet.getCell('L1').value = usuarioJson.usuarioUnico;
+  worksheet.getCell('L1').font = fechaFont2;
+
+  worksheet.getCell('K2').value = 'Institución:';
+  worksheet.getCell('K2').font = fechaFont2;
+  worksheet.getCell('L2').value = usuarioJson.nombreInstitucion;
+  worksheet.getCell('L2').font = fechaFont2;
   const tituloFont2 = {
     name: 'Arial',
     size: 12,
@@ -2112,8 +2149,8 @@ worksheet.mergeCells('G4:J23');
       i++;
     }
     var diasConSintomas = contarDiasConSintomas(dataSintomas);
-    worksheet.getCell('I2').value = diasConSintomas;
-    worksheet.getCell('I2').font = fechaFont2;
+    worksheet.getCell('H2').value = diasConSintomas;
+    worksheet.getCell('H2').font = fechaFont2;
 
     agruparSintomas(worksheet, dataSintomas, workbook);
   worksheet.columns.forEach((column) => {
@@ -2132,7 +2169,7 @@ worksheet.getColumn('C').eachCell({ includeEmpty: true }, (cell, rowNumber) => {
     cell.fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FF333333' }, // Cambiar el código de color a gris oscuro
+      fgColor: { argb: 'FFEEEEEE' }, // Cambiar el código de color a gris oscuro
     };
     // Otros estilos que desees aplicar a las celdas de la columna G
     cell.font = {
