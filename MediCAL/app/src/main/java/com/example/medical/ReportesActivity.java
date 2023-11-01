@@ -792,6 +792,8 @@ public class ReportesActivity extends AppCompatActivity implements ReporteAdapte
             @Override
             public void onDismiss() {
                 dimView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                obtenerUsuarioLogeado(codUsuarioLogeado, onDataLoadedListener);
             }
         });
     }
